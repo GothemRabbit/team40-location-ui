@@ -12,6 +12,7 @@ TODO:
 
    - Naylea (SNS381@student.bham.ac.uk)
    - Ika (NZR397@student.bham.ac.uk)
+   - Jasmine (YXY367@student.bham.ac.uk)
 
 3. Modify [gdpr-policy.component.html](src/main/webapp/app/gdpr-policy/gdpr-policy.component.html) to add your team number (replace X) and team members to the contact section.
 
