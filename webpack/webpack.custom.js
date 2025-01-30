@@ -19,7 +19,7 @@ module.exports = async (config, options, targetOptions) => {
         extensions: ['ts', 'js', 'html'],
       }),
       new WebpackNotifierPlugin({
-        title: 'Teamproject 24',
+        title: 'app Group 40',
         contentImage: path.join(__dirname, 'logo-jhipster.png'),
       }),
     );
