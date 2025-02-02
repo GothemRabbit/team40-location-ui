@@ -1,0 +1,7 @@
+Entity User{
+    firstName String
+    lastName String
+    biography String
+    email String
+    profilePic ImageBlob   
+}
