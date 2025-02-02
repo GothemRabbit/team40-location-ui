@@ -5,3 +5,22 @@ Entity User{
     email String
     profilePic ImageBlob   
 }
+
+Entity Conversation{
+    text TextBlob
+}
+
+relationship OneToOne{
+
+}
+relationship OneToMany{
+
+}
+relationship ManyToOne{
+
+}
+relationship ManyToMany{
+    Conversation to User
+}
+
+// asdokhasdasoidausd
