@@ -1,4 +1,4 @@
-Entity User{
+entity User{
     firstName String required,
     lastName String required,
     email String required,
@@ -6,17 +6,13 @@ Entity User{
     lastActive Instant required// Stores the time user was last active
 }
 
-Entity Conversation{
+entity Conversation{
     dateCreated LocalDate required, // Date where conversation was created
 }
 
-Entity Message{
+entity Message{
     content TextBlob required, // Messages
     timestamp Instant required // Tracks the time message was sent
-}
-
-relationship OneToOne{
-
 }
 
 relationship ManyToOne{
