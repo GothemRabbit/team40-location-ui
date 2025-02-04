@@ -1,26 +1,28 @@
 Entity User{
-    firstName String
-    lastName String
-    biography String
-    email String
-    profilePic ImageBlob   
+    firstName String required,
+    lastName String required,
+    email String required,
+    profilePic ImageBlob,
+    lastActive Instant required// Stores the time user was last active
 }
 
 Entity Conversation{
-    text TextBlob
+    dateCreated LocalDate required, // Date where conversation was created
+}
+
+Entity Message{
+    content TextBlob required, // Messages
+    timestamp Instant required // Tracks the time message was sent
 }
 
 relationship OneToOne{
 
 }
-relationship OneToMany{
 
-}
 relationship ManyToOne{
-
+    Message to User
+    Message to Conversation
 }
 relationship ManyToMany{
     Conversation to User
 }
-
-// Sussy baka amongus bing chilling
