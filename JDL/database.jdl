@@ -16,9 +16,9 @@ entity Message{
 }
 
 relationship ManyToOne{
-    Message to User
+    Message to UserDetails
     Message to Conversation
 }
 relationship ManyToMany{
-    Conversation to User
+    Conversation to UserDetails
 }
