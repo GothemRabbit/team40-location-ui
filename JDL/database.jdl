@@ -1,4 +1,4 @@
-entity User{
+entity UserDetails{
     firstName String required,
     lastName String required,
     email String required,
