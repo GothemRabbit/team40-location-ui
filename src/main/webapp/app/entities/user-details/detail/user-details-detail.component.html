@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (userDetails(); as userDetailsRef) {
+      <div>
+        <h2 data-cy="userDetailsDetailsHeading"><span>User Details</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.id }}</span>
+          </dd>
+          <dt><span>First Name</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.firstName }}</span>
+          </dd>
+          <dt><span>Last Name</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.lastName }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.email }}</span>
+          </dd>
+          <dt><span>Profile Pic</span></dt>
+          <dd>
+            @if (userDetailsRef.profilePic) {
+              <div>
+                <a (click)="openFile(userDetailsRef.profilePic ?? '', userDetailsRef.profilePicContentType)">
+                  <img
+                    [src]="'data:' + userDetailsRef.profilePicContentType + ';base64,' + userDetailsRef.profilePic"
+                    style="max-width: 100%"
+                    alt="userDetails"
+                  />
+                </a>
+                {{ userDetailsRef.profilePicContentType }}, {{ byteSize(userDetailsRef.profilePic ?? '') }}
+              </div>
+            }
+          </dd>
+          <dt><span>Last Active</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.lastActive | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Conversation</span></dt>
+          <dd>
+            @for (conversation of userDetailsRef.conversations; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/user-details', userDetailsRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

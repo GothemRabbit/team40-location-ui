@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (message(); as messageRef) {
+      <div>
+        <h2 data-cy="messageDetailsHeading"><span>Message</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ messageRef.id }}</span>
+          </dd>
+          <dt><span>Content</span></dt>
+          <dd>
+            <span>{{ messageRef.content }}</span>
+          </dd>
+          <dt><span>Timestamp</span></dt>
+          <dd>
+            <span>{{ messageRef.timestamp | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>User Details</span></dt>
+          <dd>
+            @if (message()!.userDetails) {
+              <div>
+                <a [routerLink]="['/user-details', message()!.userDetails?.id, 'view']">{{ messageRef.userDetails?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Conversation</span></dt>
+          <dd>
+            @if (message()!.conversation) {
+              <div>
+                <a [routerLink]="['/conversation', message()!.conversation?.id, 'view']">{{ messageRef.conversation?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/message', messageRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

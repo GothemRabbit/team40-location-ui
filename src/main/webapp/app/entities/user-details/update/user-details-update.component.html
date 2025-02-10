@@ -1,0 +1,164 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-user-details-heading" data-cy="UserDetailsCreateUpdateHeading">Create or edit a User Details</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let firstNameRef = editForm.get('firstName')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_firstName">First Name</label>
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+          @if (firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)) {
+            <div>
+              @if (editForm.get('firstName')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let lastNameRef = editForm.get('lastName')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_lastName">Last Name</label>
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+          @if (lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)) {
+            <div>
+              @if (editForm.get('lastName')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let emailRef = editForm.get('email')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let profilePicRef = editForm.get('profilePic')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_profilePic">Profile Pic</label>
+          <div>
+            @if (profilePicRef.value) {
+              <img
+                [src]="'data:' + editForm.get('profilePicContentType')!.value + ';base64,' + profilePicRef.value"
+                style="max-height: 100px"
+                alt="userDetails"
+              />
+            }
+            @if (profilePicRef.value) {
+              <div class="form-text text-danger clearfix">
+                <span class="pull-start">{{ editForm.get('profilePicContentType')!.value }}, {{ byteSize(profilePicRef.value!) }}</span>
+                <button
+                  type="button"
+                  (click)="clearInputImage('profilePic', 'profilePicContentType', 'file_profilePic')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input
+              type="file"
+              id="file_profilePic"
+              data-cy="profilePic"
+              (change)="setFileData($event, 'profilePic', true)"
+              accept="image/*"
+            />
+          </div>
+          <input
+            type="hidden"
+            class="form-control"
+            name="profilePic"
+            id="field_profilePic"
+            data-cy="profilePic"
+            formControlName="profilePic"
+          />
+          <input
+            type="hidden"
+            class="form-control"
+            name="profilePicContentType"
+            id="field_profilePicContentType"
+            formControlName="profilePicContentType"
+          />
+        </div>
+
+        @let lastActiveRef = editForm.get('lastActive')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_lastActive">Last Active</label>
+          <div class="d-flex">
+            <input
+              id="field_lastActive"
+              data-cy="lastActive"
+              type="datetime-local"
+              class="form-control"
+              name="lastActive"
+              formControlName="lastActive"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (lastActiveRef.invalid && (lastActiveRef.dirty || lastActiveRef.touched)) {
+            <div>
+              @if (editForm.get('lastActive')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('lastActive')?.errors?.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="field_conversations">Conversation</label>
+          <select
+            class="form-control"
+            id="field_conversations"
+            data-cy="conversation"
+            multiple
+            name="conversations"
+            formControlName="conversations"
+            [compareWith]="compareConversation"
+          >
+            @for (conversationOption of conversationsSharedCollection; track $index) {
+              <option [ngValue]="conversationOption">{{ conversationOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

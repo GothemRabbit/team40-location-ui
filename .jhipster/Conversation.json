@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "changelogDate": "20250209235408"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "dateCreated",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Conversation",
+  "relationships": [
+    {
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "conversation",
+      "relationshipName": "userDetails",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "message",
+      "otherEntityRelationshipName": "conversation",
+      "relationshipName": "message",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

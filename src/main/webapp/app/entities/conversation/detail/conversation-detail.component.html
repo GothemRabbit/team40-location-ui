@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (conversation(); as conversationRef) {
+      <div>
+        <h2 data-cy="conversationDetailsHeading"><span>Conversation</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ conversationRef.id }}</span>
+          </dd>
+          <dt><span>Date Created</span></dt>
+          <dd>
+            <span>{{ conversationRef.dateCreated | formatMediumDate }}</span>
+          </dd>
+          <dt><span>User Details</span></dt>
+          <dd>
+            @for (userDetails of conversationRef.userDetails; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/user-details', userDetails.id, 'view']">{{ userDetails?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/conversation', conversationRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
