@@ -3,38 +3,51 @@ import dayjs from 'dayjs/esm';
 import { IUserDetails, NewUserDetails } from './user-details.model';
 
 export const sampleWithRequiredData: IUserDetails = {
-  id: 19075,
-  firstName: 'Sandra',
-  lastName: 'Gulgowski',
-  email: 'Lucius54@gmail.com',
-  lastActive: dayjs('2025-02-09T02:52'),
+  id: 29008,
+  userName: 'toaster',
+  firstName: 'Trevion',
+  lastName: 'Hammes',
+  email: 'Sylvia_Hegmann@gmail.com',
+  phoneNumber: 'print',
+  rating: 2.35,
+  address: 'responsible mmm',
 };
 
 export const sampleWithPartialData: IUserDetails = {
-  id: 10478,
-  firstName: 'Bette',
-  lastName: 'Mueller',
-  email: 'Tressie_Johnson-Collins89@yahoo.com',
-  profilePic: '../fake-data/blob/hipster.png',
-  profilePicContentType: 'unknown',
-  lastActive: dayjs('2025-02-09T08:55'),
+  id: 22544,
+  userName: 'instantly',
+  firstName: 'Shaun',
+  lastName: 'Gottlieb',
+  email: 'Kyleigh.Tromp@gmail.com',
+  phoneNumber: 'opera',
+  rating: 2.09,
+  address: 'exaggerate buzzing',
 };
 
 export const sampleWithFullData: IUserDetails = {
-  id: 9661,
-  firstName: 'Triston',
-  lastName: 'Braun',
-  email: 'Gregory64@hotmail.com',
-  profilePic: '../fake-data/blob/hipster.png',
-  profilePicContentType: 'unknown',
-  lastActive: dayjs('2025-02-09T23:35'),
+  id: 10610,
+  bioImage: '../fake-data/blob/hipster.png',
+  bioImageContentType: 'unknown',
+  userName: 'impressive neighboring',
+  firstName: 'Hertha',
+  lastName: 'Kunze',
+  gender: 'FEMALE',
+  birthDate: dayjs('2025-02-09'),
+  email: 'Kristoffer.Dietrich39@yahoo.com',
+  phoneNumber: 'what diligently',
+  preferences: 'whose surface redraw',
+  rating: 3.97,
+  address: 'drat athletic fooey',
 };
 
 export const sampleWithNewData: NewUserDetails = {
-  firstName: 'Ila',
-  lastName: 'Schumm',
-  email: 'Monroe.Ondricka@gmail.com',
-  lastActive: dayjs('2025-02-09T07:44'),
+  userName: 'solemnly unexpectedly pant',
+  firstName: 'Kendrick',
+  lastName: 'Armstrong-Johnson',
+  email: 'Boyd_Vandervort44@yahoo.com',
+  phoneNumber: 'eek dispose per',
+  rating: 4.8,
+  address: 'gee energetic',
   id: null,
 };
 

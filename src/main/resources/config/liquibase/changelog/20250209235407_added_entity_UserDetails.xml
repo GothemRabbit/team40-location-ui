@@ -14,27 +14,44 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="bio_image" type="${blobType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="bio_image_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_details__user_name" />
+            </column>
             <column name="first_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="last_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="gender" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="birth_date" type="date">
+                <constraints nullable="true" />
+            </column>
             <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_details__email" />
+            </column>
+            <column name="phone_number" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_details__phone_number" />
+            </column>
+            <column name="preferences" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="rating" type="${floatType}">
                 <constraints nullable="false" />
             </column>
-            <column name="profile_pic" type="${blobType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="profile_pic_content_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="last_active" type="${datetimeType}">
+            <column name="address" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="user_details" columnName="last_active" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -54,12 +71,18 @@
                   tableName="user_details"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="bio_image" type="blob"/>
+            <column name="bio_image_content_type" type="string"/>
+            <column name="user_name" type="string"/>
             <column name="first_name" type="string"/>
             <column name="last_name" type="string"/>
+            <column name="gender" type="string"/>
+            <column name="birth_date" type="date"/>
             <column name="email" type="string"/>
-            <column name="profile_pic" type="blob"/>
-            <column name="profile_pic_content_type" type="string"/>
-            <column name="last_active" type="date"/>
+            <column name="phone_number" type="string"/>
+            <column name="preferences" type="string"/>
+            <column name="rating" type="numeric"/>
+            <column name="address" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

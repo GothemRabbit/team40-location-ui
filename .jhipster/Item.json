@@ -1,0 +1,60 @@
+{
+  "annotations": {
+    "changelogDate": "20250213125025"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "itemTitle",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "itemId",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "itemPrice",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "itemSize",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "itemCondition",
+      "fieldType": "Condition",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "BRANDNEW,LIKENEW,FAIRLYUSED,WELLUSED,HEAVILYUSED"
+    },
+    {
+      "fieldName": "itemCategory",
+      "fieldType": "Category",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "FOOTWEAR,CLOTHING,HEADWEAR,ELECTRONICS,HOBBIES,BAGS,OTHERS"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "TextBlob"
+    },
+    {
+      "fieldName": "itemColour",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "itemImage",
+      "fieldType": "ImageBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "timeListed",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Item",
+  "relationships": [],
+  "searchEngine": "no"
+}

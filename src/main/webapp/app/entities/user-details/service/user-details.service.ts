@@ -5,14 +5,15 @@ import { Observable, map } from 'rxjs';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IUserDetails, NewUserDetails } from '../user-details.model';
 
 export type PartialUpdateUserDetails = Partial<IUserDetails> & Pick<IUserDetails, 'id'>;
 
-type RestOf<T extends IUserDetails | NewUserDetails> = Omit<T, 'lastActive'> & {
-  lastActive?: string | null;
+type RestOf<T extends IUserDetails | NewUserDetails> = Omit<T, 'birthDate'> & {
+  birthDate?: string | null;
 };
 
 export type RestUserDetails = RestOf<IUserDetails>;
@@ -100,14 +101,14 @@ export class UserDetailsService {
   protected convertDateFromClient<T extends IUserDetails | NewUserDetails | PartialUpdateUserDetails>(userDetails: T): RestOf<T> {
     return {
       ...userDetails,
-      lastActive: userDetails.lastActive?.toJSON() ?? null,
+      birthDate: userDetails.birthDate?.format(DATE_FORMAT) ?? null,
     };
   }
 
   protected convertDateFromServer(restUserDetails: RestUserDetails): IUserDetails {
     return {
       ...restUserDetails,
-      lastActive: restUserDetails.lastActive ? dayjs(restUserDetails.lastActive) : undefined,
+      birthDate: restUserDetails.birthDate ? dayjs(restUserDetails.birthDate) : undefined,
     };
   }
 

@@ -20,12 +20,17 @@ describe('UserDetails Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            bioImage: expect.any(Object),
+            userName: expect.any(Object),
             firstName: expect.any(Object),
             lastName: expect.any(Object),
+            gender: expect.any(Object),
+            birthDate: expect.any(Object),
             email: expect.any(Object),
-            profilePic: expect.any(Object),
-            lastActive: expect.any(Object),
-            conversations: expect.any(Object),
+            phoneNumber: expect.any(Object),
+            preferences: expect.any(Object),
+            rating: expect.any(Object),
+            address: expect.any(Object),
           }),
         );
       });
@@ -36,12 +41,17 @@ describe('UserDetails Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            bioImage: expect.any(Object),
+            userName: expect.any(Object),
             firstName: expect.any(Object),
             lastName: expect.any(Object),
+            gender: expect.any(Object),
+            birthDate: expect.any(Object),
             email: expect.any(Object),
-            profilePic: expect.any(Object),
-            lastActive: expect.any(Object),
-            conversations: expect.any(Object),
+            phoneNumber: expect.any(Object),
+            preferences: expect.any(Object),
+            rating: expect.any(Object),
+            address: expect.any(Object),
           }),
         );
       });

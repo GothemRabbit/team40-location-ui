@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,8 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { IConversation } from 'app/entities/conversation/conversation.model';
-import { ConversationService } from 'app/entities/conversation/service/conversation.service';
+import { Gender } from 'app/entities/enumerations/gender.model';
 import { UserDetailsService } from '../service/user-details.service';
 import { IUserDetails } from '../user-details.model';
 import { UserDetailsFormGroup, UserDetailsFormService } from './user-details-form.service';
@@ -25,22 +24,17 @@ import { UserDetailsFormGroup, UserDetailsFormService } from './user-details-for
 export class UserDetailsUpdateComponent implements OnInit {
   isSaving = false;
   userDetails: IUserDetails | null = null;
-
-  conversationsSharedCollection: IConversation[] = [];
+  genderValues = Object.keys(Gender);
 
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
   protected userDetailsService = inject(UserDetailsService);
   protected userDetailsFormService = inject(UserDetailsFormService);
-  protected conversationService = inject(ConversationService);
   protected elementRef = inject(ElementRef);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: UserDetailsFormGroup = this.userDetailsFormService.createUserDetailsFormGroup();
-
-  compareConversation = (o1: IConversation | null, o2: IConversation | null): boolean =>
-    this.conversationService.compareConversation(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ userDetails }) => {
@@ -48,8 +42,6 @@ export class UserDetailsUpdateComponent implements OnInit {
       if (userDetails) {
         this.updateForm(userDetails);
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -114,25 +106,5 @@ export class UserDetailsUpdateComponent implements OnInit {
   protected updateForm(userDetails: IUserDetails): void {
     this.userDetails = userDetails;
     this.userDetailsFormService.resetForm(this.editForm, userDetails);
-
-    this.conversationsSharedCollection = this.conversationService.addConversationToCollectionIfMissing<IConversation>(
-      this.conversationsSharedCollection,
-      ...(userDetails.conversations ?? []),
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.conversationService
-      .query()
-      .pipe(map((res: HttpResponse<IConversation[]>) => res.body ?? []))
-      .pipe(
-        map((conversations: IConversation[]) =>
-          this.conversationService.addConversationToCollectionIfMissing<IConversation>(
-            conversations,
-            ...(this.userDetails?.conversations ?? []),
-          ),
-        ),
-      )
-      .subscribe((conversations: IConversation[]) => (this.conversationsSharedCollection = conversations));
   }
 }

@@ -140,19 +140,12 @@ public class ConversationResource {
     /**
      * {@code GET  /conversations} : get all the conversations.
      *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of conversations in body.
      */
     @GetMapping("")
-    public List<Conversation> getAllConversations(
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
-    ) {
+    public List<Conversation> getAllConversations() {
         LOG.debug("REST request to get all Conversations");
-        if (eagerload) {
-            return conversationRepository.findAllWithEagerRelationships();
-        } else {
-            return conversationRepository.findAll();
-        }
+        return conversationRepository.findAll();
     }
 
     /**
@@ -164,7 +157,7 @@ public class ConversationResource {
     @GetMapping("/{id}")
     public ResponseEntity<Conversation> getConversation(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Conversation : {}", id);
-        Optional<Conversation> conversation = conversationRepository.findOneWithEagerRelationships(id);
+        Optional<Conversation> conversation = conversationRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(conversation);
     }
 

@@ -19,15 +19,6 @@
           <dd>
             <span>{{ conversationRef.dateCreated | formatMediumDate }}</span>
           </dd>
-          <dt><span>User Details</span></dt>
-          <dd>
-            @for (userDetails of conversationRef.userDetails; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/user-details', userDetails.id, 'view']">{{ userDetails?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

@@ -16,21 +16,6 @@
     }
   ],
   "name": "Message",
-  "relationships": [
-    {
-      "otherEntityName": "userDetails",
-      "otherEntityRelationshipName": "message",
-      "relationshipName": "userDetails",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "conversation",
-      "otherEntityRelationshipName": "message",
-      "relationshipName": "conversation",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    }
-  ],
+  "relationships": [],
   "searchEngine": "no"
 }

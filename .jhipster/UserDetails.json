@@ -5,6 +5,15 @@
   "applications": "*",
   "fields": [
     {
+      "fieldName": "bioImage",
+      "fieldType": "ImageBlob"
+    },
+    {
+      "fieldName": "userName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
       "fieldName": "firstName",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
@@ -15,36 +24,42 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldValues": "MALE,FEMALE,OTHER"
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "LocalDate"
+    },
+    {
       "fieldName": "email",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required", "unique"]
     },
     {
-      "fieldName": "profilePic",
-      "fieldType": "ImageBlob"
+      "fieldName": "phoneNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
     },
     {
-      "fieldName": "lastActive",
-      "fieldType": "Instant",
+      "fieldName": "preferences",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rating",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "5",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String",
       "fieldValidateRules": ["required"]
     }
   ],
   "name": "UserDetails",
-  "relationships": [
-    {
-      "otherEntityName": "message",
-      "otherEntityRelationshipName": "userDetails",
-      "relationshipName": "message",
-      "relationshipSide": "right",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "conversation",
-      "otherEntityRelationshipName": "userDetails",
-      "relationshipName": "conversation",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-many"
-    }
-  ],
+  "relationships": [],
   "searchEngine": "no"
 }

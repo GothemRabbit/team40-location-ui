@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,10 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
-import { IConversation } from 'app/entities/conversation/conversation.model';
-import { ConversationService } from 'app/entities/conversation/service/conversation.service';
 import { MessageService } from '../service/message.service';
 import { IMessage } from '../message.model';
 import { MessageFormGroup, MessageFormService } from './message-form.service';
@@ -28,24 +24,14 @@ export class MessageUpdateComponent implements OnInit {
   isSaving = false;
   message: IMessage | null = null;
 
-  userDetailsSharedCollection: IUserDetails[] = [];
-  conversationsSharedCollection: IConversation[] = [];
-
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
   protected messageService = inject(MessageService);
   protected messageFormService = inject(MessageFormService);
-  protected userDetailsService = inject(UserDetailsService);
-  protected conversationService = inject(ConversationService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: MessageFormGroup = this.messageFormService.createMessageFormGroup();
-
-  compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
-
-  compareConversation = (o1: IConversation | null, o2: IConversation | null): boolean =>
-    this.conversationService.compareConversation(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ message }) => {
@@ -53,8 +39,6 @@ export class MessageUpdateComponent implements OnInit {
       if (message) {
         this.updateForm(message);
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -109,36 +93,5 @@ export class MessageUpdateComponent implements OnInit {
   protected updateForm(message: IMessage): void {
     this.message = message;
     this.messageFormService.resetForm(this.editForm, message);
-
-    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-      this.userDetailsSharedCollection,
-      message.userDetails,
-    );
-    this.conversationsSharedCollection = this.conversationService.addConversationToCollectionIfMissing<IConversation>(
-      this.conversationsSharedCollection,
-      message.conversation,
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.userDetailsService
-      .query()
-      .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))
-      .pipe(
-        map((userDetails: IUserDetails[]) =>
-          this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(userDetails, this.message?.userDetails),
-        ),
-      )
-      .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
-
-    this.conversationService
-      .query()
-      .pipe(map((res: HttpResponse<IConversation[]>) => res.body ?? []))
-      .pipe(
-        map((conversations: IConversation[]) =>
-          this.conversationService.addConversationToCollectionIfMissing<IConversation>(conversations, this.message?.conversation),
-        ),
-      )
-      .subscribe((conversations: IConversation[]) => (this.conversationsSharedCollection = conversations));
   }
 }

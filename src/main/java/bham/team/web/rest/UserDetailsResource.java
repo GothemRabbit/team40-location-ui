@@ -123,23 +123,41 @@ public class UserDetailsResource {
         Optional<UserDetails> result = userDetailsRepository
             .findById(userDetails.getId())
             .map(existingUserDetails -> {
+                if (userDetails.getBioImage() != null) {
+                    existingUserDetails.setBioImage(userDetails.getBioImage());
+                }
+                if (userDetails.getBioImageContentType() != null) {
+                    existingUserDetails.setBioImageContentType(userDetails.getBioImageContentType());
+                }
+                if (userDetails.getUserName() != null) {
+                    existingUserDetails.setUserName(userDetails.getUserName());
+                }
                 if (userDetails.getFirstName() != null) {
                     existingUserDetails.setFirstName(userDetails.getFirstName());
                 }
                 if (userDetails.getLastName() != null) {
                     existingUserDetails.setLastName(userDetails.getLastName());
                 }
+                if (userDetails.getGender() != null) {
+                    existingUserDetails.setGender(userDetails.getGender());
+                }
+                if (userDetails.getBirthDate() != null) {
+                    existingUserDetails.setBirthDate(userDetails.getBirthDate());
+                }
                 if (userDetails.getEmail() != null) {
                     existingUserDetails.setEmail(userDetails.getEmail());
                 }
-                if (userDetails.getProfilePic() != null) {
-                    existingUserDetails.setProfilePic(userDetails.getProfilePic());
+                if (userDetails.getPhoneNumber() != null) {
+                    existingUserDetails.setPhoneNumber(userDetails.getPhoneNumber());
                 }
-                if (userDetails.getProfilePicContentType() != null) {
-                    existingUserDetails.setProfilePicContentType(userDetails.getProfilePicContentType());
+                if (userDetails.getPreferences() != null) {
+                    existingUserDetails.setPreferences(userDetails.getPreferences());
                 }
-                if (userDetails.getLastActive() != null) {
-                    existingUserDetails.setLastActive(userDetails.getLastActive());
+                if (userDetails.getRating() != null) {
+                    existingUserDetails.setRating(userDetails.getRating());
+                }
+                if (userDetails.getAddress() != null) {
+                    existingUserDetails.setAddress(userDetails.getAddress());
                 }
 
                 return existingUserDetails;

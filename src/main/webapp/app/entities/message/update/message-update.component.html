@@ -51,40 +51,6 @@
             </div>
           }
         </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_userDetails">User Details</label>
-          <select
-            class="form-control"
-            id="field_userDetails"
-            data-cy="userDetails"
-            name="userDetails"
-            formControlName="userDetails"
-            [compareWith]="compareUserDetails"
-          >
-            <option [ngValue]="null"></option>
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_conversation">Conversation</label>
-          <select
-            class="form-control"
-            id="field_conversation"
-            data-cy="conversation"
-            name="conversation"
-            formControlName="conversation"
-            [compareWith]="compareConversation"
-          >
-            <option [ngValue]="null"></option>
-            @for (conversationOption of conversationsSharedCollection; track $index) {
-              <option [ngValue]="conversationOption">{{ conversationOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

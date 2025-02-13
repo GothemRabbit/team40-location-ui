@@ -33,8 +33,6 @@ type MessageFormGroupContent = {
   id: FormControl<MessageFormRawValue['id'] | NewMessage['id']>;
   content: FormControl<MessageFormRawValue['content']>;
   timestamp: FormControl<MessageFormRawValue['timestamp']>;
-  userDetails: FormControl<MessageFormRawValue['userDetails']>;
-  conversation: FormControl<MessageFormRawValue['conversation']>;
 };
 
 export type MessageFormGroup = FormGroup<MessageFormGroupContent>;
@@ -60,8 +58,6 @@ export class MessageFormService {
       timestamp: new FormControl(messageRawValue.timestamp, {
         validators: [Validators.required],
       }),
-      userDetails: new FormControl(messageRawValue.userDetails),
-      conversation: new FormControl(messageRawValue.conversation),
     });
   }
 

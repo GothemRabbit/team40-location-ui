@@ -20,6 +20,12 @@
     <include file="config/liquibase/changelog/20250209235407_added_entity_UserDetails.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250209235408_added_entity_Conversation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250209235409_added_entity_Message.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250213125024_added_entity_Authentication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250213125025_added_entity_Item.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250213125026_added_entity_ProductStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250213125027_added_entity_UserInteraction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250213125028_added_entity_Reservation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250213125029_added_entity_Review.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20250209235408_added_entity_constraints_Conversation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250209235409_added_entity_constraints_Message.xml" relativeToChangelogFile="false"/>

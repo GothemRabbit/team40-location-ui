@@ -20,12 +20,6 @@
             <column name="timestamp" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
-            <column name="user_details_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="conversation_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="message" columnName="timestamp" columnDataType="${datetimeType}"/>

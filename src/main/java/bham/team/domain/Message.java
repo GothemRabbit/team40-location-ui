@@ -1,6 +1,5 @@
 package bham.team.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -32,14 +31,6 @@ public class Message implements Serializable {
     @NotNull
     @Column(name = "timestamp", nullable = false)
     private Instant timestamp;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "messages", "conversations" }, allowSetters = true)
-    private UserDetails userDetails;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userDetails", "messages" }, allowSetters = true)
-    private Conversation conversation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -80,32 +71,6 @@ public class Message implements Serializable {
 
     public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public UserDetails getUserDetails() {
-        return this.userDetails;
-    }
-
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
-    }
-
-    public Message userDetails(UserDetails userDetails) {
-        this.setUserDetails(userDetails);
-        return this;
-    }
-
-    public Conversation getConversation() {
-        return this.conversation;
-    }
-
-    public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
-    }
-
-    public Message conversation(Conversation conversation) {
-        this.setConversation(conversation);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

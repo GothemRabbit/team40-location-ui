@@ -1,0 +1,16 @@
+{
+  "annotations": {
+    "changelogDate": "20250213125024"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "password",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Authentication",
+  "relationships": [],
+  "searchEngine": "no"
+}

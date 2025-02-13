@@ -39,23 +39,6 @@
             </div>
           }
         </div>
-
-        <div class="mb-3">
-          <label for="field_userDetails">User Details</label>
-          <select
-            class="form-control"
-            id="field_userDetails"
-            data-cy="userDetails"
-            multiple
-            name="userDetails"
-            formControlName="userDetails"
-            [compareWith]="compareUserDetails"
-          >
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

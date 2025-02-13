@@ -1,0 +1,206 @@
+package bham.team.web.rest;
+
+import bham.team.domain.Item;
+import bham.team.repository.ItemRepository;
+import bham.team.web.rest.errors.BadRequestAlertException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
+
+/**
+ * REST controller for managing {@link bham.team.domain.Item}.
+ */
+@RestController
+@RequestMapping("/api/items")
+@Transactional
+public class ItemResource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ItemResource.class);
+
+    private static final String ENTITY_NAME = "item";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
+    private final ItemRepository itemRepository;
+
+    public ItemResource(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
+
+    /**
+     * {@code POST  /items} : Create a new item.
+     *
+     * @param item the item to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new item, or with status {@code 400 (Bad Request)} if the item has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("")
+    public ResponseEntity<Item> createItem(@Valid @RequestBody Item item) throws URISyntaxException {
+        LOG.debug("REST request to save Item : {}", item);
+        if (item.getId() != null) {
+            throw new BadRequestAlertException("A new item cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        item = itemRepository.save(item);
+        return ResponseEntity.created(new URI("/api/items/" + item.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, item.getId().toString()))
+            .body(item);
+    }
+
+    /**
+     * {@code PUT  /items/:id} : Updates an existing item.
+     *
+     * @param id the id of the item to save.
+     * @param item the item to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated item,
+     * or with status {@code 400 (Bad Request)} if the item is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the item couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Item> updateItem(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Item item)
+        throws URISyntaxException {
+        LOG.debug("REST request to update Item : {}, {}", id, item);
+        if (item.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, item.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!itemRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        item = itemRepository.save(item);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, item.getId().toString()))
+            .body(item);
+    }
+
+    /**
+     * {@code PATCH  /items/:id} : Partial updates given fields of an existing item, field will ignore if it is null
+     *
+     * @param id the id of the item to save.
+     * @param item the item to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated item,
+     * or with status {@code 400 (Bad Request)} if the item is not valid,
+     * or with status {@code 404 (Not Found)} if the item is not found,
+     * or with status {@code 500 (Internal Server Error)} if the item couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    public ResponseEntity<Item> partialUpdateItem(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody Item item
+    ) throws URISyntaxException {
+        LOG.debug("REST request to partial update Item partially : {}, {}", id, item);
+        if (item.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, item.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!itemRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<Item> result = itemRepository
+            .findById(item.getId())
+            .map(existingItem -> {
+                if (item.getItemTitle() != null) {
+                    existingItem.setItemTitle(item.getItemTitle());
+                }
+                if (item.getItemId() != null) {
+                    existingItem.setItemId(item.getItemId());
+                }
+                if (item.getItemPrice() != null) {
+                    existingItem.setItemPrice(item.getItemPrice());
+                }
+                if (item.getItemSize() != null) {
+                    existingItem.setItemSize(item.getItemSize());
+                }
+                if (item.getItemCondition() != null) {
+                    existingItem.setItemCondition(item.getItemCondition());
+                }
+                if (item.getItemCategory() != null) {
+                    existingItem.setItemCategory(item.getItemCategory());
+                }
+                if (item.getDescription() != null) {
+                    existingItem.setDescription(item.getDescription());
+                }
+                if (item.getItemColour() != null) {
+                    existingItem.setItemColour(item.getItemColour());
+                }
+                if (item.getItemImage() != null) {
+                    existingItem.setItemImage(item.getItemImage());
+                }
+                if (item.getItemImageContentType() != null) {
+                    existingItem.setItemImageContentType(item.getItemImageContentType());
+                }
+                if (item.getTimeListed() != null) {
+                    existingItem.setTimeListed(item.getTimeListed());
+                }
+
+                return existingItem;
+            })
+            .map(itemRepository::save);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, item.getId().toString())
+        );
+    }
+
+    /**
+     * {@code GET  /items} : get all the items.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of items in body.
+     */
+    @GetMapping("")
+    public List<Item> getAllItems() {
+        LOG.debug("REST request to get all Items");
+        return itemRepository.findAll();
+    }
+
+    /**
+     * {@code GET  /items/:id} : get the "id" item.
+     *
+     * @param id the id of the item to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the item, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<Item> getItem(@PathVariable("id") Long id) {
+        LOG.debug("REST request to get Item : {}", id);
+        Optional<Item> item = itemRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(item);
+    }
+
+    /**
+     * {@code DELETE  /items/:id} : delete the "id" item.
+     *
+     * @param id the id of the item to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable("id") Long id) {
+        LOG.debug("REST request to delete Item : {}", id);
+        itemRepository.deleteById(id);
+        return ResponseEntity.noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
+    }
+}

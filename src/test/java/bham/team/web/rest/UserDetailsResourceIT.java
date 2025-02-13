@@ -9,11 +9,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import bham.team.IntegrationTest;
 import bham.team.domain.UserDetails;
+import bham.team.domain.enumeration.Gender;
 import bham.team.repository.UserDetailsRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -35,22 +36,40 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class UserDetailsResourceIT {
 
+    private static final byte[] DEFAULT_BIO_IMAGE = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_BIO_IMAGE = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_BIO_IMAGE_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_BIO_IMAGE_CONTENT_TYPE = "image/png";
+
+    private static final String DEFAULT_USER_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_USER_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
 
     private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
 
+    private static final Gender DEFAULT_GENDER = Gender.MALE;
+    private static final Gender UPDATED_GENDER = Gender.FEMALE;
+
+    private static final LocalDate DEFAULT_BIRTH_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_BIRTH_DATE = LocalDate.now(ZoneId.systemDefault());
+
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
-    private static final byte[] DEFAULT_PROFILE_PIC = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_PROFILE_PIC = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_PROFILE_PIC_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_PROFILE_PIC_CONTENT_TYPE = "image/png";
+    private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_LAST_ACTIVE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_LAST_ACTIVE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final String DEFAULT_PREFERENCES = "AAAAAAAAAA";
+    private static final String UPDATED_PREFERENCES = "BBBBBBBBBB";
+
+    private static final Float DEFAULT_RATING = 1F;
+    private static final Float UPDATED_RATING = 2F;
+
+    private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/user-details";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -82,12 +101,18 @@ class UserDetailsResourceIT {
      */
     public static UserDetails createEntity() {
         return new UserDetails()
+            .bioImage(DEFAULT_BIO_IMAGE)
+            .bioImageContentType(DEFAULT_BIO_IMAGE_CONTENT_TYPE)
+            .userName(DEFAULT_USER_NAME)
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
+            .gender(DEFAULT_GENDER)
+            .birthDate(DEFAULT_BIRTH_DATE)
             .email(DEFAULT_EMAIL)
-            .profilePic(DEFAULT_PROFILE_PIC)
-            .profilePicContentType(DEFAULT_PROFILE_PIC_CONTENT_TYPE)
-            .lastActive(DEFAULT_LAST_ACTIVE);
+            .phoneNumber(DEFAULT_PHONE_NUMBER)
+            .preferences(DEFAULT_PREFERENCES)
+            .rating(DEFAULT_RATING)
+            .address(DEFAULT_ADDRESS);
     }
 
     /**
@@ -98,12 +123,18 @@ class UserDetailsResourceIT {
      */
     public static UserDetails createUpdatedEntity() {
         return new UserDetails()
+            .bioImage(UPDATED_BIO_IMAGE)
+            .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
+            .userName(UPDATED_USER_NAME)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
+            .gender(UPDATED_GENDER)
+            .birthDate(UPDATED_BIRTH_DATE)
             .email(UPDATED_EMAIL)
-            .profilePic(UPDATED_PROFILE_PIC)
-            .profilePicContentType(UPDATED_PROFILE_PIC_CONTENT_TYPE)
-            .lastActive(UPDATED_LAST_ACTIVE);
+            .phoneNumber(UPDATED_PHONE_NUMBER)
+            .preferences(UPDATED_PREFERENCES)
+            .rating(UPDATED_RATING)
+            .address(UPDATED_ADDRESS);
     }
 
     @BeforeEach
@@ -160,6 +191,22 @@ class UserDetailsResourceIT {
 
     @Test
     @Transactional
+    void checkUserNameIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        userDetails.setUserName(null);
+
+        // Create the UserDetails, which fails.
+
+        restUserDetailsMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void checkFirstNameIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -208,10 +255,42 @@ class UserDetailsResourceIT {
 
     @Test
     @Transactional
-    void checkLastActiveIsRequired() throws Exception {
+    void checkPhoneNumberIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
-        userDetails.setLastActive(null);
+        userDetails.setPhoneNumber(null);
+
+        // Create the UserDetails, which fails.
+
+        restUserDetailsMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkRatingIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        userDetails.setRating(null);
+
+        // Create the UserDetails, which fails.
+
+        restUserDetailsMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkAddressIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        userDetails.setAddress(null);
 
         // Create the UserDetails, which fails.
 
@@ -234,12 +313,18 @@ class UserDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userDetails.getId().intValue())))
+            .andExpect(jsonPath("$.[*].bioImageContentType").value(hasItem(DEFAULT_BIO_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].bioImage").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_BIO_IMAGE))))
+            .andExpect(jsonPath("$.[*].userName").value(hasItem(DEFAULT_USER_NAME)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
+            .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].profilePicContentType").value(hasItem(DEFAULT_PROFILE_PIC_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].profilePic").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_PROFILE_PIC))))
-            .andExpect(jsonPath("$.[*].lastActive").value(hasItem(DEFAULT_LAST_ACTIVE.toString())));
+            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
+            .andExpect(jsonPath("$.[*].preferences").value(hasItem(DEFAULT_PREFERENCES)))
+            .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING.doubleValue())))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)));
     }
 
     @Test
@@ -254,12 +339,18 @@ class UserDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userDetails.getId().intValue()))
+            .andExpect(jsonPath("$.bioImageContentType").value(DEFAULT_BIO_IMAGE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.bioImage").value(Base64.getEncoder().encodeToString(DEFAULT_BIO_IMAGE)))
+            .andExpect(jsonPath("$.userName").value(DEFAULT_USER_NAME))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
+            .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
+            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.profilePicContentType").value(DEFAULT_PROFILE_PIC_CONTENT_TYPE))
-            .andExpect(jsonPath("$.profilePic").value(Base64.getEncoder().encodeToString(DEFAULT_PROFILE_PIC)))
-            .andExpect(jsonPath("$.lastActive").value(DEFAULT_LAST_ACTIVE.toString()));
+            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
+            .andExpect(jsonPath("$.preferences").value(DEFAULT_PREFERENCES))
+            .andExpect(jsonPath("$.rating").value(DEFAULT_RATING.doubleValue()))
+            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS));
     }
 
     @Test
@@ -282,12 +373,18 @@ class UserDetailsResourceIT {
         // Disconnect from session so that the updates on updatedUserDetails are not directly saved in db
         em.detach(updatedUserDetails);
         updatedUserDetails
+            .bioImage(UPDATED_BIO_IMAGE)
+            .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
+            .userName(UPDATED_USER_NAME)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
+            .gender(UPDATED_GENDER)
+            .birthDate(UPDATED_BIRTH_DATE)
             .email(UPDATED_EMAIL)
-            .profilePic(UPDATED_PROFILE_PIC)
-            .profilePicContentType(UPDATED_PROFILE_PIC_CONTENT_TYPE)
-            .lastActive(UPDATED_LAST_ACTIVE);
+            .phoneNumber(UPDATED_PHONE_NUMBER)
+            .preferences(UPDATED_PREFERENCES)
+            .rating(UPDATED_RATING)
+            .address(UPDATED_ADDRESS);
 
         restUserDetailsMockMvc
             .perform(
@@ -368,10 +465,10 @@ class UserDetailsResourceIT {
         partialUpdatedUserDetails.setId(userDetails.getId());
 
         partialUpdatedUserDetails
+            .userName(UPDATED_USER_NAME)
             .firstName(UPDATED_FIRST_NAME)
-            .profilePic(UPDATED_PROFILE_PIC)
-            .profilePicContentType(UPDATED_PROFILE_PIC_CONTENT_TYPE)
-            .lastActive(UPDATED_LAST_ACTIVE);
+            .lastName(UPDATED_LAST_NAME)
+            .phoneNumber(UPDATED_PHONE_NUMBER);
 
         restUserDetailsMockMvc
             .perform(
@@ -403,12 +500,18 @@ class UserDetailsResourceIT {
         partialUpdatedUserDetails.setId(userDetails.getId());
 
         partialUpdatedUserDetails
+            .bioImage(UPDATED_BIO_IMAGE)
+            .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
+            .userName(UPDATED_USER_NAME)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
+            .gender(UPDATED_GENDER)
+            .birthDate(UPDATED_BIRTH_DATE)
             .email(UPDATED_EMAIL)
-            .profilePic(UPDATED_PROFILE_PIC)
-            .profilePicContentType(UPDATED_PROFILE_PIC_CONTENT_TYPE)
-            .lastActive(UPDATED_LAST_ACTIVE);
+            .phoneNumber(UPDATED_PHONE_NUMBER)
+            .preferences(UPDATED_PREFERENCES)
+            .rating(UPDATED_RATING)
+            .address(UPDATED_ADDRESS);
 
         restUserDetailsMockMvc
             .perform(

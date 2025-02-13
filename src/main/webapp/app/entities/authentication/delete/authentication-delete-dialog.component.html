@@ -1,0 +1,22 @@
+@if (authentication) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(authentication.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="authenticationDeleteDialogHeading">Confirm delete operation</h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error></jhi-alert-error>
+      <p id="jhi-delete-authentication-heading">Are you sure you want to delete Authentication {{ authentication.id }}?</p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+      </button>
+
+      <button id="jhi-confirm-delete-authentication" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span>Delete</span>
+      </button>
+    </div>
+  </form>
+}

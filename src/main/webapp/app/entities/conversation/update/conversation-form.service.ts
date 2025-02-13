@@ -14,12 +14,11 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type ConversationFormGroupInput = IConversation | PartialWithRequiredKeyOf<NewConversation>;
 
-type ConversationFormDefaults = Pick<NewConversation, 'id' | 'userDetails'>;
+type ConversationFormDefaults = Pick<NewConversation, 'id'>;
 
 type ConversationFormGroupContent = {
   id: FormControl<IConversation['id'] | NewConversation['id']>;
   dateCreated: FormControl<IConversation['dateCreated']>;
-  userDetails: FormControl<IConversation['userDetails']>;
 };
 
 export type ConversationFormGroup = FormGroup<ConversationFormGroupContent>;
@@ -42,7 +41,6 @@ export class ConversationFormService {
       dateCreated: new FormControl(conversationRawValue.dateCreated, {
         validators: [Validators.required],
       }),
-      userDetails: new FormControl(conversationRawValue.userDetails ?? []),
     });
   }
 
@@ -63,7 +61,6 @@ export class ConversationFormService {
   private getFormDefaults(): ConversationFormDefaults {
     return {
       id: null,
-      userDetails: [],
     };
   }
 }

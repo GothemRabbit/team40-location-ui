@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IUserDetails, NewUserDetails } from '../user-details.model';
 
 /**
@@ -16,28 +14,22 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type UserDetailsFormGroupInput = IUserDetails | PartialWithRequiredKeyOf<NewUserDetails>;
 
-/**
- * Type that converts some properties for forms.
- */
-type FormValueOf<T extends IUserDetails | NewUserDetails> = Omit<T, 'lastActive'> & {
-  lastActive?: string | null;
-};
-
-type UserDetailsFormRawValue = FormValueOf<IUserDetails>;
-
-type NewUserDetailsFormRawValue = FormValueOf<NewUserDetails>;
-
-type UserDetailsFormDefaults = Pick<NewUserDetails, 'id' | 'lastActive' | 'conversations'>;
+type UserDetailsFormDefaults = Pick<NewUserDetails, 'id'>;
 
 type UserDetailsFormGroupContent = {
-  id: FormControl<UserDetailsFormRawValue['id'] | NewUserDetails['id']>;
-  firstName: FormControl<UserDetailsFormRawValue['firstName']>;
-  lastName: FormControl<UserDetailsFormRawValue['lastName']>;
-  email: FormControl<UserDetailsFormRawValue['email']>;
-  profilePic: FormControl<UserDetailsFormRawValue['profilePic']>;
-  profilePicContentType: FormControl<UserDetailsFormRawValue['profilePicContentType']>;
-  lastActive: FormControl<UserDetailsFormRawValue['lastActive']>;
-  conversations: FormControl<UserDetailsFormRawValue['conversations']>;
+  id: FormControl<IUserDetails['id'] | NewUserDetails['id']>;
+  bioImage: FormControl<IUserDetails['bioImage']>;
+  bioImageContentType: FormControl<IUserDetails['bioImageContentType']>;
+  userName: FormControl<IUserDetails['userName']>;
+  firstName: FormControl<IUserDetails['firstName']>;
+  lastName: FormControl<IUserDetails['lastName']>;
+  gender: FormControl<IUserDetails['gender']>;
+  birthDate: FormControl<IUserDetails['birthDate']>;
+  email: FormControl<IUserDetails['email']>;
+  phoneNumber: FormControl<IUserDetails['phoneNumber']>;
+  preferences: FormControl<IUserDetails['preferences']>;
+  rating: FormControl<IUserDetails['rating']>;
+  address: FormControl<IUserDetails['address']>;
 };
 
 export type UserDetailsFormGroup = FormGroup<UserDetailsFormGroupContent>;
@@ -45,10 +37,10 @@ export type UserDetailsFormGroup = FormGroup<UserDetailsFormGroupContent>;
 @Injectable({ providedIn: 'root' })
 export class UserDetailsFormService {
   createUserDetailsFormGroup(userDetails: UserDetailsFormGroupInput = { id: null }): UserDetailsFormGroup {
-    const userDetailsRawValue = this.convertUserDetailsToUserDetailsRawValue({
+    const userDetailsRawValue = {
       ...this.getFormDefaults(),
       ...userDetails,
-    });
+    };
     return new FormGroup<UserDetailsFormGroupContent>({
       id: new FormControl(
         { value: userDetailsRawValue.id, disabled: true },
@@ -57,30 +49,41 @@ export class UserDetailsFormService {
           validators: [Validators.required],
         },
       ),
+      bioImage: new FormControl(userDetailsRawValue.bioImage),
+      bioImageContentType: new FormControl(userDetailsRawValue.bioImageContentType),
+      userName: new FormControl(userDetailsRawValue.userName, {
+        validators: [Validators.required],
+      }),
       firstName: new FormControl(userDetailsRawValue.firstName, {
         validators: [Validators.required],
       }),
       lastName: new FormControl(userDetailsRawValue.lastName, {
         validators: [Validators.required],
       }),
+      gender: new FormControl(userDetailsRawValue.gender),
+      birthDate: new FormControl(userDetailsRawValue.birthDate),
       email: new FormControl(userDetailsRawValue.email, {
         validators: [Validators.required],
       }),
-      profilePic: new FormControl(userDetailsRawValue.profilePic),
-      profilePicContentType: new FormControl(userDetailsRawValue.profilePicContentType),
-      lastActive: new FormControl(userDetailsRawValue.lastActive, {
+      phoneNumber: new FormControl(userDetailsRawValue.phoneNumber, {
         validators: [Validators.required],
       }),
-      conversations: new FormControl(userDetailsRawValue.conversations ?? []),
+      preferences: new FormControl(userDetailsRawValue.preferences),
+      rating: new FormControl(userDetailsRawValue.rating, {
+        validators: [Validators.required, Validators.min(1), Validators.max(5)],
+      }),
+      address: new FormControl(userDetailsRawValue.address, {
+        validators: [Validators.required],
+      }),
     });
   }
 
   getUserDetails(form: UserDetailsFormGroup): IUserDetails | NewUserDetails {
-    return this.convertUserDetailsRawValueToUserDetails(form.getRawValue() as UserDetailsFormRawValue | NewUserDetailsFormRawValue);
+    return form.getRawValue() as IUserDetails | NewUserDetails;
   }
 
   resetForm(form: UserDetailsFormGroup, userDetails: UserDetailsFormGroupInput): void {
-    const userDetailsRawValue = this.convertUserDetailsToUserDetailsRawValue({ ...this.getFormDefaults(), ...userDetails });
+    const userDetailsRawValue = { ...this.getFormDefaults(), ...userDetails };
     form.reset(
       {
         ...userDetailsRawValue,
@@ -90,31 +93,8 @@ export class UserDetailsFormService {
   }
 
   private getFormDefaults(): UserDetailsFormDefaults {
-    const currentTime = dayjs();
-
     return {
       id: null,
-      lastActive: currentTime,
-      conversations: [],
-    };
-  }
-
-  private convertUserDetailsRawValueToUserDetails(
-    rawUserDetails: UserDetailsFormRawValue | NewUserDetailsFormRawValue,
-  ): IUserDetails | NewUserDetails {
-    return {
-      ...rawUserDetails,
-      lastActive: dayjs(rawUserDetails.lastActive, DATE_TIME_FORMAT),
-    };
-  }
-
-  private convertUserDetailsToUserDetailsRawValue(
-    userDetails: IUserDetails | (Partial<NewUserDetails> & UserDetailsFormDefaults),
-  ): UserDetailsFormRawValue | PartialWithRequiredKeyOf<NewUserDetailsFormRawValue> {
-    return {
-      ...userDetails,
-      lastActive: userDetails.lastActive ? userDetails.lastActive.format(DATE_TIME_FORMAT) : undefined,
-      conversations: userDetails.conversations ?? [],
     };
   }
 }

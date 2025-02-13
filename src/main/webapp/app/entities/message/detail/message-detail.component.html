@@ -23,22 +23,6 @@
           <dd>
             <span>{{ messageRef.timestamp | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>User Details</span></dt>
-          <dd>
-            @if (message()!.userDetails) {
-              <div>
-                <a [routerLink]="['/user-details', message()!.userDetails?.id, 'view']">{{ messageRef.userDetails?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Conversation</span></dt>
-          <dd>
-            @if (message()!.conversation) {
-              <div>
-                <a [routerLink]="['/conversation', message()!.conversation?.id, 'view']">{{ messageRef.conversation?.id }}</a>
-              </div>
-            }
-          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

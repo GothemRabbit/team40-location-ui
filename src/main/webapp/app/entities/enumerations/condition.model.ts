@@ -1,0 +1,11 @@
+export enum Condition {
+  BRANDNEW = 'BRANDNEW',
+
+  LIKENEW = 'LIKENEW',
+
+  FAIRLYUSED = 'FAIRLYUSED',
+
+  WELLUSED = 'WELLUSED',
+
+  HEAVILYUSED = 'HEAVILYUSED',
+}

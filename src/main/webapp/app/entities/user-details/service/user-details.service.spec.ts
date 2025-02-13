@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { IUserDetails } from '../user-details.model';
 import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../user-details.test-samples';
 
@@ -9,7 +10,7 @@ import { RestUserDetails, UserDetailsService } from './user-details.service';
 
 const requireRestSample: RestUserDetails = {
   ...sampleWithRequiredData,
-  lastActive: sampleWithRequiredData.lastActive?.toJSON(),
+  birthDate: sampleWithRequiredData.birthDate?.format(DATE_FORMAT),
 };
 
 describe('UserDetails Service', () => {

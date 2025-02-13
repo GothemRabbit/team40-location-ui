@@ -15,6 +15,25 @@
           <dd>
             <span>{{ userDetailsRef.id }}</span>
           </dd>
+          <dt><span>Bio Image</span></dt>
+          <dd>
+            @if (userDetailsRef.bioImage) {
+              <div>
+                <a (click)="openFile(userDetailsRef.bioImage ?? '', userDetailsRef.bioImageContentType)">
+                  <img
+                    [src]="'data:' + userDetailsRef.bioImageContentType + ';base64,' + userDetailsRef.bioImage"
+                    style="max-width: 100%"
+                    alt="userDetails"
+                  />
+                </a>
+                {{ userDetailsRef.bioImageContentType }}, {{ byteSize(userDetailsRef.bioImage ?? '') }}
+              </div>
+            }
+          </dd>
+          <dt><span>User Name</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.userName }}</span>
+          </dd>
           <dt><span>First Name</span></dt>
           <dd>
             <span>{{ userDetailsRef.firstName }}</span>
@@ -23,37 +42,33 @@
           <dd>
             <span>{{ userDetailsRef.lastName }}</span>
           </dd>
+          <dt><span>Gender</span></dt>
+          <dd>
+            <span>{{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[userDetailsRef.gender ?? 'null'] }}</span>
+          </dd>
+          <dt><span>Birth Date</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.birthDate | formatMediumDate }}</span>
+          </dd>
           <dt><span>Email</span></dt>
           <dd>
             <span>{{ userDetailsRef.email }}</span>
           </dd>
-          <dt><span>Profile Pic</span></dt>
+          <dt><span>Phone Number</span></dt>
           <dd>
-            @if (userDetailsRef.profilePic) {
-              <div>
-                <a (click)="openFile(userDetailsRef.profilePic ?? '', userDetailsRef.profilePicContentType)">
-                  <img
-                    [src]="'data:' + userDetailsRef.profilePicContentType + ';base64,' + userDetailsRef.profilePic"
-                    style="max-width: 100%"
-                    alt="userDetails"
-                  />
-                </a>
-                {{ userDetailsRef.profilePicContentType }}, {{ byteSize(userDetailsRef.profilePic ?? '') }}
-              </div>
-            }
+            <span>{{ userDetailsRef.phoneNumber }}</span>
           </dd>
-          <dt><span>Last Active</span></dt>
+          <dt><span>Preferences</span></dt>
           <dd>
-            <span>{{ userDetailsRef.lastActive | formatMediumDatetime }}</span>
+            <span>{{ userDetailsRef.preferences }}</span>
           </dd>
-          <dt><span>Conversation</span></dt>
+          <dt><span>Rating</span></dt>
           <dd>
-            @for (conversation of userDetailsRef.conversations; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
+            <span>{{ userDetailsRef.rating }}</span>
+          </dd>
+          <dt><span>Address</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.address }}</span>
           </dd>
         </dl>
 

@@ -57,8 +57,6 @@ public class ConversationAsserts {
      * @param actual the actual entity
      */
     public static void assertConversationUpdatableRelationshipsEquals(Conversation expected, Conversation actual) {
-        assertThat(expected)
-            .as("Verify Conversation relationships")
-            .satisfies(e -> assertThat(e.getUserDetails()).as("check userDetails").isEqualTo(actual.getUserDetails()));
+        // empty method
     }
 }

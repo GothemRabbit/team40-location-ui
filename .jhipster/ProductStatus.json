@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "changelogDate": "20250213125026"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "ProductState",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "AVAILABLE,PENDING,RESERVED,COMPLETED,CANCELLED"
+    },
+    {
+      "fieldName": "meetingTime",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "meetingLocation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "chatLink",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "updatedAt",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "name": "ProductStatus",
+  "relationships": [],
+  "searchEngine": "no"
+}

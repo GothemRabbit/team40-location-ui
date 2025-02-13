@@ -1,12 +1,10 @@
 package bham.team.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import bham.team.domain.enumeration.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,6 +25,17 @@ public class UserDetails implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Lob
+    @Column(name = "bio_image")
+    private byte[] bioImage;
+
+    @Column(name = "bio_image_content_type")
+    private String bioImageContentType;
+
+    @NotNull
+    @Column(name = "user_name", nullable = false, unique = true)
+    private String userName;
+
     @NotNull
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -35,30 +44,33 @@ public class UserDetails implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private Gender gender;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
     @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Lob
-    @Column(name = "profile_pic")
-    private byte[] profilePic;
+    @NotNull
+    @Column(name = "phone_number", nullable = false, unique = true)
+    private String phoneNumber;
 
-    @Column(name = "profile_pic_content_type")
-    private String profilePicContentType;
+    @Column(name = "preferences")
+    private String preferences;
 
     @NotNull
-    @Column(name = "last_active", nullable = false)
-    private Instant lastActive;
+    @DecimalMin(value = "1")
+    @DecimalMax(value = "5")
+    @Column(name = "rating", nullable = false)
+    private Float rating;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "userDetails", "conversation" }, allowSetters = true)
-    private Set<Message> messages = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "userDetails", "messages" }, allowSetters = true)
-    private Set<Conversation> conversations = new HashSet<>();
+    @NotNull
+    @Column(name = "address", nullable = false)
+    private String address;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -73,6 +85,45 @@ public class UserDetails implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public byte[] getBioImage() {
+        return this.bioImage;
+    }
+
+    public UserDetails bioImage(byte[] bioImage) {
+        this.setBioImage(bioImage);
+        return this;
+    }
+
+    public void setBioImage(byte[] bioImage) {
+        this.bioImage = bioImage;
+    }
+
+    public String getBioImageContentType() {
+        return this.bioImageContentType;
+    }
+
+    public UserDetails bioImageContentType(String bioImageContentType) {
+        this.bioImageContentType = bioImageContentType;
+        return this;
+    }
+
+    public void setBioImageContentType(String bioImageContentType) {
+        this.bioImageContentType = bioImageContentType;
+    }
+
+    public String getUserName() {
+        return this.userName;
+    }
+
+    public UserDetails userName(String userName) {
+        this.setUserName(userName);
+        return this;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFirstName() {
@@ -101,6 +152,32 @@ public class UserDetails implements Serializable {
         this.lastName = lastName;
     }
 
+    public Gender getGender() {
+        return this.gender;
+    }
+
+    public UserDetails gender(Gender gender) {
+        this.setGender(gender);
+        return this;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getBirthDate() {
+        return this.birthDate;
+    }
+
+    public UserDetails birthDate(LocalDate birthDate) {
+        this.setBirthDate(birthDate);
+        return this;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -114,105 +191,56 @@ public class UserDetails implements Serializable {
         this.email = email;
     }
 
-    public byte[] getProfilePic() {
-        return this.profilePic;
+    public String getPhoneNumber() {
+        return this.phoneNumber;
     }
 
-    public UserDetails profilePic(byte[] profilePic) {
-        this.setProfilePic(profilePic);
+    public UserDetails phoneNumber(String phoneNumber) {
+        this.setPhoneNumber(phoneNumber);
         return this;
     }
 
-    public void setProfilePic(byte[] profilePic) {
-        this.profilePic = profilePic;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getProfilePicContentType() {
-        return this.profilePicContentType;
+    public String getPreferences() {
+        return this.preferences;
     }
 
-    public UserDetails profilePicContentType(String profilePicContentType) {
-        this.profilePicContentType = profilePicContentType;
+    public UserDetails preferences(String preferences) {
+        this.setPreferences(preferences);
         return this;
     }
 
-    public void setProfilePicContentType(String profilePicContentType) {
-        this.profilePicContentType = profilePicContentType;
+    public void setPreferences(String preferences) {
+        this.preferences = preferences;
     }
 
-    public Instant getLastActive() {
-        return this.lastActive;
+    public Float getRating() {
+        return this.rating;
     }
 
-    public UserDetails lastActive(Instant lastActive) {
-        this.setLastActive(lastActive);
+    public UserDetails rating(Float rating) {
+        this.setRating(rating);
         return this;
     }
 
-    public void setLastActive(Instant lastActive) {
-        this.lastActive = lastActive;
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 
-    public Set<Message> getMessages() {
-        return this.messages;
+    public String getAddress() {
+        return this.address;
     }
 
-    public void setMessages(Set<Message> messages) {
-        if (this.messages != null) {
-            this.messages.forEach(i -> i.setUserDetails(null));
-        }
-        if (messages != null) {
-            messages.forEach(i -> i.setUserDetails(this));
-        }
-        this.messages = messages;
-    }
-
-    public UserDetails messages(Set<Message> messages) {
-        this.setMessages(messages);
+    public UserDetails address(String address) {
+        this.setAddress(address);
         return this;
     }
 
-    public UserDetails addMessage(Message message) {
-        this.messages.add(message);
-        message.setUserDetails(this);
-        return this;
-    }
-
-    public UserDetails removeMessage(Message message) {
-        this.messages.remove(message);
-        message.setUserDetails(null);
-        return this;
-    }
-
-    public Set<Conversation> getConversations() {
-        return this.conversations;
-    }
-
-    public void setConversations(Set<Conversation> conversations) {
-        if (this.conversations != null) {
-            this.conversations.forEach(i -> i.removeUserDetails(this));
-        }
-        if (conversations != null) {
-            conversations.forEach(i -> i.addUserDetails(this));
-        }
-        this.conversations = conversations;
-    }
-
-    public UserDetails conversations(Set<Conversation> conversations) {
-        this.setConversations(conversations);
-        return this;
-    }
-
-    public UserDetails addConversation(Conversation conversation) {
-        this.conversations.add(conversation);
-        conversation.getUserDetails().add(this);
-        return this;
-    }
-
-    public UserDetails removeConversation(Conversation conversation) {
-        this.conversations.remove(conversation);
-        conversation.getUserDetails().remove(this);
-        return this;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -239,12 +267,18 @@ public class UserDetails implements Serializable {
     public String toString() {
         return "UserDetails{" +
             "id=" + getId() +
+            ", bioImage='" + getBioImage() + "'" +
+            ", bioImageContentType='" + getBioImageContentType() + "'" +
+            ", userName='" + getUserName() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
+            ", gender='" + getGender() + "'" +
+            ", birthDate='" + getBirthDate() + "'" +
             ", email='" + getEmail() + "'" +
-            ", profilePic='" + getProfilePic() + "'" +
-            ", profilePicContentType='" + getProfilePicContentType() + "'" +
-            ", lastActive='" + getLastActive() + "'" +
+            ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", preferences='" + getPreferences() + "'" +
+            ", rating=" + getRating() +
+            ", address='" + getAddress() + "'" +
             "}";
     }
 }

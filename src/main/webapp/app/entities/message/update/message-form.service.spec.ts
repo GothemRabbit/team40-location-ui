@@ -22,8 +22,6 @@ describe('Message Form Service', () => {
             id: expect.any(Object),
             content: expect.any(Object),
             timestamp: expect.any(Object),
-            userDetails: expect.any(Object),
-            conversation: expect.any(Object),
           }),
         );
       });
@@ -36,8 +34,6 @@ describe('Message Form Service', () => {
             id: expect.any(Object),
             content: expect.any(Object),
             timestamp: expect.any(Object),
-            userDetails: expect.any(Object),
-            conversation: expect.any(Object),
           }),
         );
       });

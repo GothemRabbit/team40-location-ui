@@ -47,14 +47,20 @@ public class UserDetailsAsserts {
     public static void assertUserDetailsUpdatableFieldsEquals(UserDetails expected, UserDetails actual) {
         assertThat(expected)
             .as("Verify UserDetails relevant properties")
+            .satisfies(e -> assertThat(e.getBioImage()).as("check bioImage").isEqualTo(actual.getBioImage()))
+            .satisfies(e ->
+                assertThat(e.getBioImageContentType()).as("check bioImage contenty type").isEqualTo(actual.getBioImageContentType())
+            )
+            .satisfies(e -> assertThat(e.getUserName()).as("check userName").isEqualTo(actual.getUserName()))
             .satisfies(e -> assertThat(e.getFirstName()).as("check firstName").isEqualTo(actual.getFirstName()))
             .satisfies(e -> assertThat(e.getLastName()).as("check lastName").isEqualTo(actual.getLastName()))
+            .satisfies(e -> assertThat(e.getGender()).as("check gender").isEqualTo(actual.getGender()))
+            .satisfies(e -> assertThat(e.getBirthDate()).as("check birthDate").isEqualTo(actual.getBirthDate()))
             .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
-            .satisfies(e -> assertThat(e.getProfilePic()).as("check profilePic").isEqualTo(actual.getProfilePic()))
-            .satisfies(e ->
-                assertThat(e.getProfilePicContentType()).as("check profilePic contenty type").isEqualTo(actual.getProfilePicContentType())
-            )
-            .satisfies(e -> assertThat(e.getLastActive()).as("check lastActive").isEqualTo(actual.getLastActive()));
+            .satisfies(e -> assertThat(e.getPhoneNumber()).as("check phoneNumber").isEqualTo(actual.getPhoneNumber()))
+            .satisfies(e -> assertThat(e.getPreferences()).as("check preferences").isEqualTo(actual.getPreferences()))
+            .satisfies(e -> assertThat(e.getRating()).as("check rating").isEqualTo(actual.getRating()))
+            .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()));
     }
 
     /**
@@ -64,8 +70,6 @@ public class UserDetailsAsserts {
      * @param actual the actual entity
      */
     public static void assertUserDetailsUpdatableRelationshipsEquals(UserDetails expected, UserDetails actual) {
-        assertThat(expected)
-            .as("Verify UserDetails relationships")
-            .satisfies(e -> assertThat(e.getConversations()).as("check conversations").isEqualTo(actual.getConversations()));
+        // empty method
     }
 }

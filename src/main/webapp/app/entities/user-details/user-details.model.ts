@@ -1,15 +1,20 @@
 import dayjs from 'dayjs/esm';
-import { IConversation } from 'app/entities/conversation/conversation.model';
+import { Gender } from 'app/entities/enumerations/gender.model';
 
 export interface IUserDetails {
   id: number;
+  bioImage?: string | null;
+  bioImageContentType?: string | null;
+  userName?: string | null;
   firstName?: string | null;
   lastName?: string | null;
+  gender?: keyof typeof Gender | null;
+  birthDate?: dayjs.Dayjs | null;
   email?: string | null;
-  profilePic?: string | null;
-  profilePicContentType?: string | null;
-  lastActive?: dayjs.Dayjs | null;
-  conversations?: IConversation[] | null;
+  phoneNumber?: string | null;
+  preferences?: string | null;
+  rating?: number | null;
+  address?: string | null;
 }
 
 export type NewUserDetails = Omit<IUserDetails, 'id'> & { id: null };

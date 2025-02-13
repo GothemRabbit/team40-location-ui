@@ -56,18 +56,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="userDetails.id">
-              <div class="d-flex">
-                <span>User Details</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="conversation.id">
-              <div class="d-flex">
-                <span>Conversation</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -79,20 +67,6 @@
               </td>
               <td>{{ message.content }}</td>
               <td>{{ message.timestamp | formatMediumDatetime }}</td>
-              <td>
-                @if (message.userDetails) {
-                  <div>
-                    <a [routerLink]="['/user-details', message.userDetails.id, 'view']">{{ message.userDetails.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (message.conversation) {
-                  <div>
-                    <a [routerLink]="['/conversation', message.conversation.id, 'view']">{{ message.conversation.id }}</a>
-                  </div>
-                }
-              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/message', message.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

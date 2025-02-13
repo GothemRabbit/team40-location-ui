@@ -1,0 +1,26 @@
+{
+  "annotations": {
+    "changelogDate": "20250213125027"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "InteractionType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "SEARCH,RECOMMENDATION"
+    },
+    {
+      "fieldName": "details",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "interactionDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "UserInteraction",
+  "relationships": [],
+  "searchEngine": "no"
+}

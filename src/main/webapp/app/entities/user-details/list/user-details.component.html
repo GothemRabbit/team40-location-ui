@@ -42,6 +42,20 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="bioImage">
+              <div class="d-flex">
+                <span>Bio Image</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="userName">
+              <div class="d-flex">
+                <span>User Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="firstName">
               <div class="d-flex">
                 <span>First Name</span>
@@ -56,6 +70,20 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="gender">
+              <div class="d-flex">
+                <span>Gender</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="birthDate">
+              <div class="d-flex">
+                <span>Birth Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="email">
               <div class="d-flex">
                 <span>Email</span>
@@ -63,23 +91,31 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="profilePic">
+            <th scope="col" jhiSortBy="phoneNumber">
               <div class="d-flex">
-                <span>Profile Pic</span>
+                <span>Phone Number</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="lastActive">
+            <th scope="col" jhiSortBy="preferences">
               <div class="d-flex">
-                <span>Last Active</span>
+                <span>Preferences</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="conversation.id">
+            <th scope="col" jhiSortBy="rating">
               <div class="d-flex">
-                <span>Conversation</span>
+                <span>Rating</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="address">
+              <div class="d-flex">
+                <span>Address</span>
+
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -92,30 +128,28 @@
               <td>
                 <a [routerLink]="['/user-details', userDetails.id, 'view']">{{ userDetails.id }}</a>
               </td>
-              <td>{{ userDetails.firstName }}</td>
-              <td>{{ userDetails.lastName }}</td>
-              <td>{{ userDetails.email }}</td>
               <td>
-                @if (userDetails.profilePic) {
-                  <a (click)="openFile(userDetails.profilePic, userDetails.profilePicContentType)">
+                @if (userDetails.bioImage) {
+                  <a (click)="openFile(userDetails.bioImage, userDetails.bioImageContentType)">
                     <img
-                      [src]="'data:' + userDetails.profilePicContentType + ';base64,' + userDetails.profilePic"
+                      [src]="'data:' + userDetails.bioImageContentType + ';base64,' + userDetails.bioImage"
                       style="max-height: 30px"
                       alt="userDetails"
                     />
                   </a>
-                  <span>{{ userDetails.profilePicContentType }}, {{ byteSize(userDetails.profilePic) }}</span>
+                  <span>{{ userDetails.bioImageContentType }}, {{ byteSize(userDetails.bioImage) }}</span>
                 }
               </td>
-              <td>{{ userDetails.lastActive | formatMediumDatetime }}</td>
-              <td>
-                @for (conversation of userDetails.conversations; track $index; let last = $last) {
-                  <span>
-                    <a class="form-control-static" [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation.id }}</a
-                    >{{ last ? '' : ', ' }}
-                  </span>
-                }
-              </td>
+              <td>{{ userDetails.userName }}</td>
+              <td>{{ userDetails.firstName }}</td>
+              <td>{{ userDetails.lastName }}</td>
+              <td>{{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[userDetails.gender ?? 'null'] }}</td>
+              <td>{{ userDetails.birthDate | formatMediumDate }}</td>
+              <td>{{ userDetails.email }}</td>
+              <td>{{ userDetails.phoneNumber }}</td>
+              <td>{{ userDetails.preferences }}</td>
+              <td>{{ userDetails.rating }}</td>
+              <td>{{ userDetails.address }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/user-details', userDetails.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

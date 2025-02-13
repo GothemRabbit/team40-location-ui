@@ -49,12 +49,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="userDetails.id">
-              <div class="d-flex">
-                <span>User Details</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -65,14 +59,6 @@
                 <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation.id }}</a>
               </td>
               <td>{{ conversation.dateCreated | formatMediumDate }}</td>
-              <td>
-                @for (userDetails of conversation.userDetails; track $index; let last = $last) {
-                  <span>
-                    <a class="form-control-static" [routerLink]="['/user-details', userDetails.id, 'view']">{{ userDetails.id }}</a
-                    >{{ last ? '' : ', ' }}
-                  </span>
-                }
-              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/conversation', conversation.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
