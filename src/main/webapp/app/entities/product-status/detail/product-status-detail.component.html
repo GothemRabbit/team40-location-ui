@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (productStatus(); as productStatusRef) {
+      <div>
+        <h2 data-cy="productStatusDetailsHeading"><span>Product Status</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ productStatusRef.id }}</span>
+          </dd>
+          <dt><span>Status</span></dt>
+          <dd>
+            <span>{{
+              {
+                null: '',
+                AVAILABLE: 'AVAILABLE',
+                PENDING: 'PENDING',
+                RESERVED: 'RESERVED',
+                COMPLETED: 'COMPLETED',
+                CANCELLED: 'CANCELLED',
+              }[productStatusRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span>Meeting Time</span></dt>
+          <dd>
+            <span>{{ productStatusRef.meetingTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Meeting Location</span></dt>
+          <dd>
+            <span>{{ productStatusRef.meetingLocation }}</span>
+          </dd>
+          <dt><span>Chat Link</span></dt>
+          <dd>
+            <span>{{ productStatusRef.chatLink }}</span>
+          </dd>
+          <dt><span>Created At</span></dt>
+          <dd>
+            <span>{{ productStatusRef.createdAt | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated At</span></dt>
+          <dd>
+            <span>{{ productStatusRef.updatedAt | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/product-status', productStatusRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

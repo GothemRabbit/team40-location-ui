@@ -1,0 +1,27 @@
+{
+  "annotations": {
+    "changelogDate": "20250213120523"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "reservationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "expirationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "ReservationStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PENDING,CONFIRMED,CANCELLED"
+    }
+  ],
+  "name": "Reservation",
+  "relationships": [],
+  "searchEngine": "no"
+}

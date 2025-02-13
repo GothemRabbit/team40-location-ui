@@ -1,0 +1,11 @@
+id;rating;review_text;review_date
+1;4.05;../fake-data/blob/hipster.txt;2025-02-13
+2;3.52;../fake-data/blob/hipster.txt;2025-02-13
+3;0.9;../fake-data/blob/hipster.txt;2025-02-12
+4;0.07;../fake-data/blob/hipster.txt;2025-02-12
+5;2.97;../fake-data/blob/hipster.txt;2025-02-13
+6;0.88;../fake-data/blob/hipster.txt;2025-02-12
+7;3.92;../fake-data/blob/hipster.txt;2025-02-12
+8;3.57;../fake-data/blob/hipster.txt;2025-02-13
+9;2.97;../fake-data/blob/hipster.txt;2025-02-13
+10;0.85;../fake-data/blob/hipster.txt;2025-02-12

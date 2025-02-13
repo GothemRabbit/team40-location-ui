@@ -1,0 +1,21 @@
+{
+  "annotations": {
+    "changelogDate": "20250213120519"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "content",
+      "fieldType": "TextBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "timestamp",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Message",
+  "relationships": [],
+  "searchEngine": "no"
+}

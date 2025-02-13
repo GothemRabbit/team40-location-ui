@@ -1,0 +1,11 @@
+export enum ProductState {
+  AVAILABLE = 'AVAILABLE',
+
+  PENDING = 'PENDING',
+
+  RESERVED = 'RESERVED',
+
+  COMPLETED = 'COMPLETED',
+
+  CANCELLED = 'CANCELLED',
+}

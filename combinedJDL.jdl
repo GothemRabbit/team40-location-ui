@@ -14,7 +14,7 @@ entity UserDetails {
 
 entity Authentication {
   password String required,
-  userName UserDetails required,
+  //userName UserDetails required,
 }
 
 enum Gender {
@@ -61,7 +61,7 @@ enum Category {
 entity Message {
   content TextBlob required,
   timestamp Instant required
-  relatedReservation Reservation
+  //relatedReservation Reservation
 }
 
 entity Conversation {
@@ -72,9 +72,9 @@ entity Conversation {
 
 // Tracks the state of an item in the process
 entity ProductStatus {
-  item Item required,
-  seller UserDetails required, // The seller
-  buyer UserDetails, // The confirmed buyer (if reserved)
+  //item Item required,
+  //seller UserDetails required, // The seller
+  //buyer UserDetails, // The confirmed buyer (if reserved)
   status ProductState required, // Item's current state
   meetingTime Instant, // Editable by both parties
   meetingLocation String, // Editable by both parties
@@ -95,10 +95,10 @@ enum ProductState {
 
 
 entity UserInteraction {
-  user UserDetails required, // Reference to the user
+  //user UserDetails required, // Reference to the user
   type InteractionType required, // SEARCH or RECOMMENDATION
   details String, // JSON blob for search filters or recommendation reason
-  item Item, // Recommended or searched item
+  //item Item, // Recommended or searched item
   interactionDate Instant required // When it happened
 }
 
@@ -112,9 +112,9 @@ enum InteractionType {
 
 
 entity Reservation {
-  buyer UserDetails required, // The buyer
-  seller UserDetails required, // The seller
-  item Item required,
+  //buyer UserDetails required, // The buyer
+  //seller UserDetails required, // The seller
+  //item Item required,
   reservationDate Instant required,
   expirationDate Instant required,
   status ReservationStatus required
@@ -131,8 +131,8 @@ enum ReservationStatus {
 
 // Review system for user ratings
 entity Review {
-  reviewer UserDetails required, // Who left the review
-  reviewee UserDetails required, // Who is being reviewed (seller)
+  //reviewer UserDetails required, // Who left the review
+  //reviewee UserDetails required, // Who is being reviewed (seller)
   rating Float required min(0) max(5),
   reviewText TextBlob,
   reviewDate LocalDate required

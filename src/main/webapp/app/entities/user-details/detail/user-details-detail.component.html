@@ -1,0 +1,85 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (userDetails(); as userDetailsRef) {
+      <div>
+        <h2 data-cy="userDetailsDetailsHeading"><span>User Details</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.id }}</span>
+          </dd>
+          <dt><span>Bio Image</span></dt>
+          <dd>
+            @if (userDetailsRef.bioImage) {
+              <div>
+                <a (click)="openFile(userDetailsRef.bioImage ?? '', userDetailsRef.bioImageContentType)">
+                  <img
+                    [src]="'data:' + userDetailsRef.bioImageContentType + ';base64,' + userDetailsRef.bioImage"
+                    style="max-width: 100%"
+                    alt="userDetails"
+                  />
+                </a>
+                {{ userDetailsRef.bioImageContentType }}, {{ byteSize(userDetailsRef.bioImage ?? '') }}
+              </div>
+            }
+          </dd>
+          <dt><span>User Name</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.userName }}</span>
+          </dd>
+          <dt><span>First Name</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.firstName }}</span>
+          </dd>
+          <dt><span>Last Name</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.lastName }}</span>
+          </dd>
+          <dt><span>Gender</span></dt>
+          <dd>
+            <span>{{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[userDetailsRef.gender ?? 'null'] }}</span>
+          </dd>
+          <dt><span>Birth Date</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.birthDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.email }}</span>
+          </dd>
+          <dt><span>Phone Number</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.phoneNumber }}</span>
+          </dd>
+          <dt><span>Preferences</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.preferences }}</span>
+          </dd>
+          <dt><span>Rating</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.rating }}</span>
+          </dd>
+          <dt><span>Address</span></dt>
+          <dd>
+            <span>{{ userDetailsRef.address }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/user-details', userDetailsRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
