@@ -1,0 +1,97 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (item(); as itemRef) {
+      <div>
+        <h2 data-cy="itemDetailsHeading"><span>Item</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ itemRef.id }}</span>
+          </dd>
+          <dt><span>Item Title</span></dt>
+          <dd>
+            <span>{{ itemRef.itemTitle }}</span>
+          </dd>
+          <dt><span>Item Id</span></dt>
+          <dd>
+            <span>{{ itemRef.itemId }}</span>
+          </dd>
+          <dt><span>Item Price</span></dt>
+          <dd>
+            <span>{{ itemRef.itemPrice }}</span>
+          </dd>
+          <dt><span>Item Size</span></dt>
+          <dd>
+            <span>{{ itemRef.itemSize }}</span>
+          </dd>
+          <dt><span>Item Condition</span></dt>
+          <dd>
+            <span>{{
+              {
+                null: '',
+                BRANDNEW: 'BRANDNEW',
+                LIKENEW: 'LIKENEW',
+                FAIRLYUSED: 'FAIRLYUSED',
+                WELLUSED: 'WELLUSED',
+                HEAVILYUSED: 'HEAVILYUSED',
+              }[itemRef.itemCondition ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span>Item Category</span></dt>
+          <dd>
+            <span>{{
+              {
+                null: '',
+                FOOTWEAR: 'FOOTWEAR',
+                CLOTHING: 'CLOTHING',
+                HEADWEAR: 'HEADWEAR',
+                ELECTRONICS: 'ELECTRONICS',
+                HOBBIES: 'HOBBIES',
+                BAGS: 'BAGS',
+                OTHERS: 'OTHERS',
+              }[itemRef.itemCategory ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ itemRef.description }}</span>
+          </dd>
+          <dt><span>Item Colour</span></dt>
+          <dd>
+            <span>{{ itemRef.itemColour }}</span>
+          </dd>
+          <dt><span>Item Image</span></dt>
+          <dd>
+            @if (itemRef.itemImage) {
+              <div>
+                <a (click)="openFile(itemRef.itemImage ?? '', itemRef.itemImageContentType)">
+                  <img [src]="'data:' + itemRef.itemImageContentType + ';base64,' + itemRef.itemImage" style="max-width: 100%" alt="item" />
+                </a>
+                {{ itemRef.itemImageContentType }}, {{ byteSize(itemRef.itemImage ?? '') }}
+              </div>
+            }
+          </dd>
+          <dt><span>Time Listed</span></dt>
+          <dd>
+            <span>{{ itemRef.timeListed | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

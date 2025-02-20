@@ -1,0 +1,16 @@
+{
+  "annotations": {
+    "changelogDate": "20250213120520"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "dateCreated",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Conversation",
+  "relationships": [],
+  "searchEngine": "no"
+}

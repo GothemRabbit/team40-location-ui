@@ -1,0 +1,177 @@
+<div>
+  <h2 id="page-heading" data-cy="UserDetailsHeading">
+    <span>User Details</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-user-details"
+        [routerLink]="['/user-details/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new User Details</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (userDetails?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No User Details found</span>
+    </div>
+  }
+
+  @if (userDetails && userDetails.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bioImage">
+              <div class="d-flex">
+                <span>Bio Image</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="userName">
+              <div class="d-flex">
+                <span>User Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="firstName">
+              <div class="d-flex">
+                <span>First Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastName">
+              <div class="d-flex">
+                <span>Last Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="gender">
+              <div class="d-flex">
+                <span>Gender</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="birthDate">
+              <div class="d-flex">
+                <span>Birth Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span>Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="phoneNumber">
+              <div class="d-flex">
+                <span>Phone Number</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="preferences">
+              <div class="d-flex">
+                <span>Preferences</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="rating">
+              <div class="d-flex">
+                <span>Rating</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="address">
+              <div class="d-flex">
+                <span>Address</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (userDetails of userDetails; track trackId(userDetails)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/user-details', userDetails.id, 'view']">{{ userDetails.id }}</a>
+              </td>
+              <td>
+                @if (userDetails.bioImage) {
+                  <a (click)="openFile(userDetails.bioImage, userDetails.bioImageContentType)">
+                    <img
+                      [src]="'data:' + userDetails.bioImageContentType + ';base64,' + userDetails.bioImage"
+                      style="max-height: 30px"
+                      alt="userDetails"
+                    />
+                  </a>
+                  <span>{{ userDetails.bioImageContentType }}, {{ byteSize(userDetails.bioImage) }}</span>
+                }
+              </td>
+              <td>{{ userDetails.userName }}</td>
+              <td>{{ userDetails.firstName }}</td>
+              <td>{{ userDetails.lastName }}</td>
+              <td>{{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[userDetails.gender ?? 'null'] }}</td>
+              <td>{{ userDetails.birthDate | formatMediumDate }}</td>
+              <td>{{ userDetails.email }}</td>
+              <td>{{ userDetails.phoneNumber }}</td>
+              <td>{{ userDetails.preferences }}</td>
+              <td>{{ userDetails.rating }}</td>
+              <td>{{ userDetails.address }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/user-details', userDetails.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/user-details', userDetails.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(userDetails)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
