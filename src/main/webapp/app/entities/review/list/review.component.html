@@ -14,6 +14,17 @@
   }
 
   @if (reviews && reviews.length > 0) {
+    <div>
+      <p class="commentBox">
+        @for (review of reviews; track trackId(review)) {
+          <div>
+            <a [routerLink]="['/review', review.id, 'view']">{{ review.id }}</a>
+            {{ review.reviewText }}
+            {{ review.rating }}
+          </div>
+        }
+      </p>
+    </div>
     <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
