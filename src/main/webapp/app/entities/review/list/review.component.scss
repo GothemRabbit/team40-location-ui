@@ -1,0 +1,46 @@
+#page {
+  background-color: #f8dc75;
+  border-color: #f8dc75;
+}
+
+.commentBox {
+  background-color: white;
+  border: 2px solid #bbbbbb;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  /* border: 2px solid #444444;
+   border-collapse: separate;
+   border-spacing: 10px;
+   margin-bottom: 5px;
+   border-radius: 5px;
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/
+}
+h2 {
+  text-align: center;
+}
+p {
+  margin: 2px;
+}
+#id {
+  text-decoration: underline;
+}
+
+#dialogue {
+  text-align: center;
+}
+#rates {
+  text-align: right;
+}
+#date {
+  text-align: right;
+}
+.btn-group {
+  border-radius: 5px;
+  background-color: aquamarine;
+}
+.btn btn-info btn-sm {
+  background-color: #3e8acc;
+}

@@ -51,14 +51,10 @@ public class CacheConfiguration {
             createCache(cm, bham.team.domain.Authority.class.getName());
             createCache(cm, bham.team.domain.User.class.getName() + ".authorities");
             createCache(cm, bham.team.domain.UserDetails.class.getName());
-            createCache(cm, bham.team.domain.UserDetails.class.getName() + ".messages");
-            createCache(cm, bham.team.domain.UserDetails.class.getName() + ".conversations");
-            createCache(cm, bham.team.domain.Conversation.class.getName());
-            createCache(cm, bham.team.domain.Conversation.class.getName() + ".userDetails");
-            createCache(cm, bham.team.domain.Conversation.class.getName() + ".messages");
-            createCache(cm, bham.team.domain.Message.class.getName());
             createCache(cm, bham.team.domain.Authentication.class.getName());
             createCache(cm, bham.team.domain.Item.class.getName());
+            createCache(cm, bham.team.domain.Message.class.getName());
+            createCache(cm, bham.team.domain.Conversation.class.getName());
             createCache(cm, bham.team.domain.ProductStatus.class.getName());
             createCache(cm, bham.team.domain.UserInteraction.class.getName());
             createCache(cm, bham.team.domain.Reservation.class.getName());

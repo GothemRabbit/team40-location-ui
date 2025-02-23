@@ -5,26 +5,26 @@ import { IUserInteraction, NewUserInteraction } from './user-interaction.model';
 export const sampleWithRequiredData: IUserInteraction = {
   id: 17322,
   type: 'SEARCH',
-  interactionDate: dayjs('2025-02-12T22:29'),
+  interactionDate: dayjs('2025-02-12T21:44'),
 };
 
 export const sampleWithPartialData: IUserInteraction = {
   id: 25589,
   type: 'SEARCH',
   details: 'husky schlep behind',
-  interactionDate: dayjs('2025-02-13T12:47'),
+  interactionDate: dayjs('2025-02-13T12:02'),
 };
 
 export const sampleWithFullData: IUserInteraction = {
   id: 2270,
   type: 'SEARCH',
   details: 'although bitterly gorgeous',
-  interactionDate: dayjs('2025-02-12T15:25'),
+  interactionDate: dayjs('2025-02-12T14:40'),
 };
 
 export const sampleWithNewData: NewUserInteraction = {
   type: 'RECOMMENDATION',
-  interactionDate: dayjs('2025-02-12T23:27'),
+  interactionDate: dayjs('2025-02-12T22:42'),
   id: null,
 };
 

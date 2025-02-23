@@ -32,7 +32,7 @@ export const sampleWithFullData: IUserDetails = {
   firstName: 'Hertha',
   lastName: 'Kunze',
   gender: 'FEMALE',
-  birthDate: dayjs('2025-02-09'),
+  birthDate: dayjs('2025-02-13'),
   email: 'Kristoffer.Dietrich39@yahoo.com',
   phoneNumber: 'what diligently',
   preferences: 'whose surface redraw',

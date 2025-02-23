@@ -11,7 +11,7 @@ export const sampleWithRequiredData: IItem = {
   itemCategory: 'OTHERS',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-12T17:56'),
+  timeListed: dayjs('2025-02-12T17:11'),
 };
 
 export const sampleWithPartialData: IItem = {
@@ -24,7 +24,7 @@ export const sampleWithPartialData: IItem = {
   itemColour: 'a vein',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-12T14:14'),
+  timeListed: dayjs('2025-02-12T13:29'),
 };
 
 export const sampleWithFullData: IItem = {
@@ -39,7 +39,7 @@ export const sampleWithFullData: IItem = {
   itemColour: 'ah',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-13T05:27'),
+  timeListed: dayjs('2025-02-13T04:42'),
 };
 
 export const sampleWithNewData: NewItem = {
@@ -50,7 +50,7 @@ export const sampleWithNewData: NewItem = {
   itemCategory: 'HEADWEAR',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-13T09:33'),
+  timeListed: dayjs('2025-02-13T08:48'),
   id: null,
 };
 

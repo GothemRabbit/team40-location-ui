@@ -12,16 +12,6 @@ const routes: Routes = [
     loadChildren: () => import('./user-details/user-details.routes'),
   },
   {
-    path: 'conversation',
-    data: { pageTitle: 'Conversations' },
-    loadChildren: () => import('./conversation/conversation.routes'),
-  },
-  {
-    path: 'message',
-    data: { pageTitle: 'Messages' },
-    loadChildren: () => import('./message/message.routes'),
-  },
-  {
     path: 'authentication',
     data: { pageTitle: 'Authentications' },
     loadChildren: () => import('./authentication/authentication.routes'),
@@ -30,6 +20,16 @@ const routes: Routes = [
     path: 'item',
     data: { pageTitle: 'Items' },
     loadChildren: () => import('./item/item.routes'),
+  },
+  {
+    path: 'message',
+    data: { pageTitle: 'Messages' },
+    loadChildren: () => import('./message/message.routes'),
+  },
+  {
+    path: 'conversation',
+    data: { pageTitle: 'Conversations' },
+    loadChildren: () => import('./conversation/conversation.routes'),
   },
   {
     path: 'product-status',

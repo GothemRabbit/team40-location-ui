@@ -5,24 +5,24 @@ import { IMessage, NewMessage } from './message.model';
 export const sampleWithRequiredData: IMessage = {
   id: 23271,
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-09T00:15'),
+  timestamp: dayjs('2025-02-12T12:26'),
 };
 
 export const sampleWithPartialData: IMessage = {
   id: 6168,
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-09T18:13'),
+  timestamp: dayjs('2025-02-13T06:24'),
 };
 
 export const sampleWithFullData: IMessage = {
   id: 8864,
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-09T19:26'),
+  timestamp: dayjs('2025-02-13T07:37'),
 };
 
 export const sampleWithNewData: NewMessage = {
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-09T19:29'),
+  timestamp: dayjs('2025-02-13T07:40'),
   id: null,
 };
 
