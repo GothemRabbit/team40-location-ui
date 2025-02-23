@@ -15,10 +15,10 @@ entity Message{
     timestamp Instant required // Tracks the time message was sent
 }
 
-relationship ManyToOne{
-    Message to UserDetails
-    Message to Conversation
-}
-relationship ManyToMany{
-    Conversation to UserDetails
+//relationship ManyToOne{
+//    Message to UserDetails
+//    Message to Conversation
+//}
+//relationship ManyToMany{
+//    Conversation to UserDetails
 }

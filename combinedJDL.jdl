@@ -27,7 +27,6 @@ enum Gender {
 // Item entity for product listings
 entity Item {
   itemTitle String required
-  itemId Integer required unique,
   itemPrice BigDecimal required,
   itemSize String,
   itemCondition Condition required,
@@ -35,7 +34,8 @@ entity Item {
   description TextBlob,
   itemColour String,
   itemImage ImageBlob required,
-  timeListed Instant required
+  timeListed Instant required,
+  itemLike Boolean
 }
 
 enum Condition {

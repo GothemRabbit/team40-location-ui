@@ -11,8 +11,8 @@ entity Item {
   createdDate Instant required,
   category ItemCategory required, //to which sector it belongs
   attributes String, //for size, color, brand etc
-  rating Float, //i.e. number of stars
   views Integer
+  likes Integer
 }
 
 entity User {
@@ -53,15 +53,15 @@ enum ItemCondition {
   ACCEPTABLE
 }
 
-relationship ManyToOne {
-  Item to User
-}
-
-relationship OneToMany {
-  User to SearchHistory,
-  User to Recommendation
-}
-
-relationship ManyToMany {  // For "People also viewed" or "Similar items"
-  Item to Item
-}
+//relationship ManyToOne {
+//  Item to User
+//}
+//
+//relationship OneToMany {
+//  User to SearchHistory,
+//  User to Recommendation
+//}
+//
+//relationship ManyToMany {  // For "People also viewed" or "Similar items"
+//  Item to Item
+//}
