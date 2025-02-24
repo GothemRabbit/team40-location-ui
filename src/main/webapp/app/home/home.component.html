@@ -3,10 +3,10 @@
     <span class="hipster img-fluid rounded"></span>
   </div>
 
-  <div class="col-md-9">
-    <h1 class="display-4"><span>Hello, Java Hipster!</span> (Let's Go Team 40!!)</h1>
+  <div class="col-md-12">
+    <h1 class="display-4"><span>Buy2Use!</span></h1>
 
-    <p class="lead">This is your homepage</p>
+    <p class="lead">Where you can find everything you ever need</p>
 
     <div>
       @if (account() !== null) {
@@ -15,9 +15,11 @@
             <span id="home-logged-message">You are logged in as user &quot;{{ accountRef.login }}&quot;.</span>
           }
         </div>
-        <jhi-item></jhi-item>
+        <div class="center-container">
+          <jhi-item></jhi-item>
+        </div>
       } @else {
-        <!--        <jhi-item></jhi-item>-->
+        <jhi-item></jhi-item>
       }
     </div>
   </div>

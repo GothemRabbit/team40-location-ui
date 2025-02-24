@@ -2,24 +2,7 @@
   <h2 id="page-heading" data-cy="ItemHeading">
     <span>Item List</span>
 
-    <div class="d-flex justify-content-end">
-      <!--
- BUTTONS ON TOP (RELOAD) (CREATE NEW ITEM)
- <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">-->
-      <!--        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>-->
-      <!--        <span>Refresh list</span>-->
-      <!--      </button>-->
-
-      <!--      <button-->
-      <!--        id="jh-create-entity"-->
-      <!--        data-cy="entityCreateButton"-->
-      <!--        class="btn btn-primary jh-create-entity create-item"-->
-      <!--        [routerLink]="['/item/new']"-->
-      <!--      >-->
-      <!--        <fa-icon icon="plus"></fa-icon>-->
-      <!--        <span>Create a new Item</span>-->
-      <!--      </button>-->
-    </div>
+    <div class="d-flex justify-content-end"></div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -35,13 +18,19 @@
   @if (items && items.length > 0) {
     <div class="row g-5">
       @for (item of items; track trackId(item)) {
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card shadow-sm">
             @if (item.itemImage) {
-              <img class="card-img-top" [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" alt="item" />
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img class="card-img-top" [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" alt="item" />
+              </a>
             }
+
             <div class="card-body">
-              <h5 class="card-title">{{ item.itemTitle }}</h5>
+              <h5 class="card-title">
+                <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.itemTitle }}</a>
+              </h5>
+
               <p class="card-text"><strong>Price:</strong> {{ item.itemPrice }}</p>
               <p class="card-text"><strong>Size:</strong> {{ item.itemSize }}</p>
               <p class="card-text">
@@ -72,11 +61,7 @@
                   }[item.itemCategory ?? 'null']
                 }}
               </p>
-              <div class="d-flex justify-content-between">
-                <a [routerLink]="['/item', item.id, 'view']" class="btn btn-info btn-sm">View</a>
-                <a [routerLink]="['/item', item.id, 'edit']" class="btn btn-primary btn-sm">Edit</a>
-                <button type="submit" (click)="delete(item)" class="btn btn-danger btn-sm">Delete</button>
-              </div>
+              <div class="d-flex justify-content-between"></div>
             </div>
           </div>
         </div>

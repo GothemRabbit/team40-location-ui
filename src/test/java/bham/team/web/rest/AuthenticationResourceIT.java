@@ -274,8 +274,6 @@ class AuthenticationResourceIT {
         Authentication partialUpdatedAuthentication = new Authentication();
         partialUpdatedAuthentication.setId(authentication.getId());
 
-        partialUpdatedAuthentication.password(UPDATED_PASSWORD);
-
         restAuthenticationMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedAuthentication.getId())

@@ -1,6 +1,23 @@
 <div id="page">
   <h2 id="page-heading" data-cy="ReviewHeading">
-    <span>REVIEWS</span>
+    <span>Reviews</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-review"
+        [routerLink]="['/review/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Review</span>
+      </button>
+    </div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -12,27 +29,8 @@
       <span>No Reviews found</span>
     </div>
   }
+
   @if (reviews && reviews.length > 0) {
-    <div>
-      @for (review of reviews; track trackId(review)) {
-        <div class="commentBox">
-          <div style="display: flex; justify-content: space-between">
-            <p id="userName">
-              <a [routerLink]="['/review', review.id, 'view']">{{ review.id }}</a>
-            </p>
-            <p id="rates">
-              {{ review.rating }}
-            </p>
-          </div>
-          <p id="dialogue">
-            {{ review.reviewText }}
-          </p>
-          <p id="date">
-            {{ review.reviewDate }}
-          </p>
-        </div>
-      }
-    </div>
     <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
@@ -99,23 +97,6 @@
           }
         </tbody>
       </table>
-    </div>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-review"
-        [routerLink]="['/review/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Add your review!</span>
-      </button>
     </div>
   }
 </div>

@@ -21,7 +21,6 @@ describe('Item Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             itemTitle: expect.any(Object),
-            itemId: expect.any(Object),
             itemPrice: expect.any(Object),
             itemSize: expect.any(Object),
             itemCondition: expect.any(Object),
@@ -30,6 +29,7 @@ describe('Item Form Service', () => {
             itemColour: expect.any(Object),
             itemImage: expect.any(Object),
             timeListed: expect.any(Object),
+            itemLike: expect.any(Object),
           }),
         );
       });
@@ -41,7 +41,6 @@ describe('Item Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             itemTitle: expect.any(Object),
-            itemId: expect.any(Object),
             itemPrice: expect.any(Object),
             itemSize: expect.any(Object),
             itemCondition: expect.any(Object),
@@ -50,6 +49,7 @@ describe('Item Form Service', () => {
             itemColour: expect.any(Object),
             itemImage: expect.any(Object),
             timeListed: expect.any(Object),
+            itemLike: expect.any(Object),
           }),
         );
       });

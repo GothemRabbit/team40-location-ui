@@ -10,11 +10,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "itemId",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
       "fieldName": "itemPrice",
       "fieldType": "BigDecimal",
       "fieldValidateRules": ["required"]
@@ -52,6 +47,10 @@
       "fieldName": "timeListed",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "itemLike",
+      "fieldType": "Boolean"
     }
   ],
   "name": "Item",

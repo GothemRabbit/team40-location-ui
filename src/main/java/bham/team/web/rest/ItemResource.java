@@ -124,9 +124,6 @@ public class ItemResource {
                 if (item.getItemTitle() != null) {
                     existingItem.setItemTitle(item.getItemTitle());
                 }
-                if (item.getItemId() != null) {
-                    existingItem.setItemId(item.getItemId());
-                }
                 if (item.getItemPrice() != null) {
                     existingItem.setItemPrice(item.getItemPrice());
                 }
@@ -153,6 +150,9 @@ public class ItemResource {
                 }
                 if (item.getTimeListed() != null) {
                     existingItem.setTimeListed(item.getTimeListed());
+                }
+                if (item.getItemLike() != null) {
+                    existingItem.setItemLike(item.getItemLike());
                 }
 
                 return existingItem;

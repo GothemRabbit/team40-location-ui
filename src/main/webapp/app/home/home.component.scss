@@ -2,12 +2,25 @@
 Main page styles
 ========================================================================== */
 
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-  background-size: contain;
+//.hipster {
+//  display: inline-block;
+//  width: 347px;
+//  height: 497px;
+//  //background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
+//  //background-size: contain;
+//}
+
+jhi-item {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* If vertical centering is needed */
+  width: 100%;
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
@@ -17,7 +30,7 @@ Main page styles
   only screen and (min-resolution: 192dpi),
   only screen and (min-resolution: 2dppx) {
   .hipster {
-    background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-    background-size: contain;
+    //background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
+    //background-size: contain;
   }
 }

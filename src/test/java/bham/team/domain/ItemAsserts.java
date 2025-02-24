@@ -49,7 +49,6 @@ public class ItemAsserts {
         assertThat(expected)
             .as("Verify Item relevant properties")
             .satisfies(e -> assertThat(e.getItemTitle()).as("check itemTitle").isEqualTo(actual.getItemTitle()))
-            .satisfies(e -> assertThat(e.getItemId()).as("check itemId").isEqualTo(actual.getItemId()))
             .satisfies(e ->
                 assertThat(e.getItemPrice()).as("check itemPrice").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getItemPrice())
             )
@@ -62,7 +61,8 @@ public class ItemAsserts {
             .satisfies(e ->
                 assertThat(e.getItemImageContentType()).as("check itemImage contenty type").isEqualTo(actual.getItemImageContentType())
             )
-            .satisfies(e -> assertThat(e.getTimeListed()).as("check timeListed").isEqualTo(actual.getTimeListed()));
+            .satisfies(e -> assertThat(e.getTimeListed()).as("check timeListed").isEqualTo(actual.getTimeListed()))
+            .satisfies(e -> assertThat(e.getItemLike()).as("check itemLike").isEqualTo(actual.getItemLike()));
     }
 
     /**

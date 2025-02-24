@@ -303,6 +303,8 @@ class UserInteractionResourceIT {
         UserInteraction partialUpdatedUserInteraction = new UserInteraction();
         partialUpdatedUserInteraction.setId(userInteraction.getId());
 
+        partialUpdatedUserInteraction.type(UPDATED_TYPE);
+
         restUserInteractionMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedUserInteraction.getId())

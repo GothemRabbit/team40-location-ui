@@ -133,8 +133,23 @@ enum ReservationStatus {
 entity Review {
   //reviewer UserDetails required, // Who left the review
   //reviewee UserDetails required, // Who is being reviewed (seller)
-  rating Float required min(0) max(5),
+  rating Integer required min(0) max(5),
   reviewText TextBlob,
   reviewDate LocalDate required
+}
+
+entity Notification {
+  title String required,
+  message TextBlob required,
+  notificationType NotificationType required,
+  isRead Boolean required,
+  createdAt Instant required
+}
+
+
+enum NotificationType {
+  MESSAGE,
+  REVIEW,
+  STATUS_CHANGE
 }
 
