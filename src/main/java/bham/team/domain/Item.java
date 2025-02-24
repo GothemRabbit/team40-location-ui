@@ -32,10 +32,6 @@ public class Item implements Serializable {
     private String itemTitle;
 
     @NotNull
-    @Column(name = "item_id", nullable = false, unique = true)
-    private Integer itemId;
-
-    @NotNull
     @Column(name = "item_price", precision = 21, scale = 2, nullable = false)
     private BigDecimal itemPrice;
 
@@ -71,6 +67,9 @@ public class Item implements Serializable {
     @Column(name = "time_listed", nullable = false)
     private Instant timeListed;
 
+    @Column(name = "item_like")
+    private Boolean itemLike;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -97,19 +96,6 @@ public class Item implements Serializable {
 
     public void setItemTitle(String itemTitle) {
         this.itemTitle = itemTitle;
-    }
-
-    public Integer getItemId() {
-        return this.itemId;
-    }
-
-    public Item itemId(Integer itemId) {
-        this.setItemId(itemId);
-        return this;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
     }
 
     public BigDecimal getItemPrice() {
@@ -229,6 +215,19 @@ public class Item implements Serializable {
         this.timeListed = timeListed;
     }
 
+    public Boolean getItemLike() {
+        return this.itemLike;
+    }
+
+    public Item itemLike(Boolean itemLike) {
+        this.setItemLike(itemLike);
+        return this;
+    }
+
+    public void setItemLike(Boolean itemLike) {
+        this.itemLike = itemLike;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -254,7 +253,6 @@ public class Item implements Serializable {
         return "Item{" +
             "id=" + getId() +
             ", itemTitle='" + getItemTitle() + "'" +
-            ", itemId=" + getItemId() +
             ", itemPrice=" + getItemPrice() +
             ", itemSize='" + getItemSize() + "'" +
             ", itemCondition='" + getItemCondition() + "'" +
@@ -264,6 +262,7 @@ public class Item implements Serializable {
             ", itemImage='" + getItemImage() + "'" +
             ", itemImageContentType='" + getItemImageContentType() + "'" +
             ", timeListed='" + getTimeListed() + "'" +
+            ", itemLike='" + getItemLike() + "'" +
             "}";
     }
 }

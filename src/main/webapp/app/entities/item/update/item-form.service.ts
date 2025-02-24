@@ -27,12 +27,11 @@ type ItemFormRawValue = FormValueOf<IItem>;
 
 type NewItemFormRawValue = FormValueOf<NewItem>;
 
-type ItemFormDefaults = Pick<NewItem, 'id' | 'timeListed'>;
+type ItemFormDefaults = Pick<NewItem, 'id' | 'timeListed' | 'itemLike'>;
 
 type ItemFormGroupContent = {
   id: FormControl<ItemFormRawValue['id'] | NewItem['id']>;
   itemTitle: FormControl<ItemFormRawValue['itemTitle']>;
-  itemId: FormControl<ItemFormRawValue['itemId']>;
   itemPrice: FormControl<ItemFormRawValue['itemPrice']>;
   itemSize: FormControl<ItemFormRawValue['itemSize']>;
   itemCondition: FormControl<ItemFormRawValue['itemCondition']>;
@@ -42,6 +41,7 @@ type ItemFormGroupContent = {
   itemImage: FormControl<ItemFormRawValue['itemImage']>;
   itemImageContentType: FormControl<ItemFormRawValue['itemImageContentType']>;
   timeListed: FormControl<ItemFormRawValue['timeListed']>;
+  itemLike: FormControl<ItemFormRawValue['itemLike']>;
 };
 
 export type ItemFormGroup = FormGroup<ItemFormGroupContent>;
@@ -64,9 +64,6 @@ export class ItemFormService {
       itemTitle: new FormControl(itemRawValue.itemTitle, {
         validators: [Validators.required],
       }),
-      itemId: new FormControl(itemRawValue.itemId, {
-        validators: [Validators.required],
-      }),
       itemPrice: new FormControl(itemRawValue.itemPrice, {
         validators: [Validators.required],
       }),
@@ -86,6 +83,7 @@ export class ItemFormService {
       timeListed: new FormControl(itemRawValue.timeListed, {
         validators: [Validators.required],
       }),
+      itemLike: new FormControl(itemRawValue.itemLike),
     });
   }
 
@@ -109,6 +107,7 @@ export class ItemFormService {
     return {
       id: null,
       timeListed: currentTime,
+      itemLike: false,
     };
   }
 

@@ -17,7 +17,6 @@ import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.componen
   standalone: true,
   selector: 'jhi-item',
   templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss'],
   imports: [
     RouterModule,
     FormsModule,

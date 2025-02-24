@@ -42,9 +42,6 @@ class ItemResourceIT {
     private static final String DEFAULT_ITEM_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_ITEM_TITLE = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_ITEM_ID = 1;
-    private static final Integer UPDATED_ITEM_ID = 2;
-
     private static final BigDecimal DEFAULT_ITEM_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_ITEM_PRICE = new BigDecimal(2);
 
@@ -70,6 +67,9 @@ class ItemResourceIT {
 
     private static final Instant DEFAULT_TIME_LISTED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_TIME_LISTED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Boolean DEFAULT_ITEM_LIKE = false;
+    private static final Boolean UPDATED_ITEM_LIKE = true;
 
     private static final String ENTITY_API_URL = "/api/items";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -102,7 +102,6 @@ class ItemResourceIT {
     public static Item createEntity() {
         return new Item()
             .itemTitle(DEFAULT_ITEM_TITLE)
-            .itemId(DEFAULT_ITEM_ID)
             .itemPrice(DEFAULT_ITEM_PRICE)
             .itemSize(DEFAULT_ITEM_SIZE)
             .itemCondition(DEFAULT_ITEM_CONDITION)
@@ -111,7 +110,8 @@ class ItemResourceIT {
             .itemColour(DEFAULT_ITEM_COLOUR)
             .itemImage(DEFAULT_ITEM_IMAGE)
             .itemImageContentType(DEFAULT_ITEM_IMAGE_CONTENT_TYPE)
-            .timeListed(DEFAULT_TIME_LISTED);
+            .timeListed(DEFAULT_TIME_LISTED)
+            .itemLike(DEFAULT_ITEM_LIKE);
     }
 
     /**
@@ -123,7 +123,6 @@ class ItemResourceIT {
     public static Item createUpdatedEntity() {
         return new Item()
             .itemTitle(UPDATED_ITEM_TITLE)
-            .itemId(UPDATED_ITEM_ID)
             .itemPrice(UPDATED_ITEM_PRICE)
             .itemSize(UPDATED_ITEM_SIZE)
             .itemCondition(UPDATED_ITEM_CONDITION)
@@ -132,7 +131,8 @@ class ItemResourceIT {
             .itemColour(UPDATED_ITEM_COLOUR)
             .itemImage(UPDATED_ITEM_IMAGE)
             .itemImageContentType(UPDATED_ITEM_IMAGE_CONTENT_TYPE)
-            .timeListed(UPDATED_TIME_LISTED);
+            .timeListed(UPDATED_TIME_LISTED)
+            .itemLike(UPDATED_ITEM_LIKE);
     }
 
     @BeforeEach
@@ -193,22 +193,6 @@ class ItemResourceIT {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
         item.setItemTitle(null);
-
-        // Create the Item, which fails.
-
-        restItemMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(item)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkItemIdIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        item.setItemId(null);
 
         // Create the Item, which fails.
 
@@ -296,7 +280,6 @@ class ItemResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(item.getId().intValue())))
             .andExpect(jsonPath("$.[*].itemTitle").value(hasItem(DEFAULT_ITEM_TITLE)))
-            .andExpect(jsonPath("$.[*].itemId").value(hasItem(DEFAULT_ITEM_ID)))
             .andExpect(jsonPath("$.[*].itemPrice").value(hasItem(sameNumber(DEFAULT_ITEM_PRICE))))
             .andExpect(jsonPath("$.[*].itemSize").value(hasItem(DEFAULT_ITEM_SIZE)))
             .andExpect(jsonPath("$.[*].itemCondition").value(hasItem(DEFAULT_ITEM_CONDITION.toString())))
@@ -305,7 +288,8 @@ class ItemResourceIT {
             .andExpect(jsonPath("$.[*].itemColour").value(hasItem(DEFAULT_ITEM_COLOUR)))
             .andExpect(jsonPath("$.[*].itemImageContentType").value(hasItem(DEFAULT_ITEM_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].itemImage").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_ITEM_IMAGE))))
-            .andExpect(jsonPath("$.[*].timeListed").value(hasItem(DEFAULT_TIME_LISTED.toString())));
+            .andExpect(jsonPath("$.[*].timeListed").value(hasItem(DEFAULT_TIME_LISTED.toString())))
+            .andExpect(jsonPath("$.[*].itemLike").value(hasItem(DEFAULT_ITEM_LIKE.booleanValue())));
     }
 
     @Test
@@ -321,7 +305,6 @@ class ItemResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(item.getId().intValue()))
             .andExpect(jsonPath("$.itemTitle").value(DEFAULT_ITEM_TITLE))
-            .andExpect(jsonPath("$.itemId").value(DEFAULT_ITEM_ID))
             .andExpect(jsonPath("$.itemPrice").value(sameNumber(DEFAULT_ITEM_PRICE)))
             .andExpect(jsonPath("$.itemSize").value(DEFAULT_ITEM_SIZE))
             .andExpect(jsonPath("$.itemCondition").value(DEFAULT_ITEM_CONDITION.toString()))
@@ -330,7 +313,8 @@ class ItemResourceIT {
             .andExpect(jsonPath("$.itemColour").value(DEFAULT_ITEM_COLOUR))
             .andExpect(jsonPath("$.itemImageContentType").value(DEFAULT_ITEM_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.itemImage").value(Base64.getEncoder().encodeToString(DEFAULT_ITEM_IMAGE)))
-            .andExpect(jsonPath("$.timeListed").value(DEFAULT_TIME_LISTED.toString()));
+            .andExpect(jsonPath("$.timeListed").value(DEFAULT_TIME_LISTED.toString()))
+            .andExpect(jsonPath("$.itemLike").value(DEFAULT_ITEM_LIKE.booleanValue()));
     }
 
     @Test
@@ -354,7 +338,6 @@ class ItemResourceIT {
         em.detach(updatedItem);
         updatedItem
             .itemTitle(UPDATED_ITEM_TITLE)
-            .itemId(UPDATED_ITEM_ID)
             .itemPrice(UPDATED_ITEM_PRICE)
             .itemSize(UPDATED_ITEM_SIZE)
             .itemCondition(UPDATED_ITEM_CONDITION)
@@ -363,7 +346,8 @@ class ItemResourceIT {
             .itemColour(UPDATED_ITEM_COLOUR)
             .itemImage(UPDATED_ITEM_IMAGE)
             .itemImageContentType(UPDATED_ITEM_IMAGE_CONTENT_TYPE)
-            .timeListed(UPDATED_TIME_LISTED);
+            .timeListed(UPDATED_TIME_LISTED)
+            .itemLike(UPDATED_ITEM_LIKE);
 
         restItemMockMvc
             .perform(
@@ -440,12 +424,14 @@ class ItemResourceIT {
         partialUpdatedItem.setId(item.getId());
 
         partialUpdatedItem
-            .itemTitle(UPDATED_ITEM_TITLE)
-            .itemId(UPDATED_ITEM_ID)
-            .itemSize(UPDATED_ITEM_SIZE)
-            .description(UPDATED_DESCRIPTION)
+            .itemPrice(UPDATED_ITEM_PRICE)
+            .itemCondition(UPDATED_ITEM_CONDITION)
+            .itemCategory(UPDATED_ITEM_CATEGORY)
             .itemColour(UPDATED_ITEM_COLOUR)
-            .timeListed(UPDATED_TIME_LISTED);
+            .itemImage(UPDATED_ITEM_IMAGE)
+            .itemImageContentType(UPDATED_ITEM_IMAGE_CONTENT_TYPE)
+            .timeListed(UPDATED_TIME_LISTED)
+            .itemLike(UPDATED_ITEM_LIKE);
 
         restItemMockMvc
             .perform(
@@ -475,7 +461,6 @@ class ItemResourceIT {
 
         partialUpdatedItem
             .itemTitle(UPDATED_ITEM_TITLE)
-            .itemId(UPDATED_ITEM_ID)
             .itemPrice(UPDATED_ITEM_PRICE)
             .itemSize(UPDATED_ITEM_SIZE)
             .itemCondition(UPDATED_ITEM_CONDITION)
@@ -484,7 +469,8 @@ class ItemResourceIT {
             .itemColour(UPDATED_ITEM_COLOUR)
             .itemImage(UPDATED_ITEM_IMAGE)
             .itemImageContentType(UPDATED_ITEM_IMAGE_CONTENT_TYPE)
-            .timeListed(UPDATED_TIME_LISTED);
+            .timeListed(UPDATED_TIME_LISTED)
+            .itemLike(UPDATED_ITEM_LIKE);
 
         restItemMockMvc
             .perform(

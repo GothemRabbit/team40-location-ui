@@ -1,11 +1,11 @@
-id;item_title;item_id;item_price;item_size;item_condition;item_category;description;item_colour;item_image;item_image_content_type;time_listed
-1;quicker;11031;13469.26;forecast sleepy where;HEAVILYUSED;ELECTRONICS;../fake-data/blob/hipster.txt;hopeful glow;../fake-data/blob/hipster.png;image/png;2025-02-13T06:12:25
-2;unexpectedly;21103;1672.59;ouch whereas cone;BRANDNEW;OTHERS;../fake-data/blob/hipster.txt;zowie via biodegradable;../fake-data/blob/hipster.png;image/png;2025-02-13T01:06:57
-3;sport;10215;6471.59;mallard import;BRANDNEW;FOOTWEAR;../fake-data/blob/hipster.txt;insist onto devise;../fake-data/blob/hipster.png;image/png;2025-02-13T10:37:37
-4;exhaust;31595;31602.77;fooey;HEAVILYUSED;ELECTRONICS;../fake-data/blob/hipster.txt;voluntarily wicked;../fake-data/blob/hipster.png;image/png;2025-02-13T06:40:14
-5;once;30706;22700.44;gah duh;HEAVILYUSED;CLOTHING;../fake-data/blob/hipster.txt;woot;../fake-data/blob/hipster.png;image/png;2025-02-12T16:18:40
-6;validity likely brr;27741;10716.78;tentacle whoever;BRANDNEW;HOBBIES;../fake-data/blob/hipster.txt;rightfully;../fake-data/blob/hipster.png;image/png;2025-02-13T01:19:00
-7;deform wherever;31192;3843.35;shakily promptly outstanding;BRANDNEW;BAGS;../fake-data/blob/hipster.txt;irritably spectate;../fake-data/blob/hipster.png;image/png;2025-02-13T00:10:10
-8;brilliant;28437;12991.24;spew and;BRANDNEW;CLOTHING;../fake-data/blob/hipster.txt;uh-huh;../fake-data/blob/hipster.png;image/png;2025-02-12T14:09:49
-9;whitewash before;30446;28197.95;finally funny oh;HEAVILYUSED;OTHERS;../fake-data/blob/hipster.txt;wholly championship hmph;../fake-data/blob/hipster.png;image/png;2025-02-13T05:44:46
-10;whole;22163;18488.42;knotty institute orchestrate;LIKENEW;HOBBIES;../fake-data/blob/hipster.txt;convalesce;../fake-data/blob/hipster.png;image/png;2025-02-12T20:54:18
+id;item_title;item_price;item_size;item_condition;item_category;description;item_colour;item_image;item_image_content_type;time_listed;item_like
+1;quicker;11031.2;bah nice;WELLUSED;FOOTWEAR;../fake-data/blob/hipster.txt;merry;../fake-data/blob/hipster.png;image/png;2025-02-13T00:17:32;false
+2;drat;8939.64;solace;FAIRLYUSED;HOBBIES;../fake-data/blob/hipster.txt;surprisingly agreeable bravely;../fake-data/blob/hipster.png;image/png;2025-02-13T09:42:06;false
+3;advertisement;30697.93;athwart;HEAVILYUSED;HEADWEAR;../fake-data/blob/hipster.txt;biodegradable than psst;../fake-data/blob/hipster.png;image/png;2025-02-12T21:42:19;false
+4;till;18603.98;crocodile aw;WELLUSED;HEADWEAR;../fake-data/blob/hipster.txt;devise miserably;../fake-data/blob/hipster.png;image/png;2025-02-13T08:47:31;true
+5;aggravating than emphasize;16058.1;upward pace;FAIRLYUSED;FOOTWEAR;../fake-data/blob/hipster.txt;cop-out around actual;../fake-data/blob/hipster.png;image/png;2025-02-12T22:16:32;true
+6;validity likely brr;27741;postbox;HEAVILYUSED;HOBBIES;../fake-data/blob/hipster.txt;off;../fake-data/blob/hipster.png;image/png;2025-02-12T19:38:48;false
+7;glider deform wherever;31191.38;meh;WELLUSED;FOOTWEAR;../fake-data/blob/hipster.txt;horn see lively;../fake-data/blob/hipster.png;image/png;2025-02-12T21:00:57;false
+8;affiliate brilliant bleak;17573.53;willfully boohoo;WELLUSED;HEADWEAR;../fake-data/blob/hipster.txt;lender hm;../fake-data/blob/hipster.png;image/png;2025-02-12T15:20:15;false
+9;bitterly;2032.03;round seriously misjudge;BRANDNEW;FOOTWEAR;../fake-data/blob/hipster.txt;down;../fake-data/blob/hipster.png;image/png;2025-02-12T15:22:47;true
+10;buzzing;11518.6;obedient plump;FAIRLYUSED;HEADWEAR;../fake-data/blob/hipster.txt;father next;../fake-data/blob/hipster.png;image/png;2025-02-12T12:30:50;true

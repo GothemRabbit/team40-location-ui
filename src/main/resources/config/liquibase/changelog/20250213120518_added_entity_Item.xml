@@ -17,9 +17,6 @@
             <column name="item_title" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="item_id" type="integer">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_item__item_id" />
-            </column>
             <column name="item_price" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
@@ -47,6 +44,9 @@
             <column name="time_listed" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
+            <column name="item_like" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="item" columnName="time_listed" columnDataType="${datetimeType}"/>
@@ -70,7 +70,6 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="item_title" type="string"/>
-            <column name="item_id" type="numeric"/>
             <column name="item_price" type="numeric"/>
             <column name="item_size" type="string"/>
             <column name="item_condition" type="string"/>
@@ -80,6 +79,7 @@
             <column name="item_image" type="blob"/>
             <column name="item_image_content_type" type="string"/>
             <column name="time_listed" type="date"/>
+            <column name="item_like" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

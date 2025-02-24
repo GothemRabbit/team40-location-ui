@@ -26,20 +26,6 @@
           }
         </div>
 
-        @let itemIdRef = editForm.get('itemId')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_itemId">Item Id</label>
-          <input type="number" class="form-control" name="itemId" id="field_itemId" data-cy="itemId" formControlName="itemId" />
-          @if (itemIdRef.invalid && (itemIdRef.dirty || itemIdRef.touched)) {
-            <div>
-              @if (editForm.get('itemId')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('itemId')?.errors?.number">This field should be a number.</small>
-            </div>
-          }
-        </div>
-
         @let itemPriceRef = editForm.get('itemPrice')!;
         <div class="mb-3">
           <label class="form-label" for="field_itemPrice">Item Price</label>
@@ -216,6 +202,11 @@
               >
             </div>
           }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_itemLike">Item Like</label>
+          <input type="checkbox" class="form-check" name="itemLike" id="field_itemLike" data-cy="itemLike" formControlName="itemLike" />
         </div>
       </div>
 

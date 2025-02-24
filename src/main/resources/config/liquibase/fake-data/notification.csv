@@ -1,0 +1,11 @@
+id;title;message;notification_type;is_read;created_at
+1;loyally;../fake-data/blob/hipster.txt;STATUS_CHANGE;true;2025-02-23T14:42:15
+2;igloo gosh;../fake-data/blob/hipster.txt;STATUS_CHANGE;false;2025-02-24T04:34:26
+3;outside foretell;../fake-data/blob/hipster.txt;REVIEW;false;2025-02-24T13:44:27
+4;what;../fake-data/blob/hipster.txt;STATUS_CHANGE;false;2025-02-23T23:20:56
+5;strait showy;../fake-data/blob/hipster.txt;MESSAGE;true;2025-02-24T10:45:10
+6;and;../fake-data/blob/hipster.txt;MESSAGE;false;2025-02-24T13:43:05
+7;tragic;../fake-data/blob/hipster.txt;MESSAGE;true;2025-02-23T19:55:52
+8;instead decongestant;../fake-data/blob/hipster.txt;STATUS_CHANGE;true;2025-02-24T03:40:38
+9;oh beside pacemaker;../fake-data/blob/hipster.txt;REVIEW;false;2025-02-24T05:36:11
+10;heavy;../fake-data/blob/hipster.txt;STATUS_CHANGE;true;2025-02-23T20:20:10

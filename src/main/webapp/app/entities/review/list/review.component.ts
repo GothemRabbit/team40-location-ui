@@ -17,7 +17,6 @@ import { ReviewDeleteDialogComponent } from '../delete/review-delete-dialog.comp
   standalone: true,
   selector: 'jhi-review',
   templateUrl: './review.component.html',
-  styleUrls: ['./review.component.scss'],
   imports: [
     RouterModule,
     FormsModule,

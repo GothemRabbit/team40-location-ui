@@ -5,7 +5,6 @@ import { Category } from 'app/entities/enumerations/category.model';
 export interface IItem {
   id: number;
   itemTitle?: string | null;
-  itemId?: number | null;
   itemPrice?: number | null;
   itemSize?: string | null;
   itemCondition?: keyof typeof Condition | null;
@@ -15,6 +14,7 @@ export interface IItem {
   itemImage?: string | null;
   itemImageContentType?: string | null;
   timeListed?: dayjs.Dayjs | null;
+  itemLike?: boolean | null;
 }
 
 export type NewItem = Omit<IItem, 'id'> & { id: null };
