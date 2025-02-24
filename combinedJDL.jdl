@@ -138,3 +138,18 @@ entity Review {
   reviewDate LocalDate required
 }
 
+entity Notification {
+  title String required,
+  message TextBlob required,
+  notificationType NotificationType required,
+  isRead Boolean required,
+  createdAt Instant required
+}
+
+
+enum NotificationType {
+  MESSAGE,
+  REVIEW,
+  STATUS_CHANGE
+}
+
