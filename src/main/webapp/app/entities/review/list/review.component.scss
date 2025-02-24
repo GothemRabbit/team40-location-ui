@@ -9,7 +9,7 @@
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 
   /* border: 2px solid #444444;
    border-collapse: separate;
@@ -42,6 +42,18 @@ p {
   border-radius: 5px;
   background-color: aquamarine;
 }
+
+.scroll {
+  margin: 2%;
+  border-color: burlywood;
+}
+.scroll-b {
+  overflow: hidden;
+  overflow-y: auto;
+}
+.scrollbar {
+  color: black;
+}
 .btn btn-info btn-sm {
   background-color: #3e8acc;
 }
@@ -53,4 +65,13 @@ p {
 
 .btn btn-info me-2 {
   color: #3e8acc;
+}
+
+#btn btn-primary jh-create-entity create-review {
+  color: black;
+}
+
+#button1 {
+  text-decoration-color: #f8dc75;
+  color: black;
 }

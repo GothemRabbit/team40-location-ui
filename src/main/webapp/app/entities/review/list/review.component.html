@@ -15,24 +15,30 @@
 
   @if (reviews && reviews.length > 0) {
     <div>
-      @for (review of reviews; track trackId(review)) {
-        <div class="commentBox">
-          <div style="display: flex; justify-content: space-between">
-            <p id="userName">
-              <a [routerLink]="['/review', review.id, 'view']">{{ review.id }}</a>
-            </p>
-            <p id="rates">
-              {{ review.rating }}
-            </p>
+      <div class="scroll">
+        <div class="scoll-b">
+          <div class="scrollbar">
+            @for (review of reviews; track trackId(review)) {
+              <div class="commentBox">
+                <div style="display: flex; justify-content: space-between">
+                  <p id="userName">
+                    <a [routerLink]="['/review', review.id, 'view']">{{ review.id }}</a>
+                  </p>
+                  <p id="rates">
+                    {{ review.rating }}
+                  </p>
+                </div>
+                <p id="dialogue">
+                  {{ review.reviewText }}
+                </p>
+                <p id="date">
+                  {{ review.reviewDate }}
+                </p>
+              </div>
+            }
           </div>
-          <p id="dialogue">
-            {{ review.reviewText }}
-          </p>
-          <p id="date">
-            {{ review.reviewDate }}
-          </p>
         </div>
-      }
+      </div>
     </div>
 
     <div class="table-responsive table-entities" id="entities">
@@ -120,3 +126,5 @@
     </button>
   </div>
 </div>
+
+<!--   class="btn btn-primary jh-create-entity create-review" -->
