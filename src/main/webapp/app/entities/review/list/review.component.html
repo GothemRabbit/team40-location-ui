@@ -1,23 +1,6 @@
 <div id="page">
   <h2 id="page-heading" data-cy="ReviewHeading">
     <span>Reviews</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-review"
-        [routerLink]="['/review/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Review</span>
-      </button>
-    </div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -99,4 +82,21 @@
       </table>
     </div>
   }
+
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+      <span>Refresh list</span>
+    </button>
+
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-review"
+      [routerLink]="['/review/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>Create a new Review</span>
+    </button>
+  </div>
 </div>
