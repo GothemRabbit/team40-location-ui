@@ -1,3 +1,7 @@
+:root {
+  background-color: #f8dc75;
+}
+
 #page {
   background-color: #f8dc75;
   border-color: #f8dc75;
@@ -9,7 +13,7 @@
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 
   /* border: 2px solid #444444;
    border-collapse: separate;
@@ -22,6 +26,9 @@ h2 {
   text-align: center;
 }
 
+#headingL {
+  text-align: left;
+}
 p {
   margin: 2px;
 }
@@ -30,7 +37,7 @@ p {
 }
 
 #dialogue {
-  text-align: center;
+  text-align: left;
 }
 #rates {
   text-align: right;
@@ -42,6 +49,48 @@ p {
   border-radius: 5px;
   background-color: aquamarine;
 }
+
+.scroll {
+  margin: 2%;
+  border-color: burlywood;
+}
+.scroll-b {
+  overflow: hidden;
+  overflow-y: auto;
+}
+.scrollbar {
+  color: black;
+}
 .btn btn-info btn-sm {
   background-color: #3e8acc;
+}
+.d-flex justify-content-end {
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: #3e8acc;
+}
+
+#btn btn-primary jh-create-entity create-review {
+  color: black;
+}
+
+p {
+  font-family: 'cursive';
+}
+
+#button1 {
+  background-color: #e1bf43;
+  color: white;
+  display: inline-block;
+  border-radius: 12px;
+  font-size: 16px;
+  height: 50px;
+  width: 200px;
+  transition-duration: 0.5s;
+  color: black;
+}
+
+#button1:hover {
+  background-color: black;
+  color: #f8dc75;
 }

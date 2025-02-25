@@ -1,0 +1,42 @@
+.rating {
+  margin: 190px auto;
+  width: 400px;
+}
+
+.rating > * {
+  float: right;
+}
+.rating label {
+  height: 10px;
+  width: 20px;
+  display: block;
+  cursor: pointer;
+}
+
+.rating label::after {
+  transition: all 0.4s ease-out;
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  content: '☆';
+  color: gold;
+}
+
+button {
+  background-color: #e1bf43;
+  color: white;
+  display: inline-block;
+  border-radius: 12px;
+  font-size: 16px;
+  height: 50px;
+  width: 200px;
+  transition-duration: 0.5s;
+}
+
+button:hover {
+  background-color: black;
+  color: #f8dc75;
+}
+
+body {
+  background-color: #f8dc75;
+}
