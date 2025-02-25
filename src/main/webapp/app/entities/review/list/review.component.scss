@@ -63,15 +63,20 @@ p {
   color: #3e8acc;
 }
 
-.btn btn-info me-2 {
-  color: #3e8acc;
-}
-
 #btn btn-primary jh-create-entity create-review {
   color: black;
 }
 
 #button1 {
-  text-decoration-color: #f8dc75;
-  color: black;
+  background-color: #e1bf43;
+  color: white;
+  display: inline-block;
+  border-radius: 12px;
+  font-size: 16px;
+  height: 50px;
+  width: 200px;
+}
+
+#button1:hover {
+  background-color: black;
 }
