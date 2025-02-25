@@ -1,3 +1,7 @@
+:root {
+  background-color: #f8dc75;
+}
+
 #page {
   background-color: #f8dc75;
   border-color: #f8dc75;
@@ -22,6 +26,9 @@ h2 {
   text-align: center;
 }
 
+#headingL {
+  text-align: left;
+}
 p {
   margin: 2px;
 }
@@ -30,7 +37,7 @@ p {
 }
 
 #dialogue {
-  text-align: center;
+  text-align: left;
 }
 #rates {
   text-align: right;
@@ -80,8 +87,10 @@ p {
   height: 50px;
   width: 200px;
   transition-duration: 0.5s;
+  color: black;
 }
 
 #button1:hover {
   background-color: black;
+  color: #f8dc75;
 }
