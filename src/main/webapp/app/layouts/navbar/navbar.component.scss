@@ -8,12 +8,15 @@ Navbar
 
 .navbar-version {
   font-size: 0.65em;
-  color: $navbar-dark-color;
+  background-color: $navbar-dark-color;
 }
 
 .profile-image {
   height: 1.5em;
   width: 1.5em;
+}
+nav {
+  background-color: #f8dc75;
 }
 
 .navbar {
