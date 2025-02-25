@@ -102,8 +102,6 @@ entity UserInteraction {
   interactionDate Instant required // When it happened
 }
 
-
-
 enum InteractionType {
   SEARCH,
   RECOMMENDATION
