@@ -14,13 +14,6 @@
   margin-bottom: 5px;
   border-radius: 10px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-
-  /* border: 2px solid #444444;
-   border-collapse: separate;
-   border-spacing: 10px;
-   margin-bottom: 5px;
-   border-radius: 5px;
-   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/
 }
 h2 {
   text-align: center;
@@ -78,19 +71,19 @@ p {
   font-family: 'cursive';
 }
 
-#button1 {
+button {
   background-color: #e1bf43;
   color: white;
   display: inline-block;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 14px;
+  font-size: 13px;
   height: 50px;
-  width: 200px;
+  width: 150px;
   transition-duration: 0.5s;
   color: black;
 }
 
-#button1:hover {
+button:hover {
   background-color: black;
   color: #f8dc75;
 }

@@ -10,6 +10,7 @@ import { IReview } from '../review.model';
   standalone: true,
   selector: 'jhi-review-detail',
   templateUrl: './review-detail.component.html',
+  styleUrl: './review-detail.component.scss',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class ReviewDetailComponent {
