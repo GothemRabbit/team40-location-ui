@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Create or edit a Review</h2>
+      <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">WRITE YOUR REVIEW</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -17,6 +17,18 @@
         <div class="mb-3">
           <label class="form-label" for="field_rating">Rating</label>
           <input type="number" class="form-control" name="rating" id="field_rating" data-cy="rating" formControlName="rating" />
+          <div>
+            <input type="radio" name="rating" id="star1" />
+            <label for="star1"></label>
+            <input type="radio" name="rating" id="star2" />
+            <label for="star2"></label>
+            <input type="radio" name="rating" id="star3" />
+            <label for="star3"></label>
+            <input type="radio" name="rating" id="star4" />
+            <label for="star4"></label>
+            <input type="radio" name="rating" id="star5" />
+            <label for="star5"></label>
+          </div>
           @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
             <div>
               @if (editForm.get('rating')?.errors?.required) {
@@ -51,13 +63,13 @@
             <input
               id="field_reviewDate"
               data-cy="reviewDate"
-              type="text"
               class="form-control"
               name="reviewDate"
               ngbDatepicker
               #reviewDateDp="ngbDatepicker"
               formControlName="reviewDate"
             />
+
             <button type="button" class="btn btn-secondary" (click)="reviewDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
           </div>
           @if (reviewDateRef.invalid && (reviewDateRef.dirty || reviewDateRef.touched)) {
