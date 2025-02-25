@@ -1,23 +1,20 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">WRITE YOUR REVIEW</h2>
+<body>
+  <div class="d-flex justify-content-center">
+    <div class="col-8">
+      <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+        <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">WRITE YOUR REVIEW</h2>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+        <div>
+          <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
+          @if (editForm.controls.id.value !== null) {
+            <div class="mb-3">
+              <label class="form-label" for="field_id">ID</label>
+              <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            </div>
+          }
 
-        @let ratingRef = editForm.get('rating')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_rating">Rating</label>
-          <input type="number" class="form-control" name="rating" id="field_rating" data-cy="rating" formControlName="rating" />
-          <div>
+          <!-- <div>
             <input type="radio" name="rating" id="star1" />
             <label for="star1"></label>
             <input type="radio" name="rating" id="star2" />
@@ -28,75 +25,84 @@
             <label for="star4"></label>
             <input type="radio" name="rating" id="star5" />
             <label for="star5"></label>
+          </div> -->
+          @let ratingRef = editForm.get('rating')!;
+          <div class="mb-3">
+            <label class="form-label" for="field_rating">Rating</label>
+            <input type="number" class="form-control" name="rating" id="field_rating" data-cy="rating" formControlName="rating" />
+            @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
+              <div>
+                @if (editForm.get('rating')?.errors?.required) {
+                  <small class="form-text text-danger">This field is required.</small>
+                }
+                @if (editForm.get('rating')?.errors?.min) {
+                  <small class="form-text text-danger">This field should be at least 0.</small>
+                }
+                @if (editForm.get('rating')?.errors?.max) {
+                  <small class="form-text text-danger">This field cannot be more than 5.</small>
+                }
+                <small class="form-text text-danger" [hidden]="!editForm.get('rating')?.errors?.number"
+                  >This field should be a number.</small
+                >
+              </div>
+            }
           </div>
-          @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
-            <div>
-              @if (editForm.get('rating')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              @if (editForm.get('rating')?.errors?.min) {
-                <small class="form-text text-danger">This field should be at least 0.</small>
-              }
-              @if (editForm.get('rating')?.errors?.max) {
-                <small class="form-text text-danger">This field cannot be more than 5.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('rating')?.errors?.number">This field should be a number.</small>
-            </div>
-          }
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_reviewText">Review Text</label>
-          <textarea
-            class="form-control"
-            name="reviewText"
-            id="field_reviewText"
-            data-cy="reviewText"
-            formControlName="reviewText"
-          ></textarea>
-        </div>
-
-        @let reviewDateRef = editForm.get('reviewDate')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_reviewDate">Review Date</label>
-          <div class="input-group">
-            <input
-              id="field_reviewDate"
-              data-cy="reviewDate"
+          <div class="mb-3">
+            <label class="form-label" for="field_reviewText">Review Text</label>
+            <textarea
               class="form-control"
-              name="reviewDate"
-              ngbDatepicker
-              #reviewDateDp="ngbDatepicker"
-              formControlName="reviewDate"
-            />
-
-            <button type="button" class="btn btn-secondary" (click)="reviewDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+              name="reviewText"
+              id="field_reviewText"
+              data-cy="reviewText"
+              formControlName="reviewText"
+            ></textarea>
           </div>
-          @if (reviewDateRef.invalid && (reviewDateRef.dirty || reviewDateRef.touched)) {
-            <div>
-              @if (editForm.get('reviewDate')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
+
+          @let reviewDateRef = editForm.get('reviewDate')!;
+          <div class="mb-3">
+            <label class="form-label" for="field_reviewDate">Review Date</label>
+            <div class="input-group">
+              <input
+                id="field_reviewDate"
+                data-cy="reviewDate"
+                class="form-control"
+                name="reviewDate"
+                ngbDatepicker
+                #reviewDateDp="ngbDatepicker"
+                formControlName="reviewDate"
+              />
+
+              <button type="button" class="btn btn-secondary" (click)="reviewDateDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
             </div>
-          }
+            @if (reviewDateRef.invalid && (reviewDateRef.dirty || reviewDateRef.touched)) {
+              <div>
+                @if (editForm.get('reviewDate')?.errors?.required) {
+                  <small class="form-text text-danger">This field is required.</small>
+                }
+              </div>
+            }
+          </div>
         </div>
-      </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-        </button>
+        <div>
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          </button>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
-        </button>
-      </div>
-    </form>
+          <button
+            type="submit"
+            id="save-entity"
+            data-cy="entityCreateSaveButton"
+            [disabled]="editForm.invalid || isSaving"
+            class="btn btn-primary"
+          >
+            <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+</body>
