@@ -18,16 +18,7 @@ import { ReviewDeleteDialogComponent } from '../delete/review-delete-dialog.comp
   selector: 'jhi-review',
   templateUrl: './review.component.html',
   styleUrl: './review.component.scss',
-  imports: [
-    RouterModule,
-    FormsModule,
-    SharedModule,
-    SortDirective,
-    SortByDirective,
-    DurationPipe,
-    FormatMediumDatetimePipe,
-    FormatMediumDatePipe,
-  ],
+  imports: [RouterModule, FormsModule, SharedModule, SortDirective, SortByDirective, FormatMediumDatePipe],
 })
 export class ReviewComponent implements OnInit {
   subscription: Subscription | null = null;
