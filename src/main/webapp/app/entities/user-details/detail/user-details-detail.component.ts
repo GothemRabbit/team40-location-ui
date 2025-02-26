@@ -10,6 +10,7 @@ import { IUserDetails } from '../user-details.model';
   standalone: true,
   selector: 'jhi-user-details-detail',
   templateUrl: './user-details-detail.component.html',
+  styleUrl: './user-details-detail.component.scss',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class UserDetailsDetailComponent {
