@@ -87,3 +87,8 @@ button:hover {
   background-color: black;
   color: #f8dc75;
 }
+
+.commentBox:hover {
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
+}
