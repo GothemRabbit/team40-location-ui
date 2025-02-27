@@ -6,32 +6,29 @@
           <h2 data-cy="reviewDetailsHeading">
             <span id="heading">Review of user {{ reviewRef.id }}</span>
           </h2>
-
           <hr />
 
           <jhi-alert-error></jhi-alert-error>
 
           <jhi-alert></jhi-alert>
 
-          <dl class="row-md jh-entity-details">
-            <dt><span>ID</span></dt>
-            <dd>
-              <span>{{ reviewRef.id }}</span>
-            </dd>
-            <dt><span>Rating</span></dt>
-            <dd>
-              <span>{{ reviewRef.rating }}</span>
-            </dd>
-            <dt><span>Review Text</span></dt>
-            <dd>
-              <span>{{ reviewRef.reviewText }}</span>
-            </dd>
-            <dt><span>Review Date</span></dt>
-            <dd>
-              <span>{{ reviewRef.reviewDate | formatMediumDate }}</span>
-            </dd>
-          </dl>
+          <div style="display: flex; justify-content: space-between">
+            <p id="userName">
+              {{ reviewRef.id }}
+            </p>
+            <p id="rates">
+              {{ reviewRef.rating }}
+            </p>
+          </div>
+          <p id="dialogue">
+            {{ reviewRef.reviewText }}
+          </p>
+          <p id="date">
+            {{ reviewRef.reviewDate | formatMediumDate }}
+          </p>
+        </div>
 
+        <div>
           <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
             <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
           </button>
