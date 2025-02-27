@@ -26,12 +26,14 @@
       "UserInteraction",
       "Reservation",
       "Review",
-      "Notification"
+      "Notification",
+      "UserSearchHistory",
+      "UserRecommendation"
     ],
     "feignClient": null,
     "jhipsterVersion": "8.7.3",
     "jwtSecretKey": "MzE4NDEzOGY4YzBjNTRkMWU4YTczZTIxYjE1ZDk3NjA1Y2I1OGEwMWY5ZTBiZTY4OWM3OWMxODMzYmExOGZhOTY3ZmRmOTgzNjIzMDJjNWU3MzdlM2ZiZmVhYzBjOGY5ZTRhNGU4NDA0MGI2MTE2YTE3OWE5NGQ2NDJhMzM1YzA=",
-    "lastLiquibaseTimestamp": 1740407108000,
+    "lastLiquibaseTimestamp": 1740670743000,
     "messageBroker": false,
     "microfrontend": null,
     "microfrontends": [],

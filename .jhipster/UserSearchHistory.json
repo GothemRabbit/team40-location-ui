@@ -1,0 +1,25 @@
+{
+  "annotations": {
+    "changelogDate": "20250227153902"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "searchQuery",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "filters",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "searchDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "UserSearchHistory",
+  "relationships": [],
+  "searchEngine": "no"
+}

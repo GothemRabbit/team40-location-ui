@@ -92,20 +92,20 @@ enum ProductState {
 }
 
 
-
-
-entity UserInteraction {
-  //user UserDetails required, // Reference to the user
-  type InteractionType required, // SEARCH or RECOMMENDATION
-  details String, // JSON blob for search filters or recommendation reason
-  //item Item, // Recommended or searched item
-  interactionDate Instant required // When it happened
+entity UserSearchHistory {
+  //user UserDetails required,
+  searchQuery String required,
+  filters String, // JSON blob for filters applied
+  searchDate Instant required
 }
 
-enum InteractionType {
-  SEARCH,
-  RECOMMENDATION
+entity UserRecommendation {
+  //user UserDetails required,
+  //recommendedItem Item required,
+  reason String, // E.g., "Based on your interest in Electronics"
 }
+
+
 
 
 

@@ -3,38 +3,38 @@ import dayjs from 'dayjs/esm';
 import { INotification, NewNotification } from './notification.model';
 
 export const sampleWithRequiredData: INotification = {
-  id: 23113,
-  title: 'jubilantly browse steel',
+  id: 18156,
+  title: 'unlined prickly',
   message: '../fake-data/blob/hipster.txt',
-  notificationType: 'STATUS_CHANGE',
-  isRead: true,
-  createdAt: dayjs('2025-02-24T12:10'),
+  notificationType: 'REVIEW',
+  isRead: false,
+  createdAt: dayjs('2025-02-24T00:44'),
 };
 
 export const sampleWithPartialData: INotification = {
-  id: 8655,
-  title: 'generously unpleasant uh-huh',
+  id: 14180,
+  title: 'loyally degrease incidentally',
   message: '../fake-data/blob/hipster.txt',
-  notificationType: 'MESSAGE',
-  isRead: true,
-  createdAt: dayjs('2025-02-24T02:06'),
+  notificationType: 'STATUS_CHANGE',
+  isRead: false,
+  createdAt: dayjs('2025-02-24T05:33'),
 };
 
 export const sampleWithFullData: INotification = {
-  id: 30535,
-  title: 'while',
-  message: '../fake-data/blob/hipster.txt',
-  notificationType: 'REVIEW',
-  isRead: true,
-  createdAt: dayjs('2025-02-23T21:25'),
-};
-
-export const sampleWithNewData: NewNotification = {
-  title: 'founder',
+  id: 25107,
+  title: 'fail regulate',
   message: '../fake-data/blob/hipster.txt',
   notificationType: 'MESSAGE',
   isRead: true,
-  createdAt: dayjs('2025-02-24T07:33'),
+  createdAt: dayjs('2025-02-23T23:48'),
+};
+
+export const sampleWithNewData: NewNotification = {
+  title: 'um huzzah',
+  message: '../fake-data/blob/hipster.txt',
+  notificationType: 'REVIEW',
+  isRead: false,
+  createdAt: dayjs('2025-02-24T05:05'),
   id: null,
 };
 

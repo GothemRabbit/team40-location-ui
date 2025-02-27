@@ -319,7 +319,7 @@ class ReservationResourceIT {
         Reservation partialUpdatedReservation = new Reservation();
         partialUpdatedReservation.setId(reservation.getId());
 
-        partialUpdatedReservation.reservationDate(UPDATED_RESERVATION_DATE).status(UPDATED_STATUS);
+        partialUpdatedReservation.reservationDate(UPDATED_RESERVATION_DATE).expirationDate(UPDATED_EXPIRATION_DATE).status(UPDATED_STATUS);
 
         restReservationMockMvc
             .perform(

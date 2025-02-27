@@ -3,32 +3,32 @@ import dayjs from 'dayjs/esm';
 import { IProductStatus, NewProductStatus } from './product-status.model';
 
 export const sampleWithRequiredData: IProductStatus = {
-  id: 28150,
+  id: 19818,
   status: 'PENDING',
-  createdAt: dayjs('2025-02-12T14:46'),
+  createdAt: dayjs('2025-02-13T04:53'),
 };
 
 export const sampleWithPartialData: IProductStatus = {
-  id: 27261,
-  status: 'AVAILABLE',
-  meetingTime: dayjs('2025-02-13T04:31'),
-  createdAt: dayjs('2025-02-13T02:38'),
-  updatedAt: dayjs('2025-02-13T09:49'),
+  id: 30799,
+  status: 'CANCELLED',
+  chatLink: 'aboard since via',
+  createdAt: dayjs('2025-02-12T13:28'),
+  updatedAt: dayjs('2025-02-12T21:35'),
 };
 
 export const sampleWithFullData: IProductStatus = {
-  id: 25440,
-  status: 'PENDING',
-  meetingTime: dayjs('2025-02-13T00:32'),
-  meetingLocation: 'animated',
-  chatLink: 'somber aside within',
-  createdAt: dayjs('2025-02-13T04:36'),
-  updatedAt: dayjs('2025-02-13T10:36'),
+  id: 18619,
+  status: 'COMPLETED',
+  meetingTime: dayjs('2025-02-12T21:01'),
+  meetingLocation: 'silver unimpressively annual',
+  chatLink: 'thongs general',
+  createdAt: dayjs('2025-02-13T06:40'),
+  updatedAt: dayjs('2025-02-13T04:35'),
 };
 
 export const sampleWithNewData: NewProductStatus = {
   status: 'CANCELLED',
-  createdAt: dayjs('2025-02-12T19:19'),
+  createdAt: dayjs('2025-02-12T13:50'),
   id: null,
 };
 

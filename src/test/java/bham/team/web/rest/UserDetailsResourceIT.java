@@ -467,14 +467,10 @@ class UserDetailsResourceIT {
         partialUpdatedUserDetails
             .bioImage(UPDATED_BIO_IMAGE)
             .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
-            .userName(UPDATED_USER_NAME)
-            .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .phoneNumber(UPDATED_PHONE_NUMBER)
-            .preferences(UPDATED_PREFERENCES)
-            .rating(UPDATED_RATING)
-            .address(UPDATED_ADDRESS);
+            .gender(UPDATED_GENDER)
+            .email(UPDATED_EMAIL)
+            .rating(UPDATED_RATING);
 
         restUserDetailsMockMvc
             .perform(

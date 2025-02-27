@@ -1,22 +1,22 @@
 import { IAuthentication, NewAuthentication } from './authentication.model';
 
 export const sampleWithRequiredData: IAuthentication = {
-  id: 989,
-  password: 'mixed',
+  id: 2916,
+  password: 'out excepting misspend',
 };
 
 export const sampleWithPartialData: IAuthentication = {
-  id: 27765,
-  password: 'colorfully',
+  id: 21058,
+  password: 'than',
 };
 
 export const sampleWithFullData: IAuthentication = {
-  id: 22477,
-  password: 'leading swing',
+  id: 13707,
+  password: 'reproachfully carouse even',
 };
 
 export const sampleWithNewData: NewAuthentication = {
-  password: 'now',
+  password: 'woot',
   id: null,
 };
 
