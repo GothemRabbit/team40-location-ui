@@ -2,6 +2,10 @@
   <div class="col-8">
     @if (item(); as itemRef) {
       <div>
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
         <h2 data-cy="itemDetailsHeading"><span>Item</span></h2>
 
         <hr />
@@ -11,10 +15,6 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
-            <span>{{ itemRef.id }}</span>
-          </dd>
           <dt><span>Item Title</span></dt>
           <dd>
             <span>{{ itemRef.itemTitle }}</span>
@@ -32,11 +32,11 @@
             <span>{{
               {
                 null: '',
-                BRANDNEW: 'BRANDNEW',
-                LIKENEW: 'LIKENEW',
-                FAIRLYUSED: 'FAIRLYUSED',
-                WELLUSED: 'WELLUSED',
-                HEAVILYUSED: 'HEAVILYUSED',
+                BRANDNEW: 'Brand New',
+                LIKENEW: 'Like New',
+                FAIRLYUSED: 'Fairly Used',
+                WELLUSED: 'Well Used',
+                HEAVILYUSED: 'Heavily Used',
               }[itemRef.itemCondition ?? 'null']
             }}</span>
           </dd>
@@ -45,13 +45,13 @@
             <span>{{
               {
                 null: '',
-                FOOTWEAR: 'FOOTWEAR',
-                CLOTHING: 'CLOTHING',
-                HEADWEAR: 'HEADWEAR',
-                ELECTRONICS: 'ELECTRONICS',
-                HOBBIES: 'HOBBIES',
-                BAGS: 'BAGS',
-                OTHERS: 'OTHERS',
+                FOOTWEAR: 'Foot Wear',
+                CLOTHING: 'Clothing',
+                HEADWEAR: 'Head Wear',
+                ELECTRONICS: 'Electronics',
+                HOBBIES: 'Hobbies',
+                BAGS: 'Bags',
+                OTHERS: 'Others',
               }[itemRef.itemCategory ?? 'null']
             }}</span>
           </dd>
@@ -84,13 +84,9 @@
           </dd>
         </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-        </button>
-
-        <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-        </button>
+        <!--        <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">-->
+        <!--          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>-->
+        <!--        </button>-->
       </div>
     }
   </div>
