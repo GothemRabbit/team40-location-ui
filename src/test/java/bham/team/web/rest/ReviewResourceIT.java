@@ -34,8 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ReviewResourceIT {
 
-    private static final Float DEFAULT_RATING = 0F;
-    private static final Float UPDATED_RATING = 1F;
+    private static final Integer DEFAULT_RATING = 0;
+    private static final Integer UPDATED_RATING = 1;
 
     private static final String DEFAULT_REVIEW_TEXT = "AAAAAAAAAA";
     private static final String UPDATED_REVIEW_TEXT = "BBBBBBBBBB";
@@ -181,7 +181,7 @@ class ReviewResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(review.getId().intValue())))
-            .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING.doubleValue())))
+            .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING)))
             .andExpect(jsonPath("$.[*].reviewText").value(hasItem(DEFAULT_REVIEW_TEXT.toString())))
             .andExpect(jsonPath("$.[*].reviewDate").value(hasItem(DEFAULT_REVIEW_DATE.toString())));
     }
@@ -198,7 +198,7 @@ class ReviewResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(review.getId().intValue()))
-            .andExpect(jsonPath("$.rating").value(DEFAULT_RATING.doubleValue()))
+            .andExpect(jsonPath("$.rating").value(DEFAULT_RATING))
             .andExpect(jsonPath("$.reviewText").value(DEFAULT_REVIEW_TEXT.toString()))
             .andExpect(jsonPath("$.reviewDate").value(DEFAULT_REVIEW_DATE.toString()));
     }
@@ -297,6 +297,8 @@ class ReviewResourceIT {
         // Update the review using partial update
         Review partialUpdatedReview = new Review();
         partialUpdatedReview.setId(review.getId());
+
+        partialUpdatedReview.rating(UPDATED_RATING).reviewText(UPDATED_REVIEW_TEXT);
 
         restReviewMockMvc
             .perform(

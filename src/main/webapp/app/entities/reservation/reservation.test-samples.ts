@@ -3,30 +3,30 @@ import dayjs from 'dayjs/esm';
 import { IReservation, NewReservation } from './reservation.model';
 
 export const sampleWithRequiredData: IReservation = {
-  id: 18062,
-  reservationDate: dayjs('2025-02-13T06:17'),
-  expirationDate: dayjs('2025-02-13T08:51'),
-  status: 'CANCELLED',
+  id: 19023,
+  reservationDate: dayjs('2025-02-13T07:15'),
+  expirationDate: dayjs('2025-02-13T09:03'),
+  status: 'CONFIRMED',
 };
 
 export const sampleWithPartialData: IReservation = {
-  id: 11305,
-  reservationDate: dayjs('2025-02-13T03:54'),
-  expirationDate: dayjs('2025-02-13T06:36'),
+  id: 8205,
+  reservationDate: dayjs('2025-02-13T10:31'),
+  expirationDate: dayjs('2025-02-12T19:10'),
   status: 'CONFIRMED',
 };
 
 export const sampleWithFullData: IReservation = {
-  id: 31395,
-  reservationDate: dayjs('2025-02-13T08:20'),
-  expirationDate: dayjs('2025-02-12T23:27'),
-  status: 'PENDING',
+  id: 25988,
+  reservationDate: dayjs('2025-02-13T07:59'),
+  expirationDate: dayjs('2025-02-13T01:23'),
+  status: 'CANCELLED',
 };
 
 export const sampleWithNewData: NewReservation = {
-  reservationDate: dayjs('2025-02-13T03:48'),
-  expirationDate: dayjs('2025-02-13T05:03'),
-  status: 'CONFIRMED',
+  reservationDate: dayjs('2025-02-12T12:42'),
+  expirationDate: dayjs('2025-02-12T14:35'),
+  status: 'PENDING',
   id: null,
 };
 

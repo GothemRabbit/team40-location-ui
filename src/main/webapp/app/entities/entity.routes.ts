@@ -56,6 +56,16 @@ const routes: Routes = [
     data: { pageTitle: 'Notifications' },
     loadChildren: () => import('./notification/notification.routes'),
   },
+  {
+    path: 'user-search-history',
+    data: { pageTitle: 'UserSearchHistories' },
+    loadChildren: () => import('./user-search-history/user-search-history.routes'),
+  },
+  {
+    path: 'user-recommendation',
+    data: { pageTitle: 'UserRecommendations' },
+    loadChildren: () => import('./user-recommendation/user-recommendation.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

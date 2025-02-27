@@ -25,10 +25,10 @@ public class Review implements Serializable {
     private Long id;
 
     @NotNull
-    @DecimalMin(value = "0")
-    @DecimalMax(value = "5")
+    @Min(value = 0)
+    @Max(value = 5)
     @Column(name = "rating", nullable = false)
-    private Float rating;
+    private Integer rating;
 
     @Lob
     @Column(name = "review_text")
@@ -53,16 +53,16 @@ public class Review implements Serializable {
         this.id = id;
     }
 
-    public Float getRating() {
+    public Integer getRating() {
         return this.rating;
     }
 
-    public Review rating(Float rating) {
+    public Review rating(Integer rating) {
         this.setRating(rating);
         return this;
     }
 
-    public void setRating(Float rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

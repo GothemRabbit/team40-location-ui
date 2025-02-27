@@ -6,7 +6,7 @@
   "fields": [
     {
       "fieldName": "rating",
-      "fieldType": "Float",
+      "fieldType": "Integer",
       "fieldValidateRules": ["required", "min", "max"],
       "fieldValidateRulesMax": "5",
       "fieldValidateRulesMin": "0"

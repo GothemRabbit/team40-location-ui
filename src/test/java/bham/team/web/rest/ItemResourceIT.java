@@ -424,10 +424,9 @@ class ItemResourceIT {
         partialUpdatedItem.setId(item.getId());
 
         partialUpdatedItem
-            .itemPrice(UPDATED_ITEM_PRICE)
-            .itemCondition(UPDATED_ITEM_CONDITION)
-            .itemCategory(UPDATED_ITEM_CATEGORY)
-            .itemColour(UPDATED_ITEM_COLOUR)
+            .itemTitle(UPDATED_ITEM_TITLE)
+            .itemSize(UPDATED_ITEM_SIZE)
+            .description(UPDATED_DESCRIPTION)
             .itemImage(UPDATED_ITEM_IMAGE)
             .itemImageContentType(UPDATED_ITEM_IMAGE_CONTENT_TYPE)
             .timeListed(UPDATED_TIME_LISTED)

@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="rating" type="${floatType}">
+            <column name="rating" type="integer">
                 <constraints nullable="false" />
             </column>
             <column name="review_text" type="${clobType}">

@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (userSearchHistory(); as userSearchHistoryRef) {
+      <div>
+        <h2 data-cy="userSearchHistoryDetailsHeading"><span>User Search History</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ userSearchHistoryRef.id }}</span>
+          </dd>
+          <dt><span>Search Query</span></dt>
+          <dd>
+            <span>{{ userSearchHistoryRef.searchQuery }}</span>
+          </dd>
+          <dt><span>Filters</span></dt>
+          <dd>
+            <span>{{ userSearchHistoryRef.filters }}</span>
+          </dd>
+          <dt><span>Search Date</span></dt>
+          <dd>
+            <span>{{ userSearchHistoryRef.searchDate | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/user-search-history', userSearchHistoryRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

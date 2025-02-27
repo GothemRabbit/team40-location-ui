@@ -1,43 +1,42 @@
-<div class="formPage">
-  <div class="d-flex justify-content-center">
-    <div class="col-8">
-      @if (review(); as reviewRef) {
-        <div>
-          <h2 data-cy="reviewDetailsHeading">
-            <span id="heading">Review of user {{ reviewRef.id }}</span>
-          </h2>
-          <hr />
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (review(); as reviewRef) {
+      <div>
+        <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
 
-          <jhi-alert-error></jhi-alert-error>
+        <hr />
 
-          <jhi-alert></jhi-alert>
+        <jhi-alert-error></jhi-alert-error>
 
-          <div style="display: flex; justify-content: space-between">
-            <p id="userName">
-              {{ reviewRef.id }}
-            </p>
-            <p id="rates">
-              {{ reviewRef.rating }}
-            </p>
-          </div>
-          <p id="dialogue">
-            {{ reviewRef.reviewText }}
-          </p>
-          <p id="date">
-            {{ reviewRef.reviewDate | formatMediumDate }}
-          </p>
-        </div>
+        <jhi-alert></jhi-alert>
 
-        <div>
-          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-          </button>
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ reviewRef.id }}</span>
+          </dd>
+          <dt><span>Rating</span></dt>
+          <dd>
+            <span>{{ reviewRef.rating }}</span>
+          </dd>
+          <dt><span>Review Text</span></dt>
+          <dd>
+            <span>{{ reviewRef.reviewText }}</span>
+          </dd>
+          <dt><span>Review Date</span></dt>
+          <dd>
+            <span>{{ reviewRef.reviewDate | formatMediumDate }}</span>
+          </dd>
+        </dl>
 
-          <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
-            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-          </button>
-        </div>
-      }
-    </div>
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
   </div>
 </div>

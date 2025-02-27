@@ -3,26 +3,26 @@ import dayjs from 'dayjs/esm';
 import { IMessage, NewMessage } from './message.model';
 
 export const sampleWithRequiredData: IMessage = {
-  id: 15233,
+  id: 20606,
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-13T00:20'),
+  timestamp: dayjs('2025-02-13T07:06'),
 };
 
 export const sampleWithPartialData: IMessage = {
-  id: 15288,
+  id: 15608,
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-13T11:06'),
+  timestamp: dayjs('2025-02-13T07:37'),
 };
 
 export const sampleWithFullData: IMessage = {
-  id: 28581,
+  id: 20162,
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-12T23:13'),
+  timestamp: dayjs('2025-02-13T03:37'),
 };
 
 export const sampleWithNewData: NewMessage = {
   content: '../fake-data/blob/hipster.txt',
-  timestamp: dayjs('2025-02-12T18:52'),
+  timestamp: dayjs('2025-02-12T14:18'),
   id: null,
 };
 

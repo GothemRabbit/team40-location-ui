@@ -3,52 +3,53 @@ import dayjs from 'dayjs/esm';
 import { IItem, NewItem } from './item.model';
 
 export const sampleWithRequiredData: IItem = {
-  id: 25398,
-  itemTitle: 'replacement phew',
-  itemPrice: 18234.14,
-  itemCondition: 'LIKENEW',
+  id: 15582,
+  itemTitle: 'right',
+  itemPrice: 12739.48,
+  itemCondition: 'FAIRLYUSED',
   itemCategory: 'OTHERS',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-13T02:57'),
+  timeListed: dayjs('2025-02-13T11:44'),
 };
 
 export const sampleWithPartialData: IItem = {
-  id: 14040,
-  itemTitle: 'whenever unless bashfully',
-  itemPrice: 572.62,
-  itemSize: 'sock',
-  itemCondition: 'HEAVILYUSED',
-  itemCategory: 'FOOTWEAR',
+  id: 8421,
+  itemTitle: 'other buttery',
+  itemPrice: 1062.23,
+  itemSize: 'thorny finished ragged',
+  itemCondition: 'WELLUSED',
+  itemCategory: 'CLOTHING',
   description: '../fake-data/blob/hipster.txt',
+  itemColour: 'into fearless',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-12T14:16'),
+  timeListed: dayjs('2025-02-13T06:20'),
 };
 
 export const sampleWithFullData: IItem = {
-  id: 808,
-  itemTitle: 'brr cope',
-  itemPrice: 4410.79,
-  itemSize: 'ouch modulo less',
+  id: 32221,
+  itemTitle: 'mixture stock',
+  itemPrice: 12755.91,
+  itemSize: 'pleasant',
   itemCondition: 'FAIRLYUSED',
-  itemCategory: 'OTHERS',
+  itemCategory: 'FOOTWEAR',
   description: '../fake-data/blob/hipster.txt',
-  itemColour: 'unethically restfully',
+  itemColour: 'brr',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-13T05:18'),
+  timeListed: dayjs('2025-02-12T15:43'),
   itemLike: true,
 };
 
 export const sampleWithNewData: NewItem = {
-  itemTitle: 'extra-large',
-  itemPrice: 17831.37,
-  itemCondition: 'FAIRLYUSED',
-  itemCategory: 'HEADWEAR',
+  itemTitle: 'forenenst yippee limply',
+  itemPrice: 15570.39,
+  itemCondition: 'HEAVILYUSED',
+  itemCategory: 'ELECTRONICS',
   itemImage: '../fake-data/blob/hipster.png',
   itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-12T12:40'),
+  timeListed: dayjs('2025-02-13T10:55'),
   id: null,
 };
 
