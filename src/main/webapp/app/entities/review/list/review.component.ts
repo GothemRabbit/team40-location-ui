@@ -32,8 +32,9 @@ export class ReviewComponent implements OnInit {
   subscription: Subscription | null = null;
   reviews?: IReview[];
   isLoading = false;
-
   sortState = sortStateSignal({});
+
+  review = { rating: 0 };
 
   public readonly router = inject(Router);
   protected readonly reviewService = inject(ReviewService);
@@ -44,7 +45,6 @@ export class ReviewComponent implements OnInit {
   protected ngZone = inject(NgZone);
 
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
-
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(

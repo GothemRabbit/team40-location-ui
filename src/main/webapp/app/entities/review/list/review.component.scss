@@ -94,3 +94,15 @@ button:hover {
   transform: translateY(-5px);
   transition: all ease 0.3s;
 }
+
+#tD {
+  width: 50px;
+  position: relative;
+}
+#stars {
+  position: absolute;
+  background-color: gold;
+  top: 0;
+  left: 0;
+  height: 18px;
+}

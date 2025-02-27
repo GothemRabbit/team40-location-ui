@@ -72,8 +72,12 @@
               <td>
                 <a [routerLink]="['/review', review.id, 'view']">{{ review.id }}</a>
               </td>
-              <td>{{ review.rating }}</td>
-              <td>{{ review.reviewText }}</td>
+              <td>
+                {{ review.rating }}
+              </td>
+              <td>
+                {{ review.reviewText }}
+              </td>
               <td>{{ review.reviewDate | formatMediumDate }}</td>
               <td class="text-end">
                 <div class="btn-group">
