@@ -36,6 +36,7 @@ p {
 }
 #rates {
   text-align: right;
+  color: gold;
 }
 #date {
   text-align: right;
@@ -43,6 +44,12 @@ p {
 .btn-group {
   border-radius: 5px;
   background-color: aquamarine;
+}
+.avatar {
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 
 .scroll {
@@ -56,9 +63,7 @@ p {
 .scrollbar {
   color: black;
 }
-.btn btn-info btn-sm {
-  background-color: #3e8acc;
-}
+
 .d-flex justify-content-end {
   padding: 10px 15px;
   border-radius: 5px;
