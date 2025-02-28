@@ -1,101 +1,104 @@
 .item-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
-
-  .card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition:
-      transform 0.3s ease-in-out,
-      box-shadow 0.3s ease-in-out;
-    background: #fff;
-
-    &:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-img-top {
-      width: 80%; // Makes the image fill the card width
-      height: 200px; // Adjust height as needed
-      object-fit: cover; // Ensures the image maintains aspect ratio without distortion
-      border: 3px solid #007bff; // Border around the image
-      border-radius: 10px; // Rounded corners for the image
-      margin: 10px auto; // Center the image with some margin
-      display: block; // Ensures it stays centered
-    }
-
-    .item-title-link {
-      text-decoration: none;
-      color: #007bff; // Bootstrap primary color
-      font-weight: bold;
-      transition: color 0.3s ease-in-out;
-
-      &:hover {
-        color: #0056b3; // Darker blue on hover
-        text-decoration: underline;
-      }
-    }
-
-    &:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .card-body {
-      padding: 15px;
-      background: #fff;
-
-      .card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-      }
-
-      .card-text {
-        font-size: 0.9rem;
-        color: #666;
-        margin-bottom: 5px;
-      }
-
-      .btn-group {
-        display: flex;
-        gap: 8px;
-
-        .btn {
-          font-size: 0.85rem;
-          border-radius: 6px;
-          padding: 5px 10px;
-        }
-
-        .btn-info {
-          background-color: #17a2b8;
-          border: none;
-          &:hover {
-            background-color: #138496;
-          }
-        }
-
-        .btn-primary {
-          background-color: #007bff;
-          border: none;
-          &:hover {
-            background-color: #0056b3;
-          }
-        }
-
-        .btn-danger {
-          background-color: #dc3545;
-          border: none;
-          &:hover {
-            background-color: #c82333;
-          }
-        }
-      }
-    }
-  }
+  grid-template-rows: repeat(auto-fit, minmax(280px, 1fr));
+  background-color: #000000;
+  gap: 15px;
+  padding: 15px;
+  margin-left: auto;
 }
+
+.card {
+  padding: 20px;
+  border: 2px solid #dddddd;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.6s ease-in-out,
+    box-shadow 0.6s ease-in-out;
+  background: #ffffff;
+  height: 100%;
+}
+
+.card-img-top {
+  width: 100%; // Makes the image fill the card width
+  object-fit: cover; // Ensures the image maintains aspect ratio without distortion
+  border-radius: 2px; // Rounded corners for the image
+  margin: 7px auto; // Center the image with some margin
+  display: block; // Ensures it stays centered
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  transition: all ease 0.3s;
+}
+
+.item-title-link {
+  text-decoration: none;
+  color: #0022ff; // Bootstrap primary color
+  transition: color 0.3s ease-in-out;
+}
+
+.item-title-link:hover {
+  color: #0056b3; // Darker blue on hover
+  text-decoration: underline;
+}
+
+//&:hover {
+//  transform: translateY(-10px);
+//  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+//}
+//
+//.card-body {
+//  padding: 15px;
+//  background: #fff;
+//
+//  .card-title {
+//    font-size: 1.2rem;
+//    font-weight: 600;
+//    color: #333;
+//  }
+//
+//  .card-text {
+//    font-size: 0.9rem;
+//    color: #666;
+//    margin-bottom: 5px;
+//  }
+//
+//  .btn-group {
+//    display: flex;
+//    gap: 8px;
+//
+//    .btn {
+//      font-size: 0.85rem;
+//      border-radius: 6px;
+//      padding: 5px 10px;
+//    }
+//
+//    .btn-info {
+//      background-color: #17a2b8;
+//      border: none;
+//      &:hover {
+//        background-color: #138496;
+//      }
+//    }
+//
+//    .btn-primary {
+//      background-color: #007bff;
+//      border: none;
+//      &:hover {
+//        background-color: #0056b3;
+//      }
+//    }
+//
+//    .btn-danger {
+//      background-color: #dc3545;
+//      border: none;
+//      &:hover {
+//        background-color: #c82333;
+//      }
+//    }
+//  }
+//}
+//}

@@ -16,10 +16,10 @@
   }
 
   @if (items && items.length > 0) {
-    <div class="row g-5">
+    <div class="row g-4">
       @for (item of items; track trackId(item)) {
         <div class="col-md-3">
-          <div class="card shadow-sm">
+          <div class="card">
             @if (item.itemImage) {
               <a [routerLink]="['/item', item.id, 'view']">
                 <img class="card-img-top" [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" alt="item" />
