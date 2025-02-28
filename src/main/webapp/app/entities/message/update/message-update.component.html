@@ -51,6 +51,70 @@
             </div>
           }
         </div>
+
+        @let isReadRef = editForm.get('isRead')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_isRead">Is Read</label>
+          <input type="checkbox" class="form-check" name="isRead" id="field_isRead" data-cy="isRead" formControlName="isRead" />
+          @if (isReadRef.invalid && (isReadRef.dirty || isReadRef.touched)) {
+            <div>
+              @if (editForm.get('isRead')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_convo">Convo</label>
+          <select
+            class="form-control"
+            id="field_convo"
+            data-cy="convo"
+            name="convo"
+            formControlName="convo"
+            [compareWith]="compareConversation"
+          >
+            <option [ngValue]="null"></option>
+            @for (conversationOption of conversationsSharedCollection; track $index) {
+              <option [ngValue]="conversationOption">{{ conversationOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sender">Sender</label>
+          <select
+            class="form-control"
+            id="field_sender"
+            data-cy="sender"
+            name="sender"
+            formControlName="sender"
+            [compareWith]="compareUserDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_receiver">Receiver</label>
+          <select
+            class="form-control"
+            id="field_receiver"
+            data-cy="receiver"
+            name="receiver"
+            formControlName="receiver"
+            [compareWith]="compareUserDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>

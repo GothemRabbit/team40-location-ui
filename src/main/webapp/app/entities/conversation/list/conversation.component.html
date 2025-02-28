@@ -49,6 +49,18 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="userOne.id">
+              <div class="d-flex">
+                <span>User One</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="userTwo.id">
+              <div class="d-flex">
+                <span>User Two</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -58,7 +70,21 @@
               <td>
                 <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation.id }}</a>
               </td>
-              <td>{{ conversation.dateCreated | formatMediumDate }}</td>
+              <td>{{ conversation.dateCreated | formatMediumDatetime }}</td>
+              <td>
+                @if (conversation.userOne) {
+                  <div>
+                    <a [routerLink]="['/user-details', conversation.userOne.id, 'view']">{{ conversation.userOne.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (conversation.userTwo) {
+                  <div>
+                    <a [routerLink]="['/user-details', conversation.userTwo.id, 'view']">{{ conversation.userTwo.id }}</a>
+                  </div>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/conversation', conversation.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

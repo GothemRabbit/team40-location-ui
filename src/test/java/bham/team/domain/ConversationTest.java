@@ -1,6 +1,7 @@
 package bham.team.domain;
 
 import static bham.team.domain.ConversationTestSamples.*;
+import static bham.team.domain.UserDetailsTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bham.team.web.rest.TestUtil;
@@ -20,5 +21,29 @@ class ConversationTest {
 
         conversation2 = getConversationSample2();
         assertThat(conversation1).isNotEqualTo(conversation2);
+    }
+
+    @Test
+    void userOneTest() {
+        Conversation conversation = getConversationRandomSampleGenerator();
+        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+
+        conversation.setUserOne(userDetailsBack);
+        assertThat(conversation.getUserOne()).isEqualTo(userDetailsBack);
+
+        conversation.userOne(null);
+        assertThat(conversation.getUserOne()).isNull();
+    }
+
+    @Test
+    void userTwoTest() {
+        Conversation conversation = getConversationRandomSampleGenerator();
+        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+
+        conversation.setUserTwo(userDetailsBack);
+        assertThat(conversation.getUserTwo()).isEqualTo(userDetailsBack);
+
+        conversation.userTwo(null);
+        assertThat(conversation.getUserTwo()).isNull();
     }
 }

@@ -1,6 +1,8 @@
 package bham.team.domain;
 
+import static bham.team.domain.ConversationTestSamples.*;
 import static bham.team.domain.MessageTestSamples.*;
+import static bham.team.domain.UserDetailsTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bham.team.web.rest.TestUtil;
@@ -20,5 +22,41 @@ class MessageTest {
 
         message2 = getMessageSample2();
         assertThat(message1).isNotEqualTo(message2);
+    }
+
+    @Test
+    void convoTest() {
+        Message message = getMessageRandomSampleGenerator();
+        Conversation conversationBack = getConversationRandomSampleGenerator();
+
+        message.setConvo(conversationBack);
+        assertThat(message.getConvo()).isEqualTo(conversationBack);
+
+        message.convo(null);
+        assertThat(message.getConvo()).isNull();
+    }
+
+    @Test
+    void senderTest() {
+        Message message = getMessageRandomSampleGenerator();
+        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+
+        message.setSender(userDetailsBack);
+        assertThat(message.getSender()).isEqualTo(userDetailsBack);
+
+        message.sender(null);
+        assertThat(message.getSender()).isNull();
+    }
+
+    @Test
+    void receiverTest() {
+        Message message = getMessageRandomSampleGenerator();
+        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+
+        message.setReceiver(userDetailsBack);
+        assertThat(message.getReceiver()).isEqualTo(userDetailsBack);
+
+        message.receiver(null);
+        assertThat(message.getReceiver()).isNull();
     }
 }

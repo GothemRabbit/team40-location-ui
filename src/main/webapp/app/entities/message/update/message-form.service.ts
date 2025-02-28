@@ -27,12 +27,16 @@ type MessageFormRawValue = FormValueOf<IMessage>;
 
 type NewMessageFormRawValue = FormValueOf<NewMessage>;
 
-type MessageFormDefaults = Pick<NewMessage, 'id' | 'timestamp'>;
+type MessageFormDefaults = Pick<NewMessage, 'id' | 'timestamp' | 'isRead'>;
 
 type MessageFormGroupContent = {
   id: FormControl<MessageFormRawValue['id'] | NewMessage['id']>;
   content: FormControl<MessageFormRawValue['content']>;
   timestamp: FormControl<MessageFormRawValue['timestamp']>;
+  isRead: FormControl<MessageFormRawValue['isRead']>;
+  convo: FormControl<MessageFormRawValue['convo']>;
+  sender: FormControl<MessageFormRawValue['sender']>;
+  receiver: FormControl<MessageFormRawValue['receiver']>;
 };
 
 export type MessageFormGroup = FormGroup<MessageFormGroupContent>;
@@ -58,6 +62,12 @@ export class MessageFormService {
       timestamp: new FormControl(messageRawValue.timestamp, {
         validators: [Validators.required],
       }),
+      isRead: new FormControl(messageRawValue.isRead, {
+        validators: [Validators.required],
+      }),
+      convo: new FormControl(messageRawValue.convo),
+      sender: new FormControl(messageRawValue.sender),
+      receiver: new FormControl(messageRawValue.receiver),
     });
   }
 
@@ -81,6 +91,7 @@ export class MessageFormService {
     return {
       id: null,
       timestamp: currentTime,
+      isRead: false,
     };
   }
 

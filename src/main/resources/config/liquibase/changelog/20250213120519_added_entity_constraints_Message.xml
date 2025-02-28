@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity Message.
+    -->
+    <changeSet id="20250213120519-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="convo_id"
+                                 baseTableName="message"
+                                 constraintName="fk_message__convo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="conversation"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="sender_id"
+                                 baseTableName="message"
+                                 constraintName="fk_message__sender_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_details"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="receiver_id"
+                                 baseTableName="message"
+                                 constraintName="fk_message__receiver_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_details"
+                                 />
+    </changeSet>
+</databaseChangeLog>

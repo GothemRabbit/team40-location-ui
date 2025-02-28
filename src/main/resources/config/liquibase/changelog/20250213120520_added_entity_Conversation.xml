@@ -14,11 +14,18 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="date_created" type="date">
+            <column name="date_created" type="${datetimeType}">
                 <constraints nullable="false" />
+            </column>
+            <column name="user_one_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_two_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <dropDefaultValue tableName="conversation" columnName="date_created" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

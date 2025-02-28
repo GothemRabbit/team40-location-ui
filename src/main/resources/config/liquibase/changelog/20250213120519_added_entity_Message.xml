@@ -20,6 +20,18 @@
             <column name="timestamp" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
+            <column name="is_read" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="convo_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="sender_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="receiver_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="message" columnName="timestamp" columnDataType="${datetimeType}"/>
@@ -44,6 +56,7 @@
             <column name="id" type="numeric"/>
             <column name="content" type="clob"/>
             <column name="timestamp" type="date"/>
+            <column name="is_read" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

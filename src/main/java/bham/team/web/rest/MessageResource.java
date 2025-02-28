@@ -129,6 +129,9 @@ public class MessageResource {
                 if (message.getTimestamp() != null) {
                     existingMessage.setTimestamp(message.getTimestamp());
                 }
+                if (message.getIsRead() != null) {
+                    existingMessage.setIsRead(message.getIsRead());
+                }
 
                 return existingMessage;
             })

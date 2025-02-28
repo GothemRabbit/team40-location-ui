@@ -11,11 +11,35 @@
     },
     {
       "fieldName": "timestamp",
-      "fieldType": "Instant",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isRead",
+      "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
     }
   ],
   "name": "Message",
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityName": "conversation",
+      "relationshipName": "convo",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "relationshipName": "sender",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "relationshipName": "receiver",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
   "searchEngine": "no"
 }

@@ -6,11 +6,24 @@
   "fields": [
     {
       "fieldName": "dateCreated",
-      "fieldType": "LocalDate",
+      "fieldType": "ZonedDateTime",
       "fieldValidateRules": ["required"]
     }
   ],
   "name": "Conversation",
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityName": "userDetails",
+      "relationshipName": "userOne",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "relationshipName": "userTwo",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
   "searchEngine": "no"
 }

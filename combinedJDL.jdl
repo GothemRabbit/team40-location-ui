@@ -59,13 +59,14 @@ enum Category {
 
 // Simplified messaging for user communication
 entity Message {
-  content TextBlob required,
-  timestamp Instant required
+  content TextBlob required
+  timestamp ZonedDateTime required
+  isRead Boolean required
   //relatedReservation Reservation
 }
 
 entity Conversation {
-  dateCreated LocalDate required
+  dateCreated ZonedDateTime required
 }
 
 
@@ -149,5 +150,13 @@ enum NotificationType {
   MESSAGE,
   REVIEW,
   STATUS_CHANGE
+}
+
+relationship ManyToOne {
+  Message{convo} to Conversation
+  Message{sender} to UserDetails
+  Message{receiver} to UserDetails
+  Conversation{userOne} to UserDetails
+  Conversation{userTwo} to UserDetails
 }
 

@@ -17,7 +17,23 @@
           </dd>
           <dt><span>Date Created</span></dt>
           <dd>
-            <span>{{ conversationRef.dateCreated | formatMediumDate }}</span>
+            <span>{{ conversationRef.dateCreated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>User One</span></dt>
+          <dd>
+            @if (conversation()!.userOne) {
+              <div>
+                <a [routerLink]="['/user-details', conversation()!.userOne?.id, 'view']">{{ conversationRef.userOne?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>User Two</span></dt>
+          <dd>
+            @if (conversation()!.userTwo) {
+              <div>
+                <a [routerLink]="['/user-details', conversation()!.userTwo?.id, 'view']">{{ conversationRef.userTwo?.id }}</a>
+              </div>
+            }
           </dd>
         </dl>
 

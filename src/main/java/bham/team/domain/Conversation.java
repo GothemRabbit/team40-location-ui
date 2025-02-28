@@ -3,7 +3,7 @@ package bham.team.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -26,7 +26,13 @@ public class Conversation implements Serializable {
 
     @NotNull
     @Column(name = "date_created", nullable = false)
-    private LocalDate dateCreated;
+    private ZonedDateTime dateCreated;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserDetails userOne;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserDetails userTwo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -43,17 +49,43 @@ public class Conversation implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDateCreated() {
+    public ZonedDateTime getDateCreated() {
         return this.dateCreated;
     }
 
-    public Conversation dateCreated(LocalDate dateCreated) {
+    public Conversation dateCreated(ZonedDateTime dateCreated) {
         this.setDateCreated(dateCreated);
         return this;
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
+    public void setDateCreated(ZonedDateTime dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public UserDetails getUserOne() {
+        return this.userOne;
+    }
+
+    public void setUserOne(UserDetails userDetails) {
+        this.userOne = userDetails;
+    }
+
+    public Conversation userOne(UserDetails userDetails) {
+        this.setUserOne(userDetails);
+        return this;
+    }
+
+    public UserDetails getUserTwo() {
+        return this.userTwo;
+    }
+
+    public void setUserTwo(UserDetails userDetails) {
+        this.userTwo = userDetails;
+    }
+
+    public Conversation userTwo(UserDetails userDetails) {
+        this.setUserTwo(userDetails);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

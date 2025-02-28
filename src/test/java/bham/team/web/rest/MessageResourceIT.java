@@ -2,6 +2,7 @@ package bham.team.web.rest;
 
 import static bham.team.domain.MessageAsserts.*;
 import static bham.team.web.rest.TestUtil.createUpdateProxyForBean;
+import static bham.team.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -13,7 +14,9 @@ import bham.team.repository.MessageRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -37,8 +40,11 @@ class MessageResourceIT {
     private static final String DEFAULT_CONTENT = "AAAAAAAAAA";
     private static final String UPDATED_CONTENT = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_TIMESTAMP = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_TIMESTAMP = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final ZonedDateTime DEFAULT_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Boolean DEFAULT_IS_READ = false;
+    private static final Boolean UPDATED_IS_READ = true;
 
     private static final String ENTITY_API_URL = "/api/messages";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -69,7 +75,7 @@ class MessageResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Message createEntity() {
-        return new Message().content(DEFAULT_CONTENT).timestamp(DEFAULT_TIMESTAMP);
+        return new Message().content(DEFAULT_CONTENT).timestamp(DEFAULT_TIMESTAMP).isRead(DEFAULT_IS_READ);
     }
 
     /**
@@ -79,7 +85,7 @@ class MessageResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Message createUpdatedEntity() {
-        return new Message().content(UPDATED_CONTENT).timestamp(UPDATED_TIMESTAMP);
+        return new Message().content(UPDATED_CONTENT).timestamp(UPDATED_TIMESTAMP).isRead(UPDATED_IS_READ);
     }
 
     @BeforeEach
@@ -152,6 +158,22 @@ class MessageResourceIT {
 
     @Test
     @Transactional
+    void checkIsReadIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        message.setIsRead(null);
+
+        // Create the Message, which fails.
+
+        restMessageMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(message)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllMessages() throws Exception {
         // Initialize the database
         insertedMessage = messageRepository.saveAndFlush(message);
@@ -163,7 +185,8 @@ class MessageResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(message.getId().intValue())))
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())))
-            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())));
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(sameInstant(DEFAULT_TIMESTAMP))))
+            .andExpect(jsonPath("$.[*].isRead").value(hasItem(DEFAULT_IS_READ.booleanValue())));
     }
 
     @Test
@@ -179,7 +202,8 @@ class MessageResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(message.getId().intValue()))
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()))
-            .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP.toString()));
+            .andExpect(jsonPath("$.timestamp").value(sameInstant(DEFAULT_TIMESTAMP)))
+            .andExpect(jsonPath("$.isRead").value(DEFAULT_IS_READ.booleanValue()));
     }
 
     @Test
@@ -201,7 +225,7 @@ class MessageResourceIT {
         Message updatedMessage = messageRepository.findById(message.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedMessage are not directly saved in db
         em.detach(updatedMessage);
-        updatedMessage.content(UPDATED_CONTENT).timestamp(UPDATED_TIMESTAMP);
+        updatedMessage.content(UPDATED_CONTENT).timestamp(UPDATED_TIMESTAMP).isRead(UPDATED_IS_READ);
 
         restMessageMockMvc
             .perform(
@@ -305,7 +329,7 @@ class MessageResourceIT {
         Message partialUpdatedMessage = new Message();
         partialUpdatedMessage.setId(message.getId());
 
-        partialUpdatedMessage.content(UPDATED_CONTENT).timestamp(UPDATED_TIMESTAMP);
+        partialUpdatedMessage.content(UPDATED_CONTENT).timestamp(UPDATED_TIMESTAMP).isRead(UPDATED_IS_READ);
 
         restMessageMockMvc
             .perform(

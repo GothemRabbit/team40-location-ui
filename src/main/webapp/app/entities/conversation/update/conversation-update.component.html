@@ -16,28 +16,61 @@
         @let dateCreatedRef = editForm.get('dateCreated')!;
         <div class="mb-3">
           <label class="form-label" for="field_dateCreated">Date Created</label>
-          <div class="input-group">
+          <div class="d-flex">
             <input
               id="field_dateCreated"
               data-cy="dateCreated"
-              type="text"
+              type="datetime-local"
               class="form-control"
               name="dateCreated"
-              ngbDatepicker
-              #dateCreatedDp="ngbDatepicker"
               formControlName="dateCreated"
+              placeholder="YYYY-MM-DD HH:mm"
             />
-            <button type="button" class="btn btn-secondary" (click)="dateCreatedDp.toggle()">
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
           </div>
           @if (dateCreatedRef.invalid && (dateCreatedRef.dirty || dateCreatedRef.touched)) {
             <div>
               @if (editForm.get('dateCreated')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
+              <small class="form-text text-danger" [hidden]="!editForm.get('dateCreated')?.errors?.datetimelocal"
+                >This field should be a date and time.</small
+              >
             </div>
           }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_userOne">User One</label>
+          <select
+            class="form-control"
+            id="field_userOne"
+            data-cy="userOne"
+            name="userOne"
+            formControlName="userOne"
+            [compareWith]="compareUserDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_userTwo">User Two</label>
+          <select
+            class="form-control"
+            id="field_userTwo"
+            data-cy="userTwo"
+            name="userTwo"
+            formControlName="userTwo"
+            [compareWith]="compareUserDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            }
+          </select>
         </div>
       </div>
 

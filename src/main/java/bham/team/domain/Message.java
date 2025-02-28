@@ -1,9 +1,10 @@
 package bham.team.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -30,7 +31,21 @@ public class Message implements Serializable {
 
     @NotNull
     @Column(name = "timestamp", nullable = false)
-    private Instant timestamp;
+    private ZonedDateTime timestamp;
+
+    @NotNull
+    @Column(name = "is_read", nullable = false)
+    private Boolean isRead;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "userOne", "userTwo" }, allowSetters = true)
+    private Conversation convo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserDetails sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserDetails receiver;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -60,17 +75,69 @@ public class Message implements Serializable {
         this.content = content;
     }
 
-    public Instant getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return this.timestamp;
     }
 
-    public Message timestamp(Instant timestamp) {
+    public Message timestamp(ZonedDateTime timestamp) {
         this.setTimestamp(timestamp);
         return this;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Boolean getIsRead() {
+        return this.isRead;
+    }
+
+    public Message isRead(Boolean isRead) {
+        this.setIsRead(isRead);
+        return this;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    public Conversation getConvo() {
+        return this.convo;
+    }
+
+    public void setConvo(Conversation conversation) {
+        this.convo = conversation;
+    }
+
+    public Message convo(Conversation conversation) {
+        this.setConvo(conversation);
+        return this;
+    }
+
+    public UserDetails getSender() {
+        return this.sender;
+    }
+
+    public void setSender(UserDetails userDetails) {
+        this.sender = userDetails;
+    }
+
+    public Message sender(UserDetails userDetails) {
+        this.setSender(userDetails);
+        return this;
+    }
+
+    public UserDetails getReceiver() {
+        return this.receiver;
+    }
+
+    public void setReceiver(UserDetails userDetails) {
+        this.receiver = userDetails;
+    }
+
+    public Message receiver(UserDetails userDetails) {
+        this.setReceiver(userDetails);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -99,6 +166,7 @@ public class Message implements Serializable {
             "id=" + getId() +
             ", content='" + getContent() + "'" +
             ", timestamp='" + getTimestamp() + "'" +
+            ", isRead='" + getIsRead() + "'" +
             "}";
     }
 }

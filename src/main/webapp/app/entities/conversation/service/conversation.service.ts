@@ -5,7 +5,6 @@ import { Observable, map } from 'rxjs';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
-import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IConversation, NewConversation } from '../conversation.model';
@@ -103,7 +102,7 @@ export class ConversationService {
   protected convertDateFromClient<T extends IConversation | NewConversation | PartialUpdateConversation>(conversation: T): RestOf<T> {
     return {
       ...conversation,
-      dateCreated: conversation.dateCreated?.format(DATE_FORMAT) ?? null,
+      dateCreated: conversation.dateCreated?.toJSON() ?? null,
     };
   }
 
