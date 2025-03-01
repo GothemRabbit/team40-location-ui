@@ -1,40 +1,41 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (review(); as reviewRef) {
-      <div>
-        <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
-        <div class="commentBoxRight">
-          <div style="display: flex; justify-content: space-between">
-            <p id="userName">
-              <fa-icon icon="user" class="avatar"></fa-icon>
-              user{{ reviewRef.id }}
+<div class="page">
+  <div class="d-flex justify-content-center">
+    <div class="col-8">
+      @if (review(); as reviewRef) {
+        <div>
+          <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
+          <div class="commentBoxRight">
+            <div style="display: flex; justify-content: space-between">
+              <p id="userName">
+                <fa-icon icon="user" class="avatar"></fa-icon>
+                user{{ reviewRef.id }}
+              </p>
+              <p id="rates">
+                <span id="stars" *ngFor="let index of [0, 1, 2, 3, 4]">
+                  {{ index < (reviewRef.rating || 0) ? '&#9733;' : '&#9734;' }}
+                </span>
+              </p>
+            </div>
+            <p id="dialogue">
+              {{ reviewRef.reviewText }}
             </p>
-            <p id="rates">
-              <span *ngFor="let index of [0, 1, 2, 3, 4]">
-                {{ index < (reviewRef.rating || 0) ? '&#9733;' : '&#9734;' }}
-              </span>
+            <p id="date">
+              {{ reviewRef.reviewDate | formatMediumDate }}
             </p>
           </div>
-          <p id="dialogue">
-            {{ reviewRef.reviewText }}
-          </p>
-          <p id="date">
-            {{ reviewRef.reviewDate | formatMediumDate }}
-          </p>
+
+          <jhi-alert-error></jhi-alert-error>
+
+          <jhi-alert></jhi-alert>
+          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+          </button>
+
+          <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+          </button>
         </div>
-
-        <jhi-alert-error></jhi-alert-error>
-
-        <jhi-alert></jhi-alert>
-
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-        </button>
-
-        <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-        </button>
-      </div>
-    }
+      }
+    </div>
   </div>
 </div>
