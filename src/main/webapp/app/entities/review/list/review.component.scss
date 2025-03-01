@@ -26,6 +26,8 @@
   border: 2px solid black;
   background-color: #3e8acc;
   overflow-y: scroll;
+  display: grid;
+  float: right;
 }
 .commentBoxRight:hover {
   transform: translateY(-5px);
