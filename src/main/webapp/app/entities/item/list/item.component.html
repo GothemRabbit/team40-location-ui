@@ -24,10 +24,10 @@
               <span class="heart-icon" (click)="toggleHeart(item)">&#9825;</span>
               <div class="dropdown">
                 <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>
-                <div class="dropdown-content" *ngIf="item.dropDown">
-                  <a href="#">Edit</a>
-                  <a href="#">Delete</a>
-                </div>
+                <!--                <div class="dropdown-content" *ngIf="item.dropDown">-->
+                <!--                  <a href="#">Edit</a>-->
+                <!--                  <a href="#">Delete</a>-->
+                <!--                </div>-->
               </div>
             </div>
             @if (item.itemImage) {
@@ -35,14 +35,14 @@
                 <img class="card-img-top" [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" alt="item" />
               </a>
             }
-
             <div class="card-body">
               <h5 class="card-title">
                 <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.itemTitle }}</a>
               </h5>
-
-              <p class="card-text"><strong>Price:</strong> {{ item.itemPrice }}</p>
-              <p class="card-text"><strong>Size:</strong> {{ item.itemSize }}</p>
+              <div class="texts">
+                <p class="card-text">{{ item.itemSize }}</p>
+                <p class="card-text"><strong>£</strong> {{ item.itemPrice }}</p>
+              </div>
               <!--              <p class="card-text">-->
               <!--                <strong>Condition:</strong>-->
               <!--                {{-->
