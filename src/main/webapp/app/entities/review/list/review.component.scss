@@ -19,17 +19,16 @@
   width: 550px;
   margin-left: 20px;
 }
+.commentBoxRight:hover {
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
+}
 
 .scrollbarBoxRight {
   width: 600px;
   height: 500px;
   border: none;
-
   overflow-y: scroll;
-}
-.commentBoxRight:hover {
-  transform: translateY(-5px);
-  transition: all ease 0.3s;
 }
 
 .box {
@@ -43,15 +42,34 @@
 .avRating {
   place-items: center;
   align-items: center;
-  column-gap: 2rem;
-  padding: 1px;
+  text-align: center;
+  padding: 10px;
+  background-color: #f6d044;
   border-radius: 5px;
+  width: 300px;
+  height: 400px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.avRating h1 {
+  font-size: 100px;
+  border-radius: 5px;
+}
+.starIn {
+  font-size: 50px;
+}
+.avRating:hover {
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
 }
 
 .ratingBoxLeft {
   height: 500px;
   width: 500px;
-  border: 2px solid black;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+  place-items: center;
 }
 h2 {
   text-align: center;
