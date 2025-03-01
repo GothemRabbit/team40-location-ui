@@ -16,7 +16,7 @@
   border-radius: 5px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
   gap: 10px;
-  width: 550px;
+  width: 565px;
   margin-left: 20px;
 }
 .commentBoxRight:hover {
@@ -89,7 +89,8 @@ p {
 }
 
 #dialogue {
-  text-align: center;
+  margin-left: 10%;
+  text-align: left;
 }
 #rates {
   text-align: right;
@@ -98,10 +99,7 @@ p {
 #date {
   text-align: right;
 }
-.btn-group {
-  border-radius: 5px;
-  background-color: aquamarine;
-}
+
 .avatar {
   vertical-align: middle;
   width: 30px;
