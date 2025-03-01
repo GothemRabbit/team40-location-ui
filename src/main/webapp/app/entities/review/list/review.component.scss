@@ -31,6 +31,9 @@
   overflow-y: scroll;
 }
 
+.scrollbarBoxRight::-webkit-scrollbar-thumb {
+  background-color: black;
+}
 .box {
   display: grid;
   padding: 10px;

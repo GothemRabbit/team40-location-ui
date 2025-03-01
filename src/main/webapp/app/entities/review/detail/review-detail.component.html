@@ -3,31 +3,29 @@
     @if (review(); as reviewRef) {
       <div>
         <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
-
-        <hr />
+        <div class="commentBoxRight">
+          <div style="display: flex; justify-content: space-between">
+            <p id="userName">
+              <fa-icon icon="user" class="avatar"></fa-icon>
+              user{{ reviewRef.id }}
+            </p>
+            <p id="rates">
+              <span *ngFor="let index of [0, 1, 2, 3, 4]">
+                {{ index < (reviewRef.rating || 0) ? '&#9733;' : '&#9734;' }}
+              </span>
+            </p>
+          </div>
+          <p id="dialogue">
+            {{ reviewRef.reviewText }}
+          </p>
+          <p id="date">
+            {{ reviewRef.reviewDate | formatMediumDate }}
+          </p>
+        </div>
 
         <jhi-alert-error></jhi-alert-error>
 
         <jhi-alert></jhi-alert>
-
-        <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
-            <span>{{ reviewRef.id }}</span>
-          </dd>
-          <dt><span>Rating</span></dt>
-          <dd>
-            <span>{{ reviewRef.rating }}</span>
-          </dd>
-          <dt><span>Review Text</span></dt>
-          <dd>
-            <span>{{ reviewRef.reviewText }}</span>
-          </dd>
-          <dt><span>Review Date</span></dt>
-          <dd>
-            <span>{{ reviewRef.reviewDate | formatMediumDate }}</span>
-          </dd>
-        </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
