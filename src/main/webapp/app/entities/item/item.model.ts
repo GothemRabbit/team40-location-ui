@@ -15,6 +15,7 @@ export interface IItem {
   itemImageContentType?: string | null;
   timeListed?: dayjs.Dayjs | null;
   itemLike?: boolean | null;
+  dropDown?: boolean | null;
 }
 
 export type NewItem = Omit<IItem, 'id'> & { id: null };

@@ -20,6 +20,16 @@
       @for (item of items; track trackId(item)) {
         <div class="col-md-3">
           <div class="card">
+            <div class="card-header">
+              <span class="heart-icon" (click)="toggleHeart(item)">&#9825;</span>
+              <div class="dropdown">
+                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>
+                <div class="dropdown-content" *ngIf="item.dropDown">
+                  <a href="#">Edit</a>
+                  <a href="#">Delete</a>
+                </div>
+              </div>
+            </div>
             @if (item.itemImage) {
               <a [routerLink]="['/item', item.id, 'view']">
                 <img class="card-img-top" [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" alt="item" />
@@ -33,34 +43,34 @@
 
               <p class="card-text"><strong>Price:</strong> {{ item.itemPrice }}</p>
               <p class="card-text"><strong>Size:</strong> {{ item.itemSize }}</p>
-              <p class="card-text">
-                <strong>Condition:</strong>
-                {{
-                  {
-                    null: '',
-                    BRANDNEW: 'Brand New',
-                    LIKENEW: 'Like New',
-                    FAIRLYUSED: 'Fairly Used',
-                    WELLUSED: 'Well Used',
-                    HEAVILYUSED: 'Heavily Used',
-                  }[item.itemCondition ?? 'null']
-                }}
-              </p>
-              <p class="card-text">
-                <strong>Category:</strong>
-                {{
-                  {
-                    null: '',
-                    FOOTWEAR: 'Footwear',
-                    CLOTHING: 'Clothing',
-                    HEADWEAR: 'Headwear',
-                    ELECTRONICS: 'Electronics',
-                    HOBBIES: 'Hobbies',
-                    BAGS: 'Bags',
-                    OTHERS: 'Others',
-                  }[item.itemCategory ?? 'null']
-                }}
-              </p>
+              <!--              <p class="card-text">-->
+              <!--                <strong>Condition:</strong>-->
+              <!--                {{-->
+              <!--                  {-->
+              <!--                    null: '',-->
+              <!--                    BRANDNEW: 'Brand New',-->
+              <!--                    LIKENEW: 'Like New',-->
+              <!--                    FAIRLYUSED: 'Fairly Used',-->
+              <!--                    WELLUSED: 'Well Used',-->
+              <!--                    HEAVILYUSED: 'Heavily Used',-->
+              <!--                  }[item.itemCondition ?? 'null']-->
+              <!--                }}-->
+              <!--              </p>-->
+              <!--              <p class="card-text">-->
+              <!--                <strong>Category:</strong>-->
+              <!--                {{-->
+              <!--                  {-->
+              <!--                    null: '',-->
+              <!--                    FOOTWEAR: 'Footwear',-->
+              <!--                    CLOTHING: 'Clothing',-->
+              <!--                    HEADWEAR: 'Headwear',-->
+              <!--                    ELECTRONICS: 'Electronics',-->
+              <!--                    HOBBIES: 'Hobbies',-->
+              <!--                    BAGS: 'Bags',-->
+              <!--                    OTHERS: 'Others',-->
+              <!--                  }[item.itemCategory ?? 'null']-->
+              <!--                }}-->
+              <!--              </p>-->
               <div class="d-flex justify-content-between"></div>
             </div>
           </div>
