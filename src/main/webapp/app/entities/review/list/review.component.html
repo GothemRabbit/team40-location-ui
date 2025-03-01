@@ -14,50 +14,51 @@
   }
 
   @if (reviews && reviews.length > 0) {
-    <div>
-      <div class="avRating">
-        <h2 id="headingL">3.5</h2>
-        <div class="star-outer">
-          <div class="star-inner">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        </div>
-        <p>10</p>
-        <div class="ratprog">
-          <div class="rateVal"></div>
-          <p>5</p>
-          <div class="prog">
-            <div class="bar"></div>
+    <div class="box">
+      <div class="ratingBoxLeft">
+        <div class="avRating">
+          <h2 id="headingL">3.5</h2>
+          <div class="star-outer">
+            <div class="star-inner">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </div>
+          <p>10</p>
+          <div class="ratprog">
+            <div class="rateVal"></div>
+            <p>5</p>
+            <div class="prog">
+              <div class="bar"></div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="scroll">
-        <div class="scoll-b">
-          <div class="scrollbar">
-            @for (review of reviews; track trackId(review)) {
-              <div class="commentBox">
-                <div style="display: flex; justify-content: space-between">
-                  <p id="userName">
-                    <img src="avatar.png" alt="Avatar" class="avatar" />
-                    <a [routerLink]="['/review', review.id, 'view']">user{{ review.id }}</a>
+        <div class="scroll">
+          <div class="scroll-Box">
+            <div class="scrollbarBoxRight">
+              @for (review of reviews; track trackId(review)) {
+                <div class="commentBoxRight">
+                  <div style="display: flex; justify-content: space-between">
+                    <p id="userName">
+                      <img src="avatar.png" alt="Avatar" class="avatar" />
+                      <a [routerLink]="['/review', review.id, 'view']">user{{ review.id }}</a>
+                    </p>
+                    <p id="rates">
+                      <span *ngFor="let index of [0, 1, 2, 3, 4]">
+                        {{ index < (review.rating || 0) ? '&#9733;' : '&#9734;' }}
+                      </span>
+                    </p>
+                  </div>
+                  <p id="dialogue">
+                    {{ review.reviewText }}
                   </p>
-                  <p id="rates">
-                    <span *ngFor="let index of [0, 1, 2, 3, 4]">
-                      {{ index < (review.rating || 0) ? '&#9733;' : '&#9734;' }}
-                    </span>
+                  <p id="date">
+                    {{ review.reviewDate | formatMediumDate }}
                   </p>
                 </div>
-                <p id="dialogue">
-                  {{ review.reviewText }}
-                </p>
-                <p id="date">
-                  {{ review.reviewDate | formatMediumDate }}
-                </p>
-              </div>
-            }
+              }
+            </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
