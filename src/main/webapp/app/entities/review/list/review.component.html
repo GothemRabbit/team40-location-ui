@@ -43,7 +43,7 @@
       </div>
       <div class="scrollbarBoxRight">
         @for (review of reviews; track trackId(review)) {
-          <div class="commentBoxRight">
+          <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
             <div style="display: flex; justify-content: space-between">
               <p id="userName">
                 <fa-icon icon="user" class="avatar"></fa-icon>
