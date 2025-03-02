@@ -40,7 +40,7 @@
   object-fit: cover; // Ensures the image maintains aspect ratio without distortion
   border-radius: 2px; // Rounded corners for the image
   margin: 7px auto; // Center the image with some margin
-  display: inline-grid;
+  display: block;
   border: 1px solid #000000;
 }
 

@@ -16,6 +16,8 @@ export interface IItem {
   timeListed?: dayjs.Dayjs | null;
   itemLike?: boolean | null;
   dropDown?: boolean | null;
+  //itemType?: keyof typeof Type | null;
+  //itemBrand?: string | null;
 }
 
 export type NewItem = Omit<IItem, 'id'> & { id: null };
