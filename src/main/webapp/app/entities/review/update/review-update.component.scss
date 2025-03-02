@@ -1,26 +1,3 @@
-.rating {
-  margin: 190px auto;
-  width: 400px;
-}
-
-.rating > * {
-  float: right;
-}
-.rating label {
-  height: 10px;
-  width: 20px;
-  display: block;
-  cursor: pointer;
-}
-
-.rating label::after {
-  transition: all 0.4s ease-out;
-  -webkit-font-smoothing: antialiased;
-  position: absolute;
-  content: '☆';
-  color: gold;
-}
-
 button {
   background-color: #e1bf43;
   color: white;
@@ -39,4 +16,14 @@ button:hover {
 
 body {
   background-color: #f8dc75;
+}
+.page {
+  background-color: #f8dc75;
+}
+
+.form-control {
+  background-color: #f6d044;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
 }

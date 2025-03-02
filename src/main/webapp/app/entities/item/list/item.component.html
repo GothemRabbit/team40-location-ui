@@ -1,23 +1,8 @@
 <div>
   <h2 id="page-heading" data-cy="ItemHeading">
-    <span>Items</span>
+    <span>Item List</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-item"
-        [routerLink]="['/item/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Item</span>
-      </button>
-    </div>
+    <div class="d-flex justify-content-end"></div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -31,159 +16,66 @@
   }
 
   @if (items && items.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span>ID</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
+    <div class="row g-4">
+      @for (item of items; track trackId(item)) {
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">
+              <span class="heart-icon" (click)="toggleHeart(item)">&#9825;</span>
+              <div class="dropdown">
+                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>
+                <!--                <div class="dropdown-content" *ngIf="item.dropDown">-->
+                <!--                  <a href="#">Edit</a>-->
+                <!--                  <a href="#">Delete</a>-->
+                <!--                </div>-->
               </div>
-            </th>
-            <th scope="col" jhiSortBy="itemTitle">
-              <div class="d-flex">
-                <span>Item Title</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+            @if (item.itemImage) {
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img class="card-img-top" [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" alt="item" />
+              </a>
+            }
+            <div class="card-body">
+              <h5 class="card-title">
+                <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.itemTitle }}</a>
+              </h5>
+              <div class="texts">
+                <p class="card-text">{{ item.itemSize }}</p>
+                <p class="card-text"><strong>£</strong> {{ item.itemPrice }}</p>
               </div>
-            </th>
-            <th scope="col" jhiSortBy="itemPrice">
-              <div class="d-flex">
-                <span>Item Price</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="itemSize">
-              <div class="d-flex">
-                <span>Item Size</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="itemCondition">
-              <div class="d-flex">
-                <span>Item Condition</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="itemCategory">
-              <div class="d-flex">
-                <span>Item Category</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="description">
-              <div class="d-flex">
-                <span>Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="itemColour">
-              <div class="d-flex">
-                <span>Item Colour</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="itemImage">
-              <div class="d-flex">
-                <span>Item Image</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="timeListed">
-              <div class="d-flex">
-                <span>Time Listed</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="itemLike">
-              <div class="d-flex">
-                <span>Item Like</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of items; track trackId(item)) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/item', item.id, 'view']">{{ item.id }}</a>
-              </td>
-              <td>{{ item.itemTitle }}</td>
-              <td>{{ item.itemPrice }}</td>
-              <td>{{ item.itemSize }}</td>
-              <td>
-                {{
-                  {
-                    null: '',
-                    BRANDNEW: 'BRANDNEW',
-                    LIKENEW: 'LIKENEW',
-                    FAIRLYUSED: 'FAIRLYUSED',
-                    WELLUSED: 'WELLUSED',
-                    HEAVILYUSED: 'HEAVILYUSED',
-                  }[item.itemCondition ?? 'null']
-                }}
-              </td>
-              <td>
-                {{
-                  {
-                    null: '',
-                    FOOTWEAR: 'FOOTWEAR',
-                    CLOTHING: 'CLOTHING',
-                    HEADWEAR: 'HEADWEAR',
-                    ELECTRONICS: 'ELECTRONICS',
-                    HOBBIES: 'HOBBIES',
-                    BAGS: 'BAGS',
-                    OTHERS: 'OTHERS',
-                  }[item.itemCategory ?? 'null']
-                }}
-              </td>
-              <td>{{ item.description }}</td>
-              <td>{{ item.itemColour }}</td>
-              <td>
-                @if (item.itemImage) {
-                  <a (click)="openFile(item.itemImage, item.itemImageContentType)">
-                    <img [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" style="max-height: 30px" alt="item" />
-                  </a>
-                  <span>{{ item.itemImageContentType }}, {{ byteSize(item.itemImage) }}</span>
-                }
-              </td>
-              <td>{{ item.timeListed | formatMediumDatetime }}</td>
-              <td>{{ item.itemLike }}</td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/item', item.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
-                  </a>
-
-                  <a [routerLink]="['/item', item.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(item)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+              <!--              <p class="card-text">-->
+              <!--                <strong>Condition:</strong>-->
+              <!--                {{-->
+              <!--                  {-->
+              <!--                    null: '',-->
+              <!--                    BRANDNEW: 'Brand New',-->
+              <!--                    LIKENEW: 'Like New',-->
+              <!--                    FAIRLYUSED: 'Fairly Used',-->
+              <!--                    WELLUSED: 'Well Used',-->
+              <!--                    HEAVILYUSED: 'Heavily Used',-->
+              <!--                  }[item.itemCondition ?? 'null']-->
+              <!--                }}-->
+              <!--              </p>-->
+              <!--              <p class="card-text">-->
+              <!--                <strong>Category:</strong>-->
+              <!--                {{-->
+              <!--                  {-->
+              <!--                    null: '',-->
+              <!--                    FOOTWEAR: 'Footwear',-->
+              <!--                    CLOTHING: 'Clothing',-->
+              <!--                    HEADWEAR: 'Headwear',-->
+              <!--                    ELECTRONICS: 'Electronics',-->
+              <!--                    HOBBIES: 'Hobbies',-->
+              <!--                    BAGS: 'Bags',-->
+              <!--                    OTHERS: 'Others',-->
+              <!--                  }[item.itemCategory ?? 'null']-->
+              <!--                }}-->
+              <!--              </p>-->
+              <div class="d-flex justify-content-between"></div>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   }
 </div>

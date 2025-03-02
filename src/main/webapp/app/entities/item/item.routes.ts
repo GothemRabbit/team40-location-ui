@@ -19,7 +19,6 @@ const itemRoute: Routes = [
     resolve: {
       item: ItemResolve,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',

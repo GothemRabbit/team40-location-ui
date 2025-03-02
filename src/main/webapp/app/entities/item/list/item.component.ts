@@ -17,6 +17,7 @@ import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.componen
   standalone: true,
   selector: 'jhi-item',
   templateUrl: './item.component.html',
+  styleUrl: './item.component.scss',
   imports: [
     RouterModule,
     FormsModule,
@@ -66,6 +67,16 @@ export class ItemComponent implements OnInit {
     return this.dataUtils.openFile(base64String, contentType);
   }
 
+  // ⭐ Toggle Heart Icon (Full/Empty)
+  toggleHeart(item: IItem): void {
+    item.itemLike = !item.itemLike;
+  }
+
+  // ⭐ Toggle Dropdown Visibility
+  toggleDropdown(item: IItem): void {
+    item.dropDown = !item.dropDown;
+  }
+
   delete(item: IItem): void {
     const modalRef = this.modalService.open(ItemDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.item = item;
@@ -94,9 +105,14 @@ export class ItemComponent implements OnInit {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
+  // Modify the items list to include heart & dropdown properties
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.items = this.refineData(dataFromBody);
+    this.items = this.refineData(dataFromBody).map(item => ({
+      ...item,
+      isFavorite: false, // Default heart state
+      showDropdown: false, // Default dropdown state
+    }));
   }
 
   protected refineData(data: IItem[]): IItem[] {

@@ -1,101 +1,142 @@
 .item-container {
-  display: grid;
+  display: flex;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
-
-  .card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition:
-      transform 0.3s ease-in-out,
-      box-shadow 0.3s ease-in-out;
-    background: #fff;
-
-    &:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-img-top {
-      width: 80%; // Makes the image fill the card width
-      height: 200px; // Adjust height as needed
-      object-fit: cover; // Ensures the image maintains aspect ratio without distortion
-      border: 3px solid #007bff; // Border around the image
-      border-radius: 10px; // Rounded corners for the image
-      margin: 10px auto; // Center the image with some margin
-      display: block; // Ensures it stays centered
-    }
-
-    .item-title-link {
-      text-decoration: none;
-      color: #007bff; // Bootstrap primary color
-      font-weight: bold;
-      transition: color 0.3s ease-in-out;
-
-      &:hover {
-        color: #0056b3; // Darker blue on hover
-        text-decoration: underline;
-      }
-    }
-
-    &:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .card-body {
-      padding: 15px;
-      background: #fff;
-
-      .card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-      }
-
-      .card-text {
-        font-size: 0.9rem;
-        color: #666;
-        margin-bottom: 5px;
-      }
-
-      .btn-group {
-        display: flex;
-        gap: 8px;
-
-        .btn {
-          font-size: 0.85rem;
-          border-radius: 6px;
-          padding: 5px 10px;
-        }
-
-        .btn-info {
-          background-color: #17a2b8;
-          border: none;
-          &:hover {
-            background-color: #138496;
-          }
-        }
-
-        .btn-primary {
-          background-color: #007bff;
-          border: none;
-          &:hover {
-            background-color: #0056b3;
-          }
-        }
-
-        .btn-danger {
-          background-color: #dc3545;
-          border: none;
-          &:hover {
-            background-color: #c82333;
-          }
-        }
-      }
-    }
-  }
+  grid-template-rows: repeat(auto-fit, minmax(280px, 1fr));
+  background-color: #000000;
+  gap: 15px;
+  //row-gap: 1px;
+  //padding: 35px;
+  margin-left: auto;
 }
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
+  position: relative;
+  border: 1px solid #e6d57a; /* Light yellow border */
+  background: #f8f5f5;
+  transition:
+    transform 0.6s ease-in-out,
+    box-shadow 0.6s ease-in-out;
+  //background: #ffffff;
+  height: 97%;
+  width: 100%;
+}
+
+.card-header {
+  margin-top: -10px;
+  margin-bottom: -20px;
+  display: flex;
+  justify-content: space-between; /* Pushes icons to opposite sides */
+  align-items: center; /* Ensures vertical alignment */
+  background: #f8f5f5;
+  //bottom: px;
+  // position: relative;
+}
+
+.card-img-top {
+  width: 80%; // Makes the image fill the card width
+  object-fit: cover; // Ensures the image maintains aspect ratio without distortion
+  border-radius: 2px; // Rounded corners for the image
+  margin: 7px auto; // Center the image with some margin
+  display: block;
+  border: 1px solid #000000;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
+}
+
+.card-body {
+  padding-bottom: 15px;
+  text-align: left;
+}
+
+.item-title-link {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  //color: #333;
+  color: #0022ff; // Bootstrap primary color
+  transition: color 0.3s ease-in-out;
+}
+
+.item-title-link:hover {
+  color: #0056b3; // Darker blue on hover
+  text-decoration: underline;
+}
+
+.heart-icon {
+  position: relative;
+  font-size: 35px;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+  margin-left: -8px;
+}
+
+.heart-icon.active {
+  color: black; /* When clicked, changes to red */
+}
+
+.dots-icon {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: -3px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-content a:hover {
+  background: #ddd;
+}
+
+.card-title {
+  margin-top: -15px;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.texts {
+  display: flex;
+  justify-content: space-between; /* Pushes icons to opposite sides */
+  align-items: center; /* Ensures vertical alignment */
+  //bottom: px;
+  // position: relative;
+}
+
+//
+//.card-details {
+//  display: flex;
+//  justify-content: space-between;
+//  font-weight: bold;
+//}
+
+//&:hover {
+//  transform: translateY(-10px);
+//  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+//}

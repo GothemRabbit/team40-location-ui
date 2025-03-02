@@ -1,23 +1,6 @@
-<div>
+<div id="page">
   <h2 id="page-heading" data-cy="ReviewHeading">
     <span>Reviews</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-review"
-        [routerLink]="['/review/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Review</span>
-      </button>
-    </div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -31,6 +14,57 @@
   }
 
   @if (reviews && reviews.length > 0) {
+    <div class="box">
+      <div class="ratingBoxLeft">
+        <div class="avRating">
+          <h2>reviews of user</h2>
+          <h1>3.5</h1>
+          <div class="starOut">
+            <div class="starIn">&#9734;&#9734;&#9734;&#9734;&#9734;</div>
+          </div>
+          <p>number of reviews go here</p>
+          <p>give us your review we would love to hear your thought on our sellers</p>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+            <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+            <span>Refresh list</span>
+          </button>
+          <button
+            id="jh-create-entity"
+            data-cy="entityCreateButton"
+            class="btn jh-create-entity create-review"
+            [routerLink]="['/review/new']"
+          >
+            <fa-icon icon="plus"></fa-icon>
+            <span>Write a Review!</span>
+          </button>
+        </div>
+      </div>
+      <div class="scrollbarBoxRight">
+        @for (review of reviews; track trackId(review)) {
+          <div class="commentBoxRight">
+            <div style="display: flex; justify-content: space-between">
+              <p id="userName">
+                <fa-icon icon="user" class="avatar"></fa-icon>
+                <a [routerLink]="['/review', review.id, 'view']">user{{ review.id }}</a>
+              </p>
+              <p id="rates">
+                <span *ngFor="let index of [0, 1, 2, 3, 4]">
+                  {{ index < (review.rating || 0) ? '&#9733;' : '&#9734;' }}
+                </span>
+              </p>
+            </div>
+            <p id="dialogue">
+              {{ review.reviewText }}
+            </p>
+            <p id="date">
+              {{ review.reviewDate | formatMediumDate }}
+            </p>
+          </div>
+        }
+      </div>
+    </div>
     <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
@@ -59,7 +93,6 @@
             <th scope="col" jhiSortBy="reviewDate">
               <div class="d-flex">
                 <span>Review Date</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -77,17 +110,17 @@
               <td>{{ review.reviewDate | formatMediumDate }}</td>
               <td class="text-end">
                 <div class="btn-group">
-                  <a [routerLink]="['/review', review.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                  <a [routerLink]="['/review', review.id, 'view']" class="btn btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">View</span>
                   </a>
 
-                  <a [routerLink]="['/review', review.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                  <a [routerLink]="['/review', review.id, 'edit']" class="btn btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
                     <span class="d-none d-md-inline">Edit</span>
                   </a>
 
-                  <button type="submit" (click)="delete(review)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <button type="submit" (click)="delete(review)" class="btn btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
                     <span class="d-none d-md-inline">Delete</span>
                   </button>

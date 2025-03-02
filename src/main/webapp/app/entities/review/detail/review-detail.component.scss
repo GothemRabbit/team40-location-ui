@@ -1,3 +1,7 @@
+.page {
+  background-color: #f8dc75;
+}
+
 button {
   background-color: #e1bf43;
   color: white;
@@ -14,6 +18,10 @@ button:hover {
   color: #f8dc75;
 }
 
+#stars {
+  color: gold;
+}
+
 .formPage {
   background-color: #f8dc75;
 }
@@ -23,6 +31,14 @@ span {
     Bradley Hand,
     cursive;
 }
-
+.commentBoxRight {
+  background-color: white;
+  border: none;
+  outline: none;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+}
 #heading {
 }

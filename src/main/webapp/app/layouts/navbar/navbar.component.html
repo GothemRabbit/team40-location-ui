@@ -21,10 +21,15 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
-            <span>
-              <fa-icon icon="home"></fa-icon>
-              <span>Home</span>
-            </span>
+            <div class="search">
+              <fa-icon icon="search"></fa-icon>
+              <input class="search-input" type="search" placeholder="Search" />
+            </div>
+
+            <!--            <span>-->
+            <!--              <fa-icon icon="home"></fa-icon>-->
+            <!--              <span>Home</span>-->
+            <!--            </span>-->
           </a>
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->

@@ -1,3 +1,147 @@
+<div class="search-history-container">
+  <h2 class="page-title">Manage Your Search History</h2>
+
+  <jhi-alert-error></jhi-alert-error>
+  <jhi-alert></jhi-alert>
+
+  <div class="sort-container">
+    <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+      <th scope="col" jhiSortBy="searchDate">
+        <div class="d-flex1">
+          <span>Search Date</span>
+          <fa-icon class="p-1" icon="sort"></fa-icon>
+        </div>
+      </th>
+      <th scope="col" jhiSortBy="searchQuery">
+        <div class="d-flex2">
+          <span>Search Query</span>
+          <fa-icon class="p-1" icon="sort"></fa-icon>
+        </div>
+      </th>
+    </tr>
+  </div>
+
+  @if (userSearchHistories?.length === 0) {
+    <div class="alert alert-warning">
+      <span>No search history found.</span>
+    </div>
+  }
+
+  @if (userSearchHistories && userSearchHistories.length > 0) {
+    <div class="search-history-list">
+      @for (userSearchHistory of userSearchHistories; track trackId(userSearchHistory)) {
+        <div class="search-history-item">
+          <div class="search-info">
+            <h3>{{ userSearchHistory.searchQuery }}</h3>
+            <p class="filters-text"><strong>Filters:</strong> {{ userSearchHistory.filters }}</p>
+            <p class="date-text"><strong>Search Date:</strong> {{ userSearchHistory.searchDate | formatMediumDatetime }}</p>
+          </div>
+          <button class="delete-btn" (click)="delete(userSearchHistory)">&#10006; Delete</button>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<style>
+  p {
+    margin: 0;
+  }
+  th {
+  }
+  .search-history-container {
+    background-color: rgb(248, 220, 117);
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .page-title {
+    vertical-align: top;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 28px;
+  }
+
+  .d-flex1,
+  .d-flex2 {
+    vertical-align: top;
+    display: inline-block;
+    background-color: cornsilk;
+    padding: 3px 3px 3px 7px;
+    border-radius: 17px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+    transition: 0.15s;
+  }
+
+  .d-flex1 {
+    margin-left: 700px;
+    margin-right: 5px;
+  }
+
+  .d-flex1:hover {
+    background-color: bisque;
+  }
+
+  .d-flex2:hover {
+    background-color: bisque;
+  }
+
+  .sort-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+    /*display: inline-block;*/
+  }
+
+  .search-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    height: 120px;
+    transition: 0.22s;
+  }
+
+  .search-history-item:hover {
+    transform: scale(1.05);
+  }
+
+  .search-info {
+    flex-grow: 1;
+  }
+
+  .filters-text,
+  .date-text {
+  }
+
+  .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+    transition: 0.15s;
+  }
+
+  .delete-btn:hover {
+    background-color: #c0392b;
+  }
+</style>
+
 <div>
   <h2 id="page-heading" data-cy="UserSearchHistoryHeading">
     <span>User Search Histories</span>
