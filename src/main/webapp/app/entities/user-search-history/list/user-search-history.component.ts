@@ -77,6 +77,7 @@ export class UserSearchHistoryComponent implements OnInit {
   }
 
   navigateToWithComponentValues(event: SortState): void {
+    this.userSearchHistories = [];
     this.handleNavigation(event);
   }
 
