@@ -1,7 +1,23 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-user-details-heading" data-cy="UserDetailsCreateUpdateHeading">Create or edit a User Details</h2>
+      <h2 id="jhi-user-details-heading" data-cy="UserDetailsCreateUpdateHeading">Settings</h2>
+
+      <div class="row">
+        <!-- SideBar -->
+        <div class="col-md-3">
+          <div class="list-group">
+            <a href="#" class="list-group-item active">Profile Details</a>
+            <a href="#" class="list-group-item">Account Settings</a>
+            <a href="#" class="list-group-item">Notifications</a>
+            <a href="#" class="list-group-item">Privacy Settings</a>
+            <a href="#" class="list-group-item">Security</a>
+            <a href="#" class="list-group-item">Display</a>
+            <a href="#" class="list-group-item">Log Out</a>
+            <a href="#" class="list-group-item">Drafts</a>
+          </div>
+        </div>
+      </div>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -61,6 +77,7 @@
           }
         </div>
 
+        <!-- dont want to include
         @let firstNameRef = editForm.get('firstName')!;
         <div class="mb-3">
           <label class="form-label" for="field_firstName">First Name</label>
@@ -86,6 +103,8 @@
             </div>
           }
         </div>
+
+        -->
 
         <div class="mb-3">
           <label class="form-label" for="field_gender">Gender</label>
