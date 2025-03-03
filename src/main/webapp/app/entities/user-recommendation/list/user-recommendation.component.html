@@ -1,3 +1,138 @@
+<!--<div class="recommendation-container">-->
+<!--  <h2 class="recommendation-title">Recommended For You</h2>-->
+
+<!--  &lt;!&ndash; Example: Replacing the default "refresh" button with a custom style &ndash;&gt;-->
+<!--  <button class="refresh-btn" (click)="load()" [disabled]="isLoading">-->
+<!--    <span *ngIf="!isLoading">⭮ Refresh Recommendations</span>-->
+<!--    <span *ngIf="isLoading">⏳ Loading...</span>-->
+<!--  </button>-->
+
+<!--  &lt;!&ndash; Handling no results &ndash;&gt;-->
+<!--  @if (userRecommendations?.length === 0) {-->
+<!--    <div class="alert alert-warning">-->
+<!--      <span>No recommendations available.</span>-->
+<!--    </div>-->
+<!--  }-->
+
+<!--  <div class="recommendation-container">-->
+<!--    <h2>Recommended For You</h2>-->
+
+<!--    <jhi-alert-error></jhi-alert-error>-->
+<!--    <jhi-alert></jhi-alert>-->
+
+<!--    @if (userRecommendations?.length === 0) {-->
+<!--      <div class="alert alert-warning">-->
+<!--        <span>No recommendations available.</span>-->
+<!--      </div>-->
+<!--    }-->
+
+<!--    @if (userRecommendations && userRecommendations.length > 0) {-->
+<!--      <div class="recommendation-list">-->
+<!--        @for (rec of userRecommendations; track trackId(rec)) {-->
+<!--          <div class="recommendation-section">-->
+<!--            <h3 class="recommendation-title">{{ rec.reason }}</h3>-->
+<!--            <div class="item-grid">-->
+<!--              @for (item of rec.recommendedItems; track trackId(item)) {-->
+<!--                <jhi-item [item]="item"></jhi-item>-->
+<!--              }-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        }-->
+<!--      </div>-->
+<!--    }-->
+<!--  </div>-->
+
+<!--&lt;!&ndash;  <style>&ndash;&gt;-->
+<!--&lt;!&ndash;    .recommendation-container {&ndash;&gt;-->
+<!--&lt;!&ndash;      max-width: 1000px;&ndash;&gt;-->
+<!--&lt;!&ndash;      margin: auto;&ndash;&gt;-->
+<!--&lt;!&ndash;      padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;      background-color: rgb(248, 220, 117);&ndash;&gt;-->
+<!--&lt;!&ndash;      border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .recommendation-title {&ndash;&gt;-->
+<!--&lt;!&ndash;      font-size: 22px;&ndash;&gt;-->
+<!--&lt;!&ndash;      font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;      margin-top: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .item-grid {&ndash;&gt;-->
+<!--&lt;!&ndash;      display: grid;&ndash;&gt;-->
+<!--&lt;!&ndash;      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));&ndash;&gt;-->
+<!--&lt;!&ndash;      gap: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    .recommendation-section {&ndash;&gt;-->
+<!--&lt;!&ndash;      margin-bottom: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;  </style>&ndash;&gt;-->
+<!--&lt;!&ndash;  &ndash;&gt;-->
+
+<!--&lt;!&ndash; Inline CSS Styles &ndash;&gt;-->
+<!--<style>-->
+<!--  .recommendation-container {-->
+<!--    max-width: 1000px;-->
+<!--    margin: auto;-->
+<!--    padding: 20px;-->
+<!--    background: #f8dc75; /* Light gold background */-->
+<!--    border-radius: 8px;-->
+<!--    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);-->
+<!--  }-->
+
+<!--  .recommendation-title {-->
+<!--    font-size: 28px;-->
+<!--    font-weight: bold;-->
+<!--    margin-bottom: 15px;-->
+<!--  }-->
+
+<!--  .refresh-btn {-->
+<!--    display: inline-block;-->
+<!--    margin-bottom: 15px;-->
+<!--    border: none;-->
+<!--    background: #f2f2f2;-->
+<!--    color: #333;-->
+<!--    font-size: 16px;-->
+<!--    padding: 8px 12px;-->
+<!--    border-radius: 5px;-->
+<!--    cursor: pointer;-->
+<!--  }-->
+<!--  .refresh-btn:hover {-->
+<!--    background: #e0dddd;-->
+<!--  }-->
+
+<!--  .recommendation-block {-->
+<!--    background: #ffffff;-->
+<!--    margin-bottom: 20px;-->
+<!--    padding: 15px;-->
+<!--    border-radius: 6px;-->
+<!--    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);-->
+<!--  }-->
+
+<!--  .reason-title {-->
+<!--    margin-top: 0;-->
+<!--    font-size: 20px;-->
+<!--    font-weight: 600;-->
+<!--    color: #c0392b; /* A bit of color accent */-->
+<!--  }-->
+
+<!--  .item-grid {-->
+<!--    display: grid;-->
+<!--    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));-->
+<!--    gap: 15px;-->
+<!--    margin-top: 10px;-->
+<!--  }-->
+
+<!--  /* If you're using <jhi-item> with the styles from your item entity code:-->
+<!--     no extra CSS is needed here. The <jhi-item> component will pick up its own styles. */-->
+
+<!--  /* Example: If you want to refine the <jhi-item> or item card spacing in this context: */-->
+<!--  jhi-item, .card {-->
+<!--    margin: 0 auto;-->
+<!--  }-->
+<!--</style>-->
+
 <div>
   <h2 id="page-heading" data-cy="UserRecommendationHeading">
     <span>User Recommendations</span>
