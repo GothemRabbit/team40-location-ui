@@ -43,8 +43,10 @@ export class ReviewComponent implements OnInit {
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-  findAverage(array: number[]): number {
-    if (array.length === 0) return 0;
+
+  findAverage(array: number[] | null | undefined): number {
+    if (array == null) return 0;
+    else if (array.length === 0) return 0;
     return array.reduce((sum, n) => sum + n);
   }
   convertNumToStars(rating: number | null | undefined): string {

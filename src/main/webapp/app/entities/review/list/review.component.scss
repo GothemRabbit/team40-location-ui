@@ -1,12 +1,10 @@
 :root {
   background-color: #f8dc75;
 }
-
 #page {
   background-color: #f8dc75;
   border-color: #f8dc75;
 }
-
 .commentBoxRight {
   background-color: white;
   border: none;
@@ -58,14 +56,13 @@
   font-size: 100px;
   border-radius: 5px;
 }
-.starIn {
+.star {
   font-size: 50px;
 }
 .avRating:hover {
   transform: translateY(-5px);
   transition: all ease 0.3s;
 }
-
 .ratingBoxLeft {
   height: 500px;
   width: 500px;
@@ -75,6 +72,7 @@
   place-items: center;
 }
 h2 {
+  font-weight: bold;
   text-align: center;
 }
 
@@ -98,6 +96,7 @@ p {
 }
 #date {
   text-align: right;
+  font-size: 13px;
 }
 
 .avatar {
