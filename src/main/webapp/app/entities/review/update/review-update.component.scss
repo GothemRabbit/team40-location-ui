@@ -22,8 +22,11 @@ body {
 }
 
 .form-control {
-  background-color: #f6d044;
+  background-color: white;
   border: none;
   border-radius: 5px;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+div {
+  color: black;
 }

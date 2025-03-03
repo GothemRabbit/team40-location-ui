@@ -63,16 +63,13 @@
               <input
                 id="field_reviewDate"
                 data-cy="reviewDate"
-                type="text"
+                type="date"
                 class="form-control"
                 name="reviewDate"
                 ngbDatepicker
                 #reviewDateDp="ngbDatepicker"
                 formControlName="reviewDate"
               />
-              <button type="button" class="btn btn-secondary" (click)="reviewDateDp.toggle()">
-                <fa-icon icon="calendar-alt"></fa-icon>
-              </button>
             </div>
             @if (reviewDateRef.invalid && (reviewDateRef.dirty || reviewDateRef.touched)) {
               <div>
@@ -97,3 +94,7 @@
     </div>
   </div>
 </div>
+
+<!--  <button type="button" class="btn btn-secondary" (click)="reviewDateDp.toggle()">
+  <fa-icon icon="calendar-alt"></fa-icon>
+</button>!-->
