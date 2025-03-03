@@ -32,6 +32,10 @@
 .scrollbarBoxRight::-webkit-scrollbar-thumb {
   background-color: black;
 }
+.scrollbarBoxRight::-webkit-scrollbar-track {
+  background: #f8dc75;
+}
+
 .box {
   display: grid;
   padding: 10px;
