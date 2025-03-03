@@ -44,8 +44,8 @@
                 <a [routerLink]="['/review', review.id, 'view']">user{{ review.id }}</a>
               </p>
               <p id="rates">
-                <span *ngFor="let index of [0, 1, 2, 3, 4]">
-                  {{ index < (review.rating || 0) ? '&#9733;' : '&#9734;' }}
+                <span *ngFor="let reviews of [0, 1, 2, 3, 4]">
+                  {{ reviews < (review.rating || 0) ? '&#9733;' : '&#9734;' }}
                 </span>
               </p>
             </div>

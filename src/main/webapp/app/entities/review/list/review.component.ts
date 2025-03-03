@@ -44,11 +44,6 @@ export class ReviewComponent implements OnInit {
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
-  findAverage(array: number[] | null | undefined): number {
-    if (array == null) return 0;
-    else if (array.length === 0) return 0;
-    return array.reduce((sum, n) => sum + n);
-  }
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
