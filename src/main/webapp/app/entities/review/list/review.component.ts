@@ -49,16 +49,6 @@ export class ReviewComponent implements OnInit {
     else if (array.length === 0) return 0;
     return array.reduce((sum, n) => sum + n);
   }
-  convertNumToStars(rating: number | null | undefined): string {
-    if (rating == null) {
-      rating = 0;
-    }
-    let star = '';
-    for (let i = 0; i < 5; i++) {
-      star += i < rating ? '★' : 'x';
-    }
-    return star;
-  }
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
