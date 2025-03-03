@@ -110,6 +110,7 @@ export class ProductStatusComponent implements OnInit {
     const queryParamsObj = {
       sort: this.sortService.buildSortParam(sortState),
     };
+
     this.ngZone.run(() => {
       this.router.navigate(['./'], {
         relativeTo: this.activatedRoute,
