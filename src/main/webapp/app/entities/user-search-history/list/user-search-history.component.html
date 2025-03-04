@@ -176,114 +176,114 @@
     }
   </style>
 
-  <div>
-    <h2 id="page-heading" data-cy="UserSearchHistoryHeading">
-      <span>User Search Histories</span>
+  <!--  <div>-->
+  <!--    <h2 id="page-heading" data-cy="UserSearchHistoryHeading">-->
+  <!--      <span>User Search Histories</span>-->
 
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-          <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-          <span>Refresh list</span>
-        </button>
+  <!--      <div class="d-flex justify-content-end">-->
+  <!--        <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">-->
+  <!--          <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>-->
+  <!--          <span>Refresh list</span>-->
+  <!--        </button>-->
 
-        <button
-          id="jh-create-entity"
-          data-cy="entityCreateButton"
-          class="btn btn-primary jh-create-entity create-user-search-history"
-          [routerLink]="['/user-search-history/new']"
-        >
-          <fa-icon icon="plus"></fa-icon>
-          <span>Create a new User Search History</span>
-        </button>
-      </div>
-    </h2>
+  <!--        <button-->
+  <!--          id="jh-create-entity"-->
+  <!--          data-cy="entityCreateButton"-->
+  <!--          class="btn btn-primary jh-create-entity create-user-search-history"-->
+  <!--          [routerLink]="['/user-search-history/new']"-->
+  <!--        >-->
+  <!--          <fa-icon icon="plus"></fa-icon>-->
+  <!--          <span>Create a new User Search History</span>-->
+  <!--        </button>-->
+  <!--      </div>-->
+  <!--    </h2>-->
 
-    <jhi-alert-error></jhi-alert-error>
+  <!--    <jhi-alert-error></jhi-alert-error>-->
 
-    <jhi-alert></jhi-alert>
+  <!--    <jhi-alert></jhi-alert>-->
 
-    @if (userSearchHistories?.length === 0) {
-      <div class="alert alert-warning" id="no-result">
-        <span>No User Search Histories found</span>
-      </div>
-    }
+  <!--    @if (userSearchHistories?.length === 0) {-->
+  <!--      <div class="alert alert-warning" id="no-result">-->
+  <!--        <span>No User Search Histories found</span>-->
+  <!--      </div>-->
+  <!--    }-->
 
-    @if (userSearchHistories && userSearchHistories.length > 0) {
-      <div class="table-responsive table-entities" id="entities">
-        <table class="table table-striped" aria-describedby="page-heading">
-          <thead>
-            <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-              <th scope="col" jhiSortBy="id">
-                <div class="d-flex">
-                  <span>ID</span>
+  <!--    @if (userSearchHistories && userSearchHistories.length > 0) {-->
+  <!--      <div class="table-responsive table-entities" id="entities">-->
+  <!--        <table class="table table-striped" aria-describedby="page-heading">-->
+  <!--          <thead>-->
+  <!--            <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">-->
+  <!--              <th scope="col" jhiSortBy="id">-->
+  <!--                <div class="d-flex">-->
+  <!--                  <span>ID</span>-->
 
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                </div>
-              </th>
-              <th scope="col" jhiSortBy="searchQuery">
-                <div class="d-flex">
-                  <span>Search Query</span>
+  <!--                  <fa-icon class="p-1" icon="sort"></fa-icon>-->
+  <!--                </div>-->
+  <!--              </th>-->
+  <!--              <th scope="col" jhiSortBy="searchQuery">-->
+  <!--                <div class="d-flex">-->
+  <!--                  <span>Search Query</span>-->
 
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                </div>
-              </th>
-              <th scope="col" jhiSortBy="filters">
-                <div class="d-flex">
-                  <span>Filters</span>
+  <!--                  <fa-icon class="p-1" icon="sort"></fa-icon>-->
+  <!--                </div>-->
+  <!--              </th>-->
+  <!--              <th scope="col" jhiSortBy="filters">-->
+  <!--                <div class="d-flex">-->
+  <!--                  <span>Filters</span>-->
 
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                </div>
-              </th>
-              <th scope="col" jhiSortBy="searchDate">
-                <div class="d-flex">
-                  <span>Search Date</span>
+  <!--                  <fa-icon class="p-1" icon="sort"></fa-icon>-->
+  <!--                </div>-->
+  <!--              </th>-->
+  <!--              <th scope="col" jhiSortBy="searchDate">-->
+  <!--                <div class="d-flex">-->
+  <!--                  <span>Search Date</span>-->
 
-                  <fa-icon class="p-1" icon="sort"></fa-icon>
-                </div>
-              </th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (userSearchHistory of userSearchHistories; track trackId(userSearchHistory)) {
-              <tr data-cy="entityTable">
-                <td>
-                  <a [routerLink]="['/user-search-history', userSearchHistory.id, 'view']">{{ userSearchHistory.id }}</a>
-                </td>
-                <td>{{ userSearchHistory.searchQuery }}</td>
-                <td>{{ userSearchHistory.filters }}</td>
-                <td>{{ userSearchHistory.searchDate | formatMediumDatetime }}</td>
-                <td class="text-end">
-                  <div class="btn-group">
-                    <a
-                      [routerLink]="['/user-search-history', userSearchHistory.id, 'view']"
-                      class="btn btn-info btn-sm"
-                      data-cy="entityDetailsButton"
-                    >
-                      <fa-icon icon="eye"></fa-icon>
-                      <span class="d-none d-md-inline">View</span>
-                    </a>
+  <!--                  <fa-icon class="p-1" icon="sort"></fa-icon>-->
+  <!--                </div>-->
+  <!--              </th>-->
+  <!--              <th scope="col"></th>-->
+  <!--            </tr>-->
+  <!--          </thead>-->
+  <!--          <tbody>-->
+  <!--            @for (userSearchHistory of userSearchHistories; track trackId(userSearchHistory)) {-->
+  <!--              <tr data-cy="entityTable">-->
+  <!--                <td>-->
+  <!--                  <a [routerLink]="['/user-search-history', userSearchHistory.id, 'view']">{{ userSearchHistory.id }}</a>-->
+  <!--                </td>-->
+  <!--                <td>{{ userSearchHistory.searchQuery }}</td>-->
+  <!--                <td>{{ userSearchHistory.filters }}</td>-->
+  <!--                <td>{{ userSearchHistory.searchDate | formatMediumDatetime }}</td>-->
+  <!--                <td class="text-end">-->
+  <!--                  <div class="btn-group">-->
+  <!--                    <a-->
+  <!--                      [routerLink]="['/user-search-history', userSearchHistory.id, 'view']"-->
+  <!--                      class="btn btn-info btn-sm"-->
+  <!--                      data-cy="entityDetailsButton"-->
+  <!--                    >-->
+  <!--                      <fa-icon icon="eye"></fa-icon>-->
+  <!--                      <span class="d-none d-md-inline">View</span>-->
+  <!--                    </a>-->
 
-                    <a
-                      [routerLink]="['/user-search-history', userSearchHistory.id, 'edit']"
-                      class="btn btn-primary btn-sm"
-                      data-cy="entityEditButton"
-                    >
-                      <fa-icon icon="pencil-alt"></fa-icon>
-                      <span class="d-none d-md-inline">Edit</span>
-                    </a>
+  <!--                    <a-->
+  <!--                      [routerLink]="['/user-search-history', userSearchHistory.id, 'edit']"-->
+  <!--                      class="btn btn-primary btn-sm"-->
+  <!--                      data-cy="entityEditButton"-->
+  <!--                    >-->
+  <!--                      <fa-icon icon="pencil-alt"></fa-icon>-->
+  <!--                      <span class="d-none d-md-inline">Edit</span>-->
+  <!--                    </a>-->
 
-                    <button type="submit" (click)="delete(userSearchHistory)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                      <fa-icon icon="times"></fa-icon>
-                      <span class="d-none d-md-inline">Delete</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
-  </div>
+  <!--                    <button type="submit" (click)="delete(userSearchHistory)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">-->
+  <!--                      <fa-icon icon="times"></fa-icon>-->
+  <!--                      <span class="d-none d-md-inline">Delete</span>-->
+  <!--                    </button>-->
+  <!--                  </div>-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--            }-->
+  <!--          </tbody>-->
+  <!--        </table>-->
+  <!--      </div>-->
+  <!--    }-->
+  <!--  </div>-->
 </body>
