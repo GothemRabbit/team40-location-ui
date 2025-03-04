@@ -3,7 +3,9 @@
     <div class="col-8">
       @if (review(); as reviewRef) {
         <div>
-          <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
+          <h2 data-cy="reviewDetailsHeading">
+            <span>user{{ reviewRef.id }} review</span>
+          </h2>
           <div class="commentBoxRight">
             <div style="display: flex; justify-content: space-between">
               <p id="userName">
@@ -27,12 +29,12 @@
           <jhi-alert-error></jhi-alert-error>
 
           <jhi-alert></jhi-alert>
-          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+          <button type="submit" (click)="previousState()" class="btn" data-cy="entityDetailsBackButton">
+            <span>Back</span>
           </button>
 
           <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
-            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            <span>Edit</span>
           </button>
         </div>
       }
