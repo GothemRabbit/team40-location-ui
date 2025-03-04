@@ -14,14 +14,17 @@ import { Gender } from 'app/entities/enumerations/gender.model';
 import { UserDetailsService } from '../service/user-details.service';
 import { IUserDetails } from '../user-details.model';
 import { UserDetailsFormGroup, UserDetailsFormService } from './user-details-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-user-details-update',
   templateUrl: './user-details-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  styleUrl: './user-details-update.component.scss',
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf],
 })
 export class UserDetailsUpdateComponent implements OnInit {
+  activeTab = 'profileDetails';
   isSaving = false;
   userDetails: IUserDetails | null = null;
   genderValues = Object.keys(Gender);
@@ -43,6 +46,10 @@ export class UserDetailsUpdateComponent implements OnInit {
         this.updateForm(userDetails);
       }
     });
+  }
+
+  setActiveTab(tabName: string): void {
+    this.activeTab = tabName;
   }
 
   byteSize(base64String: string): string {

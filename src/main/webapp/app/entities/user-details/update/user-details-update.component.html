@@ -1,4 +1,6 @@
 <div class="d-flex justify-content-center">
+  <jhi-alert-error></jhi-alert-error>
+
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-user-details-heading" data-cy="UserDetailsCreateUpdateHeading">Settings</h2>
@@ -7,208 +9,169 @@
         <!-- SideBar -->
         <div class="col-md-3">
           <div class="list-group">
-            <a href="#" class="list-group-item active">Profile Details</a>
-            <a href="#" class="list-group-item">Account Settings</a>
-            <a href="#" class="list-group-item">Notifications</a>
-            <a href="#" class="list-group-item">Privacy Settings</a>
-            <a href="#" class="list-group-item">Security</a>
-            <a href="#" class="list-group-item">Display</a>
-            <a href="#" class="list-group-item">Log Out</a>
-            <a href="#" class="list-group-item">Drafts</a>
+            <a
+              href="javascript:void(0)"
+              class="list-group-item"
+              [class.active]="activeTab === 'profileDetails'"
+              (click)="setActiveTab('profileDetails')"
+              >Profile Details</a
+            >
+            <a href="javascript:void(0)" class="list-group-item" [class.active]="activeTab === 'account'" (click)="setActiveTab('account')"
+              >Account Settings</a
+            >
+            <a
+              href="javascript:void(0)"
+              class="list-group-item"
+              [class.active]="activeTab === 'notifications'"
+              (click)="setActiveTab('notifications')"
+              >Notifications</a
+            >
+            <a
+              href="javascript:void(0)"
+              class="list-group-item"
+              [class.active]="activeTab === 'security'"
+              (click)="setActiveTab('security')"
+              >Security</a
+            >
+            <a href="javascript:void(0)" class="list-group-item" [class.active]="activeTab === 'display'" (click)="setActiveTab('display')"
+              >Display</a
+            >
+            <a href="javascript:void(0)" class="list-group-item" [class.active]="activeTab === 'logOut'" (click)="setActiveTab('logOut')"
+              >Log Out</a
+            >
+            <a href="javascript:void(0)" class="list-group-item" [class.active]="activeTab === 'drafts'" (click)="setActiveTab('drafts')"
+              >Drafts</a
+            >
           </div>
         </div>
-      </div>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+        <div class="col-md-9">
+          <div *ngIf="activeTab === 'profileDetails'">
+            <h3>Profile Details</h3>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
-
-        @let bioImageRef = editForm.get('bioImage')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_bioImage">Bio Image</label>
-          <div>
-            @if (bioImageRef.value) {
-              <img
-                [src]="'data:' + editForm.get('bioImageContentType')!.value + ';base64,' + bioImageRef.value"
-                style="max-height: 100px"
-                alt="userDetails"
+            @let bioImageRef = editForm.get('bioImage')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_bioImage">Bio Image</label>
+              <div>
+                @if (bioImageRef.value) {
+                  <img
+                    [src]="'data:' + editForm.get('bioImageContentType')!.value + ';base64,' + bioImageRef.value"
+                    style="max-height: 100px"
+                    alt="userDetails"
+                  />
+                }
+                @if (bioImageRef.value) {
+                  <div class="form-text text-danger clearfix">
+                    <span class="pull-start">{{ editForm.get('bioImageContentType')!.value }}, {{ byteSize(bioImageRef.value!) }}</span>
+                    <button
+                      type="button"
+                      (click)="clearInputImage('bioImage', 'bioImageContentType', 'file_bioImage')"
+                      class="btn btn-secondary btn-xs pull-end"
+                    >
+                      <fa-icon icon="times"></fa-icon>
+                    </button>
+                  </div>
+                }
+                <input
+                  type="file"
+                  id="file_bioImage"
+                  data-cy="bioImage"
+                  (change)="setFileData($event, 'bioImage', true)"
+                  accept="image/*"
+                />
+              </div>
+              <input type="hidden" class="form-control" name="bioImage" id="field_bioImage" data-cy="bioImage" formControlName="bioImage" />
+              <input
+                type="hidden"
+                class="form-control"
+                name="bioImageContentType"
+                id="field_bioImageContentType"
+                formControlName="bioImageContentType"
               />
-            }
-            @if (bioImageRef.value) {
-              <div class="form-text text-danger clearfix">
-                <span class="pull-start">{{ editForm.get('bioImageContentType')!.value }}, {{ byteSize(bioImageRef.value!) }}</span>
-                <button
-                  type="button"
-                  (click)="clearInputImage('bioImage', 'bioImageContentType', 'file_bioImage')"
-                  class="btn btn-secondary btn-xs pull-end"
-                >
-                  <fa-icon icon="times"></fa-icon>
+            </div>
+
+            @let userNameRef = editForm.get('userName')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_userName">User Name</label>
+              <input type="text" class="form-control" name="userName" id="field_userName" data-cy="userName" formControlName="userName" />
+              @if (userNameRef.invalid && (userNameRef.dirty || userNameRef.touched)) {
+                <div>
+                  @if (editForm.get('userName')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let addressRef = editForm.get('address')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_address">Address</label>
+              <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+              @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {
+                <div>
+                  @if (editForm.get('address')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <div *ngIf="activeTab === 'account'">
+            <h3>Account Settings</h3>
+
+            <div class="mb-3">
+              <label class="form-label" for="field_birthDate">Birth Date</label>
+              <div class="input-group">
+                <input
+                  id="field_birthDate"
+                  data-cy="birthDate"
+                  type="text"
+                  class="form-control"
+                  name="birthDate"
+                  ngbDatepicker
+                  #birthDateDp="ngbDatepicker"
+                  formControlName="birthDate"
+                />
+                <button type="button" class="btn btn-secondary" (click)="birthDateDp.toggle()">
+                  <fa-icon icon="calendar-alt"></fa-icon>
                 </button>
               </div>
-            }
-            <input type="file" id="file_bioImage" data-cy="bioImage" (change)="setFileData($event, 'bioImage', true)" accept="image/*" />
+            </div>
+
+            @let emailRef = editForm.get('email')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_email">Email</label>
+              <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+              @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+                <div>
+                  @if (editForm.get('email')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let phoneNumberRef = editForm.get('phoneNumber')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_phoneNumber">Phone Number</label>
+              <input
+                type="text"
+                class="form-control"
+                name="phoneNumber"
+                id="field_phoneNumber"
+                data-cy="phoneNumber"
+                formControlName="phoneNumber"
+              />
+              @if (phoneNumberRef.invalid && (phoneNumberRef.dirty || phoneNumberRef.touched)) {
+                <div>
+                  @if (editForm.get('phoneNumber')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
           </div>
-          <input type="hidden" class="form-control" name="bioImage" id="field_bioImage" data-cy="bioImage" formControlName="bioImage" />
-          <input
-            type="hidden"
-            class="form-control"
-            name="bioImageContentType"
-            id="field_bioImageContentType"
-            formControlName="bioImageContentType"
-          />
-        </div>
-
-        @let userNameRef = editForm.get('userName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_userName">User Name</label>
-          <input type="text" class="form-control" name="userName" id="field_userName" data-cy="userName" formControlName="userName" />
-          @if (userNameRef.invalid && (userNameRef.dirty || userNameRef.touched)) {
-            <div>
-              @if (editForm.get('userName')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <!-- dont want to include
-        @let firstNameRef = editForm.get('firstName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_firstName">First Name</label>
-          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
-          @if (firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)) {
-            <div>
-              @if (editForm.get('firstName')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let lastNameRef = editForm.get('lastName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_lastName">Last Name</label>
-          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
-          @if (lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)) {
-            <div>
-              @if (editForm.get('lastName')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        -->
-
-        <div class="mb-3">
-          <label class="form-label" for="field_gender">Gender</label>
-          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
-            <option [ngValue]="null"></option>
-            @for (gender of genderValues; track $index) {
-              <option [value]="gender">{{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[gender] }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_birthDate">Birth Date</label>
-          <div class="input-group">
-            <input
-              id="field_birthDate"
-              data-cy="birthDate"
-              type="text"
-              class="form-control"
-              name="birthDate"
-              ngbDatepicker
-              #birthDateDp="ngbDatepicker"
-              formControlName="birthDate"
-            />
-            <button type="button" class="btn btn-secondary" (click)="birthDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-          </div>
-        </div>
-
-        @let emailRef = editForm.get('email')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
-            <div>
-              @if (editForm.get('email')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let phoneNumberRef = editForm.get('phoneNumber')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_phoneNumber">Phone Number</label>
-          <input
-            type="text"
-            class="form-control"
-            name="phoneNumber"
-            id="field_phoneNumber"
-            data-cy="phoneNumber"
-            formControlName="phoneNumber"
-          />
-          @if (phoneNumberRef.invalid && (phoneNumberRef.dirty || phoneNumberRef.touched)) {
-            <div>
-              @if (editForm.get('phoneNumber')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_preferences">Preferences</label>
-          <input
-            type="text"
-            class="form-control"
-            name="preferences"
-            id="field_preferences"
-            data-cy="preferences"
-            formControlName="preferences"
-          />
-        </div>
-
-        @let ratingRef = editForm.get('rating')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_rating">Rating</label>
-          <input type="number" class="form-control" name="rating" id="field_rating" data-cy="rating" formControlName="rating" />
-          @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
-            <div>
-              @if (editForm.get('rating')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              @if (editForm.get('rating')?.errors?.min) {
-                <small class="form-text text-danger">This field should be at least 1.</small>
-              }
-              @if (editForm.get('rating')?.errors?.max) {
-                <small class="form-text text-danger">This field cannot be more than 5.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('rating')?.errors?.number">This field should be a number.</small>
-            </div>
-          }
-        </div>
-
-        @let addressRef = editForm.get('address')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_address">Address</label>
-          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
-          @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {
-            <div>
-              @if (editForm.get('address')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
         </div>
       </div>
 
