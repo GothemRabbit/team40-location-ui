@@ -43,11 +43,11 @@
                 <fa-icon icon="user" class="avatar"></fa-icon>
                 <a [routerLink]="['/review', review.id, 'view']">user{{ review.id }}</a>
               </p>
-              <p id="rates">
+              <span id="rates">
                 <span *ngFor="let reviews of [0, 1, 2, 3, 4]">
                   {{ reviews < (review.rating || 0) ? '&#9733;' : '&#9734;' }}
                 </span>
-              </p>
+              </span>
             </div>
             <p id="dialogue">
               {{ review.reviewText }}
