@@ -1,117 +1,133 @@
-<!--<div class="col-8">-->
-@if (item(); as itemRef) {
-  <div class="breadcrumb">
-    <a class="home-page" href="#"> Home</a> > <a class="category" href="#"> Clothes</a> >
-    <span class="item-title">{{ itemRef.itemTitle }}</span>
-  </div>
-  <div class="back-button">
-    <a href="javascript:history.back()">< Back</a>
-  </div>
-  <div>
-    <jhi-alert-error></jhi-alert-error>
-    <jhi-alert></jhi-alert>
+<div class="container">
+  @if (item(); as itemRef) {
+    <div class="breadcrumb">
+      <a class="home-page" href="#"> Home</a> > <a class="category" href="#"> Clothes</a> >
+      <span class="item-title">{{ itemRef.itemTitle }}</span>
+    </div>
 
-    <section class="product-container">
-      <div class="product-image">
-        @if (itemRef.itemImage) {
-          <div>
-            <a (click)="openFile(itemRef.itemImage ?? '', itemRef.itemImageContentType)">
-              <img [src]="'data:' + itemRef.itemImageContentType + ';base64,' + itemRef.itemImage" style="max-width: 100%" alt="item" />
-            </a>
-          </div>
+    <div class="back-button">
+      <a href="javascript:history.back()">< Back</a>
+    </div>
+
+    <div>
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
+
+      <section class="product-container">
+        <div class="product-image">
+          @if (itemRef.itemImage) {
+            <div>
+              <a (click)="openFile(itemRef.itemImage ?? '', itemRef.itemImageContentType)">
+                <img [src]="'data:' + itemRef.itemImageContentType + ';base64,' + itemRef.itemImage" style="max-width: 100%" alt="item" />
+              </a>
+            </div>
+            <div class="thumbnails">
+              <img src="image1.jpg" alt="thumb" />
+              <img src="image2.jpg" alt="thumb" />
+              <img src="image3.jpg" alt="thumb" />
+              <img src="image4.jpg" alt="thumb" />
+            </div>
+          }
           <div class="itemLike">
             <dt><span>Hearts</span></dt>
             <dd>
               <span>{{ itemRef.itemLike }}</span>
             </dd>
           </div>
-        }
-      </div>
-      <div class="product-details">
-        <div class="top">
-          <div class="title-price">
-            <dt>
-              <span>{{ itemRef.itemTitle }}</span>
-            </dt>
-            <dt>
-              <span>£ {{ itemRef.itemPrice }}</span>
-            </dt>
-          </div>
-          <div class="brand-size">
-            <dt>
-              <span>Brand - {{ itemRef.itemSize }}</span>
-            </dt>
-          </div>
-          <div class="timeListed">
-            <dd>
-              <span>Listed on {{ itemRef.timeListed | formatMediumDate }}</span>
-            </dd>
-          </div>
         </div>
-        <div class="details">
-          <div class="details-left">
-            <dt><span>Brand</span></dt>
-            <dt><span>Size</span></dt>
-            <dt><span>Item Condition</span></dt>
-            <dt><span>Item Colour</span></dt>
-            <dt><span>Item Category</span></dt>
-            <dt><span>Meet-up Location</span></dt>
-            <dt><span>Views</span></dt>
-            <dt><span>Interested</span></dt>
-          </div>
-          <div class="details-right">
-            <dd><span>Brand</span></dd>
-            <dd>
-              <span>{{ itemRef.itemSize }}</span>
-            </dd>
-            <dd>
-              <span>{{
-                {
-                  null: '',
-                  BRANDNEW: 'Brand New',
-                  LIKENEW: 'Like New',
-                  FAIRLYUSED: 'Fairly Used',
-                  WELLUSED: 'Well Used',
-                  HEAVILYUSED: 'Heavily Used',
-                }[itemRef.itemCondition ?? 'null']
-              }}</span>
-            </dd>
-            <dd>
-              <span>{{ itemRef.itemColour }}</span>
-            </dd>
-            <dd>
-              <span>{{
-                {
-                  null: '',
-                  FOOTWEAR: 'Foot Wear',
-                  CLOTHING: 'Clothing',
-                  HEADWEAR: 'Head Wear',
-                  ELECTRONICS: 'Electronics',
-                  HOBBIES: 'Hobbies',
-                  BAGS: 'Bags',
-                  OTHERS: 'Others',
-                }[itemRef.itemCategory ?? 'null']
-              }}</span>
-            </dd>
-            <dt><span>Meet-up Location</span></dt>
-            <dt><span>No of views</span></dt>
-            <dt><span>No of likes</span></dt>
-          </div>
-        </div>
-        <div class="description">
-          <dt><span>Description</span></dt>
-          <dd>
-            <span>{{ itemRef.description }}</span>
-          </dd>
-        </div>
-      </div>
-    </section>
 
-    <dl class="row-md jh-entity-details"></dl>
+        <div class="product-details">
+          <div class="top">
+            <div class="title-price">
+              <dt>
+                <span>{{ itemRef.itemTitle }}</span>
+              </dt>
+              <dt>
+                <span>£ {{ itemRef.itemPrice }}</span>
+              </dt>
+            </div>
+            <div class="brand-size">
+              <dt>
+                <span>Brand - {{ itemRef.itemSize }}</span>
+              </dt>
+            </div>
+            <div class="timeListed">
+              <dd>
+                <span>Listed on {{ itemRef.timeListed | formatMediumDate }}</span>
+              </dd>
+            </div>
+            <hr style="border: 1px solid black; width: 100%" />
+          </div>
+          <div class="details">
+            <div class="details-left">
+              <dt><span>Brand</span></dt>
+              <dt><span>Size</span></dt>
+              <dt><span>Item Condition</span></dt>
+              <dt><span>Item Colour</span></dt>
+              <!--              <dt><span>Item Category</span></dt>-->
+              <dt><span>Meet-up Location</span></dt>
+              <dt><span>Views</span></dt>
+              <dt><span>Interested</span></dt>
+            </div>
+            <div class="details-right">
+              <dt>Brand</dt>
+              <dt>{{ itemRef.itemSize }}</dt>
+              <dt>
+                {{
+                  {
+                    null: '',
+                    BRANDNEW: 'Brand New',
+                    LIKENEW: 'Like New',
+                    FAIRLYUSED: 'Fairly Used',
+                    WELLUSED: 'Well Used',
+                    HEAVILYUSED: 'Heavily Used',
+                  }[itemRef.itemCondition ?? 'null']
+                }}
+              </dt>
+              <dt>{{ itemRef.itemColour }}</dt>
+              <!--              <dt>{{-->
+              <!--                  {-->
+              <!--                    null: '',-->
+              <!--                    FOOTWEAR: 'Foot Wear',-->
+              <!--                    CLOTHING: 'Clothing',-->
+              <!--                    HEADWEAR: 'Head Wear',-->
+              <!--                    ELECTRONICS: 'Electronics',-->
+              <!--                    HOBBIES: 'Hobbies',-->
+              <!--                    BAGS: 'Bags',-->
+              <!--                    OTHERS: 'Others',-->
+              <!--                  }[itemRef.itemCategory ?? 'null']-->
+              <!--                }}</dt>-->
+              <dt>Meet-up Location</dt>
+              <dt>No of views</dt>
+              <dt>No of likes</dt>
+            </div>
+          </div>
+          <hr style="border: 1px solid black; width: 100%" />
+          <div class="description">
+            <dt><span>Description</span></dt>
+            <dd>
+              <span>{{ itemRef.description }}</span>
+            </dd>
+          </div>
+          <hr style="border: 1px solid black; width: 100%" />
+          <div class="seller">
+            <p>By Seller</p>
+            <p>⭐⭐⭐⭐☆</p>
+          </div>
 
-    <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
-      <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-    </button>
-  </div>
-}
-<!--  </div>-->
+          <div class="buttons">
+            <button class="btn btn-yellow">Reserve Item</button>
+            <button class="btn btn-blue">Message Seller</button>
+            <!--            <button class="btn btn-red">Add To Favourite ❤️</button>-->
+          </div>
+        </div>
+      </section>
+
+      <dl class="row-md jh-entity-details"></dl>
+
+      <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  }
+</div>
