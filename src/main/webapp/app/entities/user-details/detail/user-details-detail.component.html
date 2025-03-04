@@ -4,6 +4,8 @@
       <h2 data-cy="userDetailsDetailsHeading"><span>Profile</span></h2>
       <hr />
 
+      <p class="back-text" (click)="previousState()"><fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span></p>
+
       <jhi-alert-error></jhi-alert-error>
       <jhi-alert></jhi-alert>
 
@@ -21,29 +23,23 @@
         </div>
 
         <dl class="profile-details">
-          <dt><span>User Name</span></dt>
           <dd>
-            <span>{{ userDetailsRef.userName }}</span>
+            <span class="username">{{ '@' + userDetailsRef.userName }}</span>
           </dd>
 
-          <dt><span>Preferences</span></dt>
+          <dt><span>REVIEWS</span></dt>
           <dd>
-            <span>{{ userDetailsRef.preferences }}</span>
+            <!--            <span>{{ userDetailsRef.rating }}</span> supposed to take the average rating from database-->
+            <div class="star">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
           </dd>
 
-          <dt><span>Rating</span></dt>
-          <dd>
-            <span>{{ userDetailsRef.rating }}</span>
-          </dd>
-
-          <dt><span>Address</span></dt>
-          <dd>
+          <dt><span>MEETUP LOCATIONS</span></dt>
+          <dd class="address-container">
             <span>{{ userDetailsRef.address }}</span>
+            <button type="button" [routerLink]="['/user-details', userDetailsRef.id, 'edit']" class="btn btn-primary">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
           </dd>
-
-          <button type="button" [routerLink]="['/user-details', userDetailsRef.id, 'edit']" class="btn btn-primary">
-            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-          </button>
         </dl>
       </div>
 
@@ -64,6 +60,9 @@
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'"> Purchase History</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'"> Reviews</a>
+        </li>
       </ul>
 
       <div class="tab-content mt-3">
@@ -81,12 +80,6 @@
           <h3>Purchase History</h3>
           <p>Show user's purchase history here ....</p>
         </div>
-      </div>
-
-      <div class="button-container">
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-        </button>
       </div>
     </div>
   }
