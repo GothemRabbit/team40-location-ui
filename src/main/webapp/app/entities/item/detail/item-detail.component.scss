@@ -39,11 +39,12 @@
   display: flex;
   justify-content: space-between; /* Pushes icons to opposite sides */
   align-items: center;
+  text-transform: capitalize;
+  font-size: 25px;
 }
 
 .brand-size {
   display: flex;
-  //justify-content: left; /* Pushes icons to opposite sides */
   align-items: center;
 }
 
