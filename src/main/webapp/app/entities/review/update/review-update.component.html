@@ -1,6 +1,7 @@
 <div class="page">
   <div class="d-flex justify-content-center">
-    <div class="col-8">
+    <div>
+      <!--class="mb-sm-3-->
       <div class="formBorder">
         <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
           <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Write Your Review!</h2>
@@ -14,18 +15,44 @@
               </div>
             }
 
+            @let reviewDateRef = editForm.get('reviewDate')!;
+            <div class="mb-4">
+              <label class="form-label" for="field_reviewDate"></label>
+              <div class="input-group">
+                <input
+                  id="field_reviewDate"
+                  data-cy="reviewDate"
+                  type="date"
+                  class="date"
+                  name="reviewDate"
+                  ngbDatepicker
+                  #reviewDateDp="ngbDatepicker"
+                  formControlName="reviewDate"
+                  placeholder="date"
+                />
+              </div>
+              @if (reviewDateRef.invalid && (reviewDateRef.dirty || reviewDateRef.touched)) {
+                <div>
+                  @if (editForm.get('reviewDate')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
             @let ratingRef = editForm.get('rating')!;
-            <div class="mb-3">
-              <label class="form-label" for="field_rating">Rating</label>
+            <!-- changing this to stars-->
+            <div class="mb-4">
+              <label class="form-label" for="field_rating"></label>
               <input
+                class="num"
                 type="number"
-                class="form-control"
                 name="rating"
                 min="0"
                 max="5"
                 id="field_rating"
                 data-cy="rating"
                 formControlName="rating"
+                placeholder="rating"
               />
               @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
                 <div>
@@ -44,38 +71,15 @@
                 </div>
               }
             </div>
-
-            @let reviewDateRef = editForm.get('reviewDate')!;
-            <div class="mb-3">
-              <label class="form-label" for="field_reviewDate">Date</label>
-              <div class="input-group">
-                <input
-                  id="field_reviewDate"
-                  data-cy="reviewDate"
-                  type="date"
-                  class="form-control"
-                  name="reviewDate"
-                  ngbDatepicker
-                  #reviewDateDp="ngbDatepicker"
-                  formControlName="reviewDate"
-                />
-              </div>
-              @if (reviewDateRef.invalid && (reviewDateRef.dirty || reviewDateRef.touched)) {
-                <div>
-                  @if (editForm.get('reviewDate')?.errors?.required) {
-                    <small class="form-text text-danger">This field is required.</small>
-                  }
-                </div>
-              }
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="field_reviewText">Give us your review!</label>
+            <div>
+              <label class="form-label" for="field_reviewText"></label>
+              <!--class="form-control"-->
               <textarea
-                class="form-control"
                 name="reviewText"
                 id="field_reviewText"
                 data-cy="reviewText"
                 formControlName="reviewText"
+                placeholder="review"
               ></textarea>
             </div>
           </div>
