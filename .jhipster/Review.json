@@ -3,6 +3,7 @@
     "changelogDate": "20250213120524"
   },
   "applications": "*",
+  "dto": "mapstruct",
   "fields": [
     {
       "fieldName": "rating",
@@ -12,16 +13,33 @@
       "fieldValidateRulesMin": "0"
     },
     {
-      "fieldName": "reviewText",
-      "fieldType": "TextBlob"
+      "fieldName": "comments",
+      "fieldType": "TextBlob",
+      "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "reviewDate",
+      "fieldName": "date",
       "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     }
   ],
   "name": "Review",
-  "relationships": [],
-  "searchEngine": "no"
+  "relationships": [
+    {
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "buyersReview",
+      "relationshipName": "buyer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "reviewsOfSeller",
+      "relationshipName": "seller",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
 }

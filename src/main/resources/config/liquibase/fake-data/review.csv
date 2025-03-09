@@ -1,4 +1,4 @@
-id;rating;review_text;review_date
+id;rating;comments;date
 1;4;../fake-data/blob/hipster.txt;2025-02-13
 2;4;../fake-data/blob/hipster.txt;2025-02-13
 3;1;../fake-data/blob/hipster.txt;2025-02-12

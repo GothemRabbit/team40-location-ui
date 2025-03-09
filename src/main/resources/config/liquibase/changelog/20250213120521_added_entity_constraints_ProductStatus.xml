@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity ProductStatus.
+    -->
+    <changeSet id="20250213120521-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="item_id"
+                                 baseTableName="product_status"
+                                 constraintName="fk_product_status__item_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="conversation_id"
+                                 baseTableName="product_status"
+                                 constraintName="fk_product_status__conversation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="conversation"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="buyer_id"
+                                 baseTableName="product_status"
+                                 constraintName="fk_product_status__buyer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_details"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="seller_id"
+                                 baseTableName="product_status"
+                                 constraintName="fk_product_status__seller_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_details"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="meeting_location_id"
+                                 baseTableName="product_status"
+                                 constraintName="fk_product_status__meeting_location_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="location"
+                                 />
+    </changeSet>
+</databaseChangeLog>

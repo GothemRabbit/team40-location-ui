@@ -1,4 +1,5 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, NgZone, OnInit, WritableSignal, computed, inject, signal } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,10 +8,14 @@ import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { FormsModule } from '@angular/forms';
+
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
-import { IProductStatus } from '../product-status.model';
+import { ParseLinks } from 'app/core/util/parse-links.service';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { EntityArrayResponseType, ProductStatusService } from '../service/product-status.service';
 import { ProductStatusDeleteDialogComponent } from '../delete/product-status-delete-dialog.component';
+import { IProductStatus } from '../product-status.model';
 
 @Component({
   standalone: true,
@@ -25,6 +30,7 @@ import { ProductStatusDeleteDialogComponent } from '../delete/product-status-del
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    InfiniteScrollDirective,
   ],
 })
 export class ProductStatusComponent implements OnInit {
@@ -34,10 +40,16 @@ export class ProductStatusComponent implements OnInit {
 
   sortState = sortStateSignal({});
 
+  itemsPerPage = ITEMS_PER_PAGE;
+  links: WritableSignal<Record<string, undefined | Record<string, string | undefined>>> = signal({});
+  hasMorePage = computed(() => !!this.links().next);
+  isFirstFetch = computed(() => Object.keys(this.links()).length === 0);
+
   public readonly router = inject(Router);
   protected readonly productStatusService = inject(ProductStatusService);
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
+  protected parseLinks = inject(ParseLinks);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
@@ -47,13 +59,18 @@ export class ProductStatusComponent implements OnInit {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => {
-          if (!this.productStatuses || this.productStatuses.length === 0) {
-            this.load();
-          }
-        }),
+        tap(() => this.reset()),
+        tap(() => this.load()),
       )
       .subscribe();
+  }
+
+  reset(): void {
+    this.productStatuses = [];
+  }
+
+  loadNextPage(): void {
+    this.load();
   }
 
   delete(productStatus: IProductStatus): void {
@@ -85,31 +102,57 @@ export class ProductStatusComponent implements OnInit {
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
+    this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.productStatuses = this.refineData(dataFromBody);
-  }
-
-  protected refineData(data: IProductStatus[]): IProductStatus[] {
-    const { predicate, order } = this.sortState();
-    return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
+    this.productStatuses = dataFromBody;
   }
 
   protected fillComponentAttributesFromResponseBody(data: IProductStatus[] | null): IProductStatus[] {
+    // If there is previous link, data is a infinite scroll pagination content.
+    if (this.links().prev) {
+      const productStatusesNew = this.productStatuses ?? [];
+      if (data) {
+        for (const d of data) {
+          if (productStatusesNew.some(op => op.id === d.id)) {
+            productStatusesNew.push(d);
+          }
+        }
+      }
+      return productStatusesNew;
+    }
     return data ?? [];
+  }
+
+  protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
+    const linkHeader = headers.get('link');
+    if (linkHeader) {
+      this.links.set(this.parseLinks.parseAll(linkHeader));
+    } else {
+      this.links.set({});
+    }
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
     this.isLoading = true;
     const queryObject: any = {
-      sort: this.sortService.buildSortParam(this.sortState()),
+      size: this.itemsPerPage,
     };
+    if (this.hasMorePage()) {
+      Object.assign(queryObject, this.links().next);
+    } else if (this.isFirstFetch()) {
+      Object.assign(queryObject, { sort: this.sortService.buildSortParam(this.sortState()) });
+    }
+
     return this.productStatusService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(sortState: SortState): void {
+    this.links.set({});
+
     const queryParamsObj = {
       sort: this.sortService.buildSortParam(sortState),
     };
+
     this.ngZone.run(() => {
       this.router.navigate(['./'], {
         relativeTo: this.activatedRoute,

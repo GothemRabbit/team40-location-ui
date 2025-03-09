@@ -1,67 +1,37 @@
-<div id="page">
+<div>
   <h2 id="page-heading" data-cy="ReviewHeading">
     <span>Reviews</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-review"
+        [routerLink]="['/review/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Review</span>
+      </button>
+    </div>
   </h2>
+
   <jhi-alert-error></jhi-alert-error>
+
   <jhi-alert></jhi-alert>
+
   @if (reviews?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>No Reviews found</span>
     </div>
   }
-  @if (reviews && reviews.length > 0) {
-    <div id="box" class="d-flex justify-content-center">
-      <div class="ratingBoxLeft">
-        <div class="avRating">
-          <h2>reviews of user</h2>
-          <h1>3</h1>
-          <div class="star">&#9733;&#9733;&#9733;&#9734;&#9734;</div>
-          <p>{{ reviews.length }} reviews</p>
-          <p>give us your review we would love to hear your thought on our sellers</p>
-        </div>
-        <div class="d-flex justify-content-center">
-          <button class="btn me-2" (click)="load()" [disabled]="isLoading">
-            <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-            <span>Refresh list</span>
-          </button>
-          <button
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-            class="btn jh-create-entity create-review"
-            [routerLink]="['/review/new']"
-          >
-            <span>Write a Review!</span>
-          </button>
-        </div>
-      </div>
-      <div class="scrollbarBoxRight">
-        @for (review of reviews; track trackId(review)) {
-          <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
-            <div style="display: flex; justify-content: space-between">
-              <p id="userName">
-                <fa-icon icon="user" class="avatar"></fa-icon>
-                <a [routerLink]="['/review', review.id, 'view']">user{{ review.id }}</a>
-              </p>
-              <p id="rates">
-                <span *ngFor="let reviews of [1, 2, 3, 4, 5]">
-                  {{ reviews > (review.rating || 0) ? '&#9734;' : '&#9733;' }}
-                </span>
-              </p>
-            </div>
-            <p id="dialogue">
-              {{ review.reviewText }}
-            </p>
-            <p id="date">
-              {{ review.reviewDate | formatMediumDate }}
-            </p>
-          </div>
-        }
-      </div>
-    </div>
-  }
-</div>
 
-<!--    <div class="table-responsive table-entities" id="entities">
+  @if (reviews && reviews.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
@@ -79,16 +49,29 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="reviewText">
+            <th scope="col" jhiSortBy="comments">
               <div class="d-flex">
-                <span>Review Text</span>
+                <span>Comments</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="reviewDate">
+            <th scope="col" jhiSortBy="date">
               <div class="d-flex">
-                <span>Review Date</span>
+                <span>Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="buyer.id">
+              <div class="d-flex">
+                <span>Buyer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="seller.id">
+              <div class="d-flex">
+                <span>Seller</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -101,26 +84,36 @@
               <td>
                 <a [routerLink]="['/review', review.id, 'view']">{{ review.id }}</a>
               </td>
+              <td>{{ review.rating }}</td>
+              <td>{{ review.comments }}</td>
+              <td>{{ review.date | formatMediumDate }}</td>
               <td>
-                {{ review.rating }}
+                @if (review.buyer) {
+                  <div>
+                    <a [routerLink]="['/user-details', review.buyer.id, 'view']">{{ review.buyer.id }}</a>
+                  </div>
+                }
               </td>
               <td>
-                {{ review.reviewText }}
+                @if (review.seller) {
+                  <div>
+                    <a [routerLink]="['/user-details', review.seller.id, 'view']">{{ review.seller.id }}</a>
+                  </div>
+                }
               </td>
-              <td>{{ review.reviewDate | formatMediumDate }}</td>
               <td class="text-end">
                 <div class="btn-group">
-                  <a [routerLink]="['/review', review.id, 'view']" class="btn btn-sm" data-cy="entityDetailsButton">
+                  <a [routerLink]="['/review', review.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline">View</span>
                   </a>
 
-                  <a [routerLink]="['/review', review.id, 'edit']" class="btn btn-sm" data-cy="entityEditButton">
+                  <a [routerLink]="['/review', review.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
                     <span class="d-none d-md-inline">Edit</span>
                   </a>
 
-                  <button type="submit" (click)="delete(review)" class="btn btn-sm" data-cy="entityDeleteButton">
+                  <button type="submit" (click)="delete(review)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
                     <span class="d-none d-md-inline">Delete</span>
                   </button>
@@ -130,4 +123,6 @@
           }
         </tbody>
       </table>
-    </div> -->
+    </div>
+  }
+</div>

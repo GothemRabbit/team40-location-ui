@@ -1,4 +1,5 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, NgZone, OnInit, WritableSignal, computed, inject, signal } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,17 +8,20 @@ import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { FormsModule } from '@angular/forms';
+
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { DataUtils } from 'app/core/util/data-util.service';
-import { IItem } from '../item.model';
-import { EntityArrayResponseType, ItemService } from '../service/item.service';
+import { ParseLinks } from 'app/core/util/parse-links.service';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.component';
+import { EntityArrayResponseType, ItemService } from '../service/item.service';
+import { IItem } from '../item.model';
 
 @Component({
   standalone: true,
   selector: 'jhi-item',
   templateUrl: './item.component.html',
-  styleUrl: './item.component.scss',
   imports: [
     RouterModule,
     FormsModule,
@@ -27,6 +31,7 @@ import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.componen
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    InfiniteScrollDirective,
   ],
 })
 export class ItemComponent implements OnInit {
@@ -36,10 +41,16 @@ export class ItemComponent implements OnInit {
 
   sortState = sortStateSignal({});
 
+  itemsPerPage = ITEMS_PER_PAGE;
+  links: WritableSignal<Record<string, undefined | Record<string, string | undefined>>> = signal({});
+  hasMorePage = computed(() => !!this.links().next);
+  isFirstFetch = computed(() => Object.keys(this.links()).length === 0);
+
   public readonly router = inject(Router);
   protected readonly itemService = inject(ItemService);
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
+  protected parseLinks = inject(ParseLinks);
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
@@ -50,13 +61,18 @@ export class ItemComponent implements OnInit {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => {
-          if (!this.items || this.items.length === 0) {
-            this.load();
-          }
-        }),
+        tap(() => this.reset()),
+        tap(() => this.load()),
       )
       .subscribe();
+  }
+
+  reset(): void {
+    this.items = [];
+  }
+
+  loadNextPage(): void {
+    this.load();
   }
 
   byteSize(base64String: string): string {
@@ -65,16 +81,6 @@ export class ItemComponent implements OnInit {
 
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
-  }
-
-  // ⭐ Toggle Heart Icon (Full/Empty)
-  toggleHeart(item: IItem): void {
-    item.itemLike = !item.itemLike;
-  }
-
-  // ⭐ Toggle Dropdown Visibility
-  toggleDropdown(item: IItem): void {
-    item.dropDown = !item.dropDown;
   }
 
   delete(item: IItem): void {
@@ -105,34 +111,55 @@ export class ItemComponent implements OnInit {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
-  // Modify the items list to include heart & dropdown properties
   protected onResponseSuccess(response: EntityArrayResponseType): void {
+    this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.items = this.refineData(dataFromBody).map(item => ({
-      ...item,
-      isFavorite: false, // Default heart state
-      showDropdown: false, // Default dropdown state
-    }));
-  }
-
-  protected refineData(data: IItem[]): IItem[] {
-    const { predicate, order } = this.sortState();
-    return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
+    this.items = dataFromBody;
   }
 
   protected fillComponentAttributesFromResponseBody(data: IItem[] | null): IItem[] {
+    // If there is previous link, data is a infinite scroll pagination content.
+    if (this.links().prev) {
+      const itemsNew = this.items ?? [];
+      if (data) {
+        for (const d of data) {
+          if (itemsNew.some(op => op.id === d.id)) {
+            itemsNew.push(d);
+          }
+        }
+      }
+      return itemsNew;
+    }
     return data ?? [];
+  }
+
+  protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
+    const linkHeader = headers.get('link');
+    if (linkHeader) {
+      this.links.set(this.parseLinks.parseAll(linkHeader));
+    } else {
+      this.links.set({});
+    }
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
     this.isLoading = true;
     const queryObject: any = {
-      sort: this.sortService.buildSortParam(this.sortState()),
+      size: this.itemsPerPage,
+      eagerload: true,
     };
+    if (this.hasMorePage()) {
+      Object.assign(queryObject, this.links().next);
+    } else if (this.isFirstFetch()) {
+      Object.assign(queryObject, { sort: this.sortService.buildSortParam(this.sortState()) });
+    }
+
     return this.itemService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(sortState: SortState): void {
+    this.links.set({});
+
     const queryParamsObj = {
       sort: this.sortService.buildSortParam(sortState),
     };

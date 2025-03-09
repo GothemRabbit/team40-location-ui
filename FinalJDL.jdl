@@ -162,7 +162,7 @@ relationship OneToMany {
   UserDetails to Wishlist
 }
 
-pagination Item, ProductStatus  with infinite-scroll
+paginate Item, ProductStatus with infinite-scroll
 filter Item
 dto * with mapstruct
-use serviceclass for *
+service * with serviceClass

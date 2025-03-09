@@ -20,16 +20,16 @@ describe('Item Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            itemTitle: expect.any(Object),
-            itemPrice: expect.any(Object),
-            itemSize: expect.any(Object),
-            itemCondition: expect.any(Object),
-            itemCategory: expect.any(Object),
+            title: expect.any(Object),
+            price: expect.any(Object),
+            condition: expect.any(Object),
+            category: expect.any(Object),
             description: expect.any(Object),
-            itemColour: expect.any(Object),
-            itemImage: expect.any(Object),
+            brand: expect.any(Object),
+            colour: expect.any(Object),
             timeListed: expect.any(Object),
-            itemLike: expect.any(Object),
+            wishlists: expect.any(Object),
+            seller: expect.any(Object),
           }),
         );
       });
@@ -40,16 +40,16 @@ describe('Item Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            itemTitle: expect.any(Object),
-            itemPrice: expect.any(Object),
-            itemSize: expect.any(Object),
-            itemCondition: expect.any(Object),
-            itemCategory: expect.any(Object),
+            title: expect.any(Object),
+            price: expect.any(Object),
+            condition: expect.any(Object),
+            category: expect.any(Object),
             description: expect.any(Object),
-            itemColour: expect.any(Object),
-            itemImage: expect.any(Object),
+            brand: expect.any(Object),
+            colour: expect.any(Object),
             timeListed: expect.any(Object),
-            itemLike: expect.any(Object),
+            wishlists: expect.any(Object),
+            seller: expect.any(Object),
           }),
         );
       });

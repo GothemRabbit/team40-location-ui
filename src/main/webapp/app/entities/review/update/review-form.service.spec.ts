@@ -21,8 +21,10 @@ describe('Review Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             rating: expect.any(Object),
-            reviewText: expect.any(Object),
-            reviewDate: expect.any(Object),
+            comments: expect.any(Object),
+            date: expect.any(Object),
+            buyer: expect.any(Object),
+            seller: expect.any(Object),
           }),
         );
       });
@@ -34,8 +36,10 @@ describe('Review Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             rating: expect.any(Object),
-            reviewText: expect.any(Object),
-            reviewDate: expect.any(Object),
+            comments: expect.any(Object),
+            date: expect.any(Object),
+            buyer: expect.any(Object),
+            seller: expect.any(Object),
           }),
         );
       });

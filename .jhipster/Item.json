@@ -3,29 +3,29 @@
     "changelogDate": "20250213120518"
   },
   "applications": "*",
+  "dto": "mapstruct",
   "fields": [
     {
-      "fieldName": "itemTitle",
+      "fieldName": "title",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "100",
+      "fieldValidateRulesMinlength": "3"
     },
     {
-      "fieldName": "itemPrice",
-      "fieldType": "BigDecimal",
-      "fieldValidateRules": ["required"]
+      "fieldName": "price",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
     },
     {
-      "fieldName": "itemSize",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "itemCondition",
+      "fieldName": "condition",
       "fieldType": "Condition",
       "fieldValidateRules": ["required"],
       "fieldValues": "BRANDNEW,LIKENEW,FAIRLYUSED,WELLUSED,HEAVILYUSED"
     },
     {
-      "fieldName": "itemCategory",
+      "fieldName": "category",
       "fieldType": "Category",
       "fieldValidateRules": ["required"],
       "fieldValues": "FOOTWEAR,CLOTHING,HEADWEAR,ELECTRONICS,HOBBIES,BAGS,OTHERS"
@@ -35,25 +35,51 @@
       "fieldType": "TextBlob"
     },
     {
-      "fieldName": "itemColour",
+      "fieldName": "brand",
       "fieldType": "String"
     },
     {
-      "fieldName": "itemImage",
-      "fieldType": "ImageBlob",
-      "fieldValidateRules": ["required"]
+      "fieldName": "colour",
+      "fieldType": "String"
     },
     {
       "fieldName": "timeListed",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "itemLike",
-      "fieldType": "Boolean"
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Item",
-  "relationships": [],
-  "searchEngine": "no"
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "images",
+      "relationshipName": "images",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "wishlist",
+      "otherEntityRelationshipName": "items",
+      "relationshipName": "wishlist",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "productStatus",
+      "otherEntityRelationshipName": "item",
+      "relationshipName": "productStatus",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "itemsOnSale",
+      "relationshipName": "seller",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
 }

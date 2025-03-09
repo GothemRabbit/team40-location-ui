@@ -4,6 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
+import { IUserDetails } from 'app/entities/user-details/user-details.model';
+import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 import { ConversationService } from '../service/conversation.service';
 import { IConversation } from '../conversation.model';
 import { ConversationFormService } from './conversation-form.service';
@@ -16,6 +18,7 @@ describe('Conversation Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let conversationFormService: ConversationFormService;
   let conversationService: ConversationService;
+  let userDetailsService: UserDetailsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,17 +41,43 @@ describe('Conversation Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     conversationFormService = TestBed.inject(ConversationFormService);
     conversationService = TestBed.inject(ConversationService);
+    userDetailsService = TestBed.inject(UserDetailsService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should update editForm', () => {
+    it('Should call UserDetails query and add missing value', () => {
       const conversation: IConversation = { id: 456 };
+      const participants: IUserDetails[] = [{ id: 3500 }];
+      conversation.participants = participants;
+
+      const userDetailsCollection: IUserDetails[] = [{ id: 1502 }];
+      jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
+      const additionalUserDetails = [...participants];
+      const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
+      jest.spyOn(userDetailsService, 'addUserDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ conversation });
       comp.ngOnInit();
 
+      expect(userDetailsService.query).toHaveBeenCalled();
+      expect(userDetailsService.addUserDetailsToCollectionIfMissing).toHaveBeenCalledWith(
+        userDetailsCollection,
+        ...additionalUserDetails.map(expect.objectContaining),
+      );
+      expect(comp.userDetailsSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should update editForm', () => {
+      const conversation: IConversation = { id: 456 };
+      const participants: IUserDetails = { id: 25739 };
+      conversation.participants = [participants];
+
+      activatedRoute.data = of({ conversation });
+      comp.ngOnInit();
+
+      expect(comp.userDetailsSharedCollection).toContain(participants);
       expect(comp.conversation).toEqual(conversation);
     });
   });
@@ -118,6 +147,18 @@ describe('Conversation Management Update Component', () => {
       expect(conversationService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Compare relationships', () => {
+    describe('compareUserDetails', () => {
+      it('Should forward to userDetailsService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(userDetailsService, 'compareUserDetails');
+        comp.compareUserDetails(entity, entity2);
+        expect(userDetailsService.compareUserDetails).toHaveBeenCalledWith(entity, entity2);
+      });
     });
   });
 });

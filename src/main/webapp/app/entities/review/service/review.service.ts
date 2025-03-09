@@ -12,8 +12,8 @@ import { IReview, NewReview } from '../review.model';
 
 export type PartialUpdateReview = Partial<IReview> & Pick<IReview, 'id'>;
 
-type RestOf<T extends IReview | NewReview> = Omit<T, 'reviewDate'> & {
-  reviewDate?: string | null;
+type RestOf<T extends IReview | NewReview> = Omit<T, 'date'> & {
+  date?: string | null;
 };
 
 export type RestReview = RestOf<IReview>;
@@ -101,14 +101,14 @@ export class ReviewService {
   protected convertDateFromClient<T extends IReview | NewReview | PartialUpdateReview>(review: T): RestOf<T> {
     return {
       ...review,
-      reviewDate: review.reviewDate?.format(DATE_FORMAT) ?? null,
+      date: review.date?.format(DATE_FORMAT) ?? null,
     };
   }
 
   protected convertDateFromServer(restReview: RestReview): IReview {
     return {
       ...restReview,
-      reviewDate: restReview.reviewDate ? dayjs(restReview.reviewDate) : undefined,
+      date: restReview.date ? dayjs(restReview.date) : undefined,
     };
   }
 

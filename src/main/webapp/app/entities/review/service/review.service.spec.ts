@@ -10,7 +10,7 @@ import { RestReview, ReviewService } from './review.service';
 
 const requireRestSample: RestReview = {
   ...sampleWithRequiredData,
-  reviewDate: sampleWithRequiredData.reviewDate?.format(DATE_FORMAT),
+  date: sampleWithRequiredData.date?.format(DATE_FORMAT),
 };
 
 describe('Review Service', () => {

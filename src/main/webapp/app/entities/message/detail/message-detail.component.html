@@ -23,6 +23,26 @@
           <dd>
             <span>{{ messageRef.timestamp | formatMediumDatetime }}</span>
           </dd>
+          <dt><span>Is Read</span></dt>
+          <dd>
+            <span>{{ messageRef.isRead }}</span>
+          </dd>
+          <dt><span>Convo</span></dt>
+          <dd>
+            @if (message()!.convo) {
+              <div>
+                <a [routerLink]="['/conversation', message()!.convo?.id, 'view']">{{ messageRef.convo?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Sender</span></dt>
+          <dd>
+            @if (message()!.sender) {
+              <div>
+                <a [routerLink]="['/user-details', message()!.sender?.id, 'view']">{{ messageRef.sender?.id }}</a>
+              </div>
+            }
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

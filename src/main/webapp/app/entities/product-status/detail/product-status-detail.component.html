@@ -1,184 +1,90 @@
-<div class="container">
-  <div class="header">
-    <h1>Product Status Details</h1>
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (productStatus(); as productStatusRef) {
+      <div>
+        <h2 data-cy="productStatusDetailsHeading"><span>Product Status</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ productStatusRef.id }}</span>
+          </dd>
+          <dt><span>Status</span></dt>
+          <dd>
+            <span>{{
+              { null: '', PENDING: 'PENDING', REJECTED: 'REJECTED', RESERVED: 'RESERVED', COMPLETED: 'COMPLETED', CANCELLED: 'CANCELLED' }[
+                productStatusRef.status ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span>Meeting Time</span></dt>
+          <dd>
+            <span>{{ productStatusRef.meetingTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated At</span></dt>
+          <dd>
+            <span>{{ productStatusRef.updatedAt | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Created At</span></dt>
+          <dd>
+            <span>{{ productStatusRef.createdAt | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Item</span></dt>
+          <dd>
+            @if (productStatus()!.item) {
+              <div>
+                <a [routerLink]="['/item', productStatus()!.item?.id, 'view']">{{ productStatusRef.item?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Conversation</span></dt>
+          <dd>
+            @if (productStatus()!.conversation) {
+              <div>
+                <a [routerLink]="['/conversation', productStatus()!.conversation?.id, 'view']">{{ productStatusRef.conversation?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Buyer</span></dt>
+          <dd>
+            @if (productStatus()!.buyer) {
+              <div>
+                <a [routerLink]="['/user-details', productStatus()!.buyer?.id, 'view']">{{ productStatusRef.buyer?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Seller</span></dt>
+          <dd>
+            @if (productStatus()!.seller) {
+              <div>
+                <a [routerLink]="['/user-details', productStatus()!.seller?.id, 'view']">{{ productStatusRef.seller?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Meeting Location</span></dt>
+          <dd>
+            @if (productStatus()!.meetingLocation) {
+              <div>
+                <a [routerLink]="['/location', productStatus()!.meetingLocation?.id, 'view']">{{ productStatusRef.meetingLocation?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/product-status', productStatusRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
   </div>
-
-  <jhi-alert-error></jhi-alert-error>
-  <jhi-alert></jhi-alert>
-
-  @if (productStatus(); as productStatusRef) {
-    <div class="card">
-      <div class="card-content">
-        <div class="details">
-          <h2 data-cy="productStatusDetailsHeading">Product Status</h2>
-          <dl class="details-list">
-            <dt>ID</dt>
-            <dd>{{ productStatusRef.id }}</dd>
-            <dt>Status</dt>
-            <dd>
-              {{
-                {
-                  null: '',
-                  AVAILABLE: 'AVAILABLE',
-                  PENDING: 'PENDING',
-                  RESERVED: 'RESERVED123',
-                  COMPLETED: 'COMPLETED',
-                  CANCELLED: 'CANCELLED',
-                }[productStatusRef.status ?? 'null']
-              }}
-            </dd>
-            <dt>Meeting Time</dt>
-            <dd>{{ productStatusRef.meetingTime | formatMediumDatetime }}</dd>
-            <dt>Meeting Location</dt>
-            <dd>{{ productStatusRef.meetingLocation }}</dd>
-            <dt>Chat Link</dt>
-            <dd>{{ productStatusRef.chatLink }}</dd>
-            <dt>Created At</dt>
-            <dd>{{ productStatusRef.createdAt | formatMediumDatetime }}</dd>
-            <dt>Updated At</dt>
-            <dd>{{ productStatusRef.updatedAt | formatMediumDatetime }}</dd>
-          </dl>
-        </div>
-        <div class="thumbnail">
-          <span>X</span>
-        </div>
-      </div>
-      <div class="status-actions">
-        <div class="actions">
-          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-            <fa-icon icon="arrow-left"></fa-icon> <span>Back</span>
-          </button>
-          <button type="button" [routerLink]="['/product-status', productStatusRef.id, 'edit']" class="btn btn-primary">
-            <fa-icon icon="pencil-alt"></fa-icon> <span>Edit</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  }
 </div>
-
-<style>
-  .container {
-    max-width: 1000px;
-    margin: 40px auto;
-    font-family:
-      'SF Pro Display',
-      -apple-system,
-      sans-serif;
-  }
-
-  .header {
-    margin-bottom: 30px;
-  }
-
-  h1,
-  h2 {
-    font-weight: 600;
-    color: #1d1d1f;
-    margin: 0 0 20px;
-  }
-
-  h1 {
-    font-size: 32px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  .card {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
-    overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-content {
-    padding: 20px;
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .details {
-    flex: 1;
-    color: #1d1d1f;
-  }
-
-  .details-list {
-    display: grid;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .details-list dt {
-    font-weight: 600;
-    color: #1d1d1f;
-    margin-bottom: 5px;
-    font-size: 16px;
-  }
-
-  .details-list dd {
-    margin: 0 0 15px;
-    color: #6e6e73;
-    font-size: 14px;
-    word-wrap: break-word;
-  }
-
-  .thumbnail {
-    width: 300px;
-    height: 300px;
-    background: #f5f5f7;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #86868b;
-    font-size: 24px;
-    flex-shrink: 0;
-    order: 2; /* 确保缩略图在右侧 */
-  }
-
-  .status-actions {
-    padding: 20px;
-    text-align: right;
-  }
-
-  .actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .btn {
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-weight: 500;
-    border: none;
-    transition: all 0.2s ease;
-  }
-
-  .btn-info {
-    background: #6fa8dc;
-    color: white;
-  }
-
-  .btn-primary {
-    background: #007bff;
-    color: white;
-  }
-
-  .btn:hover {
-    opacity: 0.9;
-  }
-</style>

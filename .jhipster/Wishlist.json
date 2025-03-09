@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20250309145854"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "visibility",
+      "fieldType": "VisibilityType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PRIVATE,PUBLIC"
+    }
+  ],
+  "name": "Wishlist",
+  "relationships": [
+    {
+      "otherEntityName": "userDetails",
+      "otherEntityRelationshipName": "wishlist",
+      "relationshipName": "userDetails",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "item",
+      "otherEntityRelationshipName": "wishlist",
+      "relationshipName": "items",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

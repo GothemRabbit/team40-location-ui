@@ -1,5 +1,6 @@
 package bham.team.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -31,6 +32,21 @@ public class Message implements Serializable {
     @NotNull
     @Column(name = "timestamp", nullable = false)
     private Instant timestamp;
+
+    @NotNull
+    @Column(name = "is_read", nullable = false)
+    private Boolean isRead;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "participants", "productStatus", "messages" }, allowSetters = true)
+    private Conversation convo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        allowSetters = true
+    )
+    private UserDetails sender;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -73,6 +89,45 @@ public class Message implements Serializable {
         this.timestamp = timestamp;
     }
 
+    public Boolean getIsRead() {
+        return this.isRead;
+    }
+
+    public Message isRead(Boolean isRead) {
+        this.setIsRead(isRead);
+        return this;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    public Conversation getConvo() {
+        return this.convo;
+    }
+
+    public void setConvo(Conversation conversation) {
+        this.convo = conversation;
+    }
+
+    public Message convo(Conversation conversation) {
+        this.setConvo(conversation);
+        return this;
+    }
+
+    public UserDetails getSender() {
+        return this.sender;
+    }
+
+    public void setSender(UserDetails userDetails) {
+        this.sender = userDetails;
+    }
+
+    public Message sender(UserDetails userDetails) {
+        this.setSender(userDetails);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -99,6 +154,7 @@ public class Message implements Serializable {
             "id=" + getId() +
             ", content='" + getContent() + "'" +
             ", timestamp='" + getTimestamp() + "'" +
+            ", isRead='" + getIsRead() + "'" +
             "}";
     }
 }

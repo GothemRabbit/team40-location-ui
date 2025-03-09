@@ -3,36 +3,63 @@
     "changelogDate": "20250213120521"
   },
   "applications": "*",
+  "dto": "mapstruct",
   "fields": [
     {
       "fieldName": "status",
       "fieldType": "ProductState",
       "fieldValidateRules": ["required"],
-      "fieldValues": "AVAILABLE,PENDING,RESERVED,COMPLETED,CANCELLED"
+      "fieldValues": "PENDING,REJECTED,RESERVED,COMPLETED,CANCELLED"
     },
     {
       "fieldName": "meetingTime",
       "fieldType": "Instant"
     },
     {
-      "fieldName": "meetingLocation",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "chatLink",
-      "fieldType": "String"
+      "fieldName": "updatedAt",
+      "fieldType": "Instant"
     },
     {
       "fieldName": "createdAt",
-      "fieldType": "ZonedDateTime",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "updatedAt",
       "fieldType": "ZonedDateTime"
     }
   ],
   "name": "ProductStatus",
-  "relationships": [],
-  "searchEngine": "no"
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "item",
+      "otherEntityRelationshipName": "productStatus",
+      "relationshipName": "item",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "conversation",
+      "otherEntityRelationshipName": "productStatus",
+      "relationshipName": "conversation",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "relationshipName": "buyer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "relationshipName": "seller",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "location",
+      "relationshipName": "meetingLocation",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
 }

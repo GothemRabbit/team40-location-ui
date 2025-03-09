@@ -1,11 +1,13 @@
-<div class="container">
-  <div class="header">
-    <h1>Product Statuses</h1>
-    <div class="actions">
-      <button class="btn btn-secondary" (click)="load()" [disabled]="isLoading">
+<div>
+  <h2 id="page-heading" data-cy="ProductStatusHeading">
+    <span>Product Statuses</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        Refresh
+        <span>Refresh list</span>
       </button>
+
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -16,339 +18,169 @@
         <span>Create a new Product Status</span>
       </button>
     </div>
-  </div>
+  </h2>
 
   <jhi-alert-error></jhi-alert-error>
+
   <jhi-alert></jhi-alert>
 
   @if (productStatuses?.length === 0) {
-    <div class="empty-state">
-      <p>No Product Status Found</p>
+    <div class="alert alert-warning" id="no-result">
+      <span>No Product Statuses found</span>
     </div>
   }
 
   @if (productStatuses && productStatuses.length > 0) {
-    <!-- ==================== 当前预约 ================ -->
-    <section class="reservation-section">
-      <div class="section-header">
-        <h2>Current Reservations</h2>
-        <button
-          class="sort-btn"
-          (click)="
-            navigateToWithComponentValues({
-              predicate: 'createdAt',
-              order: sortState()?.order === 'desc' ? 'asc' : 'desc',
-            });
-            load()
-          "
-        >
-          Reservations Date
-          <span *ngIf="sortState()?.order === 'desc'">▲</span>
-          <span *ngIf="sortState()?.order !== 'desc'">▼</span>
-        </button>
-      </div>
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
 
-      @for (productStatus of productStatuses; track trackId(productStatus)) {
-        @if (productStatus.status === 'AVAILABLE' || productStatus.status === 'PENDING' || productStatus.status === 'RESERVED') {
-          <a class="card-link" [routerLink]="['/product-status', productStatus.id, 'view']">
-            <div class="card">
-              <div class="card-content">
-                <div class="thumbnail">
-                  <span>X</span>
-                </div>
-                <div class="details">
-                  <h3>Item Title (ID: {{ productStatus.id }})</h3>
-                  <p>Location: {{ productStatus.meetingLocation }}</p>
-                  <p>Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
-                  <!-- Chat 按钮：阻止冒泡 -->
-                  <p>
-                    <a
-                      [href]="productStatus.chatLink"
-                      target="_blank"
-                      class="btn btn-sm btn-info"
-                      style="text-decoration: none"
-                      (click)="$event.stopPropagation()"
-                    >
-                      Chat
-                    </a>
-                  </p>
-                </div>
-                <div class="status-actions">
-                  <span class="status {{ productStatus.status }}">{{ productStatus.status }}</span>
-                  <p>Created: {{ productStatus.createdAt | formatMediumDatetime }}</p>
-                  <p>Updated: {{ productStatus.updatedAt | formatMediumDatetime }}</p>
-                  <div class="actions">
-                    <!-- Delete 按钮：阻止默认行为 + 冒泡 -->
-                    <button
-                      class="btn btn-sm btn-danger"
-                      (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </div>
-          </a>
-        }
-      }
-    </section>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span>Status</span>
 
-    <!-- ============ 过去预约 ================== -->
-    <section class="reservation-section">
-      <div class="section-header">
-        <h2>Past Reservations</h2>
-        <button
-          class="sort-btn"
-          (click)="
-            navigateToWithComponentValues({
-              predicate: 'createdAt',
-              order: sortState()?.order === 'desc' ? 'asc' : 'desc',
-            });
-            load()
-          "
-        >
-          Reservations Date
-          <span *ngIf="sortState()?.order === 'desc'">▲</span>
-          <span *ngIf="sortState()?.order !== 'desc'">▼</span>
-        </button>
-      </div>
-
-      @for (productStatus of productStatuses; track trackId(productStatus)) {
-        @if (productStatus.status === 'COMPLETED' || productStatus.status === 'CANCELLED') {
-          <a class="card-link" [routerLink]="['/product-status', productStatus.id, 'view']">
-            <div class="card">
-              <div class="card-content">
-                <div class="thumbnail">
-                  <span>X</span>
-                </div>
-                <div class="details">
-                  <h3>Item Title (ID: {{ productStatus.id }})</h3>
-                  <p>Location: {{ productStatus.meetingLocation }}</p>
-                  <p>Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
-                  <p>
-                    <a
-                      [href]="productStatus.chatLink"
-                      target="_blank"
-                      class="btn btn-sm btn-info"
-                      style="text-decoration: none"
-                      (click)="$event.stopPropagation()"
-                    >
-                      Chat
-                    </a>
-                  </p>
-                </div>
-                <div class="status-actions">
-                  <span class="status {{ productStatus.status }}">{{ productStatus.status }}</span>
-                  <p>Created: {{ productStatus.createdAt | formatMediumDatetime }}</p>
-                  <p>Updated: {{ productStatus.updatedAt | formatMediumDatetime }}</p>
-                  <div class="actions">
-                    <button
-                      class="btn btn-sm btn-danger"
-                      (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </div>
-          </a>
-        }
-      }
-    </section>
+            </th>
+            <th scope="col" jhiSortBy="meetingTime">
+              <div class="d-flex">
+                <span>Meeting Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="updatedAt">
+              <div class="d-flex">
+                <span>Updated At</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdAt">
+              <div class="d-flex">
+                <span>Created At</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="item.id">
+              <div class="d-flex">
+                <span>Item</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="conversation.id">
+              <div class="d-flex">
+                <span>Conversation</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="buyer.id">
+              <div class="d-flex">
+                <span>Buyer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="seller.id">
+              <div class="d-flex">
+                <span>Seller</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="meetingLocation.id">
+              <div class="d-flex">
+                <span>Meeting Location</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
+          @for (productStatus of productStatuses; track trackId(productStatus)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/product-status', productStatus.id, 'view']">{{ productStatus.id }}</a>
+              </td>
+              <td>
+                {{
+                  {
+                    null: '',
+                    PENDING: 'PENDING',
+                    REJECTED: 'REJECTED',
+                    RESERVED: 'RESERVED',
+                    COMPLETED: 'COMPLETED',
+                    CANCELLED: 'CANCELLED',
+                  }[productStatus.status ?? 'null']
+                }}
+              </td>
+              <td>{{ productStatus.meetingTime | formatMediumDatetime }}</td>
+              <td>{{ productStatus.updatedAt | formatMediumDatetime }}</td>
+              <td>{{ productStatus.createdAt | formatMediumDatetime }}</td>
+              <td>
+                @if (productStatus.item) {
+                  <div>
+                    <a [routerLink]="['/item', productStatus.item.id, 'view']">{{ productStatus.item.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (productStatus.conversation) {
+                  <div>
+                    <a [routerLink]="['/conversation', productStatus.conversation.id, 'view']">{{ productStatus.conversation.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (productStatus.buyer) {
+                  <div>
+                    <a [routerLink]="['/user-details', productStatus.buyer.id, 'view']">{{ productStatus.buyer.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (productStatus.seller) {
+                  <div>
+                    <a [routerLink]="['/user-details', productStatus.seller.id, 'view']">{{ productStatus.seller.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (productStatus.meetingLocation) {
+                  <div>
+                    <a [routerLink]="['/location', productStatus.meetingLocation.id, 'view']">{{ productStatus.meetingLocation.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/product-status', productStatus.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/product-status', productStatus.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(productStatus)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   }
 </div>
-
-<style>
-  .container {
-    max-width: 1000px;
-    margin: 40px auto;
-    font-family:
-      'SF Pro Display',
-      -apple-system,
-      sans-serif;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  h1,
-  h2 {
-    font-weight: 600;
-    color: #1d1d1f;
-    margin: 0 0 20px;
-  }
-  h1 {
-    font-size: 32px;
-  }
-  h2 {
-    font-size: 24px;
-  }
-  .actions {
-    display: flex;
-    gap: 10px;
-  }
-  .btn {
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-weight: 500;
-    border: none;
-    transition: all 0.2s ease;
-  }
-  .btn-sm {
-    padding: 6px 12px;
-    font-size: 14px;
-  }
-  .btn-secondary {
-    background: #e8ecef;
-    color: #1d1d1f;
-  }
-  .btn-danger {
-    background: #ff3b30;
-    color: white;
-  }
-  .btn-primary {
-    background: #6fa8dc;
-    color: white;
-  }
-  .btn-primary {
-    background: #007bff;
-    color: white;
-  }
-  .btn:hover {
-    opacity: 0.9;
-  }
-  .empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #6e6e73;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  }
-  .reservation-section {
-    margin-bottom: 40px;
-  }
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-  .sort-btn {
-    background-color: #ffedcc;
-    color: #1d1d1f;
-    padding: 6px 12px;
-    border-radius: 9999px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s ease;
-  }
-  .sort-btn:hover {
-    background-color: #ffe0a6;
-  }
-  .card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-  .card {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
-    overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
-  .card-content {
-    display: flex;
-    padding: 20px;
-    align-items: center;
-  }
-  .thumbnail {
-    width: 120px;
-    height: 120px;
-    background: #f5f5f7;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #86868b;
-    font-size: 24px;
-    margin-right: 20px;
-  }
-  .details {
-    flex: 1;
-    color: #1d1d1f;
-  }
-  .details h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
-    font-weight: 600;
-  }
-  .details p {
-    margin: 5px 0;
-    color: #6e6e73;
-    font-size: 14px;
-  }
-  .status-actions {
-    min-width: 180px;
-    text-align: right;
-  }
-  .status {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 12px;
-    color: #1d1d1f;
-    font-size: 12px;
-    margin-bottom: 10px;
-  }
-
-  /* 添加状态颜色 */
-  .status.AVAILABLE {
-    background-color: #87ceeb;
-    color: white;
-  }
-
-  .status.PENDING {
-    background-color: #ff8c00;
-    color: white;
-  }
-
-  .status.RESERVED {
-    background-color: #ffd700;
-    color: #1d1d1f;
-  }
-
-  .status.COMPLETED {
-    background-color: #28a745;
-    color: white;
-  }
-
-  .status.CANCELLED {
-    background-color: #f5f5f7;
-    color: #86868b;
-  }
-
-  .status-actions p {
-    margin: 5px 0;
-    color: #6e6e73;
-    font-size: 12px;
-  }
-  .status-actions .actions {
-    margin-top: 10px;
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-</style>

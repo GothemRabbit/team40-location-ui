@@ -14,11 +14,26 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="date_created" type="date">
+            <column name="date_created" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <dropDefaultValue tableName="conversation" columnName="date_created" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <changeSet id="20250213120520-1-relations" author="jhipster">
+
+        <createTable tableName="rel_conversation__participants">
+            <column name="participants_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="conversation_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="conversation_id, participants_id" tableName="rel_conversation__participants"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

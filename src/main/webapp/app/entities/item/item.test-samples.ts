@@ -3,53 +3,42 @@ import dayjs from 'dayjs/esm';
 import { IItem, NewItem } from './item.model';
 
 export const sampleWithRequiredData: IItem = {
-  id: 15582,
-  itemTitle: 'right',
-  itemPrice: 12739.48,
-  itemCondition: 'FAIRLYUSED',
-  itemCategory: 'OTHERS',
-  itemImage: '../fake-data/blob/hipster.png',
-  itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-13T11:44'),
+  id: 21196,
+  title: 'key',
+  price: 7453.16,
+  condition: 'FAIRLYUSED',
+  category: 'FOOTWEAR',
+  timeListed: dayjs('2025-02-12T21:42'),
 };
 
 export const sampleWithPartialData: IItem = {
-  id: 8421,
-  itemTitle: 'other buttery',
-  itemPrice: 1062.23,
-  itemSize: 'thorny finished ragged',
-  itemCondition: 'WELLUSED',
-  itemCategory: 'CLOTHING',
+  id: 502,
+  title: 'certainly conjecture whoever',
+  price: 13157.48,
+  condition: 'FAIRLYUSED',
+  category: 'HEADWEAR',
   description: '../fake-data/blob/hipster.txt',
-  itemColour: 'into fearless',
-  itemImage: '../fake-data/blob/hipster.png',
-  itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-13T06:20'),
+  timeListed: dayjs('2025-02-13T00:18'),
 };
 
 export const sampleWithFullData: IItem = {
-  id: 32221,
-  itemTitle: 'mixture stock',
-  itemPrice: 12755.91,
-  itemSize: 'pleasant',
-  itemCondition: 'FAIRLYUSED',
-  itemCategory: 'FOOTWEAR',
+  id: 821,
+  title: 'quicker',
+  price: 6721.6,
+  condition: 'LIKENEW',
+  category: 'HOBBIES',
   description: '../fake-data/blob/hipster.txt',
-  itemColour: 'brr',
-  itemImage: '../fake-data/blob/hipster.png',
-  itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-12T15:43'),
-  itemLike: true,
+  brand: 'loftily toward republican',
+  colour: 'freckle where',
+  timeListed: dayjs('2025-02-13T05:56'),
 };
 
 export const sampleWithNewData: NewItem = {
-  itemTitle: 'forenenst yippee limply',
-  itemPrice: 15570.39,
-  itemCondition: 'HEAVILYUSED',
-  itemCategory: 'ELECTRONICS',
-  itemImage: '../fake-data/blob/hipster.png',
-  itemImageContentType: 'unknown',
-  timeListed: dayjs('2025-02-13T10:55'),
+  title: 'midst',
+  price: 12772.57,
+  condition: 'LIKENEW',
+  category: 'ELECTRONICS',
+  timeListed: dayjs('2025-02-12T23:51'),
   id: null,
 };
 

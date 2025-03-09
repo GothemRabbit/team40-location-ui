@@ -14,42 +14,50 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="item_title" type="varchar(255)">
+            <column name="title" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
-            <column name="item_price" type="decimal(21,2)">
+            <column name="price" type="double">
                 <constraints nullable="false" />
             </column>
-            <column name="item_size" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="item_condition" type="varchar(255)">
+            <column name="condition" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="item_category" type="varchar(255)">
+            <column name="category" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="description" type="${clobType}">
                 <constraints nullable="true" />
             </column>
-            <column name="item_colour" type="varchar(255)">
+            <column name="brand" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="item_image" type="${blobType}">
-                <constraints nullable="false" />
-            </column>
-            <column name="item_image_content_type" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="colour" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="time_listed" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
-            <column name="item_like" type="boolean">
+            <column name="seller_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="item" columnName="time_listed" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <changeSet id="20250213120518-1-relations" author="jhipster">
+
+        <createTable tableName="rel_item__wishlist">
+            <column name="wishlist_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="item_id, wishlist_id" tableName="rel_item__wishlist"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -69,17 +77,14 @@
                   tableName="item"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="item_title" type="string"/>
-            <column name="item_price" type="numeric"/>
-            <column name="item_size" type="string"/>
-            <column name="item_condition" type="string"/>
-            <column name="item_category" type="string"/>
+            <column name="title" type="string"/>
+            <column name="price" type="numeric"/>
+            <column name="condition" type="string"/>
+            <column name="category" type="string"/>
             <column name="description" type="clob"/>
-            <column name="item_colour" type="string"/>
-            <column name="item_image" type="blob"/>
-            <column name="item_image_content_type" type="string"/>
+            <column name="brand" type="string"/>
+            <column name="colour" type="string"/>
             <column name="time_listed" type="date"/>
-            <column name="item_like" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

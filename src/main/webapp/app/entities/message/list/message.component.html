@@ -56,6 +56,25 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="isRead">
+              <div class="d-flex">
+                <span>Is Read</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="convo.id">
+              <div class="d-flex">
+                <span>Convo</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="sender.id">
+              <div class="d-flex">
+                <span>Sender</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -67,6 +86,21 @@
               </td>
               <td>{{ message.content }}</td>
               <td>{{ message.timestamp | formatMediumDatetime }}</td>
+              <td>{{ message.isRead }}</td>
+              <td>
+                @if (message.convo) {
+                  <div>
+                    <a [routerLink]="['/conversation', message.convo.id, 'view']">{{ message.convo.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (message.sender) {
+                  <div>
+                    <a [routerLink]="['/user-details', message.sender.id, 'view']">{{ message.sender.id }}</a>
+                  </div>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/message', message.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import bham.team.IntegrationTest;
 import bham.team.domain.Review;
 import bham.team.repository.ReviewRepository;
+import bham.team.service.dto.ReviewDTO;
+import bham.team.service.mapper.ReviewMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
@@ -37,11 +39,11 @@ class ReviewResourceIT {
     private static final Integer DEFAULT_RATING = 0;
     private static final Integer UPDATED_RATING = 1;
 
-    private static final String DEFAULT_REVIEW_TEXT = "AAAAAAAAAA";
-    private static final String UPDATED_REVIEW_TEXT = "BBBBBBBBBB";
+    private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
+    private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
 
-    private static final LocalDate DEFAULT_REVIEW_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_REVIEW_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/reviews";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -54,6 +56,9 @@ class ReviewResourceIT {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ReviewMapper reviewMapper;
 
     @Autowired
     private EntityManager em;
@@ -72,7 +77,7 @@ class ReviewResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Review createEntity() {
-        return new Review().rating(DEFAULT_RATING).reviewText(DEFAULT_REVIEW_TEXT).reviewDate(DEFAULT_REVIEW_DATE);
+        return new Review().rating(DEFAULT_RATING).comments(DEFAULT_COMMENTS).date(DEFAULT_DATE);
     }
 
     /**
@@ -82,7 +87,7 @@ class ReviewResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Review createUpdatedEntity() {
-        return new Review().rating(UPDATED_RATING).reviewText(UPDATED_REVIEW_TEXT).reviewDate(UPDATED_REVIEW_DATE);
+        return new Review().rating(UPDATED_RATING).comments(UPDATED_COMMENTS).date(UPDATED_DATE);
     }
 
     @BeforeEach
@@ -103,18 +108,20 @@ class ReviewResourceIT {
     void createReview() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the Review
-        var returnedReview = om.readValue(
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
+        var returnedReviewDTO = om.readValue(
             restReviewMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(review)))
+                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO)))
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(),
-            Review.class
+            ReviewDTO.class
         );
 
         // Validate the Review in the database
         assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        var returnedReview = reviewMapper.toEntity(returnedReviewDTO);
         assertReviewUpdatableFieldsEquals(returnedReview, getPersistedReview(returnedReview));
 
         insertedReview = returnedReview;
@@ -125,12 +132,13 @@ class ReviewResourceIT {
     void createReviewWithExistingId() throws Exception {
         // Create the Review with an existing ID
         review.setId(1L);
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restReviewMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(review)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Review in the database
@@ -145,9 +153,10 @@ class ReviewResourceIT {
         review.setRating(null);
 
         // Create the Review, which fails.
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
 
         restReviewMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(review)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO)))
             .andExpect(status().isBadRequest());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
@@ -155,15 +164,16 @@ class ReviewResourceIT {
 
     @Test
     @Transactional
-    void checkReviewDateIsRequired() throws Exception {
+    void checkDateIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
-        review.setReviewDate(null);
+        review.setDate(null);
 
         // Create the Review, which fails.
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
 
         restReviewMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(review)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO)))
             .andExpect(status().isBadRequest());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
@@ -182,8 +192,8 @@ class ReviewResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(review.getId().intValue())))
             .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING)))
-            .andExpect(jsonPath("$.[*].reviewText").value(hasItem(DEFAULT_REVIEW_TEXT.toString())))
-            .andExpect(jsonPath("$.[*].reviewDate").value(hasItem(DEFAULT_REVIEW_DATE.toString())));
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
     @Test
@@ -199,8 +209,8 @@ class ReviewResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(review.getId().intValue()))
             .andExpect(jsonPath("$.rating").value(DEFAULT_RATING))
-            .andExpect(jsonPath("$.reviewText").value(DEFAULT_REVIEW_TEXT.toString()))
-            .andExpect(jsonPath("$.reviewDate").value(DEFAULT_REVIEW_DATE.toString()));
+            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
 
     @Test
@@ -222,13 +232,12 @@ class ReviewResourceIT {
         Review updatedReview = reviewRepository.findById(review.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedReview are not directly saved in db
         em.detach(updatedReview);
-        updatedReview.rating(UPDATED_RATING).reviewText(UPDATED_REVIEW_TEXT).reviewDate(UPDATED_REVIEW_DATE);
+        updatedReview.rating(UPDATED_RATING).comments(UPDATED_COMMENTS).date(UPDATED_DATE);
+        ReviewDTO reviewDTO = reviewMapper.toDto(updatedReview);
 
         restReviewMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedReview.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedReview))
+                put(ENTITY_API_URL_ID, reviewDTO.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO))
             )
             .andExpect(status().isOk());
 
@@ -243,9 +252,14 @@ class ReviewResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         review.setId(longCount.incrementAndGet());
 
+        // Create the Review
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restReviewMockMvc
-            .perform(put(ENTITY_API_URL_ID, review.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(review)))
+            .perform(
+                put(ENTITY_API_URL_ID, reviewDTO.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Review in the database
@@ -258,12 +272,15 @@ class ReviewResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         review.setId(longCount.incrementAndGet());
 
+        // Create the Review
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restReviewMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(review))
+                    .content(om.writeValueAsBytes(reviewDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -277,9 +294,12 @@ class ReviewResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         review.setId(longCount.incrementAndGet());
 
+        // Create the Review
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restReviewMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(review)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Review in the database
@@ -298,7 +318,7 @@ class ReviewResourceIT {
         Review partialUpdatedReview = new Review();
         partialUpdatedReview.setId(review.getId());
 
-        partialUpdatedReview.rating(UPDATED_RATING).reviewText(UPDATED_REVIEW_TEXT);
+        partialUpdatedReview.date(UPDATED_DATE);
 
         restReviewMockMvc
             .perform(
@@ -326,7 +346,7 @@ class ReviewResourceIT {
         Review partialUpdatedReview = new Review();
         partialUpdatedReview.setId(review.getId());
 
-        partialUpdatedReview.rating(UPDATED_RATING).reviewText(UPDATED_REVIEW_TEXT).reviewDate(UPDATED_REVIEW_DATE);
+        partialUpdatedReview.rating(UPDATED_RATING).comments(UPDATED_COMMENTS).date(UPDATED_DATE);
 
         restReviewMockMvc
             .perform(
@@ -348,10 +368,15 @@ class ReviewResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         review.setId(longCount.incrementAndGet());
 
+        // Create the Review
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restReviewMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, review.getId()).contentType("application/merge-patch+json").content(om.writeValueAsBytes(review))
+                patch(ENTITY_API_URL_ID, reviewDTO.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(om.writeValueAsBytes(reviewDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -365,12 +390,15 @@ class ReviewResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         review.setId(longCount.incrementAndGet());
 
+        // Create the Review
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restReviewMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(review))
+                    .content(om.writeValueAsBytes(reviewDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -384,9 +412,12 @@ class ReviewResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         review.setId(longCount.incrementAndGet());
 
+        // Create the Review
+        ReviewDTO reviewDTO = reviewMapper.toDto(review);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restReviewMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(review)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(reviewDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Review in the database

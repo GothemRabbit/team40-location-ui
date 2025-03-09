@@ -5,18 +5,15 @@ import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { IUserDetails } from '../user-details.model';
-import { ItemComponent } from '../../item/list/item.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-user-details-detail',
   templateUrl: './user-details-detail.component.html',
-  styleUrl: './user-details-detail.component.scss',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, ItemComponent],
+  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class UserDetailsDetailComponent {
   userDetails = input<IUserDetails | null>(null);
-  activeTab = 'listings';
 
   protected dataUtils = inject(DataUtils);
 

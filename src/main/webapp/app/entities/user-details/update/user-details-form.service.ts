@@ -14,22 +14,17 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type UserDetailsFormGroupInput = IUserDetails | PartialWithRequiredKeyOf<NewUserDetails>;
 
-type UserDetailsFormDefaults = Pick<NewUserDetails, 'id'>;
+type UserDetailsFormDefaults = Pick<NewUserDetails, 'id' | 'meetupLocations' | 'chats'>;
 
 type UserDetailsFormGroupContent = {
   id: FormControl<IUserDetails['id'] | NewUserDetails['id']>;
   bioImage: FormControl<IUserDetails['bioImage']>;
   bioImageContentType: FormControl<IUserDetails['bioImageContentType']>;
   userName: FormControl<IUserDetails['userName']>;
-  firstName: FormControl<IUserDetails['firstName']>;
-  lastName: FormControl<IUserDetails['lastName']>;
-  gender: FormControl<IUserDetails['gender']>;
   birthDate: FormControl<IUserDetails['birthDate']>;
-  email: FormControl<IUserDetails['email']>;
-  phoneNumber: FormControl<IUserDetails['phoneNumber']>;
-  preferences: FormControl<IUserDetails['preferences']>;
-  rating: FormControl<IUserDetails['rating']>;
-  address: FormControl<IUserDetails['address']>;
+  user: FormControl<IUserDetails['user']>;
+  meetupLocations: FormControl<IUserDetails['meetupLocations']>;
+  chats: FormControl<IUserDetails['chats']>;
 };
 
 export type UserDetailsFormGroup = FormGroup<UserDetailsFormGroupContent>;
@@ -52,29 +47,12 @@ export class UserDetailsFormService {
       bioImage: new FormControl(userDetailsRawValue.bioImage),
       bioImageContentType: new FormControl(userDetailsRawValue.bioImageContentType),
       userName: new FormControl(userDetailsRawValue.userName, {
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.pattern('^\\S+$')],
       }),
-      firstName: new FormControl(userDetailsRawValue.firstName, {
-        validators: [Validators.required],
-      }),
-      lastName: new FormControl(userDetailsRawValue.lastName, {
-        validators: [Validators.required],
-      }),
-      gender: new FormControl(userDetailsRawValue.gender),
       birthDate: new FormControl(userDetailsRawValue.birthDate),
-      email: new FormControl(userDetailsRawValue.email, {
-        validators: [Validators.required],
-      }),
-      phoneNumber: new FormControl(userDetailsRawValue.phoneNumber, {
-        validators: [Validators.required],
-      }),
-      preferences: new FormControl(userDetailsRawValue.preferences),
-      rating: new FormControl(userDetailsRawValue.rating, {
-        validators: [Validators.required, Validators.min(1), Validators.max(5)],
-      }),
-      address: new FormControl(userDetailsRawValue.address, {
-        validators: [Validators.required],
-      }),
+      user: new FormControl(userDetailsRawValue.user),
+      meetupLocations: new FormControl(userDetailsRawValue.meetupLocations ?? []),
+      chats: new FormControl(userDetailsRawValue.chats ?? []),
     });
   }
 
@@ -95,6 +73,8 @@ export class UserDetailsFormService {
   private getFormDefaults(): UserDetailsFormDefaults {
     return {
       id: null,
+      meetupLocations: [],
+      chats: [],
     };
   }
 }

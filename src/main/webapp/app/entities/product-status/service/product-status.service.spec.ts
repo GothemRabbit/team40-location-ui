@@ -10,8 +10,8 @@ import { ProductStatusService, RestProductStatus } from './product-status.servic
 const requireRestSample: RestProductStatus = {
   ...sampleWithRequiredData,
   meetingTime: sampleWithRequiredData.meetingTime?.toJSON(),
-  createdAt: sampleWithRequiredData.createdAt?.toJSON(),
   updatedAt: sampleWithRequiredData.updatedAt?.toJSON(),
+  createdAt: sampleWithRequiredData.createdAt?.toJSON(),
 };
 
 describe('ProductStatus Service', () => {

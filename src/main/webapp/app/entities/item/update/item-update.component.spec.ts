@@ -4,8 +4,12 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
-import { ItemService } from '../service/item.service';
+import { IWishlist } from 'app/entities/wishlist/wishlist.model';
+import { WishlistService } from 'app/entities/wishlist/service/wishlist.service';
+import { IUserDetails } from 'app/entities/user-details/user-details.model';
+import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 import { IItem } from '../item.model';
+import { ItemService } from '../service/item.service';
 import { ItemFormService } from './item-form.service';
 
 import { ItemUpdateComponent } from './item-update.component';
@@ -16,6 +20,8 @@ describe('Item Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let itemFormService: ItemFormService;
   let itemService: ItemService;
+  let wishlistService: WishlistService;
+  let userDetailsService: UserDetailsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,17 +44,69 @@ describe('Item Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     itemFormService = TestBed.inject(ItemFormService);
     itemService = TestBed.inject(ItemService);
+    wishlistService = TestBed.inject(WishlistService);
+    userDetailsService = TestBed.inject(UserDetailsService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should update editForm', () => {
+    it('Should call Wishlist query and add missing value', () => {
       const item: IItem = { id: 456 };
+      const wishlists: IWishlist[] = [{ id: 21587 }];
+      item.wishlists = wishlists;
+
+      const wishlistCollection: IWishlist[] = [{ id: 23690 }];
+      jest.spyOn(wishlistService, 'query').mockReturnValue(of(new HttpResponse({ body: wishlistCollection })));
+      const additionalWishlists = [...wishlists];
+      const expectedCollection: IWishlist[] = [...additionalWishlists, ...wishlistCollection];
+      jest.spyOn(wishlistService, 'addWishlistToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ item });
       comp.ngOnInit();
 
+      expect(wishlistService.query).toHaveBeenCalled();
+      expect(wishlistService.addWishlistToCollectionIfMissing).toHaveBeenCalledWith(
+        wishlistCollection,
+        ...additionalWishlists.map(expect.objectContaining),
+      );
+      expect(comp.wishlistsSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should call UserDetails query and add missing value', () => {
+      const item: IItem = { id: 456 };
+      const seller: IUserDetails = { id: 6299 };
+      item.seller = seller;
+
+      const userDetailsCollection: IUserDetails[] = [{ id: 4899 }];
+      jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
+      const additionalUserDetails = [seller];
+      const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
+      jest.spyOn(userDetailsService, 'addUserDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ item });
+      comp.ngOnInit();
+
+      expect(userDetailsService.query).toHaveBeenCalled();
+      expect(userDetailsService.addUserDetailsToCollectionIfMissing).toHaveBeenCalledWith(
+        userDetailsCollection,
+        ...additionalUserDetails.map(expect.objectContaining),
+      );
+      expect(comp.userDetailsSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should update editForm', () => {
+      const item: IItem = { id: 456 };
+      const wishlist: IWishlist = { id: 31722 };
+      item.wishlists = [wishlist];
+      const seller: IUserDetails = { id: 3197 };
+      item.seller = seller;
+
+      activatedRoute.data = of({ item });
+      comp.ngOnInit();
+
+      expect(comp.wishlistsSharedCollection).toContain(wishlist);
+      expect(comp.userDetailsSharedCollection).toContain(seller);
       expect(comp.item).toEqual(item);
     });
   });
@@ -118,6 +176,28 @@ describe('Item Management Update Component', () => {
       expect(itemService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Compare relationships', () => {
+    describe('compareWishlist', () => {
+      it('Should forward to wishlistService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(wishlistService, 'compareWishlist');
+        comp.compareWishlist(entity, entity2);
+        expect(wishlistService.compareWishlist).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareUserDetails', () => {
+      it('Should forward to userDetailsService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(userDetailsService, 'compareUserDetails');
+        comp.compareUserDetails(entity, entity2);
+        expect(userDetailsService.compareUserDetails).toHaveBeenCalledWith(entity, entity2);
+      });
     });
   });
 });

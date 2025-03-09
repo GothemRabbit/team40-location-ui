@@ -56,27 +56,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="firstName">
-              <div class="d-flex">
-                <span>First Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastName">
-              <div class="d-flex">
-                <span>Last Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="gender">
-              <div class="d-flex">
-                <span>Gender</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="birthDate">
               <div class="d-flex">
                 <span>Birth Date</span>
@@ -84,38 +63,21 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="email">
+            <th scope="col" jhiSortBy="user.id">
               <div class="d-flex">
-                <span>Email</span>
-
+                <span>User</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="phoneNumber">
+            <th scope="col" jhiSortBy="meetupLocations.id">
               <div class="d-flex">
-                <span>Phone Number</span>
-
+                <span>Meetup Locations</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="preferences">
+            <th scope="col" jhiSortBy="chats.id">
               <div class="d-flex">
-                <span>Preferences</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="rating">
-              <div class="d-flex">
-                <span>Rating</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="address">
-              <div class="d-flex">
-                <span>Address</span>
-
+                <span>Chats</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -141,15 +103,26 @@
                 }
               </td>
               <td>{{ userDetails.userName }}</td>
-              <td>{{ userDetails.firstName }}</td>
-              <td>{{ userDetails.lastName }}</td>
-              <td>{{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[userDetails.gender ?? 'null'] }}</td>
               <td>{{ userDetails.birthDate | formatMediumDate }}</td>
-              <td>{{ userDetails.email }}</td>
-              <td>{{ userDetails.phoneNumber }}</td>
-              <td>{{ userDetails.preferences }}</td>
-              <td>{{ userDetails.rating }}</td>
-              <td>{{ userDetails.address }}</td>
+              <td>
+                {{ userDetails.user?.id }}
+              </td>
+              <td>
+                @for (meetupLocations of userDetails.meetupLocations; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/location', meetupLocations.id, 'view']">{{ meetupLocations.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
+              <td>
+                @for (chats of userDetails.chats; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/conversation', chats.id, 'view']">{{ chats.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/user-details', userDetails.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

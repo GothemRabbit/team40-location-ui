@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (location(); as locationRef) {
+      <div>
+        <h2 data-cy="locationDetailsHeading"><span>Location</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ locationRef.id }}</span>
+          </dd>
+          <dt><span>Address</span></dt>
+          <dd>
+            <span>{{ locationRef.address }}</span>
+          </dd>
+          <dt><span>Latitude</span></dt>
+          <dd>
+            <span>{{ locationRef.latitude }}</span>
+          </dd>
+          <dt><span>Longitude</span></dt>
+          <dd>
+            <span>{{ locationRef.longitude }}</span>
+          </dd>
+          <dt><span>Postcode</span></dt>
+          <dd>
+            <span>{{ locationRef.postcode }}</span>
+          </dd>
+          <dt><span>Users</span></dt>
+          <dd>
+            @for (users of locationRef.users; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/user-details', users.id, 'view']">{{ users?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/location', locationRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

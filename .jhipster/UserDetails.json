@@ -3,6 +3,7 @@
     "changelogDate": "20250213120516"
   },
   "applications": "*",
+  "dto": "mapstruct",
   "fields": [
     {
       "fieldName": "bioImage",
@@ -11,55 +12,69 @@
     {
       "fieldName": "userName",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
-      "fieldName": "firstName",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "lastName",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "gender",
-      "fieldType": "Gender",
-      "fieldValues": "MALE,FEMALE,OTHER"
+      "fieldValidateRules": ["required", "unique", "pattern"],
+      "fieldValidateRulesPattern": "^\\S+$"
     },
     {
       "fieldName": "birthDate",
       "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "email",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
-      "fieldName": "phoneNumber",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
-      "fieldName": "preferences",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "rating",
-      "fieldType": "Float",
-      "fieldValidateRules": ["required", "min", "max"],
-      "fieldValidateRulesMax": "5",
-      "fieldValidateRulesMin": "1"
-    },
-    {
-      "fieldName": "address",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
     }
   ],
   "name": "UserDetails",
-  "relationships": [],
-  "searchEngine": "no"
+  "relationships": [
+    {
+      "options": {
+        "iD": true
+      },
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "item",
+      "otherEntityRelationshipName": "seller",
+      "relationshipName": "itemsOnSale",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "wishlist",
+      "otherEntityRelationshipName": "userDetails",
+      "relationshipName": "wishlist",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "users",
+      "relationshipName": "meetupLocations",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "review",
+      "otherEntityRelationshipName": "buyer",
+      "relationshipName": "buyersReview",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "review",
+      "otherEntityRelationshipName": "seller",
+      "relationshipName": "reviewsOfSeller",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "conversation",
+      "otherEntityRelationshipName": "participants",
+      "relationshipName": "chats",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
 }

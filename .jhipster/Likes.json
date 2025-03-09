@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20250309145852"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "liked",
+      "fieldType": "Boolean"
+    }
+  ],
+  "name": "Likes",
+  "relationships": [
+    {
+      "otherEntityName": "item",
+      "relationshipName": "item",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userDetails",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -13,50 +13,46 @@
           </div>
         }
 
-        @let itemTitleRef = editForm.get('itemTitle')!;
+        @let titleRef = editForm.get('title')!;
         <div class="mb-3">
-          <label class="form-label" for="field_itemTitle">Item Title</label>
-          <input type="text" class="form-control" name="itemTitle" id="field_itemTitle" data-cy="itemTitle" formControlName="itemTitle" />
-          @if (itemTitleRef.invalid && (itemTitleRef.dirty || itemTitleRef.touched)) {
+          <label class="form-label" for="field_title">Title</label>
+          <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
+          @if (titleRef.invalid && (titleRef.dirty || titleRef.touched)) {
             <div>
-              @if (editForm.get('itemTitle')?.errors?.required) {
+              @if (editForm.get('title')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
+              }
+              @if (editForm.get('title')?.errors?.minlength) {
+                <small class="form-text text-danger">This field is required to be at least 3 characters.</small>
+              }
+              @if (editForm.get('title')?.errors?.maxlength) {
+                <small class="form-text text-danger">This field cannot be longer than 100 characters.</small>
               }
             </div>
           }
         </div>
 
-        @let itemPriceRef = editForm.get('itemPrice')!;
+        @let priceRef = editForm.get('price')!;
         <div class="mb-3">
-          <label class="form-label" for="field_itemPrice">Item Price</label>
-          <input type="number" class="form-control" name="itemPrice" id="field_itemPrice" data-cy="itemPrice" formControlName="itemPrice" />
-          @if (itemPriceRef.invalid && (itemPriceRef.dirty || itemPriceRef.touched)) {
+          <label class="form-label" for="field_price">Price</label>
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+          @if (priceRef.invalid && (priceRef.dirty || priceRef.touched)) {
             <div>
-              @if (editForm.get('itemPrice')?.errors?.required) {
+              @if (editForm.get('price')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('itemPrice')?.errors?.number"
-                >This field should be a number.</small
-              >
+              @if (editForm.get('price')?.errors?.min) {
+                <small class="form-text text-danger">This field should be at least 0.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('price')?.errors?.number">This field should be a number.</small>
             </div>
           }
         </div>
 
+        @let conditionRef = editForm.get('condition')!;
         <div class="mb-3">
-          <label class="form-label" for="field_itemSize">Item Size</label>
-          <input type="text" class="form-control" name="itemSize" id="field_itemSize" data-cy="itemSize" formControlName="itemSize" />
-        </div>
-
-        @let itemConditionRef = editForm.get('itemCondition')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_itemCondition">Item Condition</label>
-          <select
-            class="form-control"
-            name="itemCondition"
-            formControlName="itemCondition"
-            id="field_itemCondition"
-            data-cy="itemCondition"
-          >
+          <label class="form-label" for="field_condition">Condition</label>
+          <select class="form-control" name="condition" formControlName="condition" id="field_condition" data-cy="condition">
             <option [ngValue]="null"></option>
             @for (condition of conditionValues; track $index) {
               <option [value]="condition">
@@ -73,19 +69,19 @@
               </option>
             }
           </select>
-          @if (itemConditionRef.invalid && (itemConditionRef.dirty || itemConditionRef.touched)) {
+          @if (conditionRef.invalid && (conditionRef.dirty || conditionRef.touched)) {
             <div>
-              @if (editForm.get('itemCondition')?.errors?.required) {
+              @if (editForm.get('condition')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
             </div>
           }
         </div>
 
-        @let itemCategoryRef = editForm.get('itemCategory')!;
+        @let categoryRef = editForm.get('category')!;
         <div class="mb-3">
-          <label class="form-label" for="field_itemCategory">Item Category</label>
-          <select class="form-control" name="itemCategory" formControlName="itemCategory" id="field_itemCategory" data-cy="itemCategory">
+          <label class="form-label" for="field_category">Category</label>
+          <select class="form-control" name="category" formControlName="category" id="field_category" data-cy="category">
             <option [ngValue]="null"></option>
             @for (category of categoryValues; track $index) {
               <option [value]="category">
@@ -104,9 +100,9 @@
               </option>
             }
           </select>
-          @if (itemCategoryRef.invalid && (itemCategoryRef.dirty || itemCategoryRef.touched)) {
+          @if (categoryRef.invalid && (categoryRef.dirty || categoryRef.touched)) {
             <div>
-              @if (editForm.get('itemCategory')?.errors?.required) {
+              @if (editForm.get('category')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
             </div>
@@ -125,57 +121,13 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_itemColour">Item Colour</label>
-          <input
-            type="text"
-            class="form-control"
-            name="itemColour"
-            id="field_itemColour"
-            data-cy="itemColour"
-            formControlName="itemColour"
-          />
+          <label class="form-label" for="field_brand">Brand</label>
+          <input type="text" class="form-control" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
         </div>
 
-        @let itemImageRef = editForm.get('itemImage')!;
         <div class="mb-3">
-          <label class="form-label" for="field_itemImage">Item Image</label>
-          <div>
-            @if (itemImageRef.value) {
-              <img
-                [src]="'data:' + editForm.get('itemImageContentType')!.value + ';base64,' + itemImageRef.value"
-                style="max-height: 100px"
-                alt="item"
-              />
-            }
-            @if (itemImageRef.value) {
-              <div class="form-text text-danger clearfix">
-                <span class="pull-start">{{ editForm.get('itemImageContentType')!.value }}, {{ byteSize(itemImageRef.value!) }}</span>
-                <button
-                  type="button"
-                  (click)="clearInputImage('itemImage', 'itemImageContentType', 'file_itemImage')"
-                  class="btn btn-secondary btn-xs pull-end"
-                >
-                  <fa-icon icon="times"></fa-icon>
-                </button>
-              </div>
-            }
-            <input type="file" id="file_itemImage" data-cy="itemImage" (change)="setFileData($event, 'itemImage', true)" accept="image/*" />
-          </div>
-          <input type="hidden" class="form-control" name="itemImage" id="field_itemImage" data-cy="itemImage" formControlName="itemImage" />
-          <input
-            type="hidden"
-            class="form-control"
-            name="itemImageContentType"
-            id="field_itemImageContentType"
-            formControlName="itemImageContentType"
-          />
-          @if (itemImageRef.invalid && (itemImageRef.dirty || itemImageRef.touched)) {
-            <div>
-              @if (editForm.get('itemImage')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
+          <label class="form-label" for="field_colour">Colour</label>
+          <input type="text" class="form-control" name="colour" id="field_colour" data-cy="colour" formControlName="colour" />
         </div>
 
         @let timeListedRef = editForm.get('timeListed')!;
@@ -205,8 +157,37 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_itemLike">Item Like</label>
-          <input type="checkbox" class="form-check" name="itemLike" id="field_itemLike" data-cy="itemLike" formControlName="itemLike" />
+          <label for="field_wishlists">Wishlist</label>
+          <select
+            class="form-control"
+            id="field_wishlists"
+            data-cy="wishlist"
+            multiple
+            name="wishlists"
+            formControlName="wishlists"
+            [compareWith]="compareWishlist"
+          >
+            @for (wishlistOption of wishlistsSharedCollection; track $index) {
+              <option [ngValue]="wishlistOption">{{ wishlistOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_seller">Seller</label>
+          <select
+            class="form-control"
+            id="field_seller"
+            data-cy="seller"
+            name="seller"
+            formControlName="seller"
+            [compareWith]="compareUserDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            }
+          </select>
         </div>
       </div>
 

@@ -22,10 +22,13 @@ describe('ProductStatus Form Service', () => {
             id: expect.any(Object),
             status: expect.any(Object),
             meetingTime: expect.any(Object),
-            meetingLocation: expect.any(Object),
-            chatLink: expect.any(Object),
-            createdAt: expect.any(Object),
             updatedAt: expect.any(Object),
+            createdAt: expect.any(Object),
+            item: expect.any(Object),
+            conversation: expect.any(Object),
+            buyer: expect.any(Object),
+            seller: expect.any(Object),
+            meetingLocation: expect.any(Object),
           }),
         );
       });
@@ -38,10 +41,13 @@ describe('ProductStatus Form Service', () => {
             id: expect.any(Object),
             status: expect.any(Object),
             meetingTime: expect.any(Object),
-            meetingLocation: expect.any(Object),
-            chatLink: expect.any(Object),
-            createdAt: expect.any(Object),
             updatedAt: expect.any(Object),
+            createdAt: expect.any(Object),
+            item: expect.any(Object),
+            conversation: expect.any(Object),
+            buyer: expect.any(Object),
+            seller: expect.any(Object),
+            meetingLocation: expect.any(Object),
           }),
         );
       });

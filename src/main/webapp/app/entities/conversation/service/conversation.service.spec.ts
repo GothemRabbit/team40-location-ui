@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 
-import { DATE_FORMAT } from 'app/config/input.constants';
 import { IConversation } from '../conversation.model';
 import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../conversation.test-samples';
 
@@ -10,7 +9,7 @@ import { ConversationService, RestConversation } from './conversation.service';
 
 const requireRestSample: RestConversation = {
   ...sampleWithRequiredData,
-  dateCreated: sampleWithRequiredData.dateCreated?.format(DATE_FORMAT),
+  dateCreated: sampleWithRequiredData.dateCreated?.toJSON(),
 };
 
 describe('Conversation Service', () => {
