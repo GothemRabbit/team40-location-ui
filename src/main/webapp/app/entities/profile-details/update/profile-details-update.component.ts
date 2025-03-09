@@ -24,9 +24,11 @@ import { ProfileDetailsFormGroup, ProfileDetailsFormService } from './profile-de
   standalone: true,
   selector: 'jhi-profile-details-update',
   templateUrl: './profile-details-update.component.html',
+  styleUrl: './profile-details-update.component.scss',
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProfileDetailsUpdateComponent implements OnInit {
+  activeTab = 'profileDetails';
   isSaving = false;
   profileDetails: IProfileDetails | null = null;
 
@@ -63,6 +65,10 @@ export class ProfileDetailsUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+  }
+
+  setActiveTab(tabName: string): void {
+    this.activeTab = tabName;
   }
 
   byteSize(base64String: string): string {
