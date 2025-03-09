@@ -66,6 +66,9 @@ class ItemResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_SIZE_ITEM = "AAAAAAAAAA";
+    private static final String UPDATED_SIZE_ITEM = "BBBBBBBBBB";
+
     private static final String DEFAULT_BRAND = "AAAAAAAAAA";
     private static final String UPDATED_BRAND = "BBBBBBBBBB";
 
@@ -119,6 +122,7 @@ class ItemResourceIT {
             .condition(DEFAULT_CONDITION)
             .category(DEFAULT_CATEGORY)
             .description(DEFAULT_DESCRIPTION)
+            .sizeItem(DEFAULT_SIZE_ITEM)
             .brand(DEFAULT_BRAND)
             .colour(DEFAULT_COLOUR)
             .timeListed(DEFAULT_TIME_LISTED);
@@ -137,6 +141,7 @@ class ItemResourceIT {
             .condition(UPDATED_CONDITION)
             .category(UPDATED_CATEGORY)
             .description(UPDATED_DESCRIPTION)
+            .sizeItem(UPDATED_SIZE_ITEM)
             .brand(UPDATED_BRAND)
             .colour(UPDATED_COLOUR)
             .timeListed(UPDATED_TIME_LISTED);
@@ -299,6 +304,7 @@ class ItemResourceIT {
             .andExpect(jsonPath("$.[*].condition").value(hasItem(DEFAULT_CONDITION.toString())))
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].sizeItem").value(hasItem(DEFAULT_SIZE_ITEM)))
             .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND)))
             .andExpect(jsonPath("$.[*].colour").value(hasItem(DEFAULT_COLOUR)))
             .andExpect(jsonPath("$.[*].timeListed").value(hasItem(DEFAULT_TIME_LISTED.toString())));
@@ -338,6 +344,7 @@ class ItemResourceIT {
             .andExpect(jsonPath("$.condition").value(DEFAULT_CONDITION.toString()))
             .andExpect(jsonPath("$.category").value(DEFAULT_CATEGORY.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.sizeItem").value(DEFAULT_SIZE_ITEM))
             .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND))
             .andExpect(jsonPath("$.colour").value(DEFAULT_COLOUR))
             .andExpect(jsonPath("$.timeListed").value(DEFAULT_TIME_LISTED.toString()));
@@ -536,6 +543,56 @@ class ItemResourceIT {
 
         // Get all the itemList where category is not null
         defaultItemFiltering("category.specified=true", "category.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllItemsBySizeItemIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedItem = itemRepository.saveAndFlush(item);
+
+        // Get all the itemList where sizeItem equals to
+        defaultItemFiltering("sizeItem.equals=" + DEFAULT_SIZE_ITEM, "sizeItem.equals=" + UPDATED_SIZE_ITEM);
+    }
+
+    @Test
+    @Transactional
+    void getAllItemsBySizeItemIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedItem = itemRepository.saveAndFlush(item);
+
+        // Get all the itemList where sizeItem in
+        defaultItemFiltering("sizeItem.in=" + DEFAULT_SIZE_ITEM + "," + UPDATED_SIZE_ITEM, "sizeItem.in=" + UPDATED_SIZE_ITEM);
+    }
+
+    @Test
+    @Transactional
+    void getAllItemsBySizeItemIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedItem = itemRepository.saveAndFlush(item);
+
+        // Get all the itemList where sizeItem is not null
+        defaultItemFiltering("sizeItem.specified=true", "sizeItem.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllItemsBySizeItemContainsSomething() throws Exception {
+        // Initialize the database
+        insertedItem = itemRepository.saveAndFlush(item);
+
+        // Get all the itemList where sizeItem contains
+        defaultItemFiltering("sizeItem.contains=" + DEFAULT_SIZE_ITEM, "sizeItem.contains=" + UPDATED_SIZE_ITEM);
+    }
+
+    @Test
+    @Transactional
+    void getAllItemsBySizeItemNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedItem = itemRepository.saveAndFlush(item);
+
+        // Get all the itemList where sizeItem does not contain
+        defaultItemFiltering("sizeItem.doesNotContain=" + UPDATED_SIZE_ITEM, "sizeItem.doesNotContain=" + DEFAULT_SIZE_ITEM);
     }
 
     @Test
@@ -753,6 +810,7 @@ class ItemResourceIT {
             .andExpect(jsonPath("$.[*].condition").value(hasItem(DEFAULT_CONDITION.toString())))
             .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].sizeItem").value(hasItem(DEFAULT_SIZE_ITEM)))
             .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND)))
             .andExpect(jsonPath("$.[*].colour").value(hasItem(DEFAULT_COLOUR)))
             .andExpect(jsonPath("$.[*].timeListed").value(hasItem(DEFAULT_TIME_LISTED.toString())));
@@ -809,6 +867,7 @@ class ItemResourceIT {
             .condition(UPDATED_CONDITION)
             .category(UPDATED_CATEGORY)
             .description(UPDATED_DESCRIPTION)
+            .sizeItem(UPDATED_SIZE_ITEM)
             .brand(UPDATED_BRAND)
             .colour(UPDATED_COLOUR)
             .timeListed(UPDATED_TIME_LISTED);
@@ -893,7 +952,12 @@ class ItemResourceIT {
         Item partialUpdatedItem = new Item();
         partialUpdatedItem.setId(item.getId());
 
-        partialUpdatedItem.price(UPDATED_PRICE).condition(UPDATED_CONDITION).category(UPDATED_CATEGORY).description(UPDATED_DESCRIPTION);
+        partialUpdatedItem
+            .price(UPDATED_PRICE)
+            .condition(UPDATED_CONDITION)
+            .category(UPDATED_CATEGORY)
+            .description(UPDATED_DESCRIPTION)
+            .timeListed(UPDATED_TIME_LISTED);
 
         restItemMockMvc
             .perform(
@@ -927,6 +991,7 @@ class ItemResourceIT {
             .condition(UPDATED_CONDITION)
             .category(UPDATED_CATEGORY)
             .description(UPDATED_DESCRIPTION)
+            .sizeItem(UPDATED_SIZE_ITEM)
             .brand(UPDATED_BRAND)
             .colour(UPDATED_COLOUR)
             .timeListed(UPDATED_TIME_LISTED);

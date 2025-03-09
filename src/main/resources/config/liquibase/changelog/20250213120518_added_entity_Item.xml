@@ -29,6 +29,9 @@
             <column name="description" type="${clobType}">
                 <constraints nullable="true" />
             </column>
+            <column name="size_item" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="brand" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -85,6 +88,7 @@
             <column name="condition" type="string"/>
             <column name="category" type="string"/>
             <column name="description" type="clob"/>
+            <column name="size_item" type="string"/>
             <column name="brand" type="string"/>
             <column name="colour" type="string"/>
             <column name="time_listed" type="date"/>

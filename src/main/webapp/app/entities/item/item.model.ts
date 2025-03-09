@@ -12,6 +12,7 @@ export interface IItem {
   condition?: keyof typeof Condition | null;
   category?: keyof typeof Category | null;
   description?: string | null;
+  sizeItem?: string | null;
   brand?: string | null;
   colour?: string | null;
   timeListed?: dayjs.Dayjs | null;

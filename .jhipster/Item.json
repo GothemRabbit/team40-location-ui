@@ -35,6 +35,10 @@
       "fieldType": "TextBlob"
     },
     {
+      "fieldName": "sizeItem",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "brand",
       "fieldType": "String"
     },

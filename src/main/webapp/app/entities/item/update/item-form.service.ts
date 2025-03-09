@@ -36,6 +36,7 @@ type ItemFormGroupContent = {
   condition: FormControl<ItemFormRawValue['condition']>;
   category: FormControl<ItemFormRawValue['category']>;
   description: FormControl<ItemFormRawValue['description']>;
+  sizeItem: FormControl<ItemFormRawValue['sizeItem']>;
   brand: FormControl<ItemFormRawValue['brand']>;
   colour: FormControl<ItemFormRawValue['colour']>;
   timeListed: FormControl<ItemFormRawValue['timeListed']>;
@@ -74,6 +75,7 @@ export class ItemFormService {
         validators: [Validators.required],
       }),
       description: new FormControl(itemRawValue.description),
+      sizeItem: new FormControl(itemRawValue.sizeItem),
       brand: new FormControl(itemRawValue.brand),
       colour: new FormControl(itemRawValue.colour),
       timeListed: new FormControl(itemRawValue.timeListed, {

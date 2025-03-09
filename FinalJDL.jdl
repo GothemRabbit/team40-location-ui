@@ -20,6 +20,7 @@ entity Item {
   condition Condition required,
   category Category required,
   description TextBlob,
+  sizeItem String,
   brand String,
   colour String,
   timeListed Instant required

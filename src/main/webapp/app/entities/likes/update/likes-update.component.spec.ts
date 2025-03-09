@@ -53,10 +53,10 @@ describe('Likes Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Item query and add missing value', () => {
       const likes: ILikes = { id: 456 };
-      const item: IItem = { id: 8959 };
+      const item: IItem = { id: 31437 };
       likes.item = item;
 
-      const itemCollection: IItem[] = [{ id: 21930 }];
+      const itemCollection: IItem[] = [{ id: 11725 }];
       jest.spyOn(itemService, 'query').mockReturnValue(of(new HttpResponse({ body: itemCollection })));
       const additionalItems = [item];
       const expectedCollection: IItem[] = [...additionalItems, ...itemCollection];
@@ -97,7 +97,7 @@ describe('Likes Management Update Component', () => {
 
     it('Should update editForm', () => {
       const likes: ILikes = { id: 456 };
-      const item: IItem = { id: 16604 };
+      const item: IItem = { id: 13248 };
       likes.item = item;
       const profileDetails: IProfileDetails = { id: 5592 };
       likes.profileDetails = profileDetails;

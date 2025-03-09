@@ -53,6 +53,9 @@ public class Item implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "size_item")
+    private String sizeItem;
+
     @Column(name = "brand")
     private String brand;
 
@@ -179,6 +182,19 @@ public class Item implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSizeItem() {
+        return this.sizeItem;
+    }
+
+    public Item sizeItem(String sizeItem) {
+        this.setSizeItem(sizeItem);
+        return this;
+    }
+
+    public void setSizeItem(String sizeItem) {
+        this.sizeItem = sizeItem;
     }
 
     public String getBrand() {
@@ -379,6 +395,7 @@ public class Item implements Serializable {
             ", condition='" + getCondition() + "'" +
             ", category='" + getCategory() + "'" +
             ", description='" + getDescription() + "'" +
+            ", sizeItem='" + getSizeItem() + "'" +
             ", brand='" + getBrand() + "'" +
             ", colour='" + getColour() + "'" +
             ", timeListed='" + getTimeListed() + "'" +

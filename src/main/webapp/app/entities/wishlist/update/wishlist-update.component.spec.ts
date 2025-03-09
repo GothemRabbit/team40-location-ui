@@ -79,10 +79,10 @@ describe('Wishlist Management Update Component', () => {
 
     it('Should call Item query and add missing value', () => {
       const wishlist: IWishlist = { id: 456 };
-      const items: IItem[] = [{ id: 7131 }];
+      const items: IItem[] = [{ id: 3697 }];
       wishlist.items = items;
 
-      const itemCollection: IItem[] = [{ id: 20358 }];
+      const itemCollection: IItem[] = [{ id: 1676 }];
       jest.spyOn(itemService, 'query').mockReturnValue(of(new HttpResponse({ body: itemCollection })));
       const additionalItems = [...items];
       const expectedCollection: IItem[] = [...additionalItems, ...itemCollection];
@@ -125,7 +125,7 @@ describe('Wishlist Management Update Component', () => {
       const wishlist: IWishlist = { id: 456 };
       const profileDetails: IProfileDetails = { id: 1785 };
       wishlist.profileDetails = profileDetails;
-      const item: IItem = { id: 29410 };
+      const item: IItem = { id: 5469 };
       wishlist.items = [item];
       const userDetails: IUserDetails = { id: 29510 };
       wishlist.userDetails = userDetails;

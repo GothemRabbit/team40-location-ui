@@ -35,6 +35,8 @@ public class ItemDTO implements Serializable {
     @Lob
     private String description;
 
+    private String sizeItem;
+
     private String brand;
 
     private String colour;
@@ -94,6 +96,14 @@ public class ItemDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSizeItem() {
+        return sizeItem;
+    }
+
+    public void setSizeItem(String sizeItem) {
+        this.sizeItem = sizeItem;
     }
 
     public String getBrand() {
@@ -175,6 +185,7 @@ public class ItemDTO implements Serializable {
             ", condition='" + getCondition() + "'" +
             ", category='" + getCategory() + "'" +
             ", description='" + getDescription() + "'" +
+            ", sizeItem='" + getSizeItem() + "'" +
             ", brand='" + getBrand() + "'" +
             ", colour='" + getColour() + "'" +
             ", timeListed='" + getTimeListed() + "'" +

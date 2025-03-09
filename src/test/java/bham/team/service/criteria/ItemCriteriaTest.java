@@ -79,6 +79,7 @@ class ItemCriteriaTest {
         itemCriteria.price();
         itemCriteria.condition();
         itemCriteria.category();
+        itemCriteria.sizeItem();
         itemCriteria.brand();
         itemCriteria.colour();
         itemCriteria.timeListed();
@@ -99,6 +100,7 @@ class ItemCriteriaTest {
                 condition.apply(criteria.getPrice()) &&
                 condition.apply(criteria.getCondition()) &&
                 condition.apply(criteria.getCategory()) &&
+                condition.apply(criteria.getSizeItem()) &&
                 condition.apply(criteria.getBrand()) &&
                 condition.apply(criteria.getColour()) &&
                 condition.apply(criteria.getTimeListed()) &&
@@ -121,6 +123,7 @@ class ItemCriteriaTest {
                 condition.apply(criteria.getPrice(), copy.getPrice()) &&
                 condition.apply(criteria.getCondition(), copy.getCondition()) &&
                 condition.apply(criteria.getCategory(), copy.getCategory()) &&
+                condition.apply(criteria.getSizeItem(), copy.getSizeItem()) &&
                 condition.apply(criteria.getBrand(), copy.getBrand()) &&
                 condition.apply(criteria.getColour(), copy.getColour()) &&
                 condition.apply(criteria.getTimeListed(), copy.getTimeListed()) &&

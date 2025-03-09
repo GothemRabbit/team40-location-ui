@@ -68,6 +68,8 @@ public class ItemCriteria implements Serializable, Criteria {
 
     private CategoryFilter category;
 
+    private StringFilter sizeItem;
+
     private StringFilter brand;
 
     private StringFilter colour;
@@ -96,6 +98,7 @@ public class ItemCriteria implements Serializable, Criteria {
         this.price = other.optionalPrice().map(DoubleFilter::copy).orElse(null);
         this.condition = other.optionalCondition().map(ConditionFilter::copy).orElse(null);
         this.category = other.optionalCategory().map(CategoryFilter::copy).orElse(null);
+        this.sizeItem = other.optionalSizeItem().map(StringFilter::copy).orElse(null);
         this.brand = other.optionalBrand().map(StringFilter::copy).orElse(null);
         this.colour = other.optionalColour().map(StringFilter::copy).orElse(null);
         this.timeListed = other.optionalTimeListed().map(InstantFilter::copy).orElse(null);
@@ -206,6 +209,25 @@ public class ItemCriteria implements Serializable, Criteria {
 
     public void setCategory(CategoryFilter category) {
         this.category = category;
+    }
+
+    public StringFilter getSizeItem() {
+        return sizeItem;
+    }
+
+    public Optional<StringFilter> optionalSizeItem() {
+        return Optional.ofNullable(sizeItem);
+    }
+
+    public StringFilter sizeItem() {
+        if (sizeItem == null) {
+            setSizeItem(new StringFilter());
+        }
+        return sizeItem;
+    }
+
+    public void setSizeItem(StringFilter sizeItem) {
+        this.sizeItem = sizeItem;
     }
 
     public StringFilter getBrand() {
@@ -413,6 +435,7 @@ public class ItemCriteria implements Serializable, Criteria {
             Objects.equals(price, that.price) &&
             Objects.equals(condition, that.condition) &&
             Objects.equals(category, that.category) &&
+            Objects.equals(sizeItem, that.sizeItem) &&
             Objects.equals(brand, that.brand) &&
             Objects.equals(colour, that.colour) &&
             Objects.equals(timeListed, that.timeListed) &&
@@ -434,6 +457,7 @@ public class ItemCriteria implements Serializable, Criteria {
             price,
             condition,
             category,
+            sizeItem,
             brand,
             colour,
             timeListed,
@@ -456,6 +480,7 @@ public class ItemCriteria implements Serializable, Criteria {
             optionalPrice().map(f -> "price=" + f + ", ").orElse("") +
             optionalCondition().map(f -> "condition=" + f + ", ").orElse("") +
             optionalCategory().map(f -> "category=" + f + ", ").orElse("") +
+            optionalSizeItem().map(f -> "sizeItem=" + f + ", ").orElse("") +
             optionalBrand().map(f -> "brand=" + f + ", ").orElse("") +
             optionalColour().map(f -> "colour=" + f + ", ").orElse("") +
             optionalTimeListed().map(f -> "timeListed=" + f + ", ").orElse("") +

@@ -61,10 +61,10 @@ describe('ProductStatus Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call item query and add missing value', () => {
       const productStatus: IProductStatus = { id: 456 };
-      const item: IItem = { id: 26941 };
+      const item: IItem = { id: 16277 };
       productStatus.item = item;
 
-      const itemCollection: IItem[] = [{ id: 304 }];
+      const itemCollection: IItem[] = [{ id: 12258 }];
       jest.spyOn(itemService, 'query').mockReturnValue(of(new HttpResponse({ body: itemCollection })));
       const expectedCollection: IItem[] = [item, ...itemCollection];
       jest.spyOn(itemService, 'addItemToCollectionIfMissing').mockReturnValue(expectedCollection);
@@ -141,7 +141,7 @@ describe('ProductStatus Management Update Component', () => {
 
     it('Should update editForm', () => {
       const productStatus: IProductStatus = { id: 456 };
-      const item: IItem = { id: 30264 };
+      const item: IItem = { id: 1884 };
       productStatus.item = item;
       const conversation: IConversation = { id: 21378 };
       productStatus.conversation = conversation;

@@ -89,6 +89,9 @@ public class ItemQueryService extends QueryService<Item> {
             if (criteria.getCategory() != null) {
                 specification = specification.and(buildSpecification(criteria.getCategory(), Item_.category));
             }
+            if (criteria.getSizeItem() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSizeItem(), Item_.sizeItem));
+            }
             if (criteria.getBrand() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBrand(), Item_.brand));
             }

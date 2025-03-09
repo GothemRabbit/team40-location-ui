@@ -77,6 +77,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="sizeItem">
+              <div class="d-flex">
+                <span>Size Item</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="brand">
               <div class="d-flex">
                 <span>Brand</span>
@@ -148,6 +155,7 @@
                 }}
               </td>
               <td>{{ item.description }}</td>
+              <td>{{ item.sizeItem }}</td>
               <td>{{ item.brand }}</td>
               <td>{{ item.colour }}</td>
               <td>{{ item.timeListed | formatMediumDatetime }}</td>

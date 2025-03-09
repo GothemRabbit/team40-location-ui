@@ -52,6 +52,7 @@ public class ItemAsserts {
             .satisfies(e -> assertThat(e.getCondition()).as("check condition").isEqualTo(actual.getCondition()))
             .satisfies(e -> assertThat(e.getCategory()).as("check category").isEqualTo(actual.getCategory()))
             .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
+            .satisfies(e -> assertThat(e.getSizeItem()).as("check sizeItem").isEqualTo(actual.getSizeItem()))
             .satisfies(e -> assertThat(e.getBrand()).as("check brand").isEqualTo(actual.getBrand()))
             .satisfies(e -> assertThat(e.getColour()).as("check colour").isEqualTo(actual.getColour()))
             .satisfies(e -> assertThat(e.getTimeListed()).as("check timeListed").isEqualTo(actual.getTimeListed()));
