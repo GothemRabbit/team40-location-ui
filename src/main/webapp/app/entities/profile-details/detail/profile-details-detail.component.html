@@ -1,75 +1,78 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (profileDetails(); as profileDetailsRef) {
-      <div>
-        <h2 data-cy="profileDetailsDetailsHeading"><span>Profile Details</span></h2>
+<div class="container-fluid">
+  @if (profileDetails(); as profileDetailsRef) {
+    <div class="profilePage-container">
+      <h2 data-cy="profileDetailsDetailsHeading"><span>Profile</span></h2>
+      <hr />
 
-        <hr />
+      <p class="back-text" (click)="previousState()"><fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span></p>
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
 
-        <jhi-alert></jhi-alert>
+      <div class="topProfile-container">
+        <div>
+          @if (profileDetailsRef.bioImage) {
+            <a (click)="openFile(profileDetailsRef.bioImage ?? '', profileDetailsRef.bioImageContentType)">
+              <img
+                [src]="'data:' + profileDetailsRef.bioImageContentType + ';base64,' + profileDetailsRef.bioImage"
+                style="max-width: 100%"
+                alt="profileDetails"
+              />
+            </a>
+          }
+        </div>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
+        <dl class="profile-details">
           <dd>
-            <span>{{ profileDetailsRef.id }}</span>
+            <span class="username">{{ '@' + profileDetailsRef.userName }}</span>
           </dd>
-          <dt><span>Bio Image</span></dt>
+
+          <dt><span>REVIEWS</span></dt>
           <dd>
-            @if (profileDetailsRef.bioImage) {
-              <div>
-                <a (click)="openFile(profileDetailsRef.bioImage ?? '', profileDetailsRef.bioImageContentType)">
-                  <img
-                    [src]="'data:' + profileDetailsRef.bioImageContentType + ';base64,' + profileDetailsRef.bioImage"
-                    style="max-width: 100%"
-                    alt="profileDetails"
-                  />
-                </a>
-                {{ profileDetailsRef.bioImageContentType }}, {{ byteSize(profileDetailsRef.bioImage ?? '') }}
-              </div>
-            }
+            <!--            <span>{{ profileDetailsRef.rating }}</span> supposed to take the average rating from database-->
+            <div class="star">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
           </dd>
-          <dt><span>User Name</span></dt>
-          <dd>
-            <span>{{ profileDetailsRef.userName }}</span>
-          </dd>
-          <dt><span>Birth Date</span></dt>
-          <dd>
-            <span>{{ profileDetailsRef.birthDate | formatMediumDate }}</span>
-          </dd>
-          <dt><span>User</span></dt>
-          <dd>
-            <span>{{ profileDetailsRef.user?.id }}</span>
-          </dd>
-          <dt><span>Location</span></dt>
-          <dd>
-            @for (location of profileDetailsRef.locations; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/location', location.id, 'view']">{{ location?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-          <dt><span>Conversation</span></dt>
-          <dd>
-            @for (conversation of profileDetailsRef.conversations; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
+
+          <dt><span>MEETUP LOCATIONS</span></dt>
+          <dd class="address-container">
+            <button type="button" [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']" class="btn btn-primary">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
           </dd>
         </dl>
-
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-        </button>
-
-        <button type="button" [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-        </button>
       </div>
-    }
-  </div>
+
+      <ul class="nav nav-tabs mt-3">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'listings'" (click)="activeTab = 'listings'"> Listings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'favorites'" (click)="activeTab = 'favorites'"> Favorites</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'"> Purchase History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'"> Reviews</a>
+        </li>
+      </ul>
+
+      <div class="tab-content mt-3">
+        <div *ngIf="activeTab === 'listings'">
+          <h3>Listings</h3>
+          <p>Show user's product listings here ....</p>
+        </div>
+
+        <div *ngIf="activeTab === 'favorites'">
+          <h3>Favorites</h3>
+          <p>Show user's favorites products here ....</p>
+        </div>
+
+        <div *ngIf="activeTab === 'history'">
+          <h3>Purchase History</h3>
+          <p>Show user's purchase history here ....</p>
+        </div>
+      </div>
+    </div>
+  }
 </div>
