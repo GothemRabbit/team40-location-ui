@@ -1,0 +1,153 @@
+entity UserDetails {
+  bioImage ImageBlob,
+  userName String required unique,
+  firstName String required,
+  lastName String required,
+  gender Gender,
+  birthDate LocalDate,
+  email String required unique,
+  phoneNumber String required unique,
+  preferences String, // For recommendations
+  rating Float required min(1) max(5) // For seller ratings
+  address String required
+}
+
+entity Authentication {
+  password String required,
+  //userName UserDetails required,
+}
+
+enum Gender {
+  MALE,
+  FEMALE,
+  OTHER
+}
+
+
+// Item entity for product listings
+entity Item {
+  itemTitle String required
+  itemPrice BigDecimal required,
+  itemSize String,
+  itemCondition Condition required,
+  itemCategory Category required,
+  description TextBlob,
+  itemColour String,
+  itemImage ImageBlob required,
+  timeListed Instant required,
+  itemLike Boolean
+}
+
+enum Condition {
+  BRANDNEW,
+  LIKENEW,
+  FAIRLYUSED,
+  WELLUSED,
+  HEAVILYUSED
+}
+
+enum Category {
+  FOOTWEAR,
+  CLOTHING,
+  HEADWEAR,
+  ELECTRONICS,
+  HOBBIES,
+  BAGS,
+  OTHERS
+}
+
+
+// Simplified messaging for user communication
+entity Message {
+  content TextBlob required,
+  timestamp Instant required
+  //relatedReservation Reservation
+}
+
+entity Conversation {
+  dateCreated LocalDate required
+}
+
+
+
+// Tracks the state of an item in the process
+entity ProductStatus {
+  //item Item required,
+  //seller UserDetails required, // The seller
+  //buyer UserDetails, // The confirmed buyer (if reserved)
+  status ProductState required, // Item's current state
+  meetingTime Instant, // Editable by both parties
+  meetingLocation String, // Editable by both parties
+  chatLink String // Link to buyer-seller chat
+  createdAt ZonedDateTime required,
+  updatedAt ZonedDateTime
+}
+
+enum ProductState {
+  AVAILABLE,  // Still up for reservation
+  PENDING,  // Reserved by at least one buyer, waiting for seller's decision
+  RESERVED,  // Successfully reserved by a buyer
+  COMPLETED,  // Trade completed, moved to history
+  CANCELLED  // Trade cancelled, item remains listed
+}
+
+
+entity UserSearchHistory {
+  //user UserDetails required,
+  searchQuery String required,
+  filters String, // JSON blob for filters applied
+  searchDate Instant required
+}
+
+entity UserRecommendation {
+  //user UserDetails required,
+  //recommendedItem Item required,
+  reason String, // E.g., "Based on your interest in Electronics"
+}
+
+
+
+
+
+entity Reservation {
+  //buyer UserDetails required, // The buyer
+  //seller UserDetails required, // The seller
+  //item Item required,
+  reservationDate Instant required,
+  expirationDate Instant required,
+  status ReservationStatus required
+}
+
+
+enum ReservationStatus {
+  PENDING,  // Waiting for seller confirmation
+  CONFIRMED,  // Seller approved the reservation
+  CANCELLED  // Buyer/seller cancelled the reservation
+}
+
+
+
+// Review system for user ratings
+entity Review {
+  //reviewer UserDetails required, // Who left the review
+  //reviewee UserDetails required, // Who is being reviewed (seller)
+  rating Integer required min(0) max(5),
+  reviewText TextBlob,
+  reviewDate LocalDate required
+}
+
+entity Notification {
+  title String required,
+  message TextBlob required,
+  notificationType NotificationType required,
+  isRead Boolean required,
+  createdAt Instant required
+}
+
+
+enum NotificationType {
+  MESSAGE,
+  REVIEW,
+  STATUS_CHANGE
+}
+
