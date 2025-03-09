@@ -1,0 +1,168 @@
+entity UserDetails {
+  bioImage ImageBlob,
+  //only allow one word (no space) for username
+  userName String required unique pattern(/^\S+$/) ,
+  birthDate LocalDate
+}
+
+entity Location {
+  // use Google Map API to find and store the location
+  address String required,
+  latitude Double required,
+  longitude Double required,
+  postcode String required
+}
+
+// Item entity for product listings
+entity Item {
+  title String required minlength(3) maxlength(100),
+  price Double required min(0),
+  condition Condition required,
+  category Category required,
+  description TextBlob,
+  brand String,
+  colour String,
+  timeListed Instant required
+}
+
+entity Likes {
+  liked Boolean
+}
+
+enum Condition {
+  BRANDNEW,
+  LIKENEW,
+  FAIRLYUSED,
+  WELLUSED,
+  HEAVILYUSED
+}
+
+enum Category {
+  FOOTWEAR,
+  CLOTHING,
+  HEADWEAR,
+  ELECTRONICS,
+  HOBBIES,
+  BAGS,
+  OTHERS
+}
+
+entity Images {
+  images ImageBlob required
+}
+
+// Simplified messaging for user communication
+entity Message {
+  content TextBlob required,
+  timestamp Instant required,
+  isRead Boolean required
+}
+
+entity Conversation {
+  dateCreated Instant required
+}
+
+// Tracks the state of an item in the process
+entity ProductStatus {
+  status ProductState required,
+  meetingTime Instant,
+  updatedAt Instant,
+  createdAt ZonedDateTime
+}
+
+enum ProductState {
+  PENDING,
+  REJECTED,
+  RESERVED,
+  COMPLETED,
+  CANCELLED
+}
+
+// Review system for user ratings
+entity Review {
+  rating Integer required min(0) max(5),
+  comments TextBlob required minlength(5) maxlength(500),
+  date LocalDate required
+}
+
+entity Wishlist {
+  // Wishlist name
+  name String required,
+  // public or private
+  visibility VisibilityType required
+}
+
+enum VisibilityType {
+  // Private: only the user can see the wishlist
+  PRIVATE,
+  PUBLIC
+}
+
+//userdetails relationship
+
+relationship OneToOne {
+  UserDetails { user }  to @ID User with builtInEntity
+}
+
+//location relationship
+relationship ManyToMany {
+  UserDetails {meetupLocations} to Location {users}
+}
+
+// items relationship
+
+relationship OneToMany {
+  UserDetails { itemsOnSale } to Item {seller},
+  Item { images } to Images
+}
+
+relationship ManyToOne {
+  Likes { item } to Item,
+  Likes { user } to UserDetails
+}
+
+//reviews relationships
+
+relationship ManyToOne  {
+Review {buyer} to UserDetails {buyersReview},
+Review {seller} to UserDetails {reviewsOfSeller}
+}
+
+//conversation relationship
+
+relationship ManyToOne {
+  Message {convo} to Conversation {messages}
+  Message {sender} to UserDetails
+}
+
+relationship ManyToMany {
+  Conversation {participants} to UserDetails {chats}
+}
+
+//product status relationships
+
+relationship OneToOne {
+  ProductStatus to Item,
+  ProductStatus to Conversation
+}
+
+relationship ManyToOne {
+  ProductStatus {buyer} to UserDetails,
+  ProductStatus {seller} to UserDetails,
+  ProductStatus {meetingLocation} to Location
+}
+
+//wishlist relationships
+
+relationship ManyToMany {
+  Item {wishlist} to Wishlist {items}
+}
+
+relationship OneToMany {
+  UserDetails to Wishlist
+}
+
+paginate Item, ProductStatus  with infinite-scroll
+filter Item
+dto * with mapstruct
+use serviceclass for *
