@@ -38,6 +38,9 @@
             <column name="time_listed" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
+            <column name="profile_details_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="seller_id" type="bigint">
                 <constraints nullable="true" />
             </column>

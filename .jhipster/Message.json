@@ -25,14 +25,15 @@
   "relationships": [
     {
       "otherEntityName": "conversation",
-      "otherEntityRelationshipName": "messages",
-      "relationshipName": "convo",
+      "otherEntityRelationshipName": "message",
+      "relationshipName": "conversation",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityName": "userDetails",
-      "relationshipName": "sender",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "message",
+      "relationshipName": "profileDetails",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }

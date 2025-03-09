@@ -85,6 +85,8 @@ class ItemCriteriaTest {
         itemCriteria.imagesId();
         itemCriteria.wishlistId();
         itemCriteria.productStatusId();
+        itemCriteria.profileDetailsId();
+        itemCriteria.likesId();
         itemCriteria.sellerId();
         itemCriteria.distinct();
     }
@@ -103,6 +105,8 @@ class ItemCriteriaTest {
                 condition.apply(criteria.getImagesId()) &&
                 condition.apply(criteria.getWishlistId()) &&
                 condition.apply(criteria.getProductStatusId()) &&
+                condition.apply(criteria.getProfileDetailsId()) &&
+                condition.apply(criteria.getLikesId()) &&
                 condition.apply(criteria.getSellerId()) &&
                 condition.apply(criteria.getDistinct()),
             "every filter matches"
@@ -123,6 +127,8 @@ class ItemCriteriaTest {
                 condition.apply(criteria.getImagesId(), copy.getImagesId()) &&
                 condition.apply(criteria.getWishlistId(), copy.getWishlistId()) &&
                 condition.apply(criteria.getProductStatusId(), copy.getProductStatusId()) &&
+                condition.apply(criteria.getProfileDetailsId(), copy.getProfileDetailsId()) &&
+                condition.apply(criteria.getLikesId(), copy.getLikesId()) &&
                 condition.apply(criteria.getSellerId(), copy.getSellerId()) &&
                 condition.apply(criteria.getDistinct(), copy.getDistinct()),
             "every filter matches"

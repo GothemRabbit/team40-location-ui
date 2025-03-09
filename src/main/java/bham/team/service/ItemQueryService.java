@@ -115,6 +115,18 @@ public class ItemQueryService extends QueryService<Item> {
                     )
                 );
             }
+            if (criteria.getProfileDetailsId() != null) {
+                specification = specification.and(
+                    buildSpecification(criteria.getProfileDetailsId(), root ->
+                        root.join(Item_.profileDetails, JoinType.LEFT).get(ProfileDetails_.id)
+                    )
+                );
+            }
+            if (criteria.getLikesId() != null) {
+                specification = specification.and(
+                    buildSpecification(criteria.getLikesId(), root -> root.join(Item_.likes, JoinType.LEFT).get(Likes_.id))
+                );
+            }
             if (criteria.getSellerId() != null) {
                 specification = specification.and(
                     buildSpecification(criteria.getSellerId(), root -> root.join(Item_.seller, JoinType.LEFT).get(UserDetails_.id))

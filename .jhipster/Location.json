@@ -29,9 +29,16 @@
   "name": "Location",
   "relationships": [
     {
-      "otherEntityName": "userDetails",
-      "otherEntityRelationshipName": "meetupLocations",
-      "relationshipName": "users",
+      "otherEntityName": "productStatus",
+      "otherEntityRelationshipName": "location",
+      "relationshipName": "productStatus",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "location",
+      "relationshipName": "profileDetails",
       "relationshipSide": "right",
       "relationshipType": "many-to-many"
     }

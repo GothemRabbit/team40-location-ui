@@ -2,10 +2,10 @@ package bham.team.service.mapper;
 
 import bham.team.domain.Item;
 import bham.team.domain.Likes;
-import bham.team.domain.UserDetails;
+import bham.team.domain.ProfileDetails;
 import bham.team.service.dto.ItemDTO;
 import bham.team.service.dto.LikesDTO;
-import bham.team.service.dto.UserDetailsDTO;
+import bham.team.service.dto.ProfileDetailsDTO;
 import org.mapstruct.*;
 
 /**
@@ -14,7 +14,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface LikesMapper extends EntityMapper<LikesDTO, Likes> {
     @Mapping(target = "item", source = "item", qualifiedByName = "itemId")
-    @Mapping(target = "user", source = "user", qualifiedByName = "userDetailsId")
+    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
     LikesDTO toDto(Likes s);
 
     @Named("itemId")
@@ -22,8 +22,8 @@ public interface LikesMapper extends EntityMapper<LikesDTO, Likes> {
     @Mapping(target = "id", source = "id")
     ItemDTO toDtoItemId(Item item);
 
-    @Named("userDetailsId")
+    @Named("profileDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    UserDetailsDTO toDtoUserDetailsId(UserDetails userDetails);
+    ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
 }

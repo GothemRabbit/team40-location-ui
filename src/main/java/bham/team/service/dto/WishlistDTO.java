@@ -21,9 +21,11 @@ public class WishlistDTO implements Serializable {
     @NotNull
     private VisibilityType visibility;
 
-    private UserDetailsDTO userDetails;
+    private ProfileDetailsDTO profileDetails;
 
     private Set<ItemDTO> items = new HashSet<>();
+
+    private UserDetailsDTO userDetails;
 
     public Long getId() {
         return id;
@@ -49,12 +51,12 @@ public class WishlistDTO implements Serializable {
         this.visibility = visibility;
     }
 
-    public UserDetailsDTO getUserDetails() {
-        return userDetails;
+    public ProfileDetailsDTO getProfileDetails() {
+        return profileDetails;
     }
 
-    public void setUserDetails(UserDetailsDTO userDetails) {
-        this.userDetails = userDetails;
+    public void setProfileDetails(ProfileDetailsDTO profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
     public Set<ItemDTO> getItems() {
@@ -63,6 +65,14 @@ public class WishlistDTO implements Serializable {
 
     public void setItems(Set<ItemDTO> items) {
         this.items = items;
+    }
+
+    public UserDetailsDTO getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDetailsDTO userDetails) {
+        this.userDetails = userDetails;
     }
 
     @Override
@@ -93,8 +103,9 @@ public class WishlistDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", visibility='" + getVisibility() + "'" +
-            ", userDetails=" + getUserDetails() +
+            ", profileDetails=" + getProfileDetails() +
             ", items=" + getItems() +
+            ", userDetails=" + getUserDetails() +
             "}";
     }
 }

@@ -29,6 +29,7 @@ describe('Item Form Service', () => {
             colour: expect.any(Object),
             timeListed: expect.any(Object),
             wishlists: expect.any(Object),
+            profileDetails: expect.any(Object),
             seller: expect.any(Object),
           }),
         );
@@ -49,6 +50,7 @@ describe('Item Form Service', () => {
             colour: expect.any(Object),
             timeListed: expect.any(Object),
             wishlists: expect.any(Object),
+            profileDetails: expect.any(Object),
             seller: expect.any(Object),
           }),
         );

@@ -61,7 +61,7 @@ public class MessageAsserts {
     public static void assertMessageUpdatableRelationshipsEquals(Message expected, Message actual) {
         assertThat(expected)
             .as("Verify Message relationships")
-            .satisfies(e -> assertThat(e.getConvo()).as("check convo").isEqualTo(actual.getConvo()))
-            .satisfies(e -> assertThat(e.getSender()).as("check sender").isEqualTo(actual.getSender()));
+            .satisfies(e -> assertThat(e.getConversation()).as("check conversation").isEqualTo(actual.getConversation()))
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()));
     }
 }

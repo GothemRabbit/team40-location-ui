@@ -1,25 +1,25 @@
 import { IWishlist, NewWishlist } from './wishlist.model';
 
 export const sampleWithRequiredData: IWishlist = {
-  id: 32300,
-  name: 'meh ownership ready',
-  visibility: 'PRIVATE',
-};
-
-export const sampleWithPartialData: IWishlist = {
-  id: 10878,
-  name: 'within earnest fairly',
+  id: 996,
+  name: 'blah since',
   visibility: 'PUBLIC',
 };
 
-export const sampleWithFullData: IWishlist = {
-  id: 10808,
-  name: 'molasses a',
+export const sampleWithPartialData: IWishlist = {
+  id: 28030,
+  name: 'roadway neglected questioningly',
   visibility: 'PRIVATE',
 };
 
+export const sampleWithFullData: IWishlist = {
+  id: 6639,
+  name: 'notwithstanding sham',
+  visibility: 'PUBLIC',
+};
+
 export const sampleWithNewData: NewWishlist = {
-  name: 'midst pish',
+  name: 'whose',
   visibility: 'PUBLIC',
   id: null,
 };

@@ -318,8 +318,6 @@ class MessageResourceIT {
         Message partialUpdatedMessage = new Message();
         partialUpdatedMessage.setId(message.getId());
 
-        partialUpdatedMessage.content(UPDATED_CONTENT).timestamp(UPDATED_TIMESTAMP).isRead(UPDATED_IS_READ);
-
         restMessageMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedMessage.getId())

@@ -76,6 +76,14 @@
               </span>
             }
           </dd>
+          <dt><span>Profile Details</span></dt>
+          <dd>
+            @if (item()!.profileDetails) {
+              <div>
+                <a [routerLink]="['/profile-details', item()!.profileDetails?.id, 'view']">{{ itemRef.profileDetails?.id }}</a>
+              </div>
+            }
+          </dd>
           <dt><span>Seller</span></dt>
           <dd>
             @if (item()!.seller) {

@@ -8,8 +8,8 @@ import { IItem } from 'app/entities/item/item.model';
 import { ItemService } from 'app/entities/item/service/item.service';
 import { IConversation } from 'app/entities/conversation/conversation.model';
 import { ConversationService } from 'app/entities/conversation/service/conversation.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { ILocation } from 'app/entities/location/location.model';
 import { LocationService } from 'app/entities/location/service/location.service';
 import { IProductStatus } from '../product-status.model';
@@ -26,7 +26,7 @@ describe('ProductStatus Management Update Component', () => {
   let productStatusService: ProductStatusService;
   let itemService: ItemService;
   let conversationService: ConversationService;
-  let userDetailsService: UserDetailsService;
+  let profileDetailsService: ProfileDetailsService;
   let locationService: LocationService;
 
   beforeEach(() => {
@@ -52,7 +52,7 @@ describe('ProductStatus Management Update Component', () => {
     productStatusService = TestBed.inject(ProductStatusService);
     itemService = TestBed.inject(ItemService);
     conversationService = TestBed.inject(ConversationService);
-    userDetailsService = TestBed.inject(UserDetailsService);
+    profileDetailsService = TestBed.inject(ProfileDetailsService);
     locationService = TestBed.inject(LocationService);
 
     comp = fixture.componentInstance;
@@ -61,10 +61,10 @@ describe('ProductStatus Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call item query and add missing value', () => {
       const productStatus: IProductStatus = { id: 456 };
-      const item: IItem = { id: 13513 };
+      const item: IItem = { id: 26941 };
       productStatus.item = item;
 
-      const itemCollection: IItem[] = [{ id: 1935 }];
+      const itemCollection: IItem[] = [{ id: 304 }];
       jest.spyOn(itemService, 'query').mockReturnValue(of(new HttpResponse({ body: itemCollection })));
       const expectedCollection: IItem[] = [item, ...itemCollection];
       jest.spyOn(itemService, 'addItemToCollectionIfMissing').mockReturnValue(expectedCollection);
@@ -79,10 +79,10 @@ describe('ProductStatus Management Update Component', () => {
 
     it('Should call conversation query and add missing value', () => {
       const productStatus: IProductStatus = { id: 456 };
-      const conversation: IConversation = { id: 2459 };
+      const conversation: IConversation = { id: 23303 };
       productStatus.conversation = conversation;
 
-      const conversationCollection: IConversation[] = [{ id: 6469 }];
+      const conversationCollection: IConversation[] = [{ id: 16257 }];
       jest.spyOn(conversationService, 'query').mockReturnValue(of(new HttpResponse({ body: conversationCollection })));
       const expectedCollection: IConversation[] = [conversation, ...conversationCollection];
       jest.spyOn(conversationService, 'addConversationToCollectionIfMissing').mockReturnValue(expectedCollection);
@@ -95,38 +95,36 @@ describe('ProductStatus Management Update Component', () => {
       expect(comp.conversationsCollection).toEqual(expectedCollection);
     });
 
-    it('Should call UserDetails query and add missing value', () => {
+    it('Should call ProfileDetails query and add missing value', () => {
       const productStatus: IProductStatus = { id: 456 };
-      const buyer: IUserDetails = { id: 32584 };
-      productStatus.buyer = buyer;
-      const seller: IUserDetails = { id: 12294 };
-      productStatus.seller = seller;
+      const profileDetails: IProfileDetails = { id: 32171 };
+      productStatus.profileDetails = profileDetails;
 
-      const userDetailsCollection: IUserDetails[] = [{ id: 12342 }];
-      jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
-      const additionalUserDetails = [buyer, seller];
-      const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
-      jest.spyOn(userDetailsService, 'addUserDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
+      const profileDetailsCollection: IProfileDetails[] = [{ id: 15834 }];
+      jest.spyOn(profileDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: profileDetailsCollection })));
+      const additionalProfileDetails = [profileDetails];
+      const expectedCollection: IProfileDetails[] = [...additionalProfileDetails, ...profileDetailsCollection];
+      jest.spyOn(profileDetailsService, 'addProfileDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ productStatus });
       comp.ngOnInit();
 
-      expect(userDetailsService.query).toHaveBeenCalled();
-      expect(userDetailsService.addUserDetailsToCollectionIfMissing).toHaveBeenCalledWith(
-        userDetailsCollection,
-        ...additionalUserDetails.map(expect.objectContaining),
+      expect(profileDetailsService.query).toHaveBeenCalled();
+      expect(profileDetailsService.addProfileDetailsToCollectionIfMissing).toHaveBeenCalledWith(
+        profileDetailsCollection,
+        ...additionalProfileDetails.map(expect.objectContaining),
       );
-      expect(comp.userDetailsSharedCollection).toEqual(expectedCollection);
+      expect(comp.profileDetailsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Location query and add missing value', () => {
       const productStatus: IProductStatus = { id: 456 };
-      const meetingLocation: ILocation = { id: 11518 };
-      productStatus.meetingLocation = meetingLocation;
+      const location: ILocation = { id: 25624 };
+      productStatus.location = location;
 
-      const locationCollection: ILocation[] = [{ id: 11188 }];
+      const locationCollection: ILocation[] = [{ id: 6740 }];
       jest.spyOn(locationService, 'query').mockReturnValue(of(new HttpResponse({ body: locationCollection })));
-      const additionalLocations = [meetingLocation];
+      const additionalLocations = [location];
       const expectedCollection: ILocation[] = [...additionalLocations, ...locationCollection];
       jest.spyOn(locationService, 'addLocationToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -143,25 +141,22 @@ describe('ProductStatus Management Update Component', () => {
 
     it('Should update editForm', () => {
       const productStatus: IProductStatus = { id: 456 };
-      const item: IItem = { id: 32254 };
+      const item: IItem = { id: 30264 };
       productStatus.item = item;
-      const conversation: IConversation = { id: 24869 };
+      const conversation: IConversation = { id: 21378 };
       productStatus.conversation = conversation;
-      const buyer: IUserDetails = { id: 19176 };
-      productStatus.buyer = buyer;
-      const seller: IUserDetails = { id: 28546 };
-      productStatus.seller = seller;
-      const meetingLocation: ILocation = { id: 28913 };
-      productStatus.meetingLocation = meetingLocation;
+      const profileDetails: IProfileDetails = { id: 616 };
+      productStatus.profileDetails = profileDetails;
+      const location: ILocation = { id: 5755 };
+      productStatus.location = location;
 
       activatedRoute.data = of({ productStatus });
       comp.ngOnInit();
 
       expect(comp.itemsCollection).toContain(item);
       expect(comp.conversationsCollection).toContain(conversation);
-      expect(comp.userDetailsSharedCollection).toContain(buyer);
-      expect(comp.userDetailsSharedCollection).toContain(seller);
-      expect(comp.locationsSharedCollection).toContain(meetingLocation);
+      expect(comp.profileDetailsSharedCollection).toContain(profileDetails);
+      expect(comp.locationsSharedCollection).toContain(location);
       expect(comp.productStatus).toEqual(productStatus);
     });
   });
@@ -255,13 +250,13 @@ describe('ProductStatus Management Update Component', () => {
       });
     });
 
-    describe('compareUserDetails', () => {
-      it('Should forward to userDetailsService', () => {
+    describe('compareProfileDetails', () => {
+      it('Should forward to profileDetailsService', () => {
         const entity = { id: 123 };
         const entity2 = { id: 456 };
-        jest.spyOn(userDetailsService, 'compareUserDetails');
-        comp.compareUserDetails(entity, entity2);
-        expect(userDetailsService.compareUserDetails).toHaveBeenCalledWith(entity, entity2);
+        jest.spyOn(profileDetailsService, 'compareProfileDetails');
+        comp.compareProfileDetails(entity, entity2);
+        expect(profileDetailsService.compareProfileDetails).toHaveBeenCalledWith(entity, entity2);
       });
     });
 

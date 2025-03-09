@@ -70,8 +70,7 @@ public class ProductStatusAsserts {
             .as("Verify ProductStatus relationships")
             .satisfies(e -> assertThat(e.getItem()).as("check item").isEqualTo(actual.getItem()))
             .satisfies(e -> assertThat(e.getConversation()).as("check conversation").isEqualTo(actual.getConversation()))
-            .satisfies(e -> assertThat(e.getBuyer()).as("check buyer").isEqualTo(actual.getBuyer()))
-            .satisfies(e -> assertThat(e.getSeller()).as("check seller").isEqualTo(actual.getSeller()))
-            .satisfies(e -> assertThat(e.getMeetingLocation()).as("check meetingLocation").isEqualTo(actual.getMeetingLocation()));
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
+            .satisfies(e -> assertThat(e.getLocation()).as("check location").isEqualTo(actual.getLocation()));
     }
 }

@@ -11,8 +11,8 @@ import { IItem } from 'app/entities/item/item.model';
 import { ItemService } from 'app/entities/item/service/item.service';
 import { IConversation } from 'app/entities/conversation/conversation.model';
 import { ConversationService } from 'app/entities/conversation/service/conversation.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { ILocation } from 'app/entities/location/location.model';
 import { LocationService } from 'app/entities/location/service/location.service';
 import { ProductState } from 'app/entities/enumerations/product-state.model';
@@ -33,14 +33,14 @@ export class ProductStatusUpdateComponent implements OnInit {
 
   itemsCollection: IItem[] = [];
   conversationsCollection: IConversation[] = [];
-  userDetailsSharedCollection: IUserDetails[] = [];
+  profileDetailsSharedCollection: IProfileDetails[] = [];
   locationsSharedCollection: ILocation[] = [];
 
   protected productStatusService = inject(ProductStatusService);
   protected productStatusFormService = inject(ProductStatusFormService);
   protected itemService = inject(ItemService);
   protected conversationService = inject(ConversationService);
-  protected userDetailsService = inject(UserDetailsService);
+  protected profileDetailsService = inject(ProfileDetailsService);
   protected locationService = inject(LocationService);
   protected activatedRoute = inject(ActivatedRoute);
 
@@ -52,7 +52,8 @@ export class ProductStatusUpdateComponent implements OnInit {
   compareConversation = (o1: IConversation | null, o2: IConversation | null): boolean =>
     this.conversationService.compareConversation(o1, o2);
 
-  compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
+  compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
+    this.profileDetailsService.compareProfileDetails(o1, o2);
 
   compareLocation = (o1: ILocation | null, o2: ILocation | null): boolean => this.locationService.compareLocation(o1, o2);
 
@@ -109,14 +110,13 @@ export class ProductStatusUpdateComponent implements OnInit {
       this.conversationsCollection,
       productStatus.conversation,
     );
-    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-      this.userDetailsSharedCollection,
-      productStatus.buyer,
-      productStatus.seller,
+    this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+      this.profileDetailsSharedCollection,
+      productStatus.profileDetails,
     );
     this.locationsSharedCollection = this.locationService.addLocationToCollectionIfMissing<ILocation>(
       this.locationsSharedCollection,
-      productStatus.meetingLocation,
+      productStatus.location,
     );
   }
 
@@ -137,26 +137,25 @@ export class ProductStatusUpdateComponent implements OnInit {
       )
       .subscribe((conversations: IConversation[]) => (this.conversationsCollection = conversations));
 
-    this.userDetailsService
+    this.profileDetailsService
       .query()
-      .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))
+      .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
       .pipe(
-        map((userDetails: IUserDetails[]) =>
-          this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-            userDetails,
-            this.productStatus?.buyer,
-            this.productStatus?.seller,
+        map((profileDetails: IProfileDetails[]) =>
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+            profileDetails,
+            this.productStatus?.profileDetails,
           ),
         ),
       )
-      .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
+      .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
 
     this.locationService
       .query()
       .pipe(map((res: HttpResponse<ILocation[]>) => res.body ?? []))
       .pipe(
         map((locations: ILocation[]) =>
-          this.locationService.addLocationToCollectionIfMissing<ILocation>(locations, this.productStatus?.meetingLocation),
+          this.locationService.addLocationToCollectionIfMissing<ILocation>(locations, this.productStatus?.location),
         ),
       )
       .subscribe((locations: ILocation[]) => (this.locationsSharedCollection = locations));

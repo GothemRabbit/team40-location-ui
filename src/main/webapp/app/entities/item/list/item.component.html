@@ -98,6 +98,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="profileDetails.id">
+              <div class="d-flex">
+                <span>Profile Details</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="seller.id">
               <div class="d-flex">
                 <span>Seller</span>
@@ -145,6 +151,13 @@
               <td>{{ item.brand }}</td>
               <td>{{ item.colour }}</td>
               <td>{{ item.timeListed | formatMediumDatetime }}</td>
+              <td>
+                @if (item.profileDetails) {
+                  <div>
+                    <a [routerLink]="['/profile-details', item.profileDetails.id, 'view']">{{ item.profileDetails.id }}</a>
+                  </div>
+                }
+              </td>
               <td>
                 @if (item.seller) {
                   <div>

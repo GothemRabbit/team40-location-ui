@@ -33,6 +33,28 @@ public class Conversation implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
+        name = "rel_conversation__profile_details",
+        joinColumns = @JoinColumn(name = "conversation_id"),
+        inverseJoinColumns = @JoinColumn(name = "profile_details_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private Set<ProfileDetails> profileDetails = new HashSet<>();
+
+    @JsonIgnoreProperties(value = { "item", "conversation", "profileDetails", "location" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "conversation")
+    private ProductStatus productStatus;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "conversation")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "conversation", "profileDetails" }, allowSetters = true)
+    private Set<Message> messages = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
         name = "rel_conversation__participants",
         joinColumns = @JoinColumn(name = "conversation_id"),
         inverseJoinColumns = @JoinColumn(name = "participants_id")
@@ -43,15 +65,6 @@ public class Conversation implements Serializable {
         allowSetters = true
     )
     private Set<UserDetails> participants = new HashSet<>();
-
-    @JsonIgnoreProperties(value = { "item", "conversation", "buyer", "seller", "meetingLocation" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "conversation")
-    private ProductStatus productStatus;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "convo")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "convo", "sender" }, allowSetters = true)
-    private Set<Message> messages = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -81,26 +94,26 @@ public class Conversation implements Serializable {
         this.dateCreated = dateCreated;
     }
 
-    public Set<UserDetails> getParticipants() {
-        return this.participants;
+    public Set<ProfileDetails> getProfileDetails() {
+        return this.profileDetails;
     }
 
-    public void setParticipants(Set<UserDetails> userDetails) {
-        this.participants = userDetails;
+    public void setProfileDetails(Set<ProfileDetails> profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
-    public Conversation participants(Set<UserDetails> userDetails) {
-        this.setParticipants(userDetails);
+    public Conversation profileDetails(Set<ProfileDetails> profileDetails) {
+        this.setProfileDetails(profileDetails);
         return this;
     }
 
-    public Conversation addParticipants(UserDetails userDetails) {
-        this.participants.add(userDetails);
+    public Conversation addProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails.add(profileDetails);
         return this;
     }
 
-    public Conversation removeParticipants(UserDetails userDetails) {
-        this.participants.remove(userDetails);
+    public Conversation removeProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails.remove(profileDetails);
         return this;
     }
 
@@ -129,10 +142,10 @@ public class Conversation implements Serializable {
 
     public void setMessages(Set<Message> messages) {
         if (this.messages != null) {
-            this.messages.forEach(i -> i.setConvo(null));
+            this.messages.forEach(i -> i.setConversation(null));
         }
         if (messages != null) {
-            messages.forEach(i -> i.setConvo(this));
+            messages.forEach(i -> i.setConversation(this));
         }
         this.messages = messages;
     }
@@ -142,15 +155,38 @@ public class Conversation implements Serializable {
         return this;
     }
 
-    public Conversation addMessages(Message message) {
+    public Conversation addMessage(Message message) {
         this.messages.add(message);
-        message.setConvo(this);
+        message.setConversation(this);
         return this;
     }
 
-    public Conversation removeMessages(Message message) {
+    public Conversation removeMessage(Message message) {
         this.messages.remove(message);
-        message.setConvo(null);
+        message.setConversation(null);
+        return this;
+    }
+
+    public Set<UserDetails> getParticipants() {
+        return this.participants;
+    }
+
+    public void setParticipants(Set<UserDetails> userDetails) {
+        this.participants = userDetails;
+    }
+
+    public Conversation participants(Set<UserDetails> userDetails) {
+        this.setParticipants(userDetails);
+        return this;
+    }
+
+    public Conversation addParticipants(UserDetails userDetails) {
+        this.participants.add(userDetails);
+        return this;
+    }
+
+    public Conversation removeParticipants(UserDetails userDetails) {
+        this.participants.remove(userDetails);
         return this;
     }
 

@@ -20,7 +20,7 @@ type LikesFormGroupContent = {
   id: FormControl<ILikes['id'] | NewLikes['id']>;
   liked: FormControl<ILikes['liked']>;
   item: FormControl<ILikes['item']>;
-  user: FormControl<ILikes['user']>;
+  profileDetails: FormControl<ILikes['profileDetails']>;
 };
 
 export type LikesFormGroup = FormGroup<LikesFormGroupContent>;
@@ -42,7 +42,7 @@ export class LikesFormService {
       ),
       liked: new FormControl(likesRawValue.liked),
       item: new FormControl(likesRawValue.item),
-      user: new FormControl(likesRawValue.user),
+      profileDetails: new FormControl(likesRawValue.profileDetails),
     });
   }
 

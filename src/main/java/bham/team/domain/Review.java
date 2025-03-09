@@ -41,6 +41,13 @@ public class Review implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
         value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
         allowSetters = true
     )
@@ -105,6 +112,19 @@ public class Review implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
+    public Review profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
+        return this;
     }
 
     public UserDetails getBuyer() {

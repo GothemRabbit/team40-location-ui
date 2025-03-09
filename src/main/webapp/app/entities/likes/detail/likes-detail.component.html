@@ -27,11 +27,11 @@
               </div>
             }
           </dd>
-          <dt><span>User</span></dt>
+          <dt><span>Profile Details</span></dt>
           <dd>
-            @if (likes()!.user) {
+            @if (likes()!.profileDetails) {
               <div>
-                <a [routerLink]="['/user-details', likes()!.user?.id, 'view']">{{ likesRef.user?.id }}</a>
+                <a [routerLink]="['/profile-details', likes()!.profileDetails?.id, 'view']">{{ likesRef.profileDetails?.id }}</a>
               </div>
             }
           </dd>

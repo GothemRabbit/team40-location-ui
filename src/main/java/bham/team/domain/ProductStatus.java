@@ -41,33 +41,26 @@ public class ProductStatus implements Serializable {
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
 
-    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "seller" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "profileDetails", "likes", "seller" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Item item;
 
-    @JsonIgnoreProperties(value = { "participants", "productStatus", "messages" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "profileDetails", "productStatus", "messages", "participants" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Conversation conversation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
         allowSetters = true
     )
-    private UserDetails buyer;
+    private ProfileDetails profileDetails;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(
-        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
-        allowSetters = true
-    )
-    private UserDetails seller;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "users" }, allowSetters = true)
-    private Location meetingLocation;
+    @JsonIgnoreProperties(value = { "productStatuses", "profileDetails", "users" }, allowSetters = true)
+    private Location location;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -162,42 +155,29 @@ public class ProductStatus implements Serializable {
         return this;
     }
 
-    public UserDetails getBuyer() {
-        return this.buyer;
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
     }
 
-    public void setBuyer(UserDetails userDetails) {
-        this.buyer = userDetails;
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
-    public ProductStatus buyer(UserDetails userDetails) {
-        this.setBuyer(userDetails);
+    public ProductStatus profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
         return this;
     }
 
-    public UserDetails getSeller() {
-        return this.seller;
+    public Location getLocation() {
+        return this.location;
     }
 
-    public void setSeller(UserDetails userDetails) {
-        this.seller = userDetails;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    public ProductStatus seller(UserDetails userDetails) {
-        this.setSeller(userDetails);
-        return this;
-    }
-
-    public Location getMeetingLocation() {
-        return this.meetingLocation;
-    }
-
-    public void setMeetingLocation(Location location) {
-        this.meetingLocation = location;
-    }
-
-    public ProductStatus meetingLocation(Location location) {
-        this.setMeetingLocation(location);
+    public ProductStatus location(Location location) {
+        this.setLocation(location);
         return this;
     }
 

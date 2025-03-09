@@ -6,8 +6,8 @@ import { Subject, from, of } from 'rxjs';
 
 import { IItem } from 'app/entities/item/item.model';
 import { ItemService } from 'app/entities/item/service/item.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { ILikes } from '../likes.model';
 import { LikesService } from '../service/likes.service';
 import { LikesFormService } from './likes-form.service';
@@ -21,7 +21,7 @@ describe('Likes Management Update Component', () => {
   let likesFormService: LikesFormService;
   let likesService: LikesService;
   let itemService: ItemService;
-  let userDetailsService: UserDetailsService;
+  let profileDetailsService: ProfileDetailsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +45,7 @@ describe('Likes Management Update Component', () => {
     likesFormService = TestBed.inject(LikesFormService);
     likesService = TestBed.inject(LikesService);
     itemService = TestBed.inject(ItemService);
-    userDetailsService = TestBed.inject(UserDetailsService);
+    profileDetailsService = TestBed.inject(ProfileDetailsService);
 
     comp = fixture.componentInstance;
   });
@@ -53,10 +53,10 @@ describe('Likes Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Item query and add missing value', () => {
       const likes: ILikes = { id: 456 };
-      const item: IItem = { id: 13085 };
+      const item: IItem = { id: 8959 };
       likes.item = item;
 
-      const itemCollection: IItem[] = [{ id: 17994 }];
+      const itemCollection: IItem[] = [{ id: 21930 }];
       jest.spyOn(itemService, 'query').mockReturnValue(of(new HttpResponse({ body: itemCollection })));
       const additionalItems = [item];
       const expectedCollection: IItem[] = [...additionalItems, ...itemCollection];
@@ -73,40 +73,40 @@ describe('Likes Management Update Component', () => {
       expect(comp.itemsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call UserDetails query and add missing value', () => {
+    it('Should call ProfileDetails query and add missing value', () => {
       const likes: ILikes = { id: 456 };
-      const user: IUserDetails = { id: 22005 };
-      likes.user = user;
+      const profileDetails: IProfileDetails = { id: 2041 };
+      likes.profileDetails = profileDetails;
 
-      const userDetailsCollection: IUserDetails[] = [{ id: 21584 }];
-      jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
-      const additionalUserDetails = [user];
-      const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
-      jest.spyOn(userDetailsService, 'addUserDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
+      const profileDetailsCollection: IProfileDetails[] = [{ id: 21881 }];
+      jest.spyOn(profileDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: profileDetailsCollection })));
+      const additionalProfileDetails = [profileDetails];
+      const expectedCollection: IProfileDetails[] = [...additionalProfileDetails, ...profileDetailsCollection];
+      jest.spyOn(profileDetailsService, 'addProfileDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ likes });
       comp.ngOnInit();
 
-      expect(userDetailsService.query).toHaveBeenCalled();
-      expect(userDetailsService.addUserDetailsToCollectionIfMissing).toHaveBeenCalledWith(
-        userDetailsCollection,
-        ...additionalUserDetails.map(expect.objectContaining),
+      expect(profileDetailsService.query).toHaveBeenCalled();
+      expect(profileDetailsService.addProfileDetailsToCollectionIfMissing).toHaveBeenCalledWith(
+        profileDetailsCollection,
+        ...additionalProfileDetails.map(expect.objectContaining),
       );
-      expect(comp.userDetailsSharedCollection).toEqual(expectedCollection);
+      expect(comp.profileDetailsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const likes: ILikes = { id: 456 };
-      const item: IItem = { id: 29824 };
+      const item: IItem = { id: 16604 };
       likes.item = item;
-      const user: IUserDetails = { id: 16437 };
-      likes.user = user;
+      const profileDetails: IProfileDetails = { id: 5592 };
+      likes.profileDetails = profileDetails;
 
       activatedRoute.data = of({ likes });
       comp.ngOnInit();
 
       expect(comp.itemsSharedCollection).toContain(item);
-      expect(comp.userDetailsSharedCollection).toContain(user);
+      expect(comp.profileDetailsSharedCollection).toContain(profileDetails);
       expect(comp.likes).toEqual(likes);
     });
   });
@@ -190,13 +190,13 @@ describe('Likes Management Update Component', () => {
       });
     });
 
-    describe('compareUserDetails', () => {
-      it('Should forward to userDetailsService', () => {
+    describe('compareProfileDetails', () => {
+      it('Should forward to profileDetailsService', () => {
         const entity = { id: 123 };
         const entity2 = { id: 456 };
-        jest.spyOn(userDetailsService, 'compareUserDetails');
-        comp.compareUserDetails(entity, entity2);
-        expect(userDetailsService.compareUserDetails).toHaveBeenCalledWith(entity, entity2);
+        jest.spyOn(profileDetailsService, 'compareProfileDetails');
+        comp.compareProfileDetails(entity, entity2);
+        expect(profileDetailsService.compareProfileDetails).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

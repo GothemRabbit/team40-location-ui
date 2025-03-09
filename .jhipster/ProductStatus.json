@@ -42,20 +42,16 @@
       "relationshipType": "one-to-one"
     },
     {
-      "otherEntityName": "userDetails",
-      "relationshipName": "buyer",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "userDetails",
-      "relationshipName": "seller",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "productStatus",
+      "relationshipName": "profileDetails",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "location",
-      "relationshipName": "meetingLocation",
+      "otherEntityRelationshipName": "productStatus",
+      "relationshipName": "location",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }

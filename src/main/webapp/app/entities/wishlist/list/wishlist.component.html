@@ -56,15 +56,21 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="userDetails.id">
+            <th scope="col" jhiSortBy="profileDetails.id">
               <div class="d-flex">
-                <span>User Details</span>
+                <span>Profile Details</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="items.id">
+            <th scope="col" jhiSortBy="item.id">
               <div class="d-flex">
-                <span>Items</span>
+                <span>Item</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="userDetails.id">
+              <div class="d-flex">
+                <span>User Details</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -80,18 +86,25 @@
               <td>{{ wishlist.name }}</td>
               <td>{{ { null: '', PRIVATE: 'PRIVATE', PUBLIC: 'PUBLIC' }[wishlist.visibility ?? 'null'] }}</td>
               <td>
-                @if (wishlist.userDetails) {
+                @if (wishlist.profileDetails) {
                   <div>
-                    <a [routerLink]="['/user-details', wishlist.userDetails.id, 'view']">{{ wishlist.userDetails.id }}</a>
+                    <a [routerLink]="['/profile-details', wishlist.profileDetails.id, 'view']">{{ wishlist.profileDetails.id }}</a>
                   </div>
                 }
               </td>
               <td>
-                @for (items of wishlist.items; track $index; let last = $last) {
+                @for (item of wishlist.items; track $index; let last = $last) {
                   <span>
-                    <a class="form-control-static" [routerLink]="['/item', items.id, 'view']">{{ items.id }}</a
+                    <a class="form-control-static" [routerLink]="['/item', item.id, 'view']">{{ item.id }}</a
                     >{{ last ? '' : ', ' }}
                   </span>
+                }
+              </td>
+              <td>
+                @if (wishlist.userDetails) {
+                  <div>
+                    <a [routerLink]="['/user-details', wishlist.userDetails.id, 'view']">{{ wishlist.userDetails.id }}</a>
+                  </div>
                 }
               </td>
               <td class="text-end">

@@ -26,6 +26,8 @@ public class LocationDTO implements Serializable {
     @NotNull
     private String postcode;
 
+    private Set<ProfileDetailsDTO> profileDetails = new HashSet<>();
+
     private Set<UserDetailsDTO> users = new HashSet<>();
 
     public Long getId() {
@@ -68,6 +70,14 @@ public class LocationDTO implements Serializable {
         this.postcode = postcode;
     }
 
+    public Set<ProfileDetailsDTO> getProfileDetails() {
+        return profileDetails;
+    }
+
+    public void setProfileDetails(Set<ProfileDetailsDTO> profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
     public Set<UserDetailsDTO> getUsers() {
         return users;
     }
@@ -106,6 +116,7 @@ public class LocationDTO implements Serializable {
             ", latitude=" + getLatitude() +
             ", longitude=" + getLongitude() +
             ", postcode='" + getPostcode() + "'" +
+            ", profileDetails=" + getProfileDetails() +
             ", users=" + getUsers() +
             "}";
     }

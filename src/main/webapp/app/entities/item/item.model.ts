@@ -1,5 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { IWishlist } from 'app/entities/wishlist/wishlist.model';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
 import { Condition } from 'app/entities/enumerations/condition.model';
 import { Category } from 'app/entities/enumerations/category.model';
@@ -15,6 +16,7 @@ export interface IItem {
   colour?: string | null;
   timeListed?: dayjs.Dayjs | null;
   wishlists?: Pick<IWishlist, 'id'>[] | null;
+  profileDetails?: Pick<IProfileDetails, 'id'> | null;
   seller?: Pick<IUserDetails, 'id'> | null;
 }
 

@@ -23,9 +23,9 @@ public class MessageDTO implements Serializable {
     @NotNull
     private Boolean isRead;
 
-    private ConversationDTO convo;
+    private ConversationDTO conversation;
 
-    private UserDetailsDTO sender;
+    private ProfileDetailsDTO profileDetails;
 
     public Long getId() {
         return id;
@@ -59,20 +59,20 @@ public class MessageDTO implements Serializable {
         this.isRead = isRead;
     }
 
-    public ConversationDTO getConvo() {
-        return convo;
+    public ConversationDTO getConversation() {
+        return conversation;
     }
 
-    public void setConvo(ConversationDTO convo) {
-        this.convo = convo;
+    public void setConversation(ConversationDTO conversation) {
+        this.conversation = conversation;
     }
 
-    public UserDetailsDTO getSender() {
-        return sender;
+    public ProfileDetailsDTO getProfileDetails() {
+        return profileDetails;
     }
 
-    public void setSender(UserDetailsDTO sender) {
-        this.sender = sender;
+    public void setProfileDetails(ProfileDetailsDTO profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
     @Override
@@ -104,8 +104,8 @@ public class MessageDTO implements Serializable {
             ", content='" + getContent() + "'" +
             ", timestamp='" + getTimestamp() + "'" +
             ", isRead='" + getIsRead() + "'" +
-            ", convo=" + getConvo() +
-            ", sender=" + getSender() +
+            ", conversation=" + getConversation() +
+            ", profileDetails=" + getProfileDetails() +
             "}";
     }
 }

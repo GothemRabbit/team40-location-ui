@@ -327,7 +327,7 @@ class ProductStatusResourceIT {
         ProductStatus partialUpdatedProductStatus = new ProductStatus();
         partialUpdatedProductStatus.setId(productStatus.getId());
 
-        partialUpdatedProductStatus.status(UPDATED_STATUS).meetingTime(UPDATED_MEETING_TIME);
+        partialUpdatedProductStatus.status(UPDATED_STATUS).updatedAt(UPDATED_UPDATED_AT).createdAt(UPDATED_CREATED_AT);
 
         restProductStatusMockMvc
             .perform(

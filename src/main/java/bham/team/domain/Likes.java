@@ -27,15 +27,15 @@ public class Likes implements Serializable {
     private Boolean liked;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "seller" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "profileDetails", "likes", "seller" }, allowSetters = true)
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
         allowSetters = true
     )
-    private UserDetails user;
+    private ProfileDetails profileDetails;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -78,16 +78,16 @@ public class Likes implements Serializable {
         return this;
     }
 
-    public UserDetails getUser() {
-        return this.user;
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
     }
 
-    public void setUser(UserDetails userDetails) {
-        this.user = userDetails;
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
-    public Likes user(UserDetails userDetails) {
-        this.setUser(userDetails);
+    public Likes profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
         return this;
     }
 

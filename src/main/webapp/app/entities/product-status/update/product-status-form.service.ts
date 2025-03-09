@@ -39,9 +39,8 @@ type ProductStatusFormGroupContent = {
   createdAt: FormControl<ProductStatusFormRawValue['createdAt']>;
   item: FormControl<ProductStatusFormRawValue['item']>;
   conversation: FormControl<ProductStatusFormRawValue['conversation']>;
-  buyer: FormControl<ProductStatusFormRawValue['buyer']>;
-  seller: FormControl<ProductStatusFormRawValue['seller']>;
-  meetingLocation: FormControl<ProductStatusFormRawValue['meetingLocation']>;
+  profileDetails: FormControl<ProductStatusFormRawValue['profileDetails']>;
+  location: FormControl<ProductStatusFormRawValue['location']>;
 };
 
 export type ProductStatusFormGroup = FormGroup<ProductStatusFormGroupContent>;
@@ -69,9 +68,8 @@ export class ProductStatusFormService {
       createdAt: new FormControl(productStatusRawValue.createdAt),
       item: new FormControl(productStatusRawValue.item),
       conversation: new FormControl(productStatusRawValue.conversation),
-      buyer: new FormControl(productStatusRawValue.buyer),
-      seller: new FormControl(productStatusRawValue.seller),
-      meetingLocation: new FormControl(productStatusRawValue.meetingLocation),
+      profileDetails: new FormControl(productStatusRawValue.profileDetails),
+      location: new FormControl(productStatusRawValue.location),
     });
   }
 

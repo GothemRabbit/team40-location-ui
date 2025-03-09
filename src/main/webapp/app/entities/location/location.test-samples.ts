@@ -1,34 +1,34 @@
 import { ILocation, NewLocation } from './location.model';
 
 export const sampleWithRequiredData: ILocation = {
-  id: 30532,
-  address: 'warm',
-  latitude: 19141.56,
-  longitude: 21240.05,
-  postcode: 'since popularity',
+  id: 6633,
+  address: 'er',
+  latitude: 5979.82,
+  longitude: 11862.34,
+  postcode: 'whenever tennis',
 };
 
 export const sampleWithPartialData: ILocation = {
-  id: 5225,
-  address: 'for transcend',
-  latitude: 27333.49,
-  longitude: 20773.59,
-  postcode: 'until bleak shoulder',
+  id: 3257,
+  address: 'lustrous going',
+  latitude: 10497.67,
+  longitude: 31931.64,
+  postcode: 'cavernous oof',
 };
 
 export const sampleWithFullData: ILocation = {
-  id: 13099,
-  address: 'mob',
-  latitude: 30495.66,
-  longitude: 23160.16,
-  postcode: 'tensely drat ignorance',
+  id: 6450,
+  address: 'athwart dim by',
+  latitude: 10243.75,
+  longitude: 26783.47,
+  postcode: 'searchingly exempt',
 };
 
 export const sampleWithNewData: NewLocation = {
-  address: 'decryption enlightened ouch',
-  latitude: 29777.9,
-  longitude: 4480.9,
-  postcode: 'spotless',
+  address: 'healthily',
+  latitude: 14878.37,
+  longitude: 8720.38,
+  postcode: 'favorite',
   id: null,
 };
 

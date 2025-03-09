@@ -44,6 +44,8 @@ public class ItemDTO implements Serializable {
 
     private Set<WishlistDTO> wishlists = new HashSet<>();
 
+    private ProfileDetailsDTO profileDetails;
+
     private UserDetailsDTO seller;
 
     public Long getId() {
@@ -126,6 +128,14 @@ public class ItemDTO implements Serializable {
         this.wishlists = wishlists;
     }
 
+    public ProfileDetailsDTO getProfileDetails() {
+        return profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetailsDTO profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
     public UserDetailsDTO getSeller() {
         return seller;
     }
@@ -169,6 +179,7 @@ public class ItemDTO implements Serializable {
             ", colour='" + getColour() + "'" +
             ", timeListed='" + getTimeListed() + "'" +
             ", wishlists=" + getWishlists() +
+            ", profileDetails=" + getProfileDetails() +
             ", seller=" + getSeller() +
             "}";
     }

@@ -22,8 +22,9 @@ describe('Wishlist Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             visibility: expect.any(Object),
-            userDetails: expect.any(Object),
+            profileDetails: expect.any(Object),
             items: expect.any(Object),
+            userDetails: expect.any(Object),
           }),
         );
       });
@@ -36,8 +37,9 @@ describe('Wishlist Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             visibility: expect.any(Object),
-            userDetails: expect.any(Object),
+            profileDetails: expect.any(Object),
             items: expect.any(Object),
+            userDetails: expect.any(Object),
           }),
         );
       });

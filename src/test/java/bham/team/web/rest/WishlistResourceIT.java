@@ -316,8 +316,6 @@ class WishlistResourceIT {
         Wishlist partialUpdatedWishlist = new Wishlist();
         partialUpdatedWishlist.setId(wishlist.getId());
 
-        partialUpdatedWishlist.visibility(UPDATED_VISIBILITY);
-
         restWishlistMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedWishlist.getId())

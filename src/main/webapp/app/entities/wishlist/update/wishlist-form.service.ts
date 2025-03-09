@@ -20,8 +20,9 @@ type WishlistFormGroupContent = {
   id: FormControl<IWishlist['id'] | NewWishlist['id']>;
   name: FormControl<IWishlist['name']>;
   visibility: FormControl<IWishlist['visibility']>;
-  userDetails: FormControl<IWishlist['userDetails']>;
+  profileDetails: FormControl<IWishlist['profileDetails']>;
   items: FormControl<IWishlist['items']>;
+  userDetails: FormControl<IWishlist['userDetails']>;
 };
 
 export type WishlistFormGroup = FormGroup<WishlistFormGroupContent>;
@@ -47,8 +48,9 @@ export class WishlistFormService {
       visibility: new FormControl(wishlistRawValue.visibility, {
         validators: [Validators.required],
       }),
-      userDetails: new FormControl(wishlistRawValue.userDetails),
+      profileDetails: new FormControl(wishlistRawValue.profileDetails),
       items: new FormControl(wishlistRawValue.items ?? []),
+      userDetails: new FormControl(wishlistRawValue.userDetails),
     });
   }
 

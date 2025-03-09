@@ -12,7 +12,15 @@
     }
   ],
   "name": "Images",
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityName": "item",
+      "otherEntityRelationshipName": "images",
+      "relationshipName": "item",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
   "searchEngine": "no",
   "service": "serviceClass"
 }

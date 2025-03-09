@@ -7,10 +7,12 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { IItem } from 'app/entities/item/item.model';
 import { ItemService } from 'app/entities/item/service/item.service';
+import { IUserDetails } from 'app/entities/user-details/user-details.model';
+import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 import { VisibilityType } from 'app/entities/enumerations/visibility-type.model';
 import { WishlistService } from '../service/wishlist.service';
 import { IWishlist } from '../wishlist.model';
@@ -27,21 +29,26 @@ export class WishlistUpdateComponent implements OnInit {
   wishlist: IWishlist | null = null;
   visibilityTypeValues = Object.keys(VisibilityType);
 
-  userDetailsSharedCollection: IUserDetails[] = [];
+  profileDetailsSharedCollection: IProfileDetails[] = [];
   itemsSharedCollection: IItem[] = [];
+  userDetailsSharedCollection: IUserDetails[] = [];
 
   protected wishlistService = inject(WishlistService);
   protected wishlistFormService = inject(WishlistFormService);
-  protected userDetailsService = inject(UserDetailsService);
+  protected profileDetailsService = inject(ProfileDetailsService);
   protected itemService = inject(ItemService);
+  protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: WishlistFormGroup = this.wishlistFormService.createWishlistFormGroup();
 
-  compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
+  compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
+    this.profileDetailsService.compareProfileDetails(o1, o2);
 
   compareItem = (o1: IItem | null, o2: IItem | null): boolean => this.itemService.compareItem(o1, o2);
+
+  compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ wishlist }) => {
@@ -91,17 +98,37 @@ export class WishlistUpdateComponent implements OnInit {
     this.wishlist = wishlist;
     this.wishlistFormService.resetForm(this.editForm, wishlist);
 
-    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-      this.userDetailsSharedCollection,
-      wishlist.userDetails,
+    this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+      this.profileDetailsSharedCollection,
+      wishlist.profileDetails,
     );
     this.itemsSharedCollection = this.itemService.addItemToCollectionIfMissing<IItem>(
       this.itemsSharedCollection,
       ...(wishlist.items ?? []),
     );
+    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
+      this.userDetailsSharedCollection,
+      wishlist.userDetails,
+    );
   }
 
   protected loadRelationshipsOptions(): void {
+    this.profileDetailsService
+      .query()
+      .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
+      .pipe(
+        map((profileDetails: IProfileDetails[]) =>
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(profileDetails, this.wishlist?.profileDetails),
+        ),
+      )
+      .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
+
+    this.itemService
+      .query()
+      .pipe(map((res: HttpResponse<IItem[]>) => res.body ?? []))
+      .pipe(map((items: IItem[]) => this.itemService.addItemToCollectionIfMissing<IItem>(items, ...(this.wishlist?.items ?? []))))
+      .subscribe((items: IItem[]) => (this.itemsSharedCollection = items));
+
     this.userDetailsService
       .query()
       .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))
@@ -111,11 +138,5 @@ export class WishlistUpdateComponent implements OnInit {
         ),
       )
       .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
-
-    this.itemService
-      .query()
-      .pipe(map((res: HttpResponse<IItem[]>) => res.body ?? []))
-      .pipe(map((items: IItem[]) => this.itemService.addItemToCollectionIfMissing<IItem>(items, ...(this.wishlist?.items ?? []))))
-      .subscribe((items: IItem[]) => (this.itemsSharedCollection = items));
   }
 }

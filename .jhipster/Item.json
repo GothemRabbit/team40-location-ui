@@ -54,13 +54,14 @@
   "relationships": [
     {
       "otherEntityName": "images",
+      "otherEntityRelationshipName": "item",
       "relationshipName": "images",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "wishlist",
-      "otherEntityRelationshipName": "items",
+      "otherEntityRelationshipName": "item",
       "relationshipName": "wishlist",
       "relationshipSide": "left",
       "relationshipType": "many-to-many"
@@ -73,11 +74,18 @@
       "relationshipType": "one-to-one"
     },
     {
-      "otherEntityName": "userDetails",
-      "otherEntityRelationshipName": "itemsOnSale",
-      "relationshipName": "seller",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "item",
+      "relationshipName": "profileDetails",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "likes",
+      "otherEntityRelationshipName": "item",
+      "relationshipName": "likes",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
     }
   ],
   "searchEngine": "no",

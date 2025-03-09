@@ -272,6 +272,8 @@ class LikesResourceIT {
         Likes partialUpdatedLikes = new Likes();
         partialUpdatedLikes.setId(likes.getId());
 
+        partialUpdatedLikes.liked(UPDATED_LIKED);
+
         restLikesMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedLikes.getId())

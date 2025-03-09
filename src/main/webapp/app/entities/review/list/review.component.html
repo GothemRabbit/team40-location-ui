@@ -63,6 +63,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="profileDetails.id">
+              <div class="d-flex">
+                <span>Profile Details</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="buyer.id">
               <div class="d-flex">
                 <span>Buyer</span>
@@ -87,6 +93,13 @@
               <td>{{ review.rating }}</td>
               <td>{{ review.comments }}</td>
               <td>{{ review.date | formatMediumDate }}</td>
+              <td>
+                @if (review.profileDetails) {
+                  <div>
+                    <a [routerLink]="['/profile-details', review.profileDetails.id, 'view']">{{ review.profileDetails.id }}</a>
+                  </div>
+                }
+              </td>
               <td>
                 @if (review.buyer) {
                   <div>

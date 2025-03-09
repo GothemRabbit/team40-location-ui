@@ -1,19 +1,19 @@
 import { IImages, NewImages } from './images.model';
 
 export const sampleWithRequiredData: IImages = {
-  id: 13068,
+  id: 9658,
   images: '../fake-data/blob/hipster.png',
   imagesContentType: 'unknown',
 };
 
 export const sampleWithPartialData: IImages = {
-  id: 10416,
+  id: 32396,
   images: '../fake-data/blob/hipster.png',
   imagesContentType: 'unknown',
 };
 
 export const sampleWithFullData: IImages = {
-  id: 31571,
+  id: 5633,
   images: '../fake-data/blob/hipster.png',
   imagesContentType: 'unknown',
 };

@@ -15,7 +15,7 @@ public class LikesDTO implements Serializable {
 
     private ItemDTO item;
 
-    private UserDetailsDTO user;
+    private ProfileDetailsDTO profileDetails;
 
     public Long getId() {
         return id;
@@ -41,12 +41,12 @@ public class LikesDTO implements Serializable {
         this.item = item;
     }
 
-    public UserDetailsDTO getUser() {
-        return user;
+    public ProfileDetailsDTO getProfileDetails() {
+        return profileDetails;
     }
 
-    public void setUser(UserDetailsDTO user) {
-        this.user = user;
+    public void setProfileDetails(ProfileDetailsDTO profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class LikesDTO implements Serializable {
             "id=" + getId() +
             ", liked='" + getLiked() + "'" +
             ", item=" + getItem() +
-            ", user=" + getUser() +
+            ", profileDetails=" + getProfileDetails() +
             "}";
     }
 }

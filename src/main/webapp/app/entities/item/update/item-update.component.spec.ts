@@ -6,6 +6,8 @@ import { Subject, from, of } from 'rxjs';
 
 import { IWishlist } from 'app/entities/wishlist/wishlist.model';
 import { WishlistService } from 'app/entities/wishlist/service/wishlist.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
 import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 import { IItem } from '../item.model';
@@ -21,6 +23,7 @@ describe('Item Management Update Component', () => {
   let itemFormService: ItemFormService;
   let itemService: ItemService;
   let wishlistService: WishlistService;
+  let profileDetailsService: ProfileDetailsService;
   let userDetailsService: UserDetailsService;
 
   beforeEach(() => {
@@ -45,6 +48,7 @@ describe('Item Management Update Component', () => {
     itemFormService = TestBed.inject(ItemFormService);
     itemService = TestBed.inject(ItemService);
     wishlistService = TestBed.inject(WishlistService);
+    profileDetailsService = TestBed.inject(ProfileDetailsService);
     userDetailsService = TestBed.inject(UserDetailsService);
 
     comp = fixture.componentInstance;
@@ -53,10 +57,10 @@ describe('Item Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Wishlist query and add missing value', () => {
       const item: IItem = { id: 456 };
-      const wishlists: IWishlist[] = [{ id: 21587 }];
+      const wishlists: IWishlist[] = [{ id: 4451 }];
       item.wishlists = wishlists;
 
-      const wishlistCollection: IWishlist[] = [{ id: 23690 }];
+      const wishlistCollection: IWishlist[] = [{ id: 12948 }];
       jest.spyOn(wishlistService, 'query').mockReturnValue(of(new HttpResponse({ body: wishlistCollection })));
       const additionalWishlists = [...wishlists];
       const expectedCollection: IWishlist[] = [...additionalWishlists, ...wishlistCollection];
@@ -73,12 +77,34 @@ describe('Item Management Update Component', () => {
       expect(comp.wishlistsSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call ProfileDetails query and add missing value', () => {
+      const item: IItem = { id: 456 };
+      const profileDetails: IProfileDetails = { id: 9361 };
+      item.profileDetails = profileDetails;
+
+      const profileDetailsCollection: IProfileDetails[] = [{ id: 585 }];
+      jest.spyOn(profileDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: profileDetailsCollection })));
+      const additionalProfileDetails = [profileDetails];
+      const expectedCollection: IProfileDetails[] = [...additionalProfileDetails, ...profileDetailsCollection];
+      jest.spyOn(profileDetailsService, 'addProfileDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ item });
+      comp.ngOnInit();
+
+      expect(profileDetailsService.query).toHaveBeenCalled();
+      expect(profileDetailsService.addProfileDetailsToCollectionIfMissing).toHaveBeenCalledWith(
+        profileDetailsCollection,
+        ...additionalProfileDetails.map(expect.objectContaining),
+      );
+      expect(comp.profileDetailsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should call UserDetails query and add missing value', () => {
       const item: IItem = { id: 456 };
-      const seller: IUserDetails = { id: 6299 };
+      const seller: IUserDetails = { id: 27779 };
       item.seller = seller;
 
-      const userDetailsCollection: IUserDetails[] = [{ id: 4899 }];
+      const userDetailsCollection: IUserDetails[] = [{ id: 17267 }];
       jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
       const additionalUserDetails = [seller];
       const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
@@ -97,15 +123,18 @@ describe('Item Management Update Component', () => {
 
     it('Should update editForm', () => {
       const item: IItem = { id: 456 };
-      const wishlist: IWishlist = { id: 31722 };
+      const wishlist: IWishlist = { id: 6810 };
       item.wishlists = [wishlist];
-      const seller: IUserDetails = { id: 3197 };
+      const profileDetails: IProfileDetails = { id: 30925 };
+      item.profileDetails = profileDetails;
+      const seller: IUserDetails = { id: 3123 };
       item.seller = seller;
 
       activatedRoute.data = of({ item });
       comp.ngOnInit();
 
       expect(comp.wishlistsSharedCollection).toContain(wishlist);
+      expect(comp.profileDetailsSharedCollection).toContain(profileDetails);
       expect(comp.userDetailsSharedCollection).toContain(seller);
       expect(comp.item).toEqual(item);
     });
@@ -187,6 +216,16 @@ describe('Item Management Update Component', () => {
         jest.spyOn(wishlistService, 'compareWishlist');
         comp.compareWishlist(entity, entity2);
         expect(wishlistService.compareWishlist).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareProfileDetails', () => {
+      it('Should forward to profileDetailsService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(profileDetailsService, 'compareProfileDetails');
+        comp.compareProfileDetails(entity, entity2);
+        expect(profileDetailsService.compareProfileDetails).toHaveBeenCalledWith(entity, entity2);
       });
     });
 

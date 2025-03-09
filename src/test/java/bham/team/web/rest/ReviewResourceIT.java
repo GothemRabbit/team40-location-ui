@@ -318,8 +318,6 @@ class ReviewResourceIT {
         Review partialUpdatedReview = new Review();
         partialUpdatedReview.setId(review.getId());
 
-        partialUpdatedReview.date(UPDATED_DATE);
-
         restReviewMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedReview.getId())

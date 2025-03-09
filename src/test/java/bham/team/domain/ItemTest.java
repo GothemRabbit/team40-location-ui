@@ -2,7 +2,9 @@ package bham.team.domain;
 
 import static bham.team.domain.ImagesTestSamples.*;
 import static bham.team.domain.ItemTestSamples.*;
+import static bham.team.domain.LikesTestSamples.*;
 import static bham.team.domain.ProductStatusTestSamples.*;
+import static bham.team.domain.ProfileDetailsTestSamples.*;
 import static bham.team.domain.UserDetailsTestSamples.*;
 import static bham.team.domain.WishlistTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,6 +82,40 @@ class ItemTest {
         item.productStatus(null);
         assertThat(item.getProductStatus()).isNull();
         assertThat(productStatusBack.getItem()).isNull();
+    }
+
+    @Test
+    void profileDetailsTest() {
+        Item item = getItemRandomSampleGenerator();
+        ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
+
+        item.setProfileDetails(profileDetailsBack);
+        assertThat(item.getProfileDetails()).isEqualTo(profileDetailsBack);
+
+        item.profileDetails(null);
+        assertThat(item.getProfileDetails()).isNull();
+    }
+
+    @Test
+    void likesTest() {
+        Item item = getItemRandomSampleGenerator();
+        Likes likesBack = getLikesRandomSampleGenerator();
+
+        item.addLikes(likesBack);
+        assertThat(item.getLikes()).containsOnly(likesBack);
+        assertThat(likesBack.getItem()).isEqualTo(item);
+
+        item.removeLikes(likesBack);
+        assertThat(item.getLikes()).doesNotContain(likesBack);
+        assertThat(likesBack.getItem()).isNull();
+
+        item.likes(new HashSet<>(Set.of(likesBack)));
+        assertThat(item.getLikes()).containsOnly(likesBack);
+        assertThat(likesBack.getItem()).isEqualTo(item);
+
+        item.setLikes(new HashSet<>());
+        assertThat(item.getLikes()).doesNotContain(likesBack);
+        assertThat(likesBack.getItem()).isNull();
     }
 
     @Test

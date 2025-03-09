@@ -12,8 +12,8 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IConversation } from 'app/entities/conversation/conversation.model';
 import { ConversationService } from 'app/entities/conversation/service/conversation.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { MessageService } from '../service/message.service';
 import { IMessage } from '../message.model';
 import { MessageFormGroup, MessageFormService } from './message-form.service';
@@ -29,14 +29,14 @@ export class MessageUpdateComponent implements OnInit {
   message: IMessage | null = null;
 
   conversationsSharedCollection: IConversation[] = [];
-  userDetailsSharedCollection: IUserDetails[] = [];
+  profileDetailsSharedCollection: IProfileDetails[] = [];
 
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
   protected messageService = inject(MessageService);
   protected messageFormService = inject(MessageFormService);
   protected conversationService = inject(ConversationService);
-  protected userDetailsService = inject(UserDetailsService);
+  protected profileDetailsService = inject(ProfileDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -45,7 +45,8 @@ export class MessageUpdateComponent implements OnInit {
   compareConversation = (o1: IConversation | null, o2: IConversation | null): boolean =>
     this.conversationService.compareConversation(o1, o2);
 
-  compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
+  compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
+    this.profileDetailsService.compareProfileDetails(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ message }) => {
@@ -112,11 +113,11 @@ export class MessageUpdateComponent implements OnInit {
 
     this.conversationsSharedCollection = this.conversationService.addConversationToCollectionIfMissing<IConversation>(
       this.conversationsSharedCollection,
-      message.convo,
+      message.conversation,
     );
-    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-      this.userDetailsSharedCollection,
-      message.sender,
+    this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+      this.profileDetailsSharedCollection,
+      message.profileDetails,
     );
   }
 
@@ -126,19 +127,19 @@ export class MessageUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IConversation[]>) => res.body ?? []))
       .pipe(
         map((conversations: IConversation[]) =>
-          this.conversationService.addConversationToCollectionIfMissing<IConversation>(conversations, this.message?.convo),
+          this.conversationService.addConversationToCollectionIfMissing<IConversation>(conversations, this.message?.conversation),
         ),
       )
       .subscribe((conversations: IConversation[]) => (this.conversationsSharedCollection = conversations));
 
-    this.userDetailsService
+    this.profileDetailsService
       .query()
-      .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))
+      .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
       .pipe(
-        map((userDetails: IUserDetails[]) =>
-          this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(userDetails, this.message?.sender),
+        map((profileDetails: IProfileDetails[]) =>
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(profileDetails, this.message?.profileDetails),
         ),
       )
-      .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
+      .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
   }
 }

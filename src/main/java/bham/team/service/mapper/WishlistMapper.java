@@ -1,9 +1,11 @@
 package bham.team.service.mapper;
 
 import bham.team.domain.Item;
+import bham.team.domain.ProfileDetails;
 import bham.team.domain.UserDetails;
 import bham.team.domain.Wishlist;
 import bham.team.service.dto.ItemDTO;
+import bham.team.service.dto.ProfileDetailsDTO;
 import bham.team.service.dto.UserDetailsDTO;
 import bham.team.service.dto.WishlistDTO;
 import java.util.Set;
@@ -15,18 +17,19 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface WishlistMapper extends EntityMapper<WishlistDTO, Wishlist> {
-    @Mapping(target = "userDetails", source = "userDetails", qualifiedByName = "userDetailsId")
+    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
     @Mapping(target = "items", source = "items", qualifiedByName = "itemIdSet")
+    @Mapping(target = "userDetails", source = "userDetails", qualifiedByName = "userDetailsId")
     WishlistDTO toDto(Wishlist s);
 
     @Mapping(target = "items", ignore = true)
-    @Mapping(target = "removeItems", ignore = true)
+    @Mapping(target = "removeItem", ignore = true)
     Wishlist toEntity(WishlistDTO wishlistDTO);
 
-    @Named("userDetailsId")
+    @Named("profileDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    UserDetailsDTO toDtoUserDetailsId(UserDetails userDetails);
+    ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
 
     @Named("itemId")
     @BeanMapping(ignoreByDefault = true)
@@ -37,4 +40,9 @@ public interface WishlistMapper extends EntityMapper<WishlistDTO, Wishlist> {
     default Set<ItemDTO> toDtoItemIdSet(Set<Item> item) {
         return item.stream().map(this::toDtoItemId).collect(Collectors.toSet());
     }
+
+    @Named("userDetailsId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    UserDetailsDTO toDtoUserDetailsId(UserDetails userDetails);
 }

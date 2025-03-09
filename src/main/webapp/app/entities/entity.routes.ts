@@ -86,6 +86,11 @@ const routes: Routes = [
     data: { pageTitle: 'Wishlists' },
     loadChildren: () => import('./wishlist/wishlist.routes'),
   },
+  {
+    path: 'profile-details',
+    data: { pageTitle: 'ProfileDetails' },
+    loadChildren: () => import('./profile-details/profile-details.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

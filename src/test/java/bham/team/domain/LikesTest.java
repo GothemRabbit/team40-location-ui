@@ -2,7 +2,7 @@ package bham.team.domain;
 
 import static bham.team.domain.ItemTestSamples.*;
 import static bham.team.domain.LikesTestSamples.*;
-import static bham.team.domain.UserDetailsTestSamples.*;
+import static bham.team.domain.ProfileDetailsTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bham.team.web.rest.TestUtil;
@@ -37,14 +37,14 @@ class LikesTest {
     }
 
     @Test
-    void userTest() {
+    void profileDetailsTest() {
         Likes likes = getLikesRandomSampleGenerator();
-        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+        ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
 
-        likes.setUser(userDetailsBack);
-        assertThat(likes.getUser()).isEqualTo(userDetailsBack);
+        likes.setProfileDetails(profileDetailsBack);
+        assertThat(likes.getProfileDetails()).isEqualTo(profileDetailsBack);
 
-        likes.user(null);
-        assertThat(likes.getUser()).isNull();
+        likes.profileDetails(null);
+        assertThat(likes.getProfileDetails()).isNull();
     }
 }

@@ -23,21 +23,29 @@
           <dd>
             <span>{{ { null: '', PRIVATE: 'PRIVATE', PUBLIC: 'PUBLIC' }[wishlistRef.visibility ?? 'null'] }}</span>
           </dd>
+          <dt><span>Profile Details</span></dt>
+          <dd>
+            @if (wishlist()!.profileDetails) {
+              <div>
+                <a [routerLink]="['/profile-details', wishlist()!.profileDetails?.id, 'view']">{{ wishlistRef.profileDetails?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Item</span></dt>
+          <dd>
+            @for (item of wishlistRef.items; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/item', item.id, 'view']">{{ item?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
           <dt><span>User Details</span></dt>
           <dd>
             @if (wishlist()!.userDetails) {
               <div>
                 <a [routerLink]="['/user-details', wishlist()!.userDetails?.id, 'view']">{{ wishlistRef.userDetails?.id }}</a>
               </div>
-            }
-          </dd>
-          <dt><span>Items</span></dt>
-          <dd>
-            @for (items of wishlistRef.items; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/item', items.id, 'view']">{{ items?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
             }
           </dd>
         </dl>

@@ -67,6 +67,7 @@ public class ItemAsserts {
         assertThat(expected)
             .as("Verify Item relationships")
             .satisfies(e -> assertThat(e.getWishlists()).as("check wishlists").isEqualTo(actual.getWishlists()))
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
             .satisfies(e -> assertThat(e.getSeller()).as("check seller").isEqualTo(actual.getSeller()));
     }
 }

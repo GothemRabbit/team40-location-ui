@@ -70,6 +70,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="profileDetails.id">
+              <div class="d-flex">
+                <span>Profile Details</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="users.id">
               <div class="d-flex">
                 <span>Users</span>
@@ -89,6 +95,14 @@
               <td>{{ location.latitude }}</td>
               <td>{{ location.longitude }}</td>
               <td>{{ location.postcode }}</td>
+              <td>
+                @for (profileDetails of location.profileDetails; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
               <td>
                 @for (users of location.users; track $index; let last = $last) {
                   <span>

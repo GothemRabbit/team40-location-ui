@@ -33,7 +33,7 @@ public class Images implements Serializable {
     private String imagesContentType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "seller" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "profileDetails", "likes", "seller" }, allowSetters = true)
     private Item item;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

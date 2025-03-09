@@ -10,18 +10,18 @@
     -->
     <changeSet id="20250213120519-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="convo_id"
+        <addForeignKeyConstraint baseColumnNames="conversation_id"
                                  baseTableName="message"
-                                 constraintName="fk_message__convo_id"
+                                 constraintName="fk_message__conversation_id"
                                  referencedColumnNames="id"
                                  referencedTableName="conversation"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="sender_id"
+        <addForeignKeyConstraint baseColumnNames="profile_details_id"
                                  baseTableName="message"
-                                 constraintName="fk_message__sender_id"
+                                 constraintName="fk_message__profile_details_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="user_details"
+                                 referencedTableName="profile_details"
                                  />
     </changeSet>
 </databaseChangeLog>

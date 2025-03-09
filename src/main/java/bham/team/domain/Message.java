@@ -38,15 +38,15 @@ public class Message implements Serializable {
     private Boolean isRead;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "participants", "productStatus", "messages" }, allowSetters = true)
-    private Conversation convo;
+    @JsonIgnoreProperties(value = { "profileDetails", "productStatus", "messages", "participants" }, allowSetters = true)
+    private Conversation conversation;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
         allowSetters = true
     )
-    private UserDetails sender;
+    private ProfileDetails profileDetails;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -102,29 +102,29 @@ public class Message implements Serializable {
         this.isRead = isRead;
     }
 
-    public Conversation getConvo() {
-        return this.convo;
+    public Conversation getConversation() {
+        return this.conversation;
     }
 
-    public void setConvo(Conversation conversation) {
-        this.convo = conversation;
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
     }
 
-    public Message convo(Conversation conversation) {
-        this.setConvo(conversation);
+    public Message conversation(Conversation conversation) {
+        this.setConversation(conversation);
         return this;
     }
 
-    public UserDetails getSender() {
-        return this.sender;
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
     }
 
-    public void setSender(UserDetails userDetails) {
-        this.sender = userDetails;
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
-    public Message sender(UserDetails userDetails) {
-        this.setSender(userDetails);
+    public Message profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
         return this;
     }
 

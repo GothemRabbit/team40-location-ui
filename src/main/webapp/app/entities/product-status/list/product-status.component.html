@@ -82,21 +82,15 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="buyer.id">
+            <th scope="col" jhiSortBy="profileDetails.id">
               <div class="d-flex">
-                <span>Buyer</span>
+                <span>Profile Details</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="seller.id">
+            <th scope="col" jhiSortBy="location.id">
               <div class="d-flex">
-                <span>Seller</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="meetingLocation.id">
-              <div class="d-flex">
-                <span>Meeting Location</span>
+                <span>Location</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -139,23 +133,18 @@
                 }
               </td>
               <td>
-                @if (productStatus.buyer) {
+                @if (productStatus.profileDetails) {
                   <div>
-                    <a [routerLink]="['/user-details', productStatus.buyer.id, 'view']">{{ productStatus.buyer.id }}</a>
+                    <a [routerLink]="['/profile-details', productStatus.profileDetails.id, 'view']">{{
+                      productStatus.profileDetails.id
+                    }}</a>
                   </div>
                 }
               </td>
               <td>
-                @if (productStatus.seller) {
+                @if (productStatus.location) {
                   <div>
-                    <a [routerLink]="['/user-details', productStatus.seller.id, 'view']">{{ productStatus.seller.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (productStatus.meetingLocation) {
-                  <div>
-                    <a [routerLink]="['/location', productStatus.meetingLocation.id, 'view']">{{ productStatus.meetingLocation.id }}</a>
+                    <a [routerLink]="['/location', productStatus.location.id, 'view']">{{ productStatus.location.id }}</a>
                   </div>
                 }
               </td>

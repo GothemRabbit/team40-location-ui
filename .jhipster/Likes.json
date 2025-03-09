@@ -14,13 +14,15 @@
   "relationships": [
     {
       "otherEntityName": "item",
+      "otherEntityRelationshipName": "likes",
       "relationshipName": "item",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityName": "userDetails",
-      "relationshipName": "user",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "likes",
+      "relationshipName": "profileDetails",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }

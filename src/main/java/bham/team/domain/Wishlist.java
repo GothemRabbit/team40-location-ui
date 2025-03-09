@@ -38,15 +38,22 @@ public class Wishlist implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishlists")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "profileDetails", "likes", "seller" }, allowSetters = true)
+    private Set<Item> items = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
         value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
         allowSetters = true
     )
     private UserDetails userDetails;
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishlists")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "seller" }, allowSetters = true)
-    private Set<Item> items = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -89,16 +96,16 @@ public class Wishlist implements Serializable {
         this.visibility = visibility;
     }
 
-    public UserDetails getUserDetails() {
-        return this.userDetails;
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
     }
 
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
-    public Wishlist userDetails(UserDetails userDetails) {
-        this.setUserDetails(userDetails);
+    public Wishlist profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
         return this;
     }
 
@@ -121,15 +128,28 @@ public class Wishlist implements Serializable {
         return this;
     }
 
-    public Wishlist addItems(Item item) {
+    public Wishlist addItem(Item item) {
         this.items.add(item);
         item.getWishlists().add(this);
         return this;
     }
 
-    public Wishlist removeItems(Item item) {
+    public Wishlist removeItem(Item item) {
         this.items.remove(item);
         item.getWishlists().remove(this);
+        return this;
+    }
+
+    public UserDetails getUserDetails() {
+        return this.userDetails;
+    }
+
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+    }
+
+    public Wishlist userDetails(UserDetails userDetails) {
+        this.setUserDetails(userDetails);
         return this;
     }
 

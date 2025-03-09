@@ -1,3 +1,4 @@
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
 
 export interface ILocation {
@@ -6,6 +7,7 @@ export interface ILocation {
   latitude?: number | null;
   longitude?: number | null;
   postcode?: string | null;
+  profileDetails?: Pick<IProfileDetails, 'id'>[] | null;
   users?: Pick<IUserDetails, 'id'>[] | null;
 }
 

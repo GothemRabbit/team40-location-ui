@@ -27,19 +27,19 @@
           <dd>
             <span>{{ messageRef.isRead }}</span>
           </dd>
-          <dt><span>Convo</span></dt>
+          <dt><span>Conversation</span></dt>
           <dd>
-            @if (message()!.convo) {
+            @if (message()!.conversation) {
               <div>
-                <a [routerLink]="['/conversation', message()!.convo?.id, 'view']">{{ messageRef.convo?.id }}</a>
+                <a [routerLink]="['/conversation', message()!.conversation?.id, 'view']">{{ messageRef.conversation?.id }}</a>
               </div>
             }
           </dd>
-          <dt><span>Sender</span></dt>
+          <dt><span>Profile Details</span></dt>
           <dd>
-            @if (message()!.sender) {
+            @if (message()!.profileDetails) {
               <div>
-                <a [routerLink]="['/user-details', message()!.sender?.id, 'view']">{{ messageRef.sender?.id }}</a>
+                <a [routerLink]="['/profile-details', message()!.profileDetails?.id, 'view']">{{ messageRef.profileDetails?.id }}</a>
               </div>
             }
           </dd>

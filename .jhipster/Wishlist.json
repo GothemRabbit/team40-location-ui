@@ -20,16 +20,16 @@
   "name": "Wishlist",
   "relationships": [
     {
-      "otherEntityName": "userDetails",
+      "otherEntityName": "profileDetails",
       "otherEntityRelationshipName": "wishlist",
-      "relationshipName": "userDetails",
+      "relationshipName": "profileDetails",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "item",
       "otherEntityRelationshipName": "wishlist",
-      "relationshipName": "items",
+      "relationshipName": "item",
       "relationshipSide": "right",
       "relationshipType": "many-to-many"
     }

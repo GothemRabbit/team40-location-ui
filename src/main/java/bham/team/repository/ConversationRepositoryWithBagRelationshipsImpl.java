@@ -24,7 +24,7 @@ public class ConversationRepositoryWithBagRelationshipsImpl implements Conversat
 
     @Override
     public Optional<Conversation> fetchBagRelationships(Optional<Conversation> conversation) {
-        return conversation.map(this::fetchParticipants);
+        return conversation.map(this::fetchProfileDetails).map(this::fetchParticipants);
     }
 
     @Override
@@ -38,7 +38,31 @@ public class ConversationRepositoryWithBagRelationshipsImpl implements Conversat
 
     @Override
     public List<Conversation> fetchBagRelationships(List<Conversation> conversations) {
-        return Optional.of(conversations).map(this::fetchParticipants).orElse(Collections.emptyList());
+        return Optional.of(conversations).map(this::fetchProfileDetails).map(this::fetchParticipants).orElse(Collections.emptyList());
+    }
+
+    Conversation fetchProfileDetails(Conversation result) {
+        return entityManager
+            .createQuery(
+                "select conversation from Conversation conversation left join fetch conversation.profileDetails where conversation.id = :id",
+                Conversation.class
+            )
+            .setParameter(ID_PARAMETER, result.getId())
+            .getSingleResult();
+    }
+
+    List<Conversation> fetchProfileDetails(List<Conversation> conversations) {
+        HashMap<Object, Integer> order = new HashMap<>();
+        IntStream.range(0, conversations.size()).forEach(index -> order.put(conversations.get(index).getId(), index));
+        List<Conversation> result = entityManager
+            .createQuery(
+                "select conversation from Conversation conversation left join fetch conversation.profileDetails where conversation in :conversations",
+                Conversation.class
+            )
+            .setParameter(CONVERSATIONS_PARAMETER, conversations)
+            .getResultList();
+        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        return result;
     }
 
     Conversation fetchParticipants(Conversation result) {

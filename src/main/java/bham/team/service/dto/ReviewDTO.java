@@ -25,6 +25,8 @@ public class ReviewDTO implements Serializable {
     @NotNull
     private LocalDate date;
 
+    private ProfileDetailsDTO profileDetails;
+
     private UserDetailsDTO buyer;
 
     private UserDetailsDTO seller;
@@ -59,6 +61,14 @@ public class ReviewDTO implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public ProfileDetailsDTO getProfileDetails() {
+        return profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetailsDTO profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
     public UserDetailsDTO getBuyer() {
@@ -106,6 +116,7 @@ public class ReviewDTO implements Serializable {
             ", rating=" + getRating() +
             ", comments='" + getComments() + "'" +
             ", date='" + getDate() + "'" +
+            ", profileDetails=" + getProfileDetails() +
             ", buyer=" + getBuyer() +
             ", seller=" + getSeller() +
             "}";

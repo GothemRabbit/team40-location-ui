@@ -51,27 +51,21 @@
               </div>
             }
           </dd>
-          <dt><span>Buyer</span></dt>
+          <dt><span>Profile Details</span></dt>
           <dd>
-            @if (productStatus()!.buyer) {
+            @if (productStatus()!.profileDetails) {
               <div>
-                <a [routerLink]="['/user-details', productStatus()!.buyer?.id, 'view']">{{ productStatusRef.buyer?.id }}</a>
+                <a [routerLink]="['/profile-details', productStatus()!.profileDetails?.id, 'view']">{{
+                  productStatusRef.profileDetails?.id
+                }}</a>
               </div>
             }
           </dd>
-          <dt><span>Seller</span></dt>
+          <dt><span>Location</span></dt>
           <dd>
-            @if (productStatus()!.seller) {
+            @if (productStatus()!.location) {
               <div>
-                <a [routerLink]="['/user-details', productStatus()!.seller?.id, 'view']">{{ productStatusRef.seller?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Meeting Location</span></dt>
-          <dd>
-            @if (productStatus()!.meetingLocation) {
-              <div>
-                <a [routerLink]="['/location', productStatus()!.meetingLocation?.id, 'view']">{{ productStatusRef.meetingLocation?.id }}</a>
+                <a [routerLink]="['/location', productStatus()!.location?.id, 'view']">{{ productStatusRef.location?.id }}</a>
               </div>
             }
           </dd>

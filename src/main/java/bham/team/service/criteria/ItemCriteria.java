@@ -80,6 +80,10 @@ public class ItemCriteria implements Serializable, Criteria {
 
     private LongFilter productStatusId;
 
+    private LongFilter profileDetailsId;
+
+    private LongFilter likesId;
+
     private LongFilter sellerId;
 
     private Boolean distinct;
@@ -98,6 +102,8 @@ public class ItemCriteria implements Serializable, Criteria {
         this.imagesId = other.optionalImagesId().map(LongFilter::copy).orElse(null);
         this.wishlistId = other.optionalWishlistId().map(LongFilter::copy).orElse(null);
         this.productStatusId = other.optionalProductStatusId().map(LongFilter::copy).orElse(null);
+        this.profileDetailsId = other.optionalProfileDetailsId().map(LongFilter::copy).orElse(null);
+        this.likesId = other.optionalLikesId().map(LongFilter::copy).orElse(null);
         this.sellerId = other.optionalSellerId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
     }
@@ -316,6 +322,44 @@ public class ItemCriteria implements Serializable, Criteria {
         this.productStatusId = productStatusId;
     }
 
+    public LongFilter getProfileDetailsId() {
+        return profileDetailsId;
+    }
+
+    public Optional<LongFilter> optionalProfileDetailsId() {
+        return Optional.ofNullable(profileDetailsId);
+    }
+
+    public LongFilter profileDetailsId() {
+        if (profileDetailsId == null) {
+            setProfileDetailsId(new LongFilter());
+        }
+        return profileDetailsId;
+    }
+
+    public void setProfileDetailsId(LongFilter profileDetailsId) {
+        this.profileDetailsId = profileDetailsId;
+    }
+
+    public LongFilter getLikesId() {
+        return likesId;
+    }
+
+    public Optional<LongFilter> optionalLikesId() {
+        return Optional.ofNullable(likesId);
+    }
+
+    public LongFilter likesId() {
+        if (likesId == null) {
+            setLikesId(new LongFilter());
+        }
+        return likesId;
+    }
+
+    public void setLikesId(LongFilter likesId) {
+        this.likesId = likesId;
+    }
+
     public LongFilter getSellerId() {
         return sellerId;
     }
@@ -375,6 +419,8 @@ public class ItemCriteria implements Serializable, Criteria {
             Objects.equals(imagesId, that.imagesId) &&
             Objects.equals(wishlistId, that.wishlistId) &&
             Objects.equals(productStatusId, that.productStatusId) &&
+            Objects.equals(profileDetailsId, that.profileDetailsId) &&
+            Objects.equals(likesId, that.likesId) &&
             Objects.equals(sellerId, that.sellerId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -394,6 +440,8 @@ public class ItemCriteria implements Serializable, Criteria {
             imagesId,
             wishlistId,
             productStatusId,
+            profileDetailsId,
+            likesId,
             sellerId,
             distinct
         );
@@ -414,6 +462,8 @@ public class ItemCriteria implements Serializable, Criteria {
             optionalImagesId().map(f -> "imagesId=" + f + ", ").orElse("") +
             optionalWishlistId().map(f -> "wishlistId=" + f + ", ").orElse("") +
             optionalProductStatusId().map(f -> "productStatusId=" + f + ", ").orElse("") +
+            optionalProfileDetailsId().map(f -> "profileDetailsId=" + f + ", ").orElse("") +
+            optionalLikesId().map(f -> "likesId=" + f + ", ").orElse("") +
             optionalSellerId().map(f -> "sellerId=" + f + ", ").orElse("") +
             optionalDistinct().map(f -> "distinct=" + f + ", ").orElse("") +
         "}";

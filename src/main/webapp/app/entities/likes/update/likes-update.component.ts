@@ -9,8 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IItem } from 'app/entities/item/item.model';
 import { ItemService } from 'app/entities/item/service/item.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { LikesService } from '../service/likes.service';
 import { ILikes } from '../likes.model';
 import { LikesFormGroup, LikesFormService } from './likes-form.service';
@@ -26,12 +26,12 @@ export class LikesUpdateComponent implements OnInit {
   likes: ILikes | null = null;
 
   itemsSharedCollection: IItem[] = [];
-  userDetailsSharedCollection: IUserDetails[] = [];
+  profileDetailsSharedCollection: IProfileDetails[] = [];
 
   protected likesService = inject(LikesService);
   protected likesFormService = inject(LikesFormService);
   protected itemService = inject(ItemService);
-  protected userDetailsService = inject(UserDetailsService);
+  protected profileDetailsService = inject(ProfileDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -39,7 +39,8 @@ export class LikesUpdateComponent implements OnInit {
 
   compareItem = (o1: IItem | null, o2: IItem | null): boolean => this.itemService.compareItem(o1, o2);
 
-  compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
+  compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
+    this.profileDetailsService.compareProfileDetails(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ likes }) => {
@@ -90,9 +91,9 @@ export class LikesUpdateComponent implements OnInit {
     this.likesFormService.resetForm(this.editForm, likes);
 
     this.itemsSharedCollection = this.itemService.addItemToCollectionIfMissing<IItem>(this.itemsSharedCollection, likes.item);
-    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-      this.userDetailsSharedCollection,
-      likes.user,
+    this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+      this.profileDetailsSharedCollection,
+      likes.profileDetails,
     );
   }
 
@@ -103,14 +104,14 @@ export class LikesUpdateComponent implements OnInit {
       .pipe(map((items: IItem[]) => this.itemService.addItemToCollectionIfMissing<IItem>(items, this.likes?.item)))
       .subscribe((items: IItem[]) => (this.itemsSharedCollection = items));
 
-    this.userDetailsService
+    this.profileDetailsService
       .query()
-      .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))
+      .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
       .pipe(
-        map((userDetails: IUserDetails[]) =>
-          this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(userDetails, this.likes?.user),
+        map((profileDetails: IProfileDetails[]) =>
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(profileDetails, this.likes?.profileDetails),
         ),
       )
-      .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
+      .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
   }
 }

@@ -49,10 +49,10 @@ describe('Images Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Item query and add missing value', () => {
       const images: IImages = { id: 456 };
-      const item: IItem = { id: 18030 };
+      const item: IItem = { id: 7996 };
       images.item = item;
 
-      const itemCollection: IItem[] = [{ id: 30425 }];
+      const itemCollection: IItem[] = [{ id: 19292 }];
       jest.spyOn(itemService, 'query').mockReturnValue(of(new HttpResponse({ body: itemCollection })));
       const additionalItems = [item];
       const expectedCollection: IItem[] = [...additionalItems, ...itemCollection];
@@ -71,7 +71,7 @@ describe('Images Management Update Component', () => {
 
     it('Should update editForm', () => {
       const images: IImages = { id: 456 };
-      const item: IItem = { id: 18724 };
+      const item: IItem = { id: 15747 };
       images.item = item;
 
       activatedRoute.data = of({ images });

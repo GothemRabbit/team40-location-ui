@@ -14,9 +14,9 @@
   "name": "Conversation",
   "relationships": [
     {
-      "otherEntityName": "userDetails",
-      "otherEntityRelationshipName": "chats",
-      "relationshipName": "participants",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "conversation",
+      "relationshipName": "profileDetails",
       "relationshipSide": "left",
       "relationshipType": "many-to-many"
     },
@@ -29,8 +29,8 @@
     },
     {
       "otherEntityName": "message",
-      "otherEntityRelationshipName": "convo",
-      "relationshipName": "messages",
+      "otherEntityRelationshipName": "conversation",
+      "relationshipName": "message",
       "relationshipSide": "right",
       "relationshipType": "one-to-many"
     }

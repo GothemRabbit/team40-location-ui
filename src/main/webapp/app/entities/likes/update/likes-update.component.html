@@ -29,11 +29,18 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_user">User</label>
-          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUserDetails">
+          <label class="form-label" for="field_profileDetails">Profile Details</label>
+          <select
+            class="form-control"
+            id="field_profileDetails"
+            data-cy="profileDetails"
+            name="profileDetails"
+            formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
+          >
             <option [ngValue]="null"></option>
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
             }
           </select>
         </div>

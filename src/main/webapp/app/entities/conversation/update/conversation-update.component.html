@@ -40,6 +40,23 @@
         </div>
 
         <div class="mb-3">
+          <label for="field_profileDetails">Profile Details</label>
+          <select
+            class="form-control"
+            id="field_profileDetails"
+            data-cy="profileDetails"
+            multiple
+            name="profileDetails"
+            formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
+          >
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label for="field_participants">Participants</label>
           <select
             class="form-control"

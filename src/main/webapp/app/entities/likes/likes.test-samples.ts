@@ -1,16 +1,16 @@
 import { ILikes, NewLikes } from './likes.model';
 
 export const sampleWithRequiredData: ILikes = {
-  id: 25096,
+  id: 16706,
 };
 
 export const sampleWithPartialData: ILikes = {
-  id: 29574,
+  id: 25908,
 };
 
 export const sampleWithFullData: ILikes = {
-  id: 25640,
-  liked: false,
+  id: 20840,
+  liked: true,
 };
 
 export const sampleWithNewData: NewLikes = {

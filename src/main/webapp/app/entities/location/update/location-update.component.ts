@@ -7,10 +7,12 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
 import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
-import { ILocation } from '../location.model';
 import { LocationService } from '../service/location.service';
+import { ILocation } from '../location.model';
 import { LocationFormGroup, LocationFormService } from './location-form.service';
 
 @Component({
@@ -23,15 +25,20 @@ export class LocationUpdateComponent implements OnInit {
   isSaving = false;
   location: ILocation | null = null;
 
+  profileDetailsSharedCollection: IProfileDetails[] = [];
   userDetailsSharedCollection: IUserDetails[] = [];
 
   protected locationService = inject(LocationService);
   protected locationFormService = inject(LocationFormService);
+  protected profileDetailsService = inject(ProfileDetailsService);
   protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: LocationFormGroup = this.locationFormService.createLocationFormGroup();
+
+  compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
+    this.profileDetailsService.compareProfileDetails(o1, o2);
 
   compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
 
@@ -83,6 +90,10 @@ export class LocationUpdateComponent implements OnInit {
     this.location = location;
     this.locationFormService.resetForm(this.editForm, location);
 
+    this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+      this.profileDetailsSharedCollection,
+      ...(location.profileDetails ?? []),
+    );
     this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
       this.userDetailsSharedCollection,
       ...(location.users ?? []),
@@ -90,6 +101,19 @@ export class LocationUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    this.profileDetailsService
+      .query()
+      .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
+      .pipe(
+        map((profileDetails: IProfileDetails[]) =>
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+            profileDetails,
+            ...(this.location?.profileDetails ?? []),
+          ),
+        ),
+      )
+      .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
+
     this.userDetailsService
       .query()
       .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))

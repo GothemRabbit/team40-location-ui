@@ -26,9 +26,8 @@ describe('ProductStatus Form Service', () => {
             createdAt: expect.any(Object),
             item: expect.any(Object),
             conversation: expect.any(Object),
-            buyer: expect.any(Object),
-            seller: expect.any(Object),
-            meetingLocation: expect.any(Object),
+            profileDetails: expect.any(Object),
+            location: expect.any(Object),
           }),
         );
       });
@@ -45,9 +44,8 @@ describe('ProductStatus Form Service', () => {
             createdAt: expect.any(Object),
             item: expect.any(Object),
             conversation: expect.any(Object),
-            buyer: expect.any(Object),
-            seller: expect.any(Object),
-            meetingLocation: expect.any(Object),
+            profileDetails: expect.any(Object),
+            location: expect.any(Object),
           }),
         );
       });

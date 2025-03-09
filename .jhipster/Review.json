@@ -26,16 +26,9 @@
   "name": "Review",
   "relationships": [
     {
-      "otherEntityName": "userDetails",
-      "otherEntityRelationshipName": "buyersReview",
-      "relationshipName": "buyer",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "userDetails",
-      "otherEntityRelationshipName": "reviewsOfSeller",
-      "relationshipName": "seller",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "review",
+      "relationshipName": "profileDetails",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }

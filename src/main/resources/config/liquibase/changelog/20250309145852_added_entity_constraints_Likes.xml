@@ -17,11 +17,11 @@
                                  referencedTableName="item"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
+        <addForeignKeyConstraint baseColumnNames="profile_details_id"
                                  baseTableName="likes"
-                                 constraintName="fk_likes__user_id"
+                                 constraintName="fk_likes__profile_details_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="user_details"
+                                 referencedTableName="profile_details"
                                  />
     </changeSet>
 </databaseChangeLog>

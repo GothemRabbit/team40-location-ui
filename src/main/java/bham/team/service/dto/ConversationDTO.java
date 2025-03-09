@@ -18,6 +18,8 @@ public class ConversationDTO implements Serializable {
     @NotNull
     private Instant dateCreated;
 
+    private Set<ProfileDetailsDTO> profileDetails = new HashSet<>();
+
     private Set<UserDetailsDTO> participants = new HashSet<>();
 
     public Long getId() {
@@ -34,6 +36,14 @@ public class ConversationDTO implements Serializable {
 
     public void setDateCreated(Instant dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public Set<ProfileDetailsDTO> getProfileDetails() {
+        return profileDetails;
+    }
+
+    public void setProfileDetails(Set<ProfileDetailsDTO> profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
     public Set<UserDetailsDTO> getParticipants() {
@@ -71,6 +81,7 @@ public class ConversationDTO implements Serializable {
         return "ConversationDTO{" +
             "id=" + getId() +
             ", dateCreated='" + getDateCreated() + "'" +
+            ", profileDetails=" + getProfileDetails() +
             ", participants=" + getParticipants() +
             "}";
     }

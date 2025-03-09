@@ -327,6 +327,8 @@ class ConversationResourceIT {
         Conversation partialUpdatedConversation = new Conversation();
         partialUpdatedConversation.setId(conversation.getId());
 
+        partialUpdatedConversation.dateCreated(UPDATED_DATE_CREATED);
+
         restConversationMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedConversation.getId())

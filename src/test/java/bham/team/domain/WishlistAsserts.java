@@ -60,7 +60,8 @@ public class WishlistAsserts {
     public static void assertWishlistUpdatableRelationshipsEquals(Wishlist expected, Wishlist actual) {
         assertThat(expected)
             .as("Verify Wishlist relationships")
-            .satisfies(e -> assertThat(e.getUserDetails()).as("check userDetails").isEqualTo(actual.getUserDetails()))
-            .satisfies(e -> assertThat(e.getItems()).as("check items").isEqualTo(actual.getItems()));
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
+            .satisfies(e -> assertThat(e.getItems()).as("check items").isEqualTo(actual.getItems()))
+            .satisfies(e -> assertThat(e.getUserDetails()).as("check userDetails").isEqualTo(actual.getUserDetails()));
     }
 }

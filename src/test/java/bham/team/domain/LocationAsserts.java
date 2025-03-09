@@ -62,6 +62,7 @@ public class LocationAsserts {
     public static void assertLocationUpdatableRelationshipsEquals(Location expected, Location actual) {
         assertThat(expected)
             .as("Verify Location relationships")
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
             .satisfies(e -> assertThat(e.getUsers()).as("check users").isEqualTo(actual.getUsers()));
     }
 }

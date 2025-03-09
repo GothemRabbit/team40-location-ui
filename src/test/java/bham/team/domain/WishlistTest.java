@@ -1,6 +1,7 @@
 package bham.team.domain;
 
 import static bham.team.domain.ItemTestSamples.*;
+import static bham.team.domain.ProfileDetailsTestSamples.*;
 import static bham.team.domain.UserDetailsTestSamples.*;
 import static bham.team.domain.WishlistTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,27 +28,27 @@ class WishlistTest {
     }
 
     @Test
-    void userDetailsTest() {
+    void profileDetailsTest() {
         Wishlist wishlist = getWishlistRandomSampleGenerator();
-        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+        ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
 
-        wishlist.setUserDetails(userDetailsBack);
-        assertThat(wishlist.getUserDetails()).isEqualTo(userDetailsBack);
+        wishlist.setProfileDetails(profileDetailsBack);
+        assertThat(wishlist.getProfileDetails()).isEqualTo(profileDetailsBack);
 
-        wishlist.userDetails(null);
-        assertThat(wishlist.getUserDetails()).isNull();
+        wishlist.profileDetails(null);
+        assertThat(wishlist.getProfileDetails()).isNull();
     }
 
     @Test
-    void itemsTest() {
+    void itemTest() {
         Wishlist wishlist = getWishlistRandomSampleGenerator();
         Item itemBack = getItemRandomSampleGenerator();
 
-        wishlist.addItems(itemBack);
+        wishlist.addItem(itemBack);
         assertThat(wishlist.getItems()).containsOnly(itemBack);
         assertThat(itemBack.getWishlists()).containsOnly(wishlist);
 
-        wishlist.removeItems(itemBack);
+        wishlist.removeItem(itemBack);
         assertThat(wishlist.getItems()).doesNotContain(itemBack);
         assertThat(itemBack.getWishlists()).doesNotContain(wishlist);
 
@@ -58,5 +59,17 @@ class WishlistTest {
         wishlist.setItems(new HashSet<>());
         assertThat(wishlist.getItems()).doesNotContain(itemBack);
         assertThat(itemBack.getWishlists()).doesNotContain(wishlist);
+    }
+
+    @Test
+    void userDetailsTest() {
+        Wishlist wishlist = getWishlistRandomSampleGenerator();
+        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+
+        wishlist.setUserDetails(userDetailsBack);
+        assertThat(wishlist.getUserDetails()).isEqualTo(userDetailsBack);
+
+        wishlist.userDetails(null);
+        assertThat(wishlist.getUserDetails()).isNull();
     }
 }

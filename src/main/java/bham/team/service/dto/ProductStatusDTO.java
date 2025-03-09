@@ -28,11 +28,9 @@ public class ProductStatusDTO implements Serializable {
 
     private ConversationDTO conversation;
 
-    private UserDetailsDTO buyer;
+    private ProfileDetailsDTO profileDetails;
 
-    private UserDetailsDTO seller;
-
-    private LocationDTO meetingLocation;
+    private LocationDTO location;
 
     public Long getId() {
         return id;
@@ -90,28 +88,20 @@ public class ProductStatusDTO implements Serializable {
         this.conversation = conversation;
     }
 
-    public UserDetailsDTO getBuyer() {
-        return buyer;
+    public ProfileDetailsDTO getProfileDetails() {
+        return profileDetails;
     }
 
-    public void setBuyer(UserDetailsDTO buyer) {
-        this.buyer = buyer;
+    public void setProfileDetails(ProfileDetailsDTO profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
-    public UserDetailsDTO getSeller() {
-        return seller;
+    public LocationDTO getLocation() {
+        return location;
     }
 
-    public void setSeller(UserDetailsDTO seller) {
-        this.seller = seller;
-    }
-
-    public LocationDTO getMeetingLocation() {
-        return meetingLocation;
-    }
-
-    public void setMeetingLocation(LocationDTO meetingLocation) {
-        this.meetingLocation = meetingLocation;
+    public void setLocation(LocationDTO location) {
+        this.location = location;
     }
 
     @Override
@@ -146,9 +136,8 @@ public class ProductStatusDTO implements Serializable {
             ", createdAt='" + getCreatedAt() + "'" +
             ", item=" + getItem() +
             ", conversation=" + getConversation() +
-            ", buyer=" + getBuyer() +
-            ", seller=" + getSeller() +
-            ", meetingLocation=" + getMeetingLocation() +
+            ", profileDetails=" + getProfileDetails() +
+            ", location=" + getLocation() +
             "}";
     }
 }

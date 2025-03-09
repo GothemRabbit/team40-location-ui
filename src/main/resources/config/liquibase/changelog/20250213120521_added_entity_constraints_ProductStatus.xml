@@ -24,23 +24,16 @@
                                  referencedTableName="conversation"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="buyer_id"
+        <addForeignKeyConstraint baseColumnNames="profile_details_id"
                                  baseTableName="product_status"
-                                 constraintName="fk_product_status__buyer_id"
+                                 constraintName="fk_product_status__profile_details_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="user_details"
+                                 referencedTableName="profile_details"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="seller_id"
+        <addForeignKeyConstraint baseColumnNames="location_id"
                                  baseTableName="product_status"
-                                 constraintName="fk_product_status__seller_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="user_details"
-                                 />
-
-        <addForeignKeyConstraint baseColumnNames="meeting_location_id"
-                                 baseTableName="product_status"
-                                 constraintName="fk_product_status__meeting_location_id"
+                                 constraintName="fk_product_status__location_id"
                                  referencedColumnNames="id"
                                  referencedTableName="location"
                                  />

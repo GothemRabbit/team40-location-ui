@@ -22,7 +22,7 @@ describe('Likes Form Service', () => {
             id: expect.any(Object),
             liked: expect.any(Object),
             item: expect.any(Object),
-            user: expect.any(Object),
+            profileDetails: expect.any(Object),
           }),
         );
       });
@@ -35,7 +35,7 @@ describe('Likes Form Service', () => {
             id: expect.any(Object),
             liked: expect.any(Object),
             item: expect.any(Object),
-            user: expect.any(Object),
+            profileDetails: expect.any(Object),
           }),
         );
       });

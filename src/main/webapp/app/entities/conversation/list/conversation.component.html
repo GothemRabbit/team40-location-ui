@@ -49,6 +49,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="profileDetails.id">
+              <div class="d-flex">
+                <span>Profile Details</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="participants.id">
               <div class="d-flex">
                 <span>Participants</span>
@@ -65,6 +71,14 @@
                 <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation.id }}</a>
               </td>
               <td>{{ conversation.dateCreated | formatMediumDatetime }}</td>
+              <td>
+                @for (profileDetails of conversation.profileDetails; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
               <td>
                 @for (participants of conversation.participants; track $index; let last = $last) {
                   <span>

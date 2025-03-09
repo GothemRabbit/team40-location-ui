@@ -27,6 +27,14 @@
           <dd>
             <span>{{ reviewRef.date | formatMediumDate }}</span>
           </dd>
+          <dt><span>Profile Details</span></dt>
+          <dd>
+            @if (review()!.profileDetails) {
+              <div>
+                <a [routerLink]="['/profile-details', review()!.profileDetails?.id, 'view']">{{ reviewRef.profileDetails?.id }}</a>
+              </div>
+            }
+          </dd>
           <dt><span>Buyer</span></dt>
           <dd>
             @if (review()!.buyer) {

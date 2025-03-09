@@ -4,12 +4,12 @@ import bham.team.domain.Conversation;
 import bham.team.domain.Item;
 import bham.team.domain.Location;
 import bham.team.domain.ProductStatus;
-import bham.team.domain.UserDetails;
+import bham.team.domain.ProfileDetails;
 import bham.team.service.dto.ConversationDTO;
 import bham.team.service.dto.ItemDTO;
 import bham.team.service.dto.LocationDTO;
 import bham.team.service.dto.ProductStatusDTO;
-import bham.team.service.dto.UserDetailsDTO;
+import bham.team.service.dto.ProfileDetailsDTO;
 import org.mapstruct.*;
 
 /**
@@ -19,9 +19,8 @@ import org.mapstruct.*;
 public interface ProductStatusMapper extends EntityMapper<ProductStatusDTO, ProductStatus> {
     @Mapping(target = "item", source = "item", qualifiedByName = "itemId")
     @Mapping(target = "conversation", source = "conversation", qualifiedByName = "conversationId")
-    @Mapping(target = "buyer", source = "buyer", qualifiedByName = "userDetailsId")
-    @Mapping(target = "seller", source = "seller", qualifiedByName = "userDetailsId")
-    @Mapping(target = "meetingLocation", source = "meetingLocation", qualifiedByName = "locationId")
+    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "location", source = "location", qualifiedByName = "locationId")
     ProductStatusDTO toDto(ProductStatus s);
 
     @Named("itemId")
@@ -34,10 +33,10 @@ public interface ProductStatusMapper extends EntityMapper<ProductStatusDTO, Prod
     @Mapping(target = "id", source = "id")
     ConversationDTO toDtoConversationId(Conversation conversation);
 
-    @Named("userDetailsId")
+    @Named("profileDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    UserDetailsDTO toDtoUserDetailsId(UserDetails userDetails);
+    ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
 
     @Named("locationId")
     @BeanMapping(ignoreByDefault = true)

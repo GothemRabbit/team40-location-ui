@@ -1,0 +1,75 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (profileDetails(); as profileDetailsRef) {
+      <div>
+        <h2 data-cy="profileDetailsDetailsHeading"><span>Profile Details</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ profileDetailsRef.id }}</span>
+          </dd>
+          <dt><span>Bio Image</span></dt>
+          <dd>
+            @if (profileDetailsRef.bioImage) {
+              <div>
+                <a (click)="openFile(profileDetailsRef.bioImage ?? '', profileDetailsRef.bioImageContentType)">
+                  <img
+                    [src]="'data:' + profileDetailsRef.bioImageContentType + ';base64,' + profileDetailsRef.bioImage"
+                    style="max-width: 100%"
+                    alt="profileDetails"
+                  />
+                </a>
+                {{ profileDetailsRef.bioImageContentType }}, {{ byteSize(profileDetailsRef.bioImage ?? '') }}
+              </div>
+            }
+          </dd>
+          <dt><span>User Name</span></dt>
+          <dd>
+            <span>{{ profileDetailsRef.userName }}</span>
+          </dd>
+          <dt><span>Birth Date</span></dt>
+          <dd>
+            <span>{{ profileDetailsRef.birthDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>User</span></dt>
+          <dd>
+            <span>{{ profileDetailsRef.user?.id }}</span>
+          </dd>
+          <dt><span>Location</span></dt>
+          <dd>
+            @for (location of profileDetailsRef.locations; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/location', location.id, 'view']">{{ location?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span>Conversation</span></dt>
+          <dd>
+            @for (conversation of profileDetailsRef.conversations; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

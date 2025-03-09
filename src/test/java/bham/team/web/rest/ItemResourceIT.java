@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import bham.team.IntegrationTest;
 import bham.team.domain.Item;
+import bham.team.domain.ProfileDetails;
 import bham.team.domain.UserDetails;
 import bham.team.domain.Wishlist;
 import bham.team.domain.enumeration.Category;
@@ -691,6 +692,28 @@ class ItemResourceIT {
 
     @Test
     @Transactional
+    void getAllItemsByProfileDetailsIsEqualToSomething() throws Exception {
+        ProfileDetails profileDetails;
+        if (TestUtil.findAll(em, ProfileDetails.class).isEmpty()) {
+            itemRepository.saveAndFlush(item);
+            profileDetails = ProfileDetailsResourceIT.createEntity();
+        } else {
+            profileDetails = TestUtil.findAll(em, ProfileDetails.class).get(0);
+        }
+        em.persist(profileDetails);
+        em.flush();
+        item.setProfileDetails(profileDetails);
+        itemRepository.saveAndFlush(item);
+        Long profileDetailsId = profileDetails.getId();
+        // Get all the itemList where profileDetails equals to profileDetailsId
+        defaultItemShouldBeFound("profileDetailsId.equals=" + profileDetailsId);
+
+        // Get all the itemList where profileDetails equals to (profileDetailsId + 1)
+        defaultItemShouldNotBeFound("profileDetailsId.equals=" + (profileDetailsId + 1));
+    }
+
+    @Test
+    @Transactional
     void getAllItemsBySellerIsEqualToSomething() throws Exception {
         UserDetails seller;
         if (TestUtil.findAll(em, UserDetails.class).isEmpty()) {
@@ -870,7 +893,7 @@ class ItemResourceIT {
         Item partialUpdatedItem = new Item();
         partialUpdatedItem.setId(item.getId());
 
-        partialUpdatedItem.price(UPDATED_PRICE);
+        partialUpdatedItem.price(UPDATED_PRICE).condition(UPDATED_CONDITION).category(UPDATED_CATEGORY).description(UPDATED_DESCRIPTION);
 
         restItemMockMvc
             .perform(

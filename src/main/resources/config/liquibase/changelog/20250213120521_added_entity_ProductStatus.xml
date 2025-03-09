@@ -32,13 +32,10 @@
             <column name="conversation_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_product_status__conversation_id" />
             </column>
-            <column name="buyer_id" type="bigint">
+            <column name="profile_details_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="seller_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="meeting_location_id" type="bigint">
+            <column name="location_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

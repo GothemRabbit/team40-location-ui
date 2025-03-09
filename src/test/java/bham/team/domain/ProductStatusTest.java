@@ -4,7 +4,7 @@ import static bham.team.domain.ConversationTestSamples.*;
 import static bham.team.domain.ItemTestSamples.*;
 import static bham.team.domain.LocationTestSamples.*;
 import static bham.team.domain.ProductStatusTestSamples.*;
-import static bham.team.domain.UserDetailsTestSamples.*;
+import static bham.team.domain.ProfileDetailsTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bham.team.web.rest.TestUtil;
@@ -51,38 +51,26 @@ class ProductStatusTest {
     }
 
     @Test
-    void buyerTest() {
+    void profileDetailsTest() {
         ProductStatus productStatus = getProductStatusRandomSampleGenerator();
-        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+        ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
 
-        productStatus.setBuyer(userDetailsBack);
-        assertThat(productStatus.getBuyer()).isEqualTo(userDetailsBack);
+        productStatus.setProfileDetails(profileDetailsBack);
+        assertThat(productStatus.getProfileDetails()).isEqualTo(profileDetailsBack);
 
-        productStatus.buyer(null);
-        assertThat(productStatus.getBuyer()).isNull();
+        productStatus.profileDetails(null);
+        assertThat(productStatus.getProfileDetails()).isNull();
     }
 
     @Test
-    void sellerTest() {
-        ProductStatus productStatus = getProductStatusRandomSampleGenerator();
-        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
-
-        productStatus.setSeller(userDetailsBack);
-        assertThat(productStatus.getSeller()).isEqualTo(userDetailsBack);
-
-        productStatus.seller(null);
-        assertThat(productStatus.getSeller()).isNull();
-    }
-
-    @Test
-    void meetingLocationTest() {
+    void locationTest() {
         ProductStatus productStatus = getProductStatusRandomSampleGenerator();
         Location locationBack = getLocationRandomSampleGenerator();
 
-        productStatus.setMeetingLocation(locationBack);
-        assertThat(productStatus.getMeetingLocation()).isEqualTo(locationBack);
+        productStatus.setLocation(locationBack);
+        assertThat(productStatus.getLocation()).isEqualTo(locationBack);
 
-        productStatus.meetingLocation(null);
-        assertThat(productStatus.getMeetingLocation()).isNull();
+        productStatus.location(null);
+        assertThat(productStatus.getLocation()).isNull();
     }
 }

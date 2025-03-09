@@ -11,6 +11,20 @@
     <changeSet id="20250213120520-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="conversation_id"
+                                 baseTableName="rel_conversation__profile_details"
+                                 constraintName="fk_rel_conversation__profile_details__conversation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="conversation"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="profile_details_id"
+                                 baseTableName="rel_conversation__profile_details"
+                                 constraintName="fk_rel_conversation__profile_details__profile_details_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="profile_details"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="conversation_id"
                                  baseTableName="rel_conversation__participants"
                                  constraintName="fk_rel_conversation__participants__conversation_id"
                                  referencedColumnNames="id"

@@ -55,9 +55,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="user.id">
+            <th scope="col" jhiSortBy="profileDetails.id">
               <div class="d-flex">
-                <span>User</span>
+                <span>Profile Details</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -79,9 +79,9 @@
                 }
               </td>
               <td>
-                @if (likes.user) {
+                @if (likes.profileDetails) {
                   <div>
-                    <a [routerLink]="['/user-details', likes.user.id, 'view']">{{ likes.user.id }}</a>
+                    <a [routerLink]="['/profile-details', likes.profileDetails.id, 'view']">{{ likes.profileDetails.id }}</a>
                   </div>
                 }
               </td>

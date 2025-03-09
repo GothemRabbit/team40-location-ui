@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type LocationFormGroupInput = ILocation | PartialWithRequiredKeyOf<NewLocation>;
 
-type LocationFormDefaults = Pick<NewLocation, 'id' | 'users'>;
+type LocationFormDefaults = Pick<NewLocation, 'id' | 'profileDetails' | 'users'>;
 
 type LocationFormGroupContent = {
   id: FormControl<ILocation['id'] | NewLocation['id']>;
@@ -22,6 +22,7 @@ type LocationFormGroupContent = {
   latitude: FormControl<ILocation['latitude']>;
   longitude: FormControl<ILocation['longitude']>;
   postcode: FormControl<ILocation['postcode']>;
+  profileDetails: FormControl<ILocation['profileDetails']>;
   users: FormControl<ILocation['users']>;
 };
 
@@ -54,6 +55,7 @@ export class LocationFormService {
       postcode: new FormControl(locationRawValue.postcode, {
         validators: [Validators.required],
       }),
+      profileDetails: new FormControl(locationRawValue.profileDetails ?? []),
       users: new FormControl(locationRawValue.users ?? []),
     });
   }
@@ -75,6 +77,7 @@ export class LocationFormService {
   private getFormDefaults(): LocationFormDefaults {
     return {
       id: null,
+      profileDetails: [],
       users: [],
     };
   }

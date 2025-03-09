@@ -10,6 +10,13 @@
     -->
     <changeSet id="20250309145854-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="profile_details_id"
+                                 baseTableName="wishlist"
+                                 constraintName="fk_wishlist__profile_details_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="profile_details"
+                                 />
+
         <addForeignKeyConstraint baseColumnNames="user_details_id"
                                  baseTableName="wishlist"
                                  constraintName="fk_wishlist__user_details_id"

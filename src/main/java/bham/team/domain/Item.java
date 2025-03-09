@@ -75,12 +75,24 @@ public class Item implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "wishlist_id")
     )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "userDetails", "items" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "profileDetails", "items", "userDetails" }, allowSetters = true)
     private Set<Wishlist> wishlists = new HashSet<>();
 
-    @JsonIgnoreProperties(value = { "item", "conversation", "buyer", "seller", "meetingLocation" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "item", "conversation", "profileDetails", "location" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "item")
     private ProductStatus productStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "item", "profileDetails" }, allowSetters = true)
+    private Set<Likes> likes = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
@@ -278,6 +290,50 @@ public class Item implements Serializable {
 
     public Item productStatus(ProductStatus productStatus) {
         this.setProductStatus(productStatus);
+        return this;
+    }
+
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
+    public Item profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
+        return this;
+    }
+
+    public Set<Likes> getLikes() {
+        return this.likes;
+    }
+
+    public void setLikes(Set<Likes> likes) {
+        if (this.likes != null) {
+            this.likes.forEach(i -> i.setItem(null));
+        }
+        if (likes != null) {
+            likes.forEach(i -> i.setItem(this));
+        }
+        this.likes = likes;
+    }
+
+    public Item likes(Set<Likes> likes) {
+        this.setLikes(likes);
+        return this;
+    }
+
+    public Item addLikes(Likes likes) {
+        this.likes.add(likes);
+        likes.setItem(this);
+        return this;
+    }
+
+    public Item removeLikes(Likes likes) {
+        this.likes.remove(likes);
+        likes.setItem(null);
         return this;
     }
 

@@ -12,6 +12,8 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IWishlist } from 'app/entities/wishlist/wishlist.model';
 import { WishlistService } from 'app/entities/wishlist/service/wishlist.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
 import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 import { Condition } from 'app/entities/enumerations/condition.model';
@@ -33,6 +35,7 @@ export class ItemUpdateComponent implements OnInit {
   categoryValues = Object.keys(Category);
 
   wishlistsSharedCollection: IWishlist[] = [];
+  profileDetailsSharedCollection: IProfileDetails[] = [];
   userDetailsSharedCollection: IUserDetails[] = [];
 
   protected dataUtils = inject(DataUtils);
@@ -40,6 +43,7 @@ export class ItemUpdateComponent implements OnInit {
   protected itemService = inject(ItemService);
   protected itemFormService = inject(ItemFormService);
   protected wishlistService = inject(WishlistService);
+  protected profileDetailsService = inject(ProfileDetailsService);
   protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
 
@@ -47,6 +51,9 @@ export class ItemUpdateComponent implements OnInit {
   editForm: ItemFormGroup = this.itemFormService.createItemFormGroup();
 
   compareWishlist = (o1: IWishlist | null, o2: IWishlist | null): boolean => this.wishlistService.compareWishlist(o1, o2);
+
+  compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
+    this.profileDetailsService.compareProfileDetails(o1, o2);
 
   compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
 
@@ -117,6 +124,10 @@ export class ItemUpdateComponent implements OnInit {
       this.wishlistsSharedCollection,
       ...(item.wishlists ?? []),
     );
+    this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+      this.profileDetailsSharedCollection,
+      item.profileDetails,
+    );
     this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
       this.userDetailsSharedCollection,
       item.seller,
@@ -133,6 +144,16 @@ export class ItemUpdateComponent implements OnInit {
         ),
       )
       .subscribe((wishlists: IWishlist[]) => (this.wishlistsSharedCollection = wishlists));
+
+    this.profileDetailsService
+      .query()
+      .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
+      .pipe(
+        map((profileDetails: IProfileDetails[]) =>
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(profileDetails, this.item?.profileDetails),
+        ),
+      )
+      .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
 
     this.userDetailsService
       .query()

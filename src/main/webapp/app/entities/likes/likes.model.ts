@@ -1,11 +1,11 @@
 import { IItem } from 'app/entities/item/item.model';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
 
 export interface ILikes {
   id: number;
   liked?: boolean | null;
   item?: Pick<IItem, 'id'> | null;
-  user?: Pick<IUserDetails, 'id'> | null;
+  profileDetails?: Pick<IProfileDetails, 'id'> | null;
 }
 
 export type NewLikes = Omit<ILikes, 'id'> & { id: null };

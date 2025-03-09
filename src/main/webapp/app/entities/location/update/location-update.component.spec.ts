@@ -4,10 +4,12 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
 import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
-import { LocationService } from '../service/location.service';
 import { ILocation } from '../location.model';
+import { LocationService } from '../service/location.service';
 import { LocationFormService } from './location-form.service';
 
 import { LocationUpdateComponent } from './location-update.component';
@@ -18,6 +20,7 @@ describe('Location Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let locationFormService: LocationFormService;
   let locationService: LocationService;
+  let profileDetailsService: ProfileDetailsService;
   let userDetailsService: UserDetailsService;
 
   beforeEach(() => {
@@ -41,18 +44,41 @@ describe('Location Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     locationFormService = TestBed.inject(LocationFormService);
     locationService = TestBed.inject(LocationService);
+    profileDetailsService = TestBed.inject(ProfileDetailsService);
     userDetailsService = TestBed.inject(UserDetailsService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call ProfileDetails query and add missing value', () => {
+      const location: ILocation = { id: 456 };
+      const profileDetails: IProfileDetails[] = [{ id: 13205 }];
+      location.profileDetails = profileDetails;
+
+      const profileDetailsCollection: IProfileDetails[] = [{ id: 17417 }];
+      jest.spyOn(profileDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: profileDetailsCollection })));
+      const additionalProfileDetails = [...profileDetails];
+      const expectedCollection: IProfileDetails[] = [...additionalProfileDetails, ...profileDetailsCollection];
+      jest.spyOn(profileDetailsService, 'addProfileDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ location });
+      comp.ngOnInit();
+
+      expect(profileDetailsService.query).toHaveBeenCalled();
+      expect(profileDetailsService.addProfileDetailsToCollectionIfMissing).toHaveBeenCalledWith(
+        profileDetailsCollection,
+        ...additionalProfileDetails.map(expect.objectContaining),
+      );
+      expect(comp.profileDetailsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should call UserDetails query and add missing value', () => {
       const location: ILocation = { id: 456 };
-      const users: IUserDetails[] = [{ id: 30110 }];
+      const users: IUserDetails[] = [{ id: 21323 }];
       location.users = users;
 
-      const userDetailsCollection: IUserDetails[] = [{ id: 7220 }];
+      const userDetailsCollection: IUserDetails[] = [{ id: 10881 }];
       jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
       const additionalUserDetails = [...users];
       const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
@@ -71,12 +97,15 @@ describe('Location Management Update Component', () => {
 
     it('Should update editForm', () => {
       const location: ILocation = { id: 456 };
-      const users: IUserDetails = { id: 21259 };
+      const profileDetails: IProfileDetails = { id: 8670 };
+      location.profileDetails = [profileDetails];
+      const users: IUserDetails = { id: 29476 };
       location.users = [users];
 
       activatedRoute.data = of({ location });
       comp.ngOnInit();
 
+      expect(comp.profileDetailsSharedCollection).toContain(profileDetails);
       expect(comp.userDetailsSharedCollection).toContain(users);
       expect(comp.location).toEqual(location);
     });
@@ -151,6 +180,16 @@ describe('Location Management Update Component', () => {
   });
 
   describe('Compare relationships', () => {
+    describe('compareProfileDetails', () => {
+      it('Should forward to profileDetailsService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(profileDetailsService, 'compareProfileDetails');
+        comp.compareProfileDetails(entity, entity2);
+        expect(profileDetailsService.compareProfileDetails).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
     describe('compareUserDetails', () => {
       it('Should forward to userDetailsService', () => {
         const entity = { id: 123 };

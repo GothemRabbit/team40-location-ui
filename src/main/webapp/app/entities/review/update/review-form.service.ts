@@ -21,6 +21,7 @@ type ReviewFormGroupContent = {
   rating: FormControl<IReview['rating']>;
   comments: FormControl<IReview['comments']>;
   date: FormControl<IReview['date']>;
+  profileDetails: FormControl<IReview['profileDetails']>;
   buyer: FormControl<IReview['buyer']>;
   seller: FormControl<IReview['seller']>;
 };
@@ -51,6 +52,7 @@ export class ReviewFormService {
       date: new FormControl(reviewRawValue.date, {
         validators: [Validators.required],
       }),
+      profileDetails: new FormControl(reviewRawValue.profileDetails),
       buyer: new FormControl(reviewRawValue.buyer),
       seller: new FormControl(reviewRawValue.seller),
     });

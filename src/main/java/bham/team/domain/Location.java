@@ -42,6 +42,19 @@ public class Location implements Serializable {
     @Column(name = "postcode", nullable = false)
     private String postcode;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "item", "conversation", "profileDetails", "location" }, allowSetters = true)
+    private Set<ProductStatus> productStatuses = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "locations")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private Set<ProfileDetails> profileDetails = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "meetupLocations")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(
@@ -115,6 +128,68 @@ public class Location implements Serializable {
 
     public void setPostcode(String postcode) {
         this.postcode = postcode;
+    }
+
+    public Set<ProductStatus> getProductStatuses() {
+        return this.productStatuses;
+    }
+
+    public void setProductStatuses(Set<ProductStatus> productStatuses) {
+        if (this.productStatuses != null) {
+            this.productStatuses.forEach(i -> i.setLocation(null));
+        }
+        if (productStatuses != null) {
+            productStatuses.forEach(i -> i.setLocation(this));
+        }
+        this.productStatuses = productStatuses;
+    }
+
+    public Location productStatuses(Set<ProductStatus> productStatuses) {
+        this.setProductStatuses(productStatuses);
+        return this;
+    }
+
+    public Location addProductStatus(ProductStatus productStatus) {
+        this.productStatuses.add(productStatus);
+        productStatus.setLocation(this);
+        return this;
+    }
+
+    public Location removeProductStatus(ProductStatus productStatus) {
+        this.productStatuses.remove(productStatus);
+        productStatus.setLocation(null);
+        return this;
+    }
+
+    public Set<ProfileDetails> getProfileDetails() {
+        return this.profileDetails;
+    }
+
+    public void setProfileDetails(Set<ProfileDetails> profileDetails) {
+        if (this.profileDetails != null) {
+            this.profileDetails.forEach(i -> i.removeLocation(this));
+        }
+        if (profileDetails != null) {
+            profileDetails.forEach(i -> i.addLocation(this));
+        }
+        this.profileDetails = profileDetails;
+    }
+
+    public Location profileDetails(Set<ProfileDetails> profileDetails) {
+        this.setProfileDetails(profileDetails);
+        return this;
+    }
+
+    public Location addProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails.add(profileDetails);
+        profileDetails.getLocations().add(this);
+        return this;
+    }
+
+    public Location removeProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails.remove(profileDetails);
+        profileDetails.getLocations().remove(this);
+        return this;
     }
 
     public Set<UserDetails> getUsers() {

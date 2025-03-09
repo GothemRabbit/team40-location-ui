@@ -115,47 +115,30 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_buyer">Buyer</label>
+          <label class="form-label" for="field_profileDetails">Profile Details</label>
           <select
             class="form-control"
-            id="field_buyer"
-            data-cy="buyer"
-            name="buyer"
-            formControlName="buyer"
-            [compareWith]="compareUserDetails"
+            id="field_profileDetails"
+            data-cy="profileDetails"
+            name="profileDetails"
+            formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
           >
             <option [ngValue]="null"></option>
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
             }
           </select>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_seller">Seller</label>
+          <label class="form-label" for="field_location">Location</label>
           <select
             class="form-control"
-            id="field_seller"
-            data-cy="seller"
-            name="seller"
-            formControlName="seller"
-            [compareWith]="compareUserDetails"
-          >
-            <option [ngValue]="null"></option>
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_meetingLocation">Meeting Location</label>
-          <select
-            class="form-control"
-            id="field_meetingLocation"
-            data-cy="meetingLocation"
-            name="meetingLocation"
-            formControlName="meetingLocation"
+            id="field_location"
+            data-cy="location"
+            name="location"
+            formControlName="location"
             [compareWith]="compareLocation"
           >
             <option [ngValue]="null"></option>

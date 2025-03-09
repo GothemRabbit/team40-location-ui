@@ -78,6 +78,19 @@ public class CacheConfiguration {
             createCache(cm, bham.team.domain.Images.class.getName());
             createCache(cm, bham.team.domain.Wishlist.class.getName());
             createCache(cm, bham.team.domain.Wishlist.class.getName() + ".items");
+            createCache(cm, bham.team.domain.Item.class.getName() + ".likes");
+            createCache(cm, bham.team.domain.Conversation.class.getName() + ".profileDetails");
+            createCache(cm, bham.team.domain.Location.class.getName() + ".productStatuses");
+            createCache(cm, bham.team.domain.Location.class.getName() + ".profileDetails");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName());
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".items");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".wishlists");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".locations");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".likes");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".reviews");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".messages");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".productStatuses");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".conversations");
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -24,6 +24,7 @@ describe('Location Form Service', () => {
             latitude: expect.any(Object),
             longitude: expect.any(Object),
             postcode: expect.any(Object),
+            profileDetails: expect.any(Object),
             users: expect.any(Object),
           }),
         );
@@ -39,6 +40,7 @@ describe('Location Form Service', () => {
             latitude: expect.any(Object),
             longitude: expect.any(Object),
             postcode: expect.any(Object),
+            profileDetails: expect.any(Object),
             users: expect.any(Object),
           }),
         );

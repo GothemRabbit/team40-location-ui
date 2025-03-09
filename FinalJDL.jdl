@@ -1,4 +1,4 @@
-entity UserDetails {
+entity ProfileDetails {
   bioImage ImageBlob,
   //only allow one word (no space) for username
   userName String required unique pattern(/^\S+$/) ,
@@ -101,42 +101,42 @@ enum VisibilityType {
 //userdetails relationship
 
 relationship OneToOne {
-  UserDetails { user }  to @ID User with builtInEntity
+  ProfileDetails to @ID User with builtInEntity
 }
 
 //location relationship
 relationship ManyToMany {
-  UserDetails {meetupLocations} to Location {users}
+  ProfileDetails  to Location
 }
 
 // items relationship
 
 relationship OneToMany {
-  UserDetails { itemsOnSale } to Item {seller},
-  Item { images } to Images
+  ProfileDetails to Item,
+  Item to Images
 }
 
 relationship ManyToOne {
-  Likes { item } to Item,
-  Likes { user } to UserDetails
+  Likes to Item,
+  Likes to ProfileDetails
 }
 
 //reviews relationships
 
 relationship ManyToOne  {
-Review {buyer} to UserDetails {buyersReview},
-Review {seller} to UserDetails {reviewsOfSeller}
+Review to ProfileDetails,
+Review to ProfileDetails
 }
 
 //conversation relationship
 
 relationship ManyToOne {
-  Message {convo} to Conversation {messages}
-  Message {sender} to UserDetails
+  Message to Conversation
+  Message  to ProfileDetails
 }
 
 relationship ManyToMany {
-  Conversation {participants} to UserDetails {chats}
+  Conversation to ProfileDetails
 }
 
 //product status relationships
@@ -147,19 +147,19 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-  ProductStatus {buyer} to UserDetails,
-  ProductStatus {seller} to UserDetails,
-  ProductStatus {meetingLocation} to Location
+  ProductStatus to ProfileDetails,
+  ProductStatus to ProfileDetails,
+  ProductStatus to Location
 }
 
 //wishlist relationships
 
 relationship ManyToMany {
-  Item {wishlist} to Wishlist {items}
+  Item to Wishlist
 }
 
 relationship OneToMany {
-  UserDetails to Wishlist
+  ProfileDetails to Wishlist
 }
 
 paginate Item, ProductStatus with infinite-scroll

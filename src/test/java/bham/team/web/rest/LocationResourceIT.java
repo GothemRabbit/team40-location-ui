@@ -359,7 +359,7 @@ class LocationResourceIT {
         Location partialUpdatedLocation = new Location();
         partialUpdatedLocation.setId(location.getId());
 
-        partialUpdatedLocation.address(UPDATED_ADDRESS).latitude(UPDATED_LATITUDE).postcode(UPDATED_POSTCODE);
+        partialUpdatedLocation.address(UPDATED_ADDRESS).latitude(UPDATED_LATITUDE);
 
         restLocationMockMvc
             .perform(

@@ -31,6 +31,15 @@
           <dd>
             <span>{{ locationRef.postcode }}</span>
           </dd>
+          <dt><span>Profile Details</span></dt>
+          <dd>
+            @for (profileDetails of locationRef.profileDetails; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
           <dt><span>Users</span></dt>
           <dd>
             @for (users of locationRef.users; track $index; let last = $last) {

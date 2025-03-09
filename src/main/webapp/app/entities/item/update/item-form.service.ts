@@ -40,6 +40,7 @@ type ItemFormGroupContent = {
   colour: FormControl<ItemFormRawValue['colour']>;
   timeListed: FormControl<ItemFormRawValue['timeListed']>;
   wishlists: FormControl<ItemFormRawValue['wishlists']>;
+  profileDetails: FormControl<ItemFormRawValue['profileDetails']>;
   seller: FormControl<ItemFormRawValue['seller']>;
 };
 
@@ -79,6 +80,7 @@ export class ItemFormService {
         validators: [Validators.required],
       }),
       wishlists: new FormControl(itemRawValue.wishlists ?? []),
+      profileDetails: new FormControl(itemRawValue.profileDetails),
       seller: new FormControl(itemRawValue.seller),
     });
   }

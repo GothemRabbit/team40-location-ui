@@ -60,6 +60,6 @@ public class LikesAsserts {
         assertThat(expected)
             .as("Verify Likes relationships")
             .satisfies(e -> assertThat(e.getItem()).as("check item").isEqualTo(actual.getItem()))
-            .satisfies(e -> assertThat(e.getUser()).as("check user").isEqualTo(actual.getUser()));
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()));
     }
 }

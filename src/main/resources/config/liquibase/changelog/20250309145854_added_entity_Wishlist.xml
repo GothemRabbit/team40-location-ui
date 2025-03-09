@@ -20,6 +20,9 @@
             <column name="visibility" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="profile_details_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="user_details_id" type="bigint">
                 <constraints nullable="true" />
             </column>
