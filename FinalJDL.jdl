@@ -81,7 +81,7 @@ enum ProductState {
 // Review system for user ratings
 entity Review {
   rating Integer required min(0) max(5),
-  comments TextBlob required minlength(5) maxlength(500),
+  comments TextBlob required,
   date LocalDate required
 }
 
@@ -162,7 +162,7 @@ relationship OneToMany {
   UserDetails to Wishlist
 }
 
-paginate Item, ProductStatus  with infinite-scroll
+pagination Item, ProductStatus  with infinite-scroll
 filter Item
 dto * with mapstruct
 use serviceclass for *
