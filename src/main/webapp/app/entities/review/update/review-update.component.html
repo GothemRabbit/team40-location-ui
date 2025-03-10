@@ -63,6 +63,16 @@
               }
             </div>
 
+            <div class="mb-4">
+              <label class="form-label" for="field_buyer"></label>
+              <select class="num" id="field_buyer" data-cy="buyer" name="buyer" formControlName="buyer" [compareWith]="compareUserDetails">
+                <option [ngValue]="null"></option>
+                @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+                  <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+                }
+              </select>
+            </div>
+
             @let commentsRef = editForm.get('comments')!;
             <div>
               <label class="form-label" for="field_comments"></label>
