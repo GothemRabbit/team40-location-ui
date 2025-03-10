@@ -3,27 +3,38 @@
     "changelogDate": "20250213120520"
   },
   "applications": "*",
+  "dto": "mapstruct",
   "fields": [
     {
       "fieldName": "dateCreated",
-      "fieldType": "ZonedDateTime",
+      "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     }
   ],
   "name": "Conversation",
   "relationships": [
     {
-      "otherEntityName": "userDetails",
-      "relationshipName": "userOne",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "conversation",
+      "relationshipName": "profileDetails",
       "relationshipSide": "left",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-many"
     },
     {
-      "otherEntityName": "userDetails",
-      "relationshipName": "userTwo",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
+      "otherEntityName": "productStatus",
+      "otherEntityRelationshipName": "conversation",
+      "relationshipName": "productStatus",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "message",
+      "otherEntityRelationshipName": "conversation",
+      "relationshipName": "message",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
     }
   ],
-  "searchEngine": "no"
+  "searchEngine": "no",
+  "service": "serviceClass"
 }

@@ -1,0 +1,86 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-images-heading" data-cy="ImagesCreateUpdateHeading">Create or edit a Images</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let imagesRef = editForm.get('images')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_images">Images</label>
+          <div>
+            @if (imagesRef.value) {
+              <img
+                [src]="'data:' + editForm.get('imagesContentType')!.value + ';base64,' + imagesRef.value"
+                style="max-height: 100px"
+                alt="images"
+              />
+            }
+            @if (imagesRef.value) {
+              <div class="form-text text-danger clearfix">
+                <span class="pull-start">{{ editForm.get('imagesContentType')!.value }}, {{ byteSize(imagesRef.value!) }}</span>
+                <button
+                  type="button"
+                  (click)="clearInputImage('images', 'imagesContentType', 'file_images')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input type="file" id="file_images" data-cy="images" (change)="setFileData($event, 'images', true)" accept="image/*" />
+          </div>
+          <input type="hidden" class="form-control" name="images" id="field_images" data-cy="images" formControlName="images" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="imagesContentType"
+            id="field_imagesContentType"
+            formControlName="imagesContentType"
+          />
+          @if (imagesRef.invalid && (imagesRef.dirty || imagesRef.touched)) {
+            <div>
+              @if (editForm.get('images')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_item">Item</label>
+          <select class="form-control" id="field_item" data-cy="item" name="item" formControlName="item" [compareWith]="compareItem">
+            <option [ngValue]="null"></option>
+            @for (itemOption of itemsSharedCollection; track $index) {
+              <option [ngValue]="itemOption">{{ itemOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

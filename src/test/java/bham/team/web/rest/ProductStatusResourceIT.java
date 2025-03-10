@@ -12,6 +12,8 @@ import bham.team.IntegrationTest;
 import bham.team.domain.ProductStatus;
 import bham.team.domain.enumeration.ProductState;
 import bham.team.repository.ProductStatusRepository;
+import bham.team.service.dto.ProductStatusDTO;
+import bham.team.service.mapper.ProductStatusMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
@@ -39,23 +41,17 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ProductStatusResourceIT {
 
-    private static final ProductState DEFAULT_STATUS = ProductState.AVAILABLE;
-    private static final ProductState UPDATED_STATUS = ProductState.PENDING;
+    private static final ProductState DEFAULT_STATUS = ProductState.PENDING;
+    private static final ProductState UPDATED_STATUS = ProductState.REJECTED;
 
     private static final Instant DEFAULT_MEETING_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MEETING_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_MEETING_LOCATION = "AAAAAAAAAA";
-    private static final String UPDATED_MEETING_LOCATION = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CHAT_LINK = "AAAAAAAAAA";
-    private static final String UPDATED_CHAT_LINK = "BBBBBBBBBB";
+    private static final Instant DEFAULT_UPDATED_AT = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_UPDATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
-    private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     private static final String ENTITY_API_URL = "/api/product-statuses";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -68,6 +64,9 @@ class ProductStatusResourceIT {
 
     @Autowired
     private ProductStatusRepository productStatusRepository;
+
+    @Autowired
+    private ProductStatusMapper productStatusMapper;
 
     @Autowired
     private EntityManager em;
@@ -89,10 +88,8 @@ class ProductStatusResourceIT {
         return new ProductStatus()
             .status(DEFAULT_STATUS)
             .meetingTime(DEFAULT_MEETING_TIME)
-            .meetingLocation(DEFAULT_MEETING_LOCATION)
-            .chatLink(DEFAULT_CHAT_LINK)
-            .createdAt(DEFAULT_CREATED_AT)
-            .updatedAt(DEFAULT_UPDATED_AT);
+            .updatedAt(DEFAULT_UPDATED_AT)
+            .createdAt(DEFAULT_CREATED_AT);
     }
 
     /**
@@ -105,10 +102,8 @@ class ProductStatusResourceIT {
         return new ProductStatus()
             .status(UPDATED_STATUS)
             .meetingTime(UPDATED_MEETING_TIME)
-            .meetingLocation(UPDATED_MEETING_LOCATION)
-            .chatLink(UPDATED_CHAT_LINK)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .updatedAt(UPDATED_UPDATED_AT)
+            .createdAt(UPDATED_CREATED_AT);
     }
 
     @BeforeEach
@@ -129,18 +124,20 @@ class ProductStatusResourceIT {
     void createProductStatus() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the ProductStatus
-        var returnedProductStatus = om.readValue(
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
+        var returnedProductStatusDTO = om.readValue(
             restProductStatusMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatus)))
+                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatusDTO)))
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(),
-            ProductStatus.class
+            ProductStatusDTO.class
         );
 
         // Validate the ProductStatus in the database
         assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        var returnedProductStatus = productStatusMapper.toEntity(returnedProductStatusDTO);
         assertProductStatusUpdatableFieldsEquals(returnedProductStatus, getPersistedProductStatus(returnedProductStatus));
 
         insertedProductStatus = returnedProductStatus;
@@ -151,12 +148,13 @@ class ProductStatusResourceIT {
     void createProductStatusWithExistingId() throws Exception {
         // Create the ProductStatus with an existing ID
         productStatus.setId(1L);
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProductStatusMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatus)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatusDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the ProductStatus in the database
@@ -171,25 +169,10 @@ class ProductStatusResourceIT {
         productStatus.setStatus(null);
 
         // Create the ProductStatus, which fails.
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
 
         restProductStatusMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatus)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkCreatedAtIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        productStatus.setCreatedAt(null);
-
-        // Create the ProductStatus, which fails.
-
-        restProductStatusMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatus)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatusDTO)))
             .andExpect(status().isBadRequest());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
@@ -209,10 +192,8 @@ class ProductStatusResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(productStatus.getId().intValue())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].meetingTime").value(hasItem(DEFAULT_MEETING_TIME.toString())))
-            .andExpect(jsonPath("$.[*].meetingLocation").value(hasItem(DEFAULT_MEETING_LOCATION)))
-            .andExpect(jsonPath("$.[*].chatLink").value(hasItem(DEFAULT_CHAT_LINK)))
-            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
+            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(DEFAULT_UPDATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))));
     }
 
     @Test
@@ -229,10 +210,8 @@ class ProductStatusResourceIT {
             .andExpect(jsonPath("$.id").value(productStatus.getId().intValue()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.meetingTime").value(DEFAULT_MEETING_TIME.toString()))
-            .andExpect(jsonPath("$.meetingLocation").value(DEFAULT_MEETING_LOCATION))
-            .andExpect(jsonPath("$.chatLink").value(DEFAULT_CHAT_LINK))
-            .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
-            .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
+            .andExpect(jsonPath("$.updatedAt").value(DEFAULT_UPDATED_AT.toString()))
+            .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)));
     }
 
     @Test
@@ -257,16 +236,15 @@ class ProductStatusResourceIT {
         updatedProductStatus
             .status(UPDATED_STATUS)
             .meetingTime(UPDATED_MEETING_TIME)
-            .meetingLocation(UPDATED_MEETING_LOCATION)
-            .chatLink(UPDATED_CHAT_LINK)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .updatedAt(UPDATED_UPDATED_AT)
+            .createdAt(UPDATED_CREATED_AT);
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(updatedProductStatus);
 
         restProductStatusMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedProductStatus.getId())
+                put(ENTITY_API_URL_ID, productStatusDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedProductStatus))
+                    .content(om.writeValueAsBytes(productStatusDTO))
             )
             .andExpect(status().isOk());
 
@@ -281,12 +259,15 @@ class ProductStatusResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         productStatus.setId(longCount.incrementAndGet());
 
+        // Create the ProductStatus
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductStatusMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, productStatus.getId())
+                put(ENTITY_API_URL_ID, productStatusDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(productStatus))
+                    .content(om.writeValueAsBytes(productStatusDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -300,12 +281,15 @@ class ProductStatusResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         productStatus.setId(longCount.incrementAndGet());
 
+        // Create the ProductStatus
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProductStatusMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(productStatus))
+                    .content(om.writeValueAsBytes(productStatusDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -319,9 +303,12 @@ class ProductStatusResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         productStatus.setId(longCount.incrementAndGet());
 
+        // Create the ProductStatus
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProductStatusMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatus)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(productStatusDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProductStatus in the database
@@ -340,7 +327,7 @@ class ProductStatusResourceIT {
         ProductStatus partialUpdatedProductStatus = new ProductStatus();
         partialUpdatedProductStatus.setId(productStatus.getId());
 
-        partialUpdatedProductStatus.meetingTime(UPDATED_MEETING_TIME);
+        partialUpdatedProductStatus.status(UPDATED_STATUS).updatedAt(UPDATED_UPDATED_AT).createdAt(UPDATED_CREATED_AT);
 
         restProductStatusMockMvc
             .perform(
@@ -374,10 +361,8 @@ class ProductStatusResourceIT {
         partialUpdatedProductStatus
             .status(UPDATED_STATUS)
             .meetingTime(UPDATED_MEETING_TIME)
-            .meetingLocation(UPDATED_MEETING_LOCATION)
-            .chatLink(UPDATED_CHAT_LINK)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .updatedAt(UPDATED_UPDATED_AT)
+            .createdAt(UPDATED_CREATED_AT);
 
         restProductStatusMockMvc
             .perform(
@@ -399,12 +384,15 @@ class ProductStatusResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         productStatus.setId(longCount.incrementAndGet());
 
+        // Create the ProductStatus
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProductStatusMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, productStatus.getId())
+                patch(ENTITY_API_URL_ID, productStatusDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(productStatus))
+                    .content(om.writeValueAsBytes(productStatusDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -418,12 +406,15 @@ class ProductStatusResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         productStatus.setId(longCount.incrementAndGet());
 
+        // Create the ProductStatus
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProductStatusMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(productStatus))
+                    .content(om.writeValueAsBytes(productStatusDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -437,9 +428,12 @@ class ProductStatusResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         productStatus.setId(longCount.incrementAndGet());
 
+        // Create the ProductStatus
+        ProductStatusDTO productStatusDTO = productStatusMapper.toDto(productStatus);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProductStatusMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(productStatus)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(productStatusDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProductStatus in the database

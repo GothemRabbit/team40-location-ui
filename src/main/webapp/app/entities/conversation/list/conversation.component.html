@@ -49,15 +49,15 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="userOne.id">
+            <th scope="col" jhiSortBy="profileDetails.id">
               <div class="d-flex">
-                <span>User One</span>
+                <span>Profile Details</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="userTwo.id">
+            <th scope="col" jhiSortBy="participants.id">
               <div class="d-flex">
-                <span>User Two</span>
+                <span>Participants</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -72,17 +72,19 @@
               </td>
               <td>{{ conversation.dateCreated | formatMediumDatetime }}</td>
               <td>
-                @if (conversation.userOne) {
-                  <div>
-                    <a [routerLink]="['/user-details', conversation.userOne.id, 'view']">{{ conversation.userOne.id }}</a>
-                  </div>
+                @for (profileDetails of conversation.profileDetails; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
                 }
               </td>
               <td>
-                @if (conversation.userTwo) {
-                  <div>
-                    <a [routerLink]="['/user-details', conversation.userTwo.id, 'view']">{{ conversation.userTwo.id }}</a>
-                  </div>
+                @for (participants of conversation.participants; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/user-details', participants.id, 'view']">{{ participants.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
                 }
               </td>
               <td class="text-end">

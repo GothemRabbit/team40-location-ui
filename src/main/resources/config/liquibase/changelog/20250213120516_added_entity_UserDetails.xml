@@ -23,35 +23,28 @@
             <column name="user_name" type="varchar(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_details__user_name" />
             </column>
-            <column name="first_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="last_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="gender" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="birth_date" type="date">
                 <constraints nullable="true" />
             </column>
-            <column name="email" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_details__email" />
-            </column>
-            <column name="phone_number" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_details__phone_number" />
-            </column>
-            <column name="preferences" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="rating" type="${floatType}">
-                <constraints nullable="false" />
-            </column>
-            <column name="address" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_user_details__user_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+    </changeSet>
+
+    <changeSet id="20250213120516-1-relations" author="jhipster">
+
+        <createTable tableName="rel_user_details__meetup_locations">
+            <column name="meetup_locations_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_details_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="user_details_id, meetup_locations_id" tableName="rel_user_details__meetup_locations"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -74,15 +67,7 @@
             <column name="bio_image" type="blob"/>
             <column name="bio_image_content_type" type="string"/>
             <column name="user_name" type="string"/>
-            <column name="first_name" type="string"/>
-            <column name="last_name" type="string"/>
-            <column name="gender" type="string"/>
             <column name="birth_date" type="date"/>
-            <column name="email" type="string"/>
-            <column name="phone_number" type="string"/>
-            <column name="preferences" type="string"/>
-            <column name="rating" type="numeric"/>
-            <column name="address" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

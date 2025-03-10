@@ -63,21 +63,15 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="convo.id">
+            <th scope="col" jhiSortBy="conversation.id">
               <div class="d-flex">
-                <span>Convo</span>
+                <span>Conversation</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="sender.id">
+            <th scope="col" jhiSortBy="profileDetails.id">
               <div class="d-flex">
-                <span>Sender</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="receiver.id">
-              <div class="d-flex">
-                <span>Receiver</span>
+                <span>Profile Details</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -94,23 +88,16 @@
               <td>{{ message.timestamp | formatMediumDatetime }}</td>
               <td>{{ message.isRead }}</td>
               <td>
-                @if (message.convo) {
+                @if (message.conversation) {
                   <div>
-                    <a [routerLink]="['/conversation', message.convo.id, 'view']">{{ message.convo.id }}</a>
+                    <a [routerLink]="['/conversation', message.conversation.id, 'view']">{{ message.conversation.id }}</a>
                   </div>
                 }
               </td>
               <td>
-                @if (message.sender) {
+                @if (message.profileDetails) {
                   <div>
-                    <a [routerLink]="['/user-details', message.sender.id, 'view']">{{ message.sender.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (message.receiver) {
-                  <div>
-                    <a [routerLink]="['/user-details', message.receiver.id, 'view']">{{ message.receiver.id }}</a>
+                    <a [routerLink]="['/profile-details', message.profileDetails.id, 'view']">{{ message.profileDetails.id }}</a>
                   </div>
                 }
               </td>

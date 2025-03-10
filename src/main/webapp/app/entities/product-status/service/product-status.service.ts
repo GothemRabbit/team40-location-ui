@@ -11,10 +11,10 @@ import { IProductStatus, NewProductStatus } from '../product-status.model';
 
 export type PartialUpdateProductStatus = Partial<IProductStatus> & Pick<IProductStatus, 'id'>;
 
-type RestOf<T extends IProductStatus | NewProductStatus> = Omit<T, 'meetingTime' | 'createdAt' | 'updatedAt'> & {
+type RestOf<T extends IProductStatus | NewProductStatus> = Omit<T, 'meetingTime' | 'updatedAt' | 'createdAt'> & {
   meetingTime?: string | null;
-  createdAt?: string | null;
   updatedAt?: string | null;
+  createdAt?: string | null;
 };
 
 export type RestProductStatus = RestOf<IProductStatus>;
@@ -105,8 +105,8 @@ export class ProductStatusService {
     return {
       ...productStatus,
       meetingTime: productStatus.meetingTime?.toJSON() ?? null,
-      createdAt: productStatus.createdAt?.toJSON() ?? null,
       updatedAt: productStatus.updatedAt?.toJSON() ?? null,
+      createdAt: productStatus.createdAt?.toJSON() ?? null,
     };
   }
 
@@ -114,8 +114,8 @@ export class ProductStatusService {
     return {
       ...restProductStatus,
       meetingTime: restProductStatus.meetingTime ? dayjs(restProductStatus.meetingTime) : undefined,
-      createdAt: restProductStatus.createdAt ? dayjs(restProductStatus.createdAt) : undefined,
       updatedAt: restProductStatus.updatedAt ? dayjs(restProductStatus.updatedAt) : undefined,
+      createdAt: restProductStatus.createdAt ? dayjs(restProductStatus.createdAt) : undefined,
     };
   }
 

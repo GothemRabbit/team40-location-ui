@@ -21,58 +21,40 @@
         <div class="col-md-3">
           <div class="card">
             <div class="card-header">
-              <span class="heart-icon" (click)="toggleHeart(item)">&#9825;</span>
-              <div class="dropdown">
-                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>
-                <!--                <div class="dropdown-content" *ngIf="item.dropDown">-->
-                <!--                  <a href="#">Edit</a>-->
-                <!--                  <a href="#">Delete</a>-->
-                <!--                </div>-->
-              </div>
+              <!--               <span class="heart-icon" (click)="toggleLike(item)">-->
+              <!--               <span *ngIf="isLiked(item)" style="color: red;">&#10084;</span> &lt;!&ndash; Filled heart for liked &ndash;&gt;-->
+              <!--               <span *ngIf="!isLiked(item)" style="color: grey;">&#9825;</span> &lt;!&ndash; Empty heart for not liked &ndash;&gt;-->
+              <!--             </span>-->
+              <!--              <div class="dropdown">-->
+              <!--                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>-->
+              <!--                &lt;!&ndash;                <div class="dropdown-content" *ngIf="item.dropDown">&ndash;&gt;-->
+              <!--                &lt;!&ndash;                  <a href="#">Edit</a>&ndash;&gt;-->
+              <!--                &lt;!&ndash;                  <a href="#">Delete</a>&ndash;&gt;-->
+              <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+              <!--              </div>-->
             </div>
-            @if (item.itemImage) {
+            @if (item.images && item.images.length > 0) {
               <a [routerLink]="['/item', item.id, 'view']">
-                <img class="card-img-top" [src]="'data:' + item.itemImageContentType + ';base64,' + item.itemImage" alt="item" />
+                <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
+              </a>
+            } @else {
+              <!-- Default Placeholder Image -->
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
               </a>
             }
+
             <div class="card-body">
               <h5 class="card-title">
-                <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.itemTitle }}</a>
+                <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
               </h5>
               <div class="texts">
-                <p class="card-text">{{ item.itemSize }}</p>
-                <p class="card-text"><strong>£</strong> {{ item.itemPrice }}</p>
+                <p class="card-text">{{ item.sizeItem }}</p>
+                <p class="card-text"><strong>£</strong> {{ item.price }}</p>
               </div>
-              <!--              <p class="card-text">-->
-              <!--                <strong>Condition:</strong>-->
-              <!--                {{-->
-              <!--                  {-->
-              <!--                    null: '',-->
-              <!--                    BRANDNEW: 'Brand New',-->
-              <!--                    LIKENEW: 'Like New',-->
-              <!--                    FAIRLYUSED: 'Fairly Used',-->
-              <!--                    WELLUSED: 'Well Used',-->
-              <!--                    HEAVILYUSED: 'Heavily Used',-->
-              <!--                  }[item.itemCondition ?? 'null']-->
-              <!--                }}-->
-              <!--              </p>-->
-              <!--              <p class="card-text">-->
-              <!--                <strong>Category:</strong>-->
-              <!--                {{-->
-              <!--                  {-->
-              <!--                    null: '',-->
-              <!--                    FOOTWEAR: 'Footwear',-->
-              <!--                    CLOTHING: 'Clothing',-->
-              <!--                    HEADWEAR: 'Headwear',-->
-              <!--                    ELECTRONICS: 'Electronics',-->
-              <!--                    HOBBIES: 'Hobbies',-->
-              <!--                    BAGS: 'Bags',-->
-              <!--                    OTHERS: 'Others',-->
-              <!--                  }[item.itemCategory ?? 'null']-->
-              <!--                }}-->
-              <!--              </p>-->
-              <div class="d-flex justify-content-between"></div>
             </div>
+
+            <div class="d-flex justify-content-between"></div>
           </div>
         </div>
       }

@@ -27,21 +27,22 @@ type ItemFormRawValue = FormValueOf<IItem>;
 
 type NewItemFormRawValue = FormValueOf<NewItem>;
 
-type ItemFormDefaults = Pick<NewItem, 'id' | 'timeListed' | 'itemLike'>;
+type ItemFormDefaults = Pick<NewItem, 'id' | 'timeListed' | 'wishlists'>;
 
 type ItemFormGroupContent = {
   id: FormControl<ItemFormRawValue['id'] | NewItem['id']>;
-  itemTitle: FormControl<ItemFormRawValue['itemTitle']>;
-  itemPrice: FormControl<ItemFormRawValue['itemPrice']>;
-  itemSize: FormControl<ItemFormRawValue['itemSize']>;
-  itemCondition: FormControl<ItemFormRawValue['itemCondition']>;
-  itemCategory: FormControl<ItemFormRawValue['itemCategory']>;
+  title: FormControl<ItemFormRawValue['title']>;
+  price: FormControl<ItemFormRawValue['price']>;
+  condition: FormControl<ItemFormRawValue['condition']>;
+  category: FormControl<ItemFormRawValue['category']>;
   description: FormControl<ItemFormRawValue['description']>;
-  itemColour: FormControl<ItemFormRawValue['itemColour']>;
-  itemImage: FormControl<ItemFormRawValue['itemImage']>;
-  itemImageContentType: FormControl<ItemFormRawValue['itemImageContentType']>;
+  sizeItem: FormControl<ItemFormRawValue['sizeItem']>;
+  brand: FormControl<ItemFormRawValue['brand']>;
+  colour: FormControl<ItemFormRawValue['colour']>;
   timeListed: FormControl<ItemFormRawValue['timeListed']>;
-  itemLike: FormControl<ItemFormRawValue['itemLike']>;
+  wishlists: FormControl<ItemFormRawValue['wishlists']>;
+  profileDetails: FormControl<ItemFormRawValue['profileDetails']>;
+  seller: FormControl<ItemFormRawValue['seller']>;
 };
 
 export type ItemFormGroup = FormGroup<ItemFormGroupContent>;
@@ -61,29 +62,28 @@ export class ItemFormService {
           validators: [Validators.required],
         },
       ),
-      itemTitle: new FormControl(itemRawValue.itemTitle, {
+      title: new FormControl(itemRawValue.title, {
+        validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
+      }),
+      price: new FormControl(itemRawValue.price, {
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      condition: new FormControl(itemRawValue.condition, {
         validators: [Validators.required],
       }),
-      itemPrice: new FormControl(itemRawValue.itemPrice, {
-        validators: [Validators.required],
-      }),
-      itemSize: new FormControl(itemRawValue.itemSize),
-      itemCondition: new FormControl(itemRawValue.itemCondition, {
-        validators: [Validators.required],
-      }),
-      itemCategory: new FormControl(itemRawValue.itemCategory, {
+      category: new FormControl(itemRawValue.category, {
         validators: [Validators.required],
       }),
       description: new FormControl(itemRawValue.description),
-      itemColour: new FormControl(itemRawValue.itemColour),
-      itemImage: new FormControl(itemRawValue.itemImage, {
-        validators: [Validators.required],
-      }),
-      itemImageContentType: new FormControl(itemRawValue.itemImageContentType),
+      sizeItem: new FormControl(itemRawValue.sizeItem),
+      brand: new FormControl(itemRawValue.brand),
+      colour: new FormControl(itemRawValue.colour),
       timeListed: new FormControl(itemRawValue.timeListed, {
         validators: [Validators.required],
       }),
-      itemLike: new FormControl(itemRawValue.itemLike),
+      wishlists: new FormControl(itemRawValue.wishlists ?? []),
+      profileDetails: new FormControl(itemRawValue.profileDetails),
+      seller: new FormControl(itemRawValue.seller),
     });
   }
 
@@ -107,7 +107,7 @@ export class ItemFormService {
     return {
       id: null,
       timeListed: currentTime,
-      itemLike: false,
+      wishlists: [],
     };
   }
 
@@ -124,6 +124,7 @@ export class ItemFormService {
     return {
       ...item,
       timeListed: item.timeListed ? item.timeListed.format(DATE_TIME_FORMAT) : undefined,
+      wishlists: item.wishlists ?? [],
     };
   }
 }

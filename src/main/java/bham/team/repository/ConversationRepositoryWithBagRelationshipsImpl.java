@@ -24,7 +24,7 @@ public class ConversationRepositoryWithBagRelationshipsImpl implements Conversat
 
     @Override
     public Optional<Conversation> fetchBagRelationships(Optional<Conversation> conversation) {
-        return conversation.map(this::fetchUserDetails);
+        return conversation.map(this::fetchProfileDetails).map(this::fetchParticipants);
     }
 
     @Override
@@ -38,25 +38,49 @@ public class ConversationRepositoryWithBagRelationshipsImpl implements Conversat
 
     @Override
     public List<Conversation> fetchBagRelationships(List<Conversation> conversations) {
-        return Optional.of(conversations).map(this::fetchUserDetails).orElse(Collections.emptyList());
+        return Optional.of(conversations).map(this::fetchProfileDetails).map(this::fetchParticipants).orElse(Collections.emptyList());
     }
 
-    Conversation fetchUserDetails(Conversation result) {
+    Conversation fetchProfileDetails(Conversation result) {
         return entityManager
             .createQuery(
-                "select conversation from Conversation conversation left join fetch conversation.userDetails where conversation.id = :id",
+                "select conversation from Conversation conversation left join fetch conversation.profileDetails where conversation.id = :id",
                 Conversation.class
             )
             .setParameter(ID_PARAMETER, result.getId())
             .getSingleResult();
     }
 
-    List<Conversation> fetchUserDetails(List<Conversation> conversations) {
+    List<Conversation> fetchProfileDetails(List<Conversation> conversations) {
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, conversations.size()).forEach(index -> order.put(conversations.get(index).getId(), index));
         List<Conversation> result = entityManager
             .createQuery(
-                "select conversation from Conversation conversation left join fetch conversation.userDetails where conversation in :conversations",
+                "select conversation from Conversation conversation left join fetch conversation.profileDetails where conversation in :conversations",
+                Conversation.class
+            )
+            .setParameter(CONVERSATIONS_PARAMETER, conversations)
+            .getResultList();
+        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        return result;
+    }
+
+    Conversation fetchParticipants(Conversation result) {
+        return entityManager
+            .createQuery(
+                "select conversation from Conversation conversation left join fetch conversation.participants where conversation.id = :id",
+                Conversation.class
+            )
+            .setParameter(ID_PARAMETER, result.getId())
+            .getSingleResult();
+    }
+
+    List<Conversation> fetchParticipants(List<Conversation> conversations) {
+        HashMap<Object, Integer> order = new HashMap<>();
+        IntStream.range(0, conversations.size()).forEach(index -> order.put(conversations.get(index).getId(), index));
+        List<Conversation> result = entityManager
+            .createQuery(
+                "select conversation from Conversation conversation left join fetch conversation.participants where conversation in :conversations",
                 Conversation.class
             )
             .setParameter(CONVERSATIONS_PARAMETER, conversations)

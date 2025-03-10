@@ -1,6 +1,5 @@
 package bham.team.domain;
 
-import static bham.team.domain.AssertUtils.zonedDataTimeSameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MessageAsserts {
@@ -49,12 +48,7 @@ public class MessageAsserts {
         assertThat(expected)
             .as("Verify Message relevant properties")
             .satisfies(e -> assertThat(e.getContent()).as("check content").isEqualTo(actual.getContent()))
-            .satisfies(e ->
-                assertThat(e.getTimestamp())
-                    .as("check timestamp")
-                    .usingComparator(zonedDataTimeSameInstant)
-                    .isEqualTo(actual.getTimestamp())
-            )
+            .satisfies(e -> assertThat(e.getTimestamp()).as("check timestamp").isEqualTo(actual.getTimestamp()))
             .satisfies(e -> assertThat(e.getIsRead()).as("check isRead").isEqualTo(actual.getIsRead()));
     }
 
@@ -67,8 +61,7 @@ public class MessageAsserts {
     public static void assertMessageUpdatableRelationshipsEquals(Message expected, Message actual) {
         assertThat(expected)
             .as("Verify Message relationships")
-            .satisfies(e -> assertThat(e.getConvo()).as("check convo").isEqualTo(actual.getConvo()))
-            .satisfies(e -> assertThat(e.getSender()).as("check sender").isEqualTo(actual.getSender()))
-            .satisfies(e -> assertThat(e.getReceiver()).as("check receiver").isEqualTo(actual.getReceiver()));
+            .satisfies(e -> assertThat(e.getConversation()).as("check conversation").isEqualTo(actual.getConversation()))
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()));
     }
 }

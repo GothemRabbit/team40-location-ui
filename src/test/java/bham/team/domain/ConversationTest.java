@@ -1,10 +1,15 @@
 package bham.team.domain;
 
 import static bham.team.domain.ConversationTestSamples.*;
+import static bham.team.domain.MessageTestSamples.*;
+import static bham.team.domain.ProductStatusTestSamples.*;
+import static bham.team.domain.ProfileDetailsTestSamples.*;
 import static bham.team.domain.UserDetailsTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bham.team.web.rest.TestUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ConversationTest {
@@ -24,26 +29,74 @@ class ConversationTest {
     }
 
     @Test
-    void userOneTest() {
+    void profileDetailsTest() {
         Conversation conversation = getConversationRandomSampleGenerator();
-        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+        ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
 
-        conversation.setUserOne(userDetailsBack);
-        assertThat(conversation.getUserOne()).isEqualTo(userDetailsBack);
+        conversation.addProfileDetails(profileDetailsBack);
+        assertThat(conversation.getProfileDetails()).containsOnly(profileDetailsBack);
 
-        conversation.userOne(null);
-        assertThat(conversation.getUserOne()).isNull();
+        conversation.removeProfileDetails(profileDetailsBack);
+        assertThat(conversation.getProfileDetails()).doesNotContain(profileDetailsBack);
+
+        conversation.profileDetails(new HashSet<>(Set.of(profileDetailsBack)));
+        assertThat(conversation.getProfileDetails()).containsOnly(profileDetailsBack);
+
+        conversation.setProfileDetails(new HashSet<>());
+        assertThat(conversation.getProfileDetails()).doesNotContain(profileDetailsBack);
     }
 
     @Test
-    void userTwoTest() {
+    void productStatusTest() {
+        Conversation conversation = getConversationRandomSampleGenerator();
+        ProductStatus productStatusBack = getProductStatusRandomSampleGenerator();
+
+        conversation.setProductStatus(productStatusBack);
+        assertThat(conversation.getProductStatus()).isEqualTo(productStatusBack);
+        assertThat(productStatusBack.getConversation()).isEqualTo(conversation);
+
+        conversation.productStatus(null);
+        assertThat(conversation.getProductStatus()).isNull();
+        assertThat(productStatusBack.getConversation()).isNull();
+    }
+
+    @Test
+    void messageTest() {
+        Conversation conversation = getConversationRandomSampleGenerator();
+        Message messageBack = getMessageRandomSampleGenerator();
+
+        conversation.addMessage(messageBack);
+        assertThat(conversation.getMessages()).containsOnly(messageBack);
+        assertThat(messageBack.getConversation()).isEqualTo(conversation);
+
+        conversation.removeMessage(messageBack);
+        assertThat(conversation.getMessages()).doesNotContain(messageBack);
+        assertThat(messageBack.getConversation()).isNull();
+
+        conversation.messages(new HashSet<>(Set.of(messageBack)));
+        assertThat(conversation.getMessages()).containsOnly(messageBack);
+        assertThat(messageBack.getConversation()).isEqualTo(conversation);
+
+        conversation.setMessages(new HashSet<>());
+        assertThat(conversation.getMessages()).doesNotContain(messageBack);
+        assertThat(messageBack.getConversation()).isNull();
+    }
+
+    @Test
+    void participantsTest() {
         Conversation conversation = getConversationRandomSampleGenerator();
         UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
 
-        conversation.setUserTwo(userDetailsBack);
-        assertThat(conversation.getUserTwo()).isEqualTo(userDetailsBack);
+        conversation.addParticipants(userDetailsBack);
+        assertThat(conversation.getParticipants()).containsOnly(userDetailsBack);
 
-        conversation.userTwo(null);
-        assertThat(conversation.getUserTwo()).isNull();
+        conversation.removeParticipants(userDetailsBack);
+        assertThat(conversation.getParticipants()).doesNotContain(userDetailsBack);
+
+        conversation.participants(new HashSet<>(Set.of(userDetailsBack)));
+        assertThat(conversation.getParticipants()).containsOnly(userDetailsBack);
+
+        conversation.setParticipants(new HashSet<>());
+        assertThat(conversation.getParticipants()).doesNotContain(userDetailsBack);
     }
 }

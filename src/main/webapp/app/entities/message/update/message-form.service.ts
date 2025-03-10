@@ -34,9 +34,8 @@ type MessageFormGroupContent = {
   content: FormControl<MessageFormRawValue['content']>;
   timestamp: FormControl<MessageFormRawValue['timestamp']>;
   isRead: FormControl<MessageFormRawValue['isRead']>;
-  convo: FormControl<MessageFormRawValue['convo']>;
-  sender: FormControl<MessageFormRawValue['sender']>;
-  receiver: FormControl<MessageFormRawValue['receiver']>;
+  conversation: FormControl<MessageFormRawValue['conversation']>;
+  profileDetails: FormControl<MessageFormRawValue['profileDetails']>;
 };
 
 export type MessageFormGroup = FormGroup<MessageFormGroupContent>;
@@ -65,9 +64,8 @@ export class MessageFormService {
       isRead: new FormControl(messageRawValue.isRead, {
         validators: [Validators.required],
       }),
-      convo: new FormControl(messageRawValue.convo),
-      sender: new FormControl(messageRawValue.sender),
-      receiver: new FormControl(messageRawValue.receiver),
+      conversation: new FormControl(messageRawValue.conversation),
+      profileDetails: new FormControl(messageRawValue.profileDetails),
     });
   }
 

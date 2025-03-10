@@ -10,7 +10,6 @@ import { IItem } from '../item.model';
   standalone: true,
   selector: 'jhi-item-detail',
   templateUrl: './item-detail.component.html',
-  styleUrl: './item-detail.component.scss',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class ItemDetailComponent {

@@ -52,15 +52,7 @@ public class UserDetailsAsserts {
                 assertThat(e.getBioImageContentType()).as("check bioImage contenty type").isEqualTo(actual.getBioImageContentType())
             )
             .satisfies(e -> assertThat(e.getUserName()).as("check userName").isEqualTo(actual.getUserName()))
-            .satisfies(e -> assertThat(e.getFirstName()).as("check firstName").isEqualTo(actual.getFirstName()))
-            .satisfies(e -> assertThat(e.getLastName()).as("check lastName").isEqualTo(actual.getLastName()))
-            .satisfies(e -> assertThat(e.getGender()).as("check gender").isEqualTo(actual.getGender()))
-            .satisfies(e -> assertThat(e.getBirthDate()).as("check birthDate").isEqualTo(actual.getBirthDate()))
-            .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
-            .satisfies(e -> assertThat(e.getPhoneNumber()).as("check phoneNumber").isEqualTo(actual.getPhoneNumber()))
-            .satisfies(e -> assertThat(e.getPreferences()).as("check preferences").isEqualTo(actual.getPreferences()))
-            .satisfies(e -> assertThat(e.getRating()).as("check rating").isEqualTo(actual.getRating()))
-            .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()));
+            .satisfies(e -> assertThat(e.getBirthDate()).as("check birthDate").isEqualTo(actual.getBirthDate()));
     }
 
     /**
@@ -70,6 +62,9 @@ public class UserDetailsAsserts {
      * @param actual the actual entity
      */
     public static void assertUserDetailsUpdatableRelationshipsEquals(UserDetails expected, UserDetails actual) {
-        // empty method
+        assertThat(expected)
+            .as("Verify UserDetails relationships")
+            .satisfies(e -> assertThat(e.getMeetupLocations()).as("check meetupLocations").isEqualTo(actual.getMeetupLocations()))
+            .satisfies(e -> assertThat(e.getChats()).as("check chats").isEqualTo(actual.getChats()));
     }
 }

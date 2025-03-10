@@ -27,13 +27,13 @@ type ConversationFormRawValue = FormValueOf<IConversation>;
 
 type NewConversationFormRawValue = FormValueOf<NewConversation>;
 
-type ConversationFormDefaults = Pick<NewConversation, 'id' | 'dateCreated'>;
+type ConversationFormDefaults = Pick<NewConversation, 'id' | 'dateCreated' | 'profileDetails' | 'participants'>;
 
 type ConversationFormGroupContent = {
   id: FormControl<ConversationFormRawValue['id'] | NewConversation['id']>;
   dateCreated: FormControl<ConversationFormRawValue['dateCreated']>;
-  userOne: FormControl<ConversationFormRawValue['userOne']>;
-  userTwo: FormControl<ConversationFormRawValue['userTwo']>;
+  profileDetails: FormControl<ConversationFormRawValue['profileDetails']>;
+  participants: FormControl<ConversationFormRawValue['participants']>;
 };
 
 export type ConversationFormGroup = FormGroup<ConversationFormGroupContent>;
@@ -56,8 +56,8 @@ export class ConversationFormService {
       dateCreated: new FormControl(conversationRawValue.dateCreated, {
         validators: [Validators.required],
       }),
-      userOne: new FormControl(conversationRawValue.userOne),
-      userTwo: new FormControl(conversationRawValue.userTwo),
+      profileDetails: new FormControl(conversationRawValue.profileDetails ?? []),
+      participants: new FormControl(conversationRawValue.participants ?? []),
     });
   }
 
@@ -81,6 +81,8 @@ export class ConversationFormService {
     return {
       id: null,
       dateCreated: currentTime,
+      profileDetails: [],
+      participants: [],
     };
   }
 
@@ -99,6 +101,8 @@ export class ConversationFormService {
     return {
       ...conversation,
       dateCreated: conversation.dateCreated ? conversation.dateCreated.format(DATE_TIME_FORMAT) : undefined,
+      profileDetails: conversation.profileDetails ?? [],
+      participants: conversation.participants ?? [],
     };
   }
 }

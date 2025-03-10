@@ -17,11 +17,20 @@
             <column name="rating" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="review_text" type="${clobType}">
+            <column name="comments" type="${clobType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="profile_details_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="review_date" type="date">
-                <constraints nullable="false" />
+            <column name="buyer_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="seller_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -45,8 +54,8 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="rating" type="numeric"/>
-            <column name="review_text" type="clob"/>
-            <column name="review_date" type="date"/>
+            <column name="comments" type="clob"/>
+            <column name="date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity Likes.
+    -->
+    <changeSet id="20250309145852-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="item_id"
+                                 baseTableName="likes"
+                                 constraintName="fk_likes__item_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="profile_details_id"
+                                 baseTableName="likes"
+                                 constraintName="fk_likes__profile_details_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="profile_details"
+                                 />
+    </changeSet>
+</databaseChangeLog>

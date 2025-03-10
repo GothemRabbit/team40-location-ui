@@ -1,0 +1,169 @@
+entity ProfileDetails {
+  bioImage ImageBlob,
+  //only allow one word (no space) for username
+  userName String required unique pattern(/^\S+$/) ,
+  birthDate LocalDate
+}
+
+entity Location {
+  // use Google Map API to find and store the location
+  address String required,
+  latitude Double required,
+  longitude Double required,
+  postcode String required
+}
+
+// Item entity for product listings
+entity Item {
+  title String required minlength(3) maxlength(100),
+  price Double required min(0),
+  condition Condition required,
+  category Category required,
+  description TextBlob,
+  sizeItem String,
+  brand String,
+  colour String,
+  timeListed Instant required
+}
+
+entity Likes {
+  liked Boolean
+}
+
+enum Condition {
+  BRANDNEW,
+  LIKENEW,
+  FAIRLYUSED,
+  WELLUSED,
+  HEAVILYUSED
+}
+
+enum Category {
+  FOOTWEAR,
+  CLOTHING,
+  HEADWEAR,
+  ELECTRONICS,
+  HOBBIES,
+  BAGS,
+  OTHERS
+}
+
+entity Images {
+  images ImageBlob required
+}
+
+// Simplified messaging for user communication
+entity Message {
+  content TextBlob required,
+  timestamp Instant required,
+  isRead Boolean required
+}
+
+entity Conversation {
+  dateCreated Instant required
+}
+
+// Tracks the state of an item in the process
+entity ProductStatus {
+  status ProductState required,
+  meetingTime Instant,
+  updatedAt Instant,
+  createdAt ZonedDateTime
+}
+
+enum ProductState {
+  PENDING,
+  REJECTED,
+  RESERVED,
+  COMPLETED,
+  CANCELLED
+}
+
+// Review system for user ratings
+entity Review {
+  rating Integer required min(0) max(5),
+  comments TextBlob required,
+  date LocalDate required
+}
+
+entity Wishlist {
+  // Wishlist name
+  name String required,
+  // public or private
+  visibility VisibilityType required
+}
+
+enum VisibilityType {
+  // Private: only the user can see the wishlist
+  PRIVATE,
+  PUBLIC
+}
+
+//userdetails relationship
+
+relationship OneToOne {
+  ProfileDetails to @ID User with builtInEntity
+}
+
+//location relationship
+relationship ManyToMany {
+  ProfileDetails  to Location
+}
+
+// items relationship
+
+relationship OneToMany {
+  ProfileDetails to Item,
+  Item to Images
+}
+
+relationship ManyToOne {
+  Likes to Item,
+  Likes to ProfileDetails
+}
+
+//reviews relationships
+
+relationship ManyToOne  {
+Review to ProfileDetails,
+Review to ProfileDetails
+}
+
+//conversation relationship
+
+relationship ManyToOne {
+  Message to Conversation
+  Message  to ProfileDetails
+}
+
+relationship ManyToMany {
+  Conversation to ProfileDetails
+}
+
+//product status relationships
+
+relationship OneToOne {
+  ProductStatus to Item,
+  ProductStatus to Conversation
+}
+
+relationship ManyToOne {
+  ProductStatus to ProfileDetails,
+  ProductStatus to ProfileDetails,
+  ProductStatus to Location
+}
+
+//wishlist relationships
+
+relationship ManyToMany {
+  Item to Wishlist
+}
+
+relationship OneToMany {
+  ProfileDetails to Wishlist
+}
+
+paginate Item, ProductStatus with infinite-scroll
+filter Item
+dto * with mapstruct
+service * with serviceClass

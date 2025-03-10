@@ -2,11 +2,13 @@ package bham.team.domain;
 
 import bham.team.domain.enumeration.Category;
 import bham.team.domain.enumeration.Condition;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -28,47 +30,79 @@ public class Item implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "item_title", nullable = false)
-    private String itemTitle;
+    @Size(min = 3, max = 100)
+    @Column(name = "title", length = 100, nullable = false)
+    private String title;
 
     @NotNull
-    @Column(name = "item_price", precision = 21, scale = 2, nullable = false)
-    private BigDecimal itemPrice;
-
-    @Column(name = "item_size")
-    private String itemSize;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "item_condition", nullable = false)
-    private Condition itemCondition;
+    @DecimalMin(value = "0")
+    @Column(name = "price", nullable = false)
+    private Double price;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "item_category", nullable = false)
-    private Category itemCategory;
+    @Column(name = "condition", nullable = false)
+    private Condition condition;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
+    private Category category;
 
     @Lob
     @Column(name = "description")
     private String description;
 
-    @Column(name = "item_colour")
-    private String itemColour;
+    @Column(name = "size_item")
+    private String sizeItem;
 
-    @Lob
-    @Column(name = "item_image", nullable = false)
-    private byte[] itemImage;
+    @Column(name = "brand")
+    private String brand;
 
-    @NotNull
-    @Column(name = "item_image_content_type", nullable = false)
-    private String itemImageContentType;
+    @Column(name = "colour")
+    private String colour;
 
     @NotNull
     @Column(name = "time_listed", nullable = false)
     private Instant timeListed;
 
-    @Column(name = "item_like")
-    private Boolean itemLike;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "item" }, allowSetters = true)
+    private Set<Images> images = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_item__wishlist",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "wishlist_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "profileDetails", "items", "userDetails" }, allowSetters = true)
+    private Set<Wishlist> wishlists = new HashSet<>();
+
+    @JsonIgnoreProperties(value = { "item", "conversation", "profileDetails", "location" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "item")
+    private ProductStatus productStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "item", "profileDetails" }, allowSetters = true)
+    private Set<Likes> likes = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        allowSetters = true
+    )
+    private UserDetails seller;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -85,69 +119,56 @@ public class Item implements Serializable {
         this.id = id;
     }
 
-    public String getItemTitle() {
-        return this.itemTitle;
+    public String getTitle() {
+        return this.title;
     }
 
-    public Item itemTitle(String itemTitle) {
-        this.setItemTitle(itemTitle);
+    public Item title(String title) {
+        this.setTitle(title);
         return this;
     }
 
-    public void setItemTitle(String itemTitle) {
-        this.itemTitle = itemTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public BigDecimal getItemPrice() {
-        return this.itemPrice;
+    public Double getPrice() {
+        return this.price;
     }
 
-    public Item itemPrice(BigDecimal itemPrice) {
-        this.setItemPrice(itemPrice);
+    public Item price(Double price) {
+        this.setPrice(price);
         return this;
     }
 
-    public void setItemPrice(BigDecimal itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    public String getItemSize() {
-        return this.itemSize;
+    public Condition getCondition() {
+        return this.condition;
     }
 
-    public Item itemSize(String itemSize) {
-        this.setItemSize(itemSize);
+    public Item condition(Condition condition) {
+        this.setCondition(condition);
         return this;
     }
 
-    public void setItemSize(String itemSize) {
-        this.itemSize = itemSize;
+    public void setCondition(Condition condition) {
+        this.condition = condition;
     }
 
-    public Condition getItemCondition() {
-        return this.itemCondition;
+    public Category getCategory() {
+        return this.category;
     }
 
-    public Item itemCondition(Condition itemCondition) {
-        this.setItemCondition(itemCondition);
+    public Item category(Category category) {
+        this.setCategory(category);
         return this;
     }
 
-    public void setItemCondition(Condition itemCondition) {
-        this.itemCondition = itemCondition;
-    }
-
-    public Category getItemCategory() {
-        return this.itemCategory;
-    }
-
-    public Item itemCategory(Category itemCategory) {
-        this.setItemCategory(itemCategory);
-        return this;
-    }
-
-    public void setItemCategory(Category itemCategory) {
-        this.itemCategory = itemCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getDescription() {
@@ -163,43 +184,43 @@ public class Item implements Serializable {
         this.description = description;
     }
 
-    public String getItemColour() {
-        return this.itemColour;
+    public String getSizeItem() {
+        return this.sizeItem;
     }
 
-    public Item itemColour(String itemColour) {
-        this.setItemColour(itemColour);
+    public Item sizeItem(String sizeItem) {
+        this.setSizeItem(sizeItem);
         return this;
     }
 
-    public void setItemColour(String itemColour) {
-        this.itemColour = itemColour;
+    public void setSizeItem(String sizeItem) {
+        this.sizeItem = sizeItem;
     }
 
-    public byte[] getItemImage() {
-        return this.itemImage;
+    public String getBrand() {
+        return this.brand;
     }
 
-    public Item itemImage(byte[] itemImage) {
-        this.setItemImage(itemImage);
+    public Item brand(String brand) {
+        this.setBrand(brand);
         return this;
     }
 
-    public void setItemImage(byte[] itemImage) {
-        this.itemImage = itemImage;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public String getItemImageContentType() {
-        return this.itemImageContentType;
+    public String getColour() {
+        return this.colour;
     }
 
-    public Item itemImageContentType(String itemImageContentType) {
-        this.itemImageContentType = itemImageContentType;
+    public Item colour(String colour) {
+        this.setColour(colour);
         return this;
     }
 
-    public void setItemImageContentType(String itemImageContentType) {
-        this.itemImageContentType = itemImageContentType;
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public Instant getTimeListed() {
@@ -215,17 +236,134 @@ public class Item implements Serializable {
         this.timeListed = timeListed;
     }
 
-    public Boolean getItemLike() {
-        return this.itemLike;
+    public Set<Images> getImages() {
+        return this.images;
     }
 
-    public Item itemLike(Boolean itemLike) {
-        this.setItemLike(itemLike);
+    public void setImages(Set<Images> images) {
+        if (this.images != null) {
+            this.images.forEach(i -> i.setItem(null));
+        }
+        if (images != null) {
+            images.forEach(i -> i.setItem(this));
+        }
+        this.images = images;
+    }
+
+    public Item images(Set<Images> images) {
+        this.setImages(images);
         return this;
     }
 
-    public void setItemLike(Boolean itemLike) {
-        this.itemLike = itemLike;
+    public Item addImages(Images images) {
+        this.images.add(images);
+        images.setItem(this);
+        return this;
+    }
+
+    public Item removeImages(Images images) {
+        this.images.remove(images);
+        images.setItem(null);
+        return this;
+    }
+
+    public Set<Wishlist> getWishlists() {
+        return this.wishlists;
+    }
+
+    public void setWishlists(Set<Wishlist> wishlists) {
+        this.wishlists = wishlists;
+    }
+
+    public Item wishlists(Set<Wishlist> wishlists) {
+        this.setWishlists(wishlists);
+        return this;
+    }
+
+    public Item addWishlist(Wishlist wishlist) {
+        this.wishlists.add(wishlist);
+        return this;
+    }
+
+    public Item removeWishlist(Wishlist wishlist) {
+        this.wishlists.remove(wishlist);
+        return this;
+    }
+
+    public ProductStatus getProductStatus() {
+        return this.productStatus;
+    }
+
+    public void setProductStatus(ProductStatus productStatus) {
+        if (this.productStatus != null) {
+            this.productStatus.setItem(null);
+        }
+        if (productStatus != null) {
+            productStatus.setItem(this);
+        }
+        this.productStatus = productStatus;
+    }
+
+    public Item productStatus(ProductStatus productStatus) {
+        this.setProductStatus(productStatus);
+        return this;
+    }
+
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
+    public Item profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
+        return this;
+    }
+
+    public Set<Likes> getLikes() {
+        return this.likes;
+    }
+
+    public void setLikes(Set<Likes> likes) {
+        if (this.likes != null) {
+            this.likes.forEach(i -> i.setItem(null));
+        }
+        if (likes != null) {
+            likes.forEach(i -> i.setItem(this));
+        }
+        this.likes = likes;
+    }
+
+    public Item likes(Set<Likes> likes) {
+        this.setLikes(likes);
+        return this;
+    }
+
+    public Item addLikes(Likes likes) {
+        this.likes.add(likes);
+        likes.setItem(this);
+        return this;
+    }
+
+    public Item removeLikes(Likes likes) {
+        this.likes.remove(likes);
+        likes.setItem(null);
+        return this;
+    }
+
+    public UserDetails getSeller() {
+        return this.seller;
+    }
+
+    public void setSeller(UserDetails userDetails) {
+        this.seller = userDetails;
+    }
+
+    public Item seller(UserDetails userDetails) {
+        this.setSeller(userDetails);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -252,17 +390,15 @@ public class Item implements Serializable {
     public String toString() {
         return "Item{" +
             "id=" + getId() +
-            ", itemTitle='" + getItemTitle() + "'" +
-            ", itemPrice=" + getItemPrice() +
-            ", itemSize='" + getItemSize() + "'" +
-            ", itemCondition='" + getItemCondition() + "'" +
-            ", itemCategory='" + getItemCategory() + "'" +
+            ", title='" + getTitle() + "'" +
+            ", price=" + getPrice() +
+            ", condition='" + getCondition() + "'" +
+            ", category='" + getCategory() + "'" +
             ", description='" + getDescription() + "'" +
-            ", itemColour='" + getItemColour() + "'" +
-            ", itemImage='" + getItemImage() + "'" +
-            ", itemImageContentType='" + getItemImageContentType() + "'" +
+            ", sizeItem='" + getSizeItem() + "'" +
+            ", brand='" + getBrand() + "'" +
+            ", colour='" + getColour() + "'" +
             ", timeListed='" + getTimeListed() + "'" +
-            ", itemLike='" + getItemLike() + "'" +
             "}";
     }
 }

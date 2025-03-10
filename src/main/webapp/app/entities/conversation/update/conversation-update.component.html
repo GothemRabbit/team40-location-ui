@@ -40,33 +40,33 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_userOne">User One</label>
+          <label for="field_profileDetails">Profile Details</label>
           <select
             class="form-control"
-            id="field_userOne"
-            data-cy="userOne"
-            name="userOne"
-            formControlName="userOne"
-            [compareWith]="compareUserDetails"
+            id="field_profileDetails"
+            data-cy="profileDetails"
+            multiple
+            name="profileDetails"
+            formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
           >
-            <option [ngValue]="null"></option>
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
             }
           </select>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_userTwo">User Two</label>
+          <label for="field_participants">Participants</label>
           <select
             class="form-control"
-            id="field_userTwo"
-            data-cy="userTwo"
-            name="userTwo"
-            formControlName="userTwo"
+            id="field_participants"
+            data-cy="participants"
+            multiple
+            name="participants"
+            formControlName="participants"
             [compareWith]="compareUserDetails"
           >
-            <option [ngValue]="null"></option>
             @for (userDetailsOption of userDetailsSharedCollection; track $index) {
               <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
             }

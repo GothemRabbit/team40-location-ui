@@ -6,8 +6,8 @@ import { Subject, from, of } from 'rxjs';
 
 import { IConversation } from 'app/entities/conversation/conversation.model';
 import { ConversationService } from 'app/entities/conversation/service/conversation.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 import { IMessage } from '../message.model';
 import { MessageService } from '../service/message.service';
 import { MessageFormService } from './message-form.service';
@@ -21,7 +21,7 @@ describe('Message Management Update Component', () => {
   let messageFormService: MessageFormService;
   let messageService: MessageService;
   let conversationService: ConversationService;
-  let userDetailsService: UserDetailsService;
+  let profileDetailsService: ProfileDetailsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +45,7 @@ describe('Message Management Update Component', () => {
     messageFormService = TestBed.inject(MessageFormService);
     messageService = TestBed.inject(MessageService);
     conversationService = TestBed.inject(ConversationService);
-    userDetailsService = TestBed.inject(UserDetailsService);
+    profileDetailsService = TestBed.inject(ProfileDetailsService);
 
     comp = fixture.componentInstance;
   });
@@ -53,12 +53,12 @@ describe('Message Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Conversation query and add missing value', () => {
       const message: IMessage = { id: 456 };
-      const convo: IConversation = { id: 9318 };
-      message.convo = convo;
+      const conversation: IConversation = { id: 27041 };
+      message.conversation = conversation;
 
-      const conversationCollection: IConversation[] = [{ id: 15920 }];
+      const conversationCollection: IConversation[] = [{ id: 21260 }];
       jest.spyOn(conversationService, 'query').mockReturnValue(of(new HttpResponse({ body: conversationCollection })));
-      const additionalConversations = [convo];
+      const additionalConversations = [conversation];
       const expectedCollection: IConversation[] = [...additionalConversations, ...conversationCollection];
       jest.spyOn(conversationService, 'addConversationToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -73,45 +73,40 @@ describe('Message Management Update Component', () => {
       expect(comp.conversationsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call UserDetails query and add missing value', () => {
+    it('Should call ProfileDetails query and add missing value', () => {
       const message: IMessage = { id: 456 };
-      const sender: IUserDetails = { id: 19569 };
-      message.sender = sender;
-      const receiver: IUserDetails = { id: 2588 };
-      message.receiver = receiver;
+      const profileDetails: IProfileDetails = { id: 26575 };
+      message.profileDetails = profileDetails;
 
-      const userDetailsCollection: IUserDetails[] = [{ id: 23074 }];
-      jest.spyOn(userDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: userDetailsCollection })));
-      const additionalUserDetails = [sender, receiver];
-      const expectedCollection: IUserDetails[] = [...additionalUserDetails, ...userDetailsCollection];
-      jest.spyOn(userDetailsService, 'addUserDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
+      const profileDetailsCollection: IProfileDetails[] = [{ id: 14461 }];
+      jest.spyOn(profileDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: profileDetailsCollection })));
+      const additionalProfileDetails = [profileDetails];
+      const expectedCollection: IProfileDetails[] = [...additionalProfileDetails, ...profileDetailsCollection];
+      jest.spyOn(profileDetailsService, 'addProfileDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ message });
       comp.ngOnInit();
 
-      expect(userDetailsService.query).toHaveBeenCalled();
-      expect(userDetailsService.addUserDetailsToCollectionIfMissing).toHaveBeenCalledWith(
-        userDetailsCollection,
-        ...additionalUserDetails.map(expect.objectContaining),
+      expect(profileDetailsService.query).toHaveBeenCalled();
+      expect(profileDetailsService.addProfileDetailsToCollectionIfMissing).toHaveBeenCalledWith(
+        profileDetailsCollection,
+        ...additionalProfileDetails.map(expect.objectContaining),
       );
-      expect(comp.userDetailsSharedCollection).toEqual(expectedCollection);
+      expect(comp.profileDetailsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const message: IMessage = { id: 456 };
-      const convo: IConversation = { id: 13640 };
-      message.convo = convo;
-      const sender: IUserDetails = { id: 5545 };
-      message.sender = sender;
-      const receiver: IUserDetails = { id: 3449 };
-      message.receiver = receiver;
+      const conversation: IConversation = { id: 15198 };
+      message.conversation = conversation;
+      const profileDetails: IProfileDetails = { id: 27250 };
+      message.profileDetails = profileDetails;
 
       activatedRoute.data = of({ message });
       comp.ngOnInit();
 
-      expect(comp.conversationsSharedCollection).toContain(convo);
-      expect(comp.userDetailsSharedCollection).toContain(sender);
-      expect(comp.userDetailsSharedCollection).toContain(receiver);
+      expect(comp.conversationsSharedCollection).toContain(conversation);
+      expect(comp.profileDetailsSharedCollection).toContain(profileDetails);
       expect(comp.message).toEqual(message);
     });
   });
@@ -195,13 +190,13 @@ describe('Message Management Update Component', () => {
       });
     });
 
-    describe('compareUserDetails', () => {
-      it('Should forward to userDetailsService', () => {
+    describe('compareProfileDetails', () => {
+      it('Should forward to profileDetailsService', () => {
         const entity = { id: 123 };
         const entity2 = { id: 456 };
-        jest.spyOn(userDetailsService, 'compareUserDetails');
-        comp.compareUserDetails(entity, entity2);
-        expect(userDetailsService.compareUserDetails).toHaveBeenCalledWith(entity, entity2);
+        jest.spyOn(profileDetailsService, 'compareProfileDetails');
+        comp.compareProfileDetails(entity, entity2);
+        expect(profileDetailsService.compareProfileDetails).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

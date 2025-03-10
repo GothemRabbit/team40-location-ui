@@ -18,35 +18,56 @@
           <dt><span>Status</span></dt>
           <dd>
             <span>{{
-              {
-                null: '',
-                AVAILABLE: 'AVAILABLE',
-                PENDING: 'PENDING',
-                RESERVED: 'RESERVED',
-                COMPLETED: 'COMPLETED',
-                CANCELLED: 'CANCELLED',
-              }[productStatusRef.status ?? 'null']
+              { null: '', PENDING: 'PENDING', REJECTED: 'REJECTED', RESERVED: 'RESERVED', COMPLETED: 'COMPLETED', CANCELLED: 'CANCELLED' }[
+                productStatusRef.status ?? 'null'
+              ]
             }}</span>
           </dd>
           <dt><span>Meeting Time</span></dt>
           <dd>
             <span>{{ productStatusRef.meetingTime | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Meeting Location</span></dt>
+          <dt><span>Updated At</span></dt>
           <dd>
-            <span>{{ productStatusRef.meetingLocation }}</span>
-          </dd>
-          <dt><span>Chat Link</span></dt>
-          <dd>
-            <span>{{ productStatusRef.chatLink }}</span>
+            <span>{{ productStatusRef.updatedAt | formatMediumDatetime }}</span>
           </dd>
           <dt><span>Created At</span></dt>
           <dd>
             <span>{{ productStatusRef.createdAt | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated At</span></dt>
+          <dt><span>Item</span></dt>
           <dd>
-            <span>{{ productStatusRef.updatedAt | formatMediumDatetime }}</span>
+            @if (productStatus()!.item) {
+              <div>
+                <a [routerLink]="['/item', productStatus()!.item?.id, 'view']">{{ productStatusRef.item?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Conversation</span></dt>
+          <dd>
+            @if (productStatus()!.conversation) {
+              <div>
+                <a [routerLink]="['/conversation', productStatus()!.conversation?.id, 'view']">{{ productStatusRef.conversation?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Profile Details</span></dt>
+          <dd>
+            @if (productStatus()!.profileDetails) {
+              <div>
+                <a [routerLink]="['/profile-details', productStatus()!.profileDetails?.id, 'view']">{{
+                  productStatusRef.profileDetails?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Location</span></dt>
+          <dd>
+            @if (productStatus()!.location) {
+              <div>
+                <a [routerLink]="['/location', productStatus()!.location?.id, 'view']">{{ productStatusRef.location?.id }}</a>
+              </div>
+            }
           </dd>
         </dl>
 

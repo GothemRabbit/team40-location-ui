@@ -1,0 +1,95 @@
+{
+  "annotations": {
+    "changelogDate": "20250309155957"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "bioImage",
+      "fieldType": "ImageBlob"
+    },
+    {
+      "fieldName": "userName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique", "pattern"],
+      "fieldValidateRulesPattern": "^\\S+$"
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "name": "ProfileDetails",
+  "relationships": [
+    {
+      "options": {
+        "iD": true
+      },
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "item",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "item",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "wishlist",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "wishlist",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "location",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "likes",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "likes",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "review",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "review",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "message",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "message",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "productStatus",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "productStatus",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "conversation",
+      "otherEntityRelationshipName": "profileDetails",
+      "relationshipName": "conversation",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

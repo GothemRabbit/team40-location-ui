@@ -19,20 +19,22 @@
           <dd>
             <span>{{ conversationRef.dateCreated | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>User One</span></dt>
+          <dt><span>Profile Details</span></dt>
           <dd>
-            @if (conversation()!.userOne) {
-              <div>
-                <a [routerLink]="['/user-details', conversation()!.userOne?.id, 'view']">{{ conversationRef.userOne?.id }}</a>
-              </div>
+            @for (profileDetails of conversationRef.profileDetails; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
             }
           </dd>
-          <dt><span>User Two</span></dt>
+          <dt><span>Participants</span></dt>
           <dd>
-            @if (conversation()!.userTwo) {
-              <div>
-                <a [routerLink]="['/user-details', conversation()!.userTwo?.id, 'view']">{{ conversationRef.userTwo?.id }}</a>
-              </div>
+            @for (participants of conversationRef.participants; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/user-details', participants.id, 'view']">{{ participants?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
             }
           </dd>
         </dl>

@@ -48,30 +48,30 @@
               </span>
             </a>
             <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/user-details"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>User Details</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/authentication"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Authentication</span>
-                </a>
-              </li>
+              <!--              <li>-->
+              <!--                <a-->
+              <!--                  class="dropdown-item"-->
+              <!--                  routerLink="/user-details"-->
+              <!--                  routerLinkActive="active"-->
+              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
+              <!--                  (click)="collapseNavbar()"-->
+              <!--                >-->
+              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <!--                  <span>User Details</span>-->
+              <!--                </a>-->
+              <!--              </li>-->
+              <!--              <li>-->
+              <!--                <a-->
+              <!--                  class="dropdown-item"-->
+              <!--                  routerLink="/authentication"-->
+              <!--                  routerLinkActive="active"-->
+              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
+              <!--                  (click)="collapseNavbar()"-->
+              <!--                >-->
+              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <!--                  <span>Authentication</span>-->
+              <!--                </a>-->
+              <!--              </li>-->
               <li>
                 <a
                   class="dropdown-item"
@@ -120,30 +120,30 @@
                   <span>Product Status</span>
                 </a>
               </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/user-interaction"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>User Interaction</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/reservation"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Reservation</span>
-                </a>
-              </li>
+              <!--              <li>-->
+              <!--                <a-->
+              <!--                  class="dropdown-item"-->
+              <!--                  routerLink="/user-interaction"-->
+              <!--                  routerLinkActive="active"-->
+              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
+              <!--                  (click)="collapseNavbar()"-->
+              <!--                >-->
+              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <!--                  <span>User Interaction</span>-->
+              <!--                </a>-->
+              <!--              </li>-->
+              <!--              <li>-->
+              <!--                <a-->
+              <!--                  class="dropdown-item"-->
+              <!--                  routerLink="/reservation"-->
+              <!--                  routerLinkActive="active"-->
+              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
+              <!--                  (click)="collapseNavbar()"-->
+              <!--                >-->
+              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <!--                  <span>Reservation</span>-->
+              <!--                </a>-->
+              <!--              </li>-->
               <li>
                 <a
                   class="dropdown-item"
@@ -156,40 +156,100 @@
                   <span>Review</span>
                 </a>
               </li>
+              <!--              <li>-->
+              <!--                <a-->
+              <!--                  class="dropdown-item"-->
+              <!--                  routerLink="/notification"-->
+              <!--                  routerLinkActive="active"-->
+              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
+              <!--                  (click)="collapseNavbar()"-->
+              <!--                >-->
+              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <!--                  <span>Notification</span>-->
+              <!--                </a>-->
+              <!--              </li>-->
+              <!--              <li>-->
+              <!--                <a-->
+              <!--                  class="dropdown-item"-->
+              <!--                  routerLink="/user-search-history"-->
+              <!--                  routerLinkActive="active"-->
+              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
+              <!--                  (click)="collapseNavbar()"-->
+              <!--                >-->
+              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <!--                  <span>User Search History</span>-->
+              <!--                </a>-->
+              <!--              </li>-->
+              <!--              <li>-->
+              <!--                <a-->
+              <!--                  class="dropdown-item"-->
+              <!--                  routerLink="/user-recommendation"-->
+              <!--                  routerLinkActive="active"-->
+              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
+              <!--                  (click)="collapseNavbar()"-->
+              <!--                >-->
+              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <!--                  <span>User Recommendation</span>-->
+              <!--                </a>-->
+              <!--              </li>-->
               <li>
                 <a
                   class="dropdown-item"
-                  routerLink="/notification"
+                  routerLink="/location"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
                   <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Notification</span>
+                  <span>Location</span>
                 </a>
               </li>
               <li>
                 <a
                   class="dropdown-item"
-                  routerLink="/user-search-history"
+                  routerLink="/likes"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
                   <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>User Search History</span>
+                  <span>Likes</span>
                 </a>
               </li>
               <li>
                 <a
                   class="dropdown-item"
-                  routerLink="/user-recommendation"
+                  routerLink="/images"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="collapseNavbar()"
                 >
                   <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>User Recommendation</span>
+                  <span>Images</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/wishlist"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span>Wishlist</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/profile-details"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span>Profile Details</span>
                 </a>
               </li>
               <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->

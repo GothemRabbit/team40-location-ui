@@ -50,19 +50,12 @@ public class ProductStatusAsserts {
             .as("Verify ProductStatus relevant properties")
             .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
             .satisfies(e -> assertThat(e.getMeetingTime()).as("check meetingTime").isEqualTo(actual.getMeetingTime()))
-            .satisfies(e -> assertThat(e.getMeetingLocation()).as("check meetingLocation").isEqualTo(actual.getMeetingLocation()))
-            .satisfies(e -> assertThat(e.getChatLink()).as("check chatLink").isEqualTo(actual.getChatLink()))
+            .satisfies(e -> assertThat(e.getUpdatedAt()).as("check updatedAt").isEqualTo(actual.getUpdatedAt()))
             .satisfies(e ->
                 assertThat(e.getCreatedAt())
                     .as("check createdAt")
                     .usingComparator(zonedDataTimeSameInstant)
                     .isEqualTo(actual.getCreatedAt())
-            )
-            .satisfies(e ->
-                assertThat(e.getUpdatedAt())
-                    .as("check updatedAt")
-                    .usingComparator(zonedDataTimeSameInstant)
-                    .isEqualTo(actual.getUpdatedAt())
             );
     }
 
@@ -73,6 +66,11 @@ public class ProductStatusAsserts {
      * @param actual the actual entity
      */
     public static void assertProductStatusUpdatableRelationshipsEquals(ProductStatus expected, ProductStatus actual) {
-        // empty method
+        assertThat(expected)
+            .as("Verify ProductStatus relationships")
+            .satisfies(e -> assertThat(e.getItem()).as("check item").isEqualTo(actual.getItem()))
+            .satisfies(e -> assertThat(e.getConversation()).as("check conversation").isEqualTo(actual.getConversation()))
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
+            .satisfies(e -> assertThat(e.getLocation()).as("check location").isEqualTo(actual.getLocation()));
     }
 }

@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (wishlist(); as wishlistRef) {
+      <div>
+        <h2 data-cy="wishlistDetailsHeading"><span>Wishlist</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ wishlistRef.id }}</span>
+          </dd>
+          <dt><span>Name</span></dt>
+          <dd>
+            <span>{{ wishlistRef.name }}</span>
+          </dd>
+          <dt><span>Visibility</span></dt>
+          <dd>
+            <span>{{ { null: '', PRIVATE: 'PRIVATE', PUBLIC: 'PUBLIC' }[wishlistRef.visibility ?? 'null'] }}</span>
+          </dd>
+          <dt><span>Profile Details</span></dt>
+          <dd>
+            @if (wishlist()!.profileDetails) {
+              <div>
+                <a [routerLink]="['/profile-details', wishlist()!.profileDetails?.id, 'view']">{{ wishlistRef.profileDetails?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Item</span></dt>
+          <dd>
+            @for (item of wishlistRef.items; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/item', item.id, 'view']">{{ item?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span>User Details</span></dt>
+          <dd>
+            @if (wishlist()!.userDetails) {
+              <div>
+                <a [routerLink]="['/user-details', wishlist()!.userDetails?.id, 'view']">{{ wishlistRef.userDetails?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/wishlist', wishlistRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

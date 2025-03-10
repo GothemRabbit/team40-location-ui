@@ -1,99 +1,150 @@
 <div class="page">
   <div class="d-flex justify-content-center">
     <div class="col-8">
-      <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-        <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Write Your Review!</h2>
+      <div class="formBorder">
+        <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+          <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Create or edit a Review</h2>
 
-        <div>
-          <jhi-alert-error></jhi-alert-error>
+          <div>
+            <jhi-alert-error></jhi-alert-error>
 
-          @if (editForm.controls.id.value !== null) {
-            <div class="mb-3">
-              <label class="form-label" for="field_id">ID</label>
-              <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-            </div>
-          }
-
-          @let ratingRef = editForm.get('rating')!;
-          <div class="mb-3">
-            <label class="form-label" for="field_rating">Rating</label>
-            <input
-              type="number"
-              class="form-control"
-              name="rating"
-              min="0"
-              max="5"
-              id="field_rating"
-              data-cy="rating"
-              formControlName="rating"
-            />
-            @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
-              <div>
-                @if (editForm.get('rating')?.errors?.required) {
-                  <small class="form-text text-danger">This field is required.</small>
-                }
-                @if (editForm.get('rating')?.errors?.min) {
-                  <small class="form-text text-danger">This field should be at least 0.</small>
-                }
-                @if (editForm.get('rating')?.errors?.max) {
-                  <small class="form-text text-danger">This field cannot be more than 5.</small>
-                }
-                <small class="form-text text-danger" [hidden]="!editForm.get('rating')?.errors?.number"
-                  >This field should be a number.</small
-                >
+            @if (editForm.controls.id.value !== null) {
+              <div class="mb-3">
+                <label class="form-label" for="field_id">ID</label>
+                <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
               </div>
             }
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label" for="field_reviewText">Review Text</label>
-            <textarea
-              class="form-control"
-              name="reviewText"
-              id="field_reviewText"
-              data-cy="reviewText"
-              formControlName="reviewText"
-            ></textarea>
-          </div>
+            @let dateRef = editForm.get('date')!;
+            <div class="mb-4">
+              <label class="form-label" for="field_date"></label>
+              <div class="input-group">
+                <input
+                  id="field_date"
+                  data-cy="date"
+                  type="date"
+                  class="date"
+                  name="date"
+                  ngbDatepicker
+                  #dateDp="ngbDatepicker"
+                  formControlName="date"
+                />
+                <!-- <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button> -->
+              </div>
 
-          @let reviewDateRef = editForm.get('reviewDate')!;
-          <div class="mb-3">
-            <label class="form-label" for="field_reviewDate">Review Date</label>
-            <div class="input-group">
-              <input
-                id="field_reviewDate"
-                data-cy="reviewDate"
-                type="text"
-                class="form-control"
-                name="reviewDate"
-                ngbDatepicker
-                #reviewDateDp="ngbDatepicker"
-                formControlName="reviewDate"
-              />
-              <button type="button" class="btn btn-secondary" (click)="reviewDateDp.toggle()">
-                <fa-icon icon="calendar-alt"></fa-icon>
+              @if (dateRef.invalid && (dateRef.dirty || dateRef.touched)) {
+                <div>
+                  @if (editForm.get('date')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let ratingRef = editForm.get('rating')!;
+            <div class="mb-4">
+              <label class="form-label" for="field_rating"></label>
+              <input type="number" class="num" name="rating" id="field_rating" data-cy="rating" formControlName="rating" />
+              @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
+                <div>
+                  @if (editForm.get('rating')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                  @if (editForm.get('rating')?.errors?.min) {
+                    <small class="form-text text-danger">This field should be at least 0.</small>
+                  }
+                  @if (editForm.get('rating')?.errors?.max) {
+                    <small class="form-text text-danger">This field cannot be more than 5.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('rating')?.errors?.number"
+                    >This field should be a number.</small
+                  >
+                </div>
+              }
+            </div>
+
+            @let commentsRef = editForm.get('comments')!;
+            <div>
+              <label class="form-label" for="field_comments"></label>
+              <textarea class="mb-4" name="comments" id="field_comments" data-cy="comments" formControlName="comments"></textarea>
+              @if (commentsRef.invalid && (commentsRef.dirty || commentsRef.touched)) {
+                <div>
+                  @if (editForm.get('comments')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
+            <div class="buttonClass">
+              <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+                <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+              </button>
+
+              <button
+                type="submit"
+                id="save-entity"
+                data-cy="entityCreateSaveButton"
+                [disabled]="editForm.invalid || isSaving"
+                class="btn btn-dark"
+              >
+                <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
               </button>
             </div>
-            @if (reviewDateRef.invalid && (reviewDateRef.dirty || reviewDateRef.touched)) {
-              <div>
-                @if (editForm.get('reviewDate')?.errors?.required) {
-                  <small class="form-text text-danger">This field is required.</small>
-                }
-              </div>
-            }
           </div>
-        </div>
-
-        <div>
-          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn" (click)="previousState()">
-            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-          </button>
-
-          <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" [disabled]="editForm.invalid || isSaving" class="btn">
-            <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- <div class="mb-3">
+    <label class="form-label" for="field_profileDetails">Profile Details</label>
+    <select
+      class="form-control"
+      id="field_profileDetails"
+      data-cy="profileDetails"
+      name="profileDetails"
+      formControlName="profileDetails"
+      [compareWith]="compareProfileDetails"
+    >
+      <option [ngValue]="null"></option>
+      @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+        <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="field_buyer">Buyer</label>
+    <select
+      class="form-control"
+      id="field_buyer"
+      data-cy="buyer"
+      name="buyer"
+      formControlName="buyer"
+      [compareWith]="compareUserDetails"
+    >
+      <option [ngValue]="null"></option>
+      @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+        <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="field_seller">Seller</label>
+    <select
+      class="form-control"
+      id="field_seller"
+      data-cy="seller"
+      name="seller"
+      formControlName="seller"
+      [compareWith]="compareUserDetails"
+    >
+      <option [ngValue]="null"></option>
+      @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+        <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+      }
+    </select>
+  </div>
+</div> -->

@@ -1,0 +1,116 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-wishlist-heading" data-cy="WishlistCreateUpdateHeading">Create or edit a Wishlist</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let nameRef = editForm.get('name')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let visibilityRef = editForm.get('visibility')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_visibility">Visibility</label>
+          <select class="form-control" name="visibility" formControlName="visibility" id="field_visibility" data-cy="visibility">
+            <option [ngValue]="null"></option>
+            @for (visibilityType of visibilityTypeValues; track $index) {
+              <option [value]="visibilityType">{{ { null: '', PRIVATE: 'PRIVATE', PUBLIC: 'PUBLIC' }[visibilityType] }}</option>
+            }
+          </select>
+          @if (visibilityRef.invalid && (visibilityRef.dirty || visibilityRef.touched)) {
+            <div>
+              @if (editForm.get('visibility')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_profileDetails">Profile Details</label>
+          <select
+            class="form-control"
+            id="field_profileDetails"
+            data-cy="profileDetails"
+            name="profileDetails"
+            formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_items">Item</label>
+          <select
+            class="form-control"
+            id="field_items"
+            data-cy="item"
+            multiple
+            name="items"
+            formControlName="items"
+            [compareWith]="compareItem"
+          >
+            @for (itemOption of itemsSharedCollection; track $index) {
+              <option [ngValue]="itemOption">{{ itemOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_userDetails">User Details</label>
+          <select
+            class="form-control"
+            id="field_userDetails"
+            data-cy="userDetails"
+            name="userDetails"
+            formControlName="userDetails"
+            [compareWith]="compareUserDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
+              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

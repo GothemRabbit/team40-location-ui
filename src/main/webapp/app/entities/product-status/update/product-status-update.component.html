@@ -23,8 +23,8 @@
                 {{
                   {
                     null: '',
-                    AVAILABLE: 'AVAILABLE',
                     PENDING: 'PENDING',
+                    REJECTED: 'REJECTED',
                     RESERVED: 'RESERVED',
                     COMPLETED: 'COMPLETED',
                     CANCELLED: 'CANCELLED',
@@ -58,23 +58,20 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_meetingLocation">Meeting Location</label>
-          <input
-            type="text"
-            class="form-control"
-            name="meetingLocation"
-            id="field_meetingLocation"
-            data-cy="meetingLocation"
-            formControlName="meetingLocation"
-          />
+          <label class="form-label" for="field_updatedAt">Updated At</label>
+          <div class="d-flex">
+            <input
+              id="field_updatedAt"
+              data-cy="updatedAt"
+              type="datetime-local"
+              class="form-control"
+              name="updatedAt"
+              formControlName="updatedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_chatLink">Chat Link</label>
-          <input type="text" class="form-control" name="chatLink" id="field_chatLink" data-cy="chatLink" formControlName="chatLink" />
-        </div>
-
-        @let createdAtRef = editForm.get('createdAt')!;
         <div class="mb-3">
           <label class="form-label" for="field_createdAt">Created At</label>
           <div class="d-flex">
@@ -88,31 +85,67 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
-          @if (createdAtRef.invalid && (createdAtRef.dirty || createdAtRef.touched)) {
-            <div>
-              @if (editForm.get('createdAt')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('createdAt')?.errors?.datetimelocal"
-                >This field should be a date and time.</small
-              >
-            </div>
-          }
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_updatedAt">Updated At</label>
-          <div class="d-flex">
-            <input
-              id="field_updatedAt"
-              data-cy="updatedAt"
-              type="datetime-local"
-              class="form-control"
-              name="updatedAt"
-              formControlName="updatedAt"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
+          <label class="form-label" for="field_item">Item</label>
+          <select class="form-control" id="field_item" data-cy="item" name="item" formControlName="item" [compareWith]="compareItem">
+            <option [ngValue]="null"></option>
+            @for (itemOption of itemsCollection; track $index) {
+              <option [ngValue]="itemOption">{{ itemOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_conversation">Conversation</label>
+          <select
+            class="form-control"
+            id="field_conversation"
+            data-cy="conversation"
+            name="conversation"
+            formControlName="conversation"
+            [compareWith]="compareConversation"
+          >
+            <option [ngValue]="null"></option>
+            @for (conversationOption of conversationsCollection; track $index) {
+              <option [ngValue]="conversationOption">{{ conversationOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_profileDetails">Profile Details</label>
+          <select
+            class="form-control"
+            id="field_profileDetails"
+            data-cy="profileDetails"
+            name="profileDetails"
+            formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_location">Location</label>
+          <select
+            class="form-control"
+            id="field_location"
+            data-cy="location"
+            name="location"
+            formControlName="location"
+            [compareWith]="compareLocation"
+          >
+            <option [ngValue]="null"></option>
+            @for (locationOption of locationsSharedCollection; track $index) {
+              <option [ngValue]="locationOption">{{ locationOption.id }}</option>
+            }
+          </select>
         </div>
       </div>
 

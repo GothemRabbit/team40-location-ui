@@ -3,6 +3,7 @@
     "changelogDate": "20250213120519"
   },
   "applications": "*",
+  "dto": "mapstruct",
   "fields": [
     {
       "fieldName": "content",
@@ -11,7 +12,7 @@
     },
     {
       "fieldName": "timestamp",
-      "fieldType": "ZonedDateTime",
+      "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     },
     {
@@ -24,22 +25,19 @@
   "relationships": [
     {
       "otherEntityName": "conversation",
-      "relationshipName": "convo",
+      "otherEntityRelationshipName": "message",
+      "relationshipName": "conversation",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityName": "userDetails",
-      "relationshipName": "sender",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "userDetails",
-      "relationshipName": "receiver",
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "message",
+      "relationshipName": "profileDetails",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }
   ],
-  "searchEngine": "no"
+  "searchEngine": "no",
+  "service": "serviceClass"
 }

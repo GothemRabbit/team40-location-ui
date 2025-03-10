@@ -48,8 +48,8 @@ public class ReviewAsserts {
         assertThat(expected)
             .as("Verify Review relevant properties")
             .satisfies(e -> assertThat(e.getRating()).as("check rating").isEqualTo(actual.getRating()))
-            .satisfies(e -> assertThat(e.getReviewText()).as("check reviewText").isEqualTo(actual.getReviewText()))
-            .satisfies(e -> assertThat(e.getReviewDate()).as("check reviewDate").isEqualTo(actual.getReviewDate()));
+            .satisfies(e -> assertThat(e.getComments()).as("check comments").isEqualTo(actual.getComments()))
+            .satisfies(e -> assertThat(e.getDate()).as("check date").isEqualTo(actual.getDate()));
     }
 
     /**
@@ -59,6 +59,10 @@ public class ReviewAsserts {
      * @param actual the actual entity
      */
     public static void assertReviewUpdatableRelationshipsEquals(Review expected, Review actual) {
-        // empty method
+        assertThat(expected)
+            .as("Verify Review relationships")
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
+            .satisfies(e -> assertThat(e.getBuyer()).as("check buyer").isEqualTo(actual.getBuyer()))
+            .satisfies(e -> assertThat(e.getSeller()).as("check seller").isEqualTo(actual.getSeller()));
     }
 }

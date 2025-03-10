@@ -4,25 +4,35 @@ import static bham.team.domain.UserDetailsAsserts.*;
 import static bham.team.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import bham.team.IntegrationTest;
 import bham.team.domain.UserDetails;
-import bham.team.domain.enumeration.Gender;
 import bham.team.repository.UserDetailsRepository;
+import bham.team.repository.UserRepository;
+import bham.team.service.UserDetailsService;
+import bham.team.service.dto.UserDetailsDTO;
+import bham.team.service.mapper.UserDetailsMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link UserDetailsResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class UserDetailsResourceIT {
@@ -44,32 +55,8 @@ class UserDetailsResourceIT {
     private static final String DEFAULT_USER_NAME = "AAAAAAAAAA";
     private static final String UPDATED_USER_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
-
-    private static final Gender DEFAULT_GENDER = Gender.MALE;
-    private static final Gender UPDATED_GENDER = Gender.FEMALE;
-
     private static final LocalDate DEFAULT_BIRTH_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_BIRTH_DATE = LocalDate.now(ZoneId.systemDefault());
-
-    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
-    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
-
-    private static final String DEFAULT_PREFERENCES = "AAAAAAAAAA";
-    private static final String UPDATED_PREFERENCES = "BBBBBBBBBB";
-
-    private static final Float DEFAULT_RATING = 1F;
-    private static final Float UPDATED_RATING = 2F;
-
-    private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
-    private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/user-details";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -82,6 +69,18 @@ class UserDetailsResourceIT {
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Mock
+    private UserDetailsRepository userDetailsRepositoryMock;
+
+    @Autowired
+    private UserDetailsMapper userDetailsMapper;
+
+    @Mock
+    private UserDetailsService userDetailsServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -104,15 +103,7 @@ class UserDetailsResourceIT {
             .bioImage(DEFAULT_BIO_IMAGE)
             .bioImageContentType(DEFAULT_BIO_IMAGE_CONTENT_TYPE)
             .userName(DEFAULT_USER_NAME)
-            .firstName(DEFAULT_FIRST_NAME)
-            .lastName(DEFAULT_LAST_NAME)
-            .gender(DEFAULT_GENDER)
-            .birthDate(DEFAULT_BIRTH_DATE)
-            .email(DEFAULT_EMAIL)
-            .phoneNumber(DEFAULT_PHONE_NUMBER)
-            .preferences(DEFAULT_PREFERENCES)
-            .rating(DEFAULT_RATING)
-            .address(DEFAULT_ADDRESS);
+            .birthDate(DEFAULT_BIRTH_DATE);
     }
 
     /**
@@ -126,15 +117,7 @@ class UserDetailsResourceIT {
             .bioImage(UPDATED_BIO_IMAGE)
             .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
             .userName(UPDATED_USER_NAME)
-            .firstName(UPDATED_FIRST_NAME)
-            .lastName(UPDATED_LAST_NAME)
-            .gender(UPDATED_GENDER)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .email(UPDATED_EMAIL)
-            .phoneNumber(UPDATED_PHONE_NUMBER)
-            .preferences(UPDATED_PREFERENCES)
-            .rating(UPDATED_RATING)
-            .address(UPDATED_ADDRESS);
+            .birthDate(UPDATED_BIRTH_DATE);
     }
 
     @BeforeEach
@@ -155,18 +138,20 @@ class UserDetailsResourceIT {
     void createUserDetails() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the UserDetails
-        var returnedUserDetails = om.readValue(
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
+        var returnedUserDetailsDTO = om.readValue(
             restUserDetailsMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
+                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetailsDTO)))
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(),
-            UserDetails.class
+            UserDetailsDTO.class
         );
 
         // Validate the UserDetails in the database
         assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        var returnedUserDetails = userDetailsMapper.toEntity(returnedUserDetailsDTO);
         assertUserDetailsUpdatableFieldsEquals(returnedUserDetails, getPersistedUserDetails(returnedUserDetails));
 
         insertedUserDetails = returnedUserDetails;
@@ -177,12 +162,13 @@ class UserDetailsResourceIT {
     void createUserDetailsWithExistingId() throws Exception {
         // Create the UserDetails with an existing ID
         userDetails.setId(1L);
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetailsDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the UserDetails in the database
@@ -197,105 +183,10 @@ class UserDetailsResourceIT {
         userDetails.setUserName(null);
 
         // Create the UserDetails, which fails.
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
 
         restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkFirstNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        userDetails.setFirstName(null);
-
-        // Create the UserDetails, which fails.
-
-        restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkLastNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        userDetails.setLastName(null);
-
-        // Create the UserDetails, which fails.
-
-        restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkEmailIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        userDetails.setEmail(null);
-
-        // Create the UserDetails, which fails.
-
-        restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkPhoneNumberIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        userDetails.setPhoneNumber(null);
-
-        // Create the UserDetails, which fails.
-
-        restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkRatingIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        userDetails.setRating(null);
-
-        // Create the UserDetails, which fails.
-
-        restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkAddressIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        userDetails.setAddress(null);
-
-        // Create the UserDetails, which fails.
-
-        restUserDetailsMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetailsDTO)))
             .andExpect(status().isBadRequest());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
@@ -316,15 +207,24 @@ class UserDetailsResourceIT {
             .andExpect(jsonPath("$.[*].bioImageContentType").value(hasItem(DEFAULT_BIO_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].bioImage").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_BIO_IMAGE))))
             .andExpect(jsonPath("$.[*].userName").value(hasItem(DEFAULT_USER_NAME)))
-            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
-            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
-            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
-            .andExpect(jsonPath("$.[*].preferences").value(hasItem(DEFAULT_PREFERENCES)))
-            .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING.doubleValue())))
-            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)));
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllUserDetailsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(userDetailsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restUserDetailsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(userDetailsServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllUserDetailsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(userDetailsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restUserDetailsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(userDetailsRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -342,15 +242,7 @@ class UserDetailsResourceIT {
             .andExpect(jsonPath("$.bioImageContentType").value(DEFAULT_BIO_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.bioImage").value(Base64.getEncoder().encodeToString(DEFAULT_BIO_IMAGE)))
             .andExpect(jsonPath("$.userName").value(DEFAULT_USER_NAME))
-            .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
-            .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
-            .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
-            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
-            .andExpect(jsonPath("$.preferences").value(DEFAULT_PREFERENCES))
-            .andExpect(jsonPath("$.rating").value(DEFAULT_RATING.doubleValue()))
-            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS));
+            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()));
     }
 
     @Test
@@ -376,21 +268,14 @@ class UserDetailsResourceIT {
             .bioImage(UPDATED_BIO_IMAGE)
             .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
             .userName(UPDATED_USER_NAME)
-            .firstName(UPDATED_FIRST_NAME)
-            .lastName(UPDATED_LAST_NAME)
-            .gender(UPDATED_GENDER)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .email(UPDATED_EMAIL)
-            .phoneNumber(UPDATED_PHONE_NUMBER)
-            .preferences(UPDATED_PREFERENCES)
-            .rating(UPDATED_RATING)
-            .address(UPDATED_ADDRESS);
+            .birthDate(UPDATED_BIRTH_DATE);
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(updatedUserDetails);
 
         restUserDetailsMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedUserDetails.getId())
+                put(ENTITY_API_URL_ID, userDetailsDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedUserDetails))
+                    .content(om.writeValueAsBytes(userDetailsDTO))
             )
             .andExpect(status().isOk());
 
@@ -405,12 +290,15 @@ class UserDetailsResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         userDetails.setId(longCount.incrementAndGet());
 
+        // Create the UserDetails
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUserDetailsMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, userDetails.getId())
+                put(ENTITY_API_URL_ID, userDetailsDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(userDetails))
+                    .content(om.writeValueAsBytes(userDetailsDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -424,12 +312,15 @@ class UserDetailsResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         userDetails.setId(longCount.incrementAndGet());
 
+        // Create the UserDetails
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserDetailsMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(userDetails))
+                    .content(om.writeValueAsBytes(userDetailsDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -443,9 +334,12 @@ class UserDetailsResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         userDetails.setId(longCount.incrementAndGet());
 
+        // Create the UserDetails
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserDetailsMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetails)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(userDetailsDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the UserDetails in the database
@@ -464,13 +358,7 @@ class UserDetailsResourceIT {
         UserDetails partialUpdatedUserDetails = new UserDetails();
         partialUpdatedUserDetails.setId(userDetails.getId());
 
-        partialUpdatedUserDetails
-            .bioImage(UPDATED_BIO_IMAGE)
-            .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
-            .lastName(UPDATED_LAST_NAME)
-            .gender(UPDATED_GENDER)
-            .email(UPDATED_EMAIL)
-            .rating(UPDATED_RATING);
+        partialUpdatedUserDetails.userName(UPDATED_USER_NAME);
 
         restUserDetailsMockMvc
             .perform(
@@ -505,15 +393,7 @@ class UserDetailsResourceIT {
             .bioImage(UPDATED_BIO_IMAGE)
             .bioImageContentType(UPDATED_BIO_IMAGE_CONTENT_TYPE)
             .userName(UPDATED_USER_NAME)
-            .firstName(UPDATED_FIRST_NAME)
-            .lastName(UPDATED_LAST_NAME)
-            .gender(UPDATED_GENDER)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .email(UPDATED_EMAIL)
-            .phoneNumber(UPDATED_PHONE_NUMBER)
-            .preferences(UPDATED_PREFERENCES)
-            .rating(UPDATED_RATING)
-            .address(UPDATED_ADDRESS);
+            .birthDate(UPDATED_BIRTH_DATE);
 
         restUserDetailsMockMvc
             .perform(
@@ -535,12 +415,15 @@ class UserDetailsResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         userDetails.setId(longCount.incrementAndGet());
 
+        // Create the UserDetails
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUserDetailsMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, userDetails.getId())
+                patch(ENTITY_API_URL_ID, userDetailsDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(userDetails))
+                    .content(om.writeValueAsBytes(userDetailsDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -554,12 +437,15 @@ class UserDetailsResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         userDetails.setId(longCount.incrementAndGet());
 
+        // Create the UserDetails
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserDetailsMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(userDetails))
+                    .content(om.writeValueAsBytes(userDetailsDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -573,9 +459,12 @@ class UserDetailsResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         userDetails.setId(longCount.incrementAndGet());
 
+        // Create the UserDetails
+        UserDetailsDTO userDetailsDTO = userDetailsMapper.toDto(userDetails);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restUserDetailsMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(userDetails)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(userDetailsDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the UserDetails in the database

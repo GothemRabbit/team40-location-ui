@@ -19,26 +19,28 @@ type ProductStatusFormGroupInput = IProductStatus | PartialWithRequiredKeyOf<New
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IProductStatus | NewProductStatus> = Omit<T, 'meetingTime' | 'createdAt' | 'updatedAt'> & {
+type FormValueOf<T extends IProductStatus | NewProductStatus> = Omit<T, 'meetingTime' | 'updatedAt' | 'createdAt'> & {
   meetingTime?: string | null;
-  createdAt?: string | null;
   updatedAt?: string | null;
+  createdAt?: string | null;
 };
 
 type ProductStatusFormRawValue = FormValueOf<IProductStatus>;
 
 type NewProductStatusFormRawValue = FormValueOf<NewProductStatus>;
 
-type ProductStatusFormDefaults = Pick<NewProductStatus, 'id' | 'meetingTime' | 'createdAt' | 'updatedAt'>;
+type ProductStatusFormDefaults = Pick<NewProductStatus, 'id' | 'meetingTime' | 'updatedAt' | 'createdAt'>;
 
 type ProductStatusFormGroupContent = {
   id: FormControl<ProductStatusFormRawValue['id'] | NewProductStatus['id']>;
   status: FormControl<ProductStatusFormRawValue['status']>;
   meetingTime: FormControl<ProductStatusFormRawValue['meetingTime']>;
-  meetingLocation: FormControl<ProductStatusFormRawValue['meetingLocation']>;
-  chatLink: FormControl<ProductStatusFormRawValue['chatLink']>;
-  createdAt: FormControl<ProductStatusFormRawValue['createdAt']>;
   updatedAt: FormControl<ProductStatusFormRawValue['updatedAt']>;
+  createdAt: FormControl<ProductStatusFormRawValue['createdAt']>;
+  item: FormControl<ProductStatusFormRawValue['item']>;
+  conversation: FormControl<ProductStatusFormRawValue['conversation']>;
+  profileDetails: FormControl<ProductStatusFormRawValue['profileDetails']>;
+  location: FormControl<ProductStatusFormRawValue['location']>;
 };
 
 export type ProductStatusFormGroup = FormGroup<ProductStatusFormGroupContent>;
@@ -62,12 +64,12 @@ export class ProductStatusFormService {
         validators: [Validators.required],
       }),
       meetingTime: new FormControl(productStatusRawValue.meetingTime),
-      meetingLocation: new FormControl(productStatusRawValue.meetingLocation),
-      chatLink: new FormControl(productStatusRawValue.chatLink),
-      createdAt: new FormControl(productStatusRawValue.createdAt, {
-        validators: [Validators.required],
-      }),
       updatedAt: new FormControl(productStatusRawValue.updatedAt),
+      createdAt: new FormControl(productStatusRawValue.createdAt),
+      item: new FormControl(productStatusRawValue.item),
+      conversation: new FormControl(productStatusRawValue.conversation),
+      profileDetails: new FormControl(productStatusRawValue.profileDetails),
+      location: new FormControl(productStatusRawValue.location),
     });
   }
 
@@ -91,8 +93,8 @@ export class ProductStatusFormService {
     return {
       id: null,
       meetingTime: currentTime,
-      createdAt: currentTime,
       updatedAt: currentTime,
+      createdAt: currentTime,
     };
   }
 
@@ -102,8 +104,8 @@ export class ProductStatusFormService {
     return {
       ...rawProductStatus,
       meetingTime: dayjs(rawProductStatus.meetingTime, DATE_TIME_FORMAT),
-      createdAt: dayjs(rawProductStatus.createdAt, DATE_TIME_FORMAT),
       updatedAt: dayjs(rawProductStatus.updatedAt, DATE_TIME_FORMAT),
+      createdAt: dayjs(rawProductStatus.createdAt, DATE_TIME_FORMAT),
     };
   }
 
@@ -113,8 +115,8 @@ export class ProductStatusFormService {
     return {
       ...productStatus,
       meetingTime: productStatus.meetingTime ? productStatus.meetingTime.format(DATE_TIME_FORMAT) : undefined,
-      createdAt: productStatus.createdAt ? productStatus.createdAt.format(DATE_TIME_FORMAT) : undefined,
       updatedAt: productStatus.updatedAt ? productStatus.updatedAt.format(DATE_TIME_FORMAT) : undefined,
+      createdAt: productStatus.createdAt ? productStatus.createdAt.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

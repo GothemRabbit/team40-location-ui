@@ -1,6 +1,5 @@
 package bham.team.domain;
 
-import static bham.team.domain.AssertUtils.zonedDataTimeSameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConversationAsserts {
@@ -48,12 +47,7 @@ public class ConversationAsserts {
     public static void assertConversationUpdatableFieldsEquals(Conversation expected, Conversation actual) {
         assertThat(expected)
             .as("Verify Conversation relevant properties")
-            .satisfies(e ->
-                assertThat(e.getDateCreated())
-                    .as("check dateCreated")
-                    .usingComparator(zonedDataTimeSameInstant)
-                    .isEqualTo(actual.getDateCreated())
-            );
+            .satisfies(e -> assertThat(e.getDateCreated()).as("check dateCreated").isEqualTo(actual.getDateCreated()));
     }
 
     /**
@@ -65,7 +59,7 @@ public class ConversationAsserts {
     public static void assertConversationUpdatableRelationshipsEquals(Conversation expected, Conversation actual) {
         assertThat(expected)
             .as("Verify Conversation relationships")
-            .satisfies(e -> assertThat(e.getUserOne()).as("check userOne").isEqualTo(actual.getUserOne()))
-            .satisfies(e -> assertThat(e.getUserTwo()).as("check userTwo").isEqualTo(actual.getUserTwo()));
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
+            .satisfies(e -> assertThat(e.getParticipants()).as("check participants").isEqualTo(actual.getParticipants()));
     }
 }

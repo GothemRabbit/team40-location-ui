@@ -56,16 +56,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="meetingLocation">
+            <th scope="col" jhiSortBy="updatedAt">
               <div class="d-flex">
-                <span>Meeting Location</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="chatLink">
-              <div class="d-flex">
-                <span>Chat Link</span>
+                <span>Updated At</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -77,17 +70,34 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updatedAt">
+            <th scope="col" jhiSortBy="item.id">
               <div class="d-flex">
-                <span>Updated At</span>
-
+                <span>Item</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="conversation.id">
+              <div class="d-flex">
+                <span>Conversation</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="profileDetails.id">
+              <div class="d-flex">
+                <span>Profile Details</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="location.id">
+              <div class="d-flex">
+                <span>Location</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
           @for (productStatus of productStatuses; track trackId(productStatus)) {
             <tr data-cy="entityTable">
               <td>
@@ -97,8 +107,8 @@
                 {{
                   {
                     null: '',
-                    AVAILABLE: 'AVAILABLE',
                     PENDING: 'PENDING',
+                    REJECTED: 'REJECTED',
                     RESERVED: 'RESERVED',
                     COMPLETED: 'COMPLETED',
                     CANCELLED: 'CANCELLED',
@@ -106,10 +116,38 @@
                 }}
               </td>
               <td>{{ productStatus.meetingTime | formatMediumDatetime }}</td>
-              <td>{{ productStatus.meetingLocation }}</td>
-              <td>{{ productStatus.chatLink }}</td>
-              <td>{{ productStatus.createdAt | formatMediumDatetime }}</td>
               <td>{{ productStatus.updatedAt | formatMediumDatetime }}</td>
+              <td>{{ productStatus.createdAt | formatMediumDatetime }}</td>
+              <td>
+                @if (productStatus.item) {
+                  <div>
+                    <a [routerLink]="['/item', productStatus.item.id, 'view']">{{ productStatus.item.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (productStatus.conversation) {
+                  <div>
+                    <a [routerLink]="['/conversation', productStatus.conversation.id, 'view']">{{ productStatus.conversation.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (productStatus.profileDetails) {
+                  <div>
+                    <a [routerLink]="['/profile-details', productStatus.profileDetails.id, 'view']">{{
+                      productStatus.profileDetails.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (productStatus.location) {
+                  <div>
+                    <a [routerLink]="['/location', productStatus.location.id, 'view']">{{ productStatus.location.id }}</a>
+                  </div>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/product-status', productStatus.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

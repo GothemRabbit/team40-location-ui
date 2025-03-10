@@ -57,44 +57,11 @@
               @if (editForm.get('userName')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-            </div>
-          }
-        </div>
-
-        @let firstNameRef = editForm.get('firstName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_firstName">First Name</label>
-          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
-          @if (firstNameRef.invalid && (firstNameRef.dirty || firstNameRef.touched)) {
-            <div>
-              @if (editForm.get('firstName')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
+              @if (editForm.get('userName')?.errors?.pattern) {
+                <small class="form-text text-danger">This field should follow pattern for User Name.</small>
               }
             </div>
           }
-        </div>
-
-        @let lastNameRef = editForm.get('lastName')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_lastName">Last Name</label>
-          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
-          @if (lastNameRef.invalid && (lastNameRef.dirty || lastNameRef.touched)) {
-            <div>
-              @if (editForm.get('lastName')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_gender">Gender</label>
-          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
-            <option [ngValue]="null"></option>
-            @for (gender of genderValues; track $index) {
-              <option [value]="gender">{{ { null: '', MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' }[gender] }}</option>
-            }
-          </select>
         </div>
 
         <div class="mb-3">
@@ -114,82 +81,48 @@
           </div>
         </div>
 
-        @let emailRef = editForm.get('email')!;
         <div class="mb-3">
-          <label class="form-label" for="field_email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-          @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
-            <div>
-              @if (editForm.get('email')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
+          <label class="form-label" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.id }}</option>
+            }
+          </select>
         </div>
 
-        @let phoneNumberRef = editForm.get('phoneNumber')!;
         <div class="mb-3">
-          <label class="form-label" for="field_phoneNumber">Phone Number</label>
-          <input
-            type="text"
+          <label for="field_meetupLocations">Meetup Locations</label>
+          <select
             class="form-control"
-            name="phoneNumber"
-            id="field_phoneNumber"
-            data-cy="phoneNumber"
-            formControlName="phoneNumber"
-          />
-          @if (phoneNumberRef.invalid && (phoneNumberRef.dirty || phoneNumberRef.touched)) {
-            <div>
-              @if (editForm.get('phoneNumber')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
+            id="field_meetupLocations"
+            data-cy="meetupLocations"
+            multiple
+            name="meetupLocations"
+            formControlName="meetupLocations"
+            [compareWith]="compareLocation"
+          >
+            @for (locationOption of locationsSharedCollection; track $index) {
+              <option [ngValue]="locationOption">{{ locationOption.id }}</option>
+            }
+          </select>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_preferences">Preferences</label>
-          <input
-            type="text"
+          <label for="field_chats">Chats</label>
+          <select
             class="form-control"
-            name="preferences"
-            id="field_preferences"
-            data-cy="preferences"
-            formControlName="preferences"
-          />
-        </div>
-
-        @let ratingRef = editForm.get('rating')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_rating">Rating</label>
-          <input type="number" class="form-control" name="rating" id="field_rating" data-cy="rating" formControlName="rating" />
-          @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
-            <div>
-              @if (editForm.get('rating')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              @if (editForm.get('rating')?.errors?.min) {
-                <small class="form-text text-danger">This field should be at least 1.</small>
-              }
-              @if (editForm.get('rating')?.errors?.max) {
-                <small class="form-text text-danger">This field cannot be more than 5.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('rating')?.errors?.number">This field should be a number.</small>
-            </div>
-          }
-        </div>
-
-        @let addressRef = editForm.get('address')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_address">Address</label>
-          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
-          @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {
-            <div>
-              @if (editForm.get('address')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
+            id="field_chats"
+            data-cy="chats"
+            multiple
+            name="chats"
+            formControlName="chats"
+            [compareWith]="compareConversation"
+          >
+            @for (conversationOption of conversationsSharedCollection; track $index) {
+              <option [ngValue]="conversationOption">{{ conversationOption.id }}</option>
+            }
+          </select>
         </div>
       </div>
 

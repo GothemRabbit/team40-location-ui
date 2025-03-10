@@ -3,28 +3,30 @@ import dayjs from 'dayjs/esm';
 import { IReview, NewReview } from './review.model';
 
 export const sampleWithRequiredData: IReview = {
-  id: 29632,
+  id: 10639,
   rating: 0,
-  reviewDate: dayjs('2025-02-12'),
+  comments: '../fake-data/blob/hipster.txt',
+  date: dayjs('2025-02-13'),
 };
 
 export const sampleWithPartialData: IReview = {
-  id: 10870,
-  rating: 5,
-  reviewText: '../fake-data/blob/hipster.txt',
-  reviewDate: dayjs('2025-02-12'),
+  id: 9886,
+  rating: 2,
+  comments: '../fake-data/blob/hipster.txt',
+  date: dayjs('2025-02-12'),
 };
 
 export const sampleWithFullData: IReview = {
-  id: 4533,
-  rating: 5,
-  reviewText: '../fake-data/blob/hipster.txt',
-  reviewDate: dayjs('2025-02-12'),
+  id: 276,
+  rating: 2,
+  comments: '../fake-data/blob/hipster.txt',
+  date: dayjs('2025-02-13'),
 };
 
 export const sampleWithNewData: NewReview = {
-  rating: 5,
-  reviewDate: dayjs('2025-02-12'),
+  rating: 3,
+  comments: '../fake-data/blob/hipster.txt',
+  date: dayjs('2025-02-13'),
   id: null,
 };
 

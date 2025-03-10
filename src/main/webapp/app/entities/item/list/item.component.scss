@@ -19,7 +19,7 @@
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
-  //background: #ffffff;
+
   height: 97%;
   width: 100%;
 }
@@ -61,6 +61,7 @@
   //color: #333;
   color: #0022ff; // Bootstrap primary color
   transition: color 0.3s ease-in-out;
+  text-transform: capitalize;
 }
 
 .item-title-link:hover {
@@ -77,7 +78,7 @@
 }
 
 .heart-icon.active {
-  color: black; /* When clicked, changes to red */
+  color: black;
 }
 
 .dots-icon {

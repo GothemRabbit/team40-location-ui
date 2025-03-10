@@ -3,22 +3,22 @@ import dayjs from 'dayjs/esm';
 import { IConversation, NewConversation } from './conversation.model';
 
 export const sampleWithRequiredData: IConversation = {
-  id: 28530,
-  dateCreated: dayjs('2025-02-13T03:29'),
+  id: 10583,
+  dateCreated: dayjs('2025-02-13T05:28'),
 };
 
 export const sampleWithPartialData: IConversation = {
-  id: 8068,
-  dateCreated: dayjs('2025-02-12T14:33'),
+  id: 21370,
+  dateCreated: dayjs('2025-02-13T02:21'),
 };
 
 export const sampleWithFullData: IConversation = {
-  id: 19689,
-  dateCreated: dayjs('2025-02-12T16:57'),
+  id: 7216,
+  dateCreated: dayjs('2025-02-12T15:59'),
 };
 
 export const sampleWithNewData: NewConversation = {
-  dateCreated: dayjs('2025-02-13T06:44'),
+  dateCreated: dayjs('2025-02-13T01:48'),
   id: null,
 };
 

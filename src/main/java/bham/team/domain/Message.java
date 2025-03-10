@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -31,21 +31,22 @@ public class Message implements Serializable {
 
     @NotNull
     @Column(name = "timestamp", nullable = false)
-    private ZonedDateTime timestamp;
+    private Instant timestamp;
 
     @NotNull
     @Column(name = "is_read", nullable = false)
     private Boolean isRead;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userOne", "userTwo" }, allowSetters = true)
-    private Conversation convo;
+    @JsonIgnoreProperties(value = { "profileDetails", "productStatus", "messages", "participants" }, allowSetters = true)
+    private Conversation conversation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserDetails sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private UserDetails receiver;
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -75,16 +76,16 @@ public class Message implements Serializable {
         this.content = content;
     }
 
-    public ZonedDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.timestamp;
     }
 
-    public Message timestamp(ZonedDateTime timestamp) {
+    public Message timestamp(Instant timestamp) {
         this.setTimestamp(timestamp);
         return this;
     }
 
-    public void setTimestamp(ZonedDateTime timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -101,42 +102,29 @@ public class Message implements Serializable {
         this.isRead = isRead;
     }
 
-    public Conversation getConvo() {
-        return this.convo;
+    public Conversation getConversation() {
+        return this.conversation;
     }
 
-    public void setConvo(Conversation conversation) {
-        this.convo = conversation;
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
     }
 
-    public Message convo(Conversation conversation) {
-        this.setConvo(conversation);
+    public Message conversation(Conversation conversation) {
+        this.setConversation(conversation);
         return this;
     }
 
-    public UserDetails getSender() {
-        return this.sender;
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
     }
 
-    public void setSender(UserDetails userDetails) {
-        this.sender = userDetails;
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
     }
 
-    public Message sender(UserDetails userDetails) {
-        this.setSender(userDetails);
-        return this;
-    }
-
-    public UserDetails getReceiver() {
-        return this.receiver;
-    }
-
-    public void setReceiver(UserDetails userDetails) {
-        this.receiver = userDetails;
-    }
-
-    public Message receiver(UserDetails userDetails) {
-        this.setReceiver(userDetails);
+    public Message profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
         return this;
     }
 

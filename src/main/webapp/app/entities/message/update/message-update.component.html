@@ -66,13 +66,13 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_convo">Convo</label>
+          <label class="form-label" for="field_conversation">Conversation</label>
           <select
             class="form-control"
-            id="field_convo"
-            data-cy="convo"
-            name="convo"
-            formControlName="convo"
+            id="field_conversation"
+            data-cy="conversation"
+            name="conversation"
+            formControlName="conversation"
             [compareWith]="compareConversation"
           >
             <option [ngValue]="null"></option>
@@ -83,35 +83,18 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_sender">Sender</label>
+          <label class="form-label" for="field_profileDetails">Profile Details</label>
           <select
             class="form-control"
-            id="field_sender"
-            data-cy="sender"
-            name="sender"
-            formControlName="sender"
-            [compareWith]="compareUserDetails"
+            id="field_profileDetails"
+            data-cy="profileDetails"
+            name="profileDetails"
+            formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
           >
             <option [ngValue]="null"></option>
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_receiver">Receiver</label>
-          <select
-            class="form-control"
-            id="field_receiver"
-            data-cy="receiver"
-            name="receiver"
-            formControlName="receiver"
-            [compareWith]="compareUserDetails"
-          >
-            <option [ngValue]="null"></option>
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
             }
           </select>
         </div>

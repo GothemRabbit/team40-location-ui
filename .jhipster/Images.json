@@ -1,0 +1,26 @@
+{
+  "annotations": {
+    "changelogDate": "20250309145853"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "images",
+      "fieldType": "ImageBlob",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Images",
+  "relationships": [
+    {
+      "otherEntityName": "item",
+      "otherEntityRelationshipName": "images",
+      "relationshipName": "item",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

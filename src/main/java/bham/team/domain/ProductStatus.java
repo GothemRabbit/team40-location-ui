@@ -1,6 +1,7 @@
 package bham.team.domain;
 
 import bham.team.domain.enumeration.ProductState;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -34,18 +35,32 @@ public class ProductStatus implements Serializable {
     @Column(name = "meeting_time")
     private Instant meetingTime;
 
-    @Column(name = "meeting_location")
-    private String meetingLocation;
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
-    @Column(name = "chat_link")
-    private String chatLink;
-
-    @NotNull
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private ZonedDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private ZonedDateTime updatedAt;
+    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "profileDetails", "likes", "seller" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private Item item;
+
+    @JsonIgnoreProperties(value = { "profileDetails", "productStatus", "messages", "participants" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private Conversation conversation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "productStatuses", "profileDetails", "users" }, allowSetters = true)
+    private Location location;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -88,30 +103,17 @@ public class ProductStatus implements Serializable {
         this.meetingTime = meetingTime;
     }
 
-    public String getMeetingLocation() {
-        return this.meetingLocation;
+    public Instant getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public ProductStatus meetingLocation(String meetingLocation) {
-        this.setMeetingLocation(meetingLocation);
+    public ProductStatus updatedAt(Instant updatedAt) {
+        this.setUpdatedAt(updatedAt);
         return this;
     }
 
-    public void setMeetingLocation(String meetingLocation) {
-        this.meetingLocation = meetingLocation;
-    }
-
-    public String getChatLink() {
-        return this.chatLink;
-    }
-
-    public ProductStatus chatLink(String chatLink) {
-        this.setChatLink(chatLink);
-        return this;
-    }
-
-    public void setChatLink(String chatLink) {
-        this.chatLink = chatLink;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -127,17 +129,56 @@ public class ProductStatus implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public ZonedDateTime getUpdatedAt() {
-        return this.updatedAt;
+    public Item getItem() {
+        return this.item;
     }
 
-    public ProductStatus updatedAt(ZonedDateTime updatedAt) {
-        this.setUpdatedAt(updatedAt);
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public ProductStatus item(Item item) {
+        this.setItem(item);
         return this;
     }
 
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public Conversation getConversation() {
+        return this.conversation;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
+    }
+
+    public ProductStatus conversation(Conversation conversation) {
+        this.setConversation(conversation);
+        return this;
+    }
+
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
+    public ProductStatus profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
+        return this;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public ProductStatus location(Location location) {
+        this.setLocation(location);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -166,10 +207,8 @@ public class ProductStatus implements Serializable {
             "id=" + getId() +
             ", status='" + getStatus() + "'" +
             ", meetingTime='" + getMeetingTime() + "'" +
-            ", meetingLocation='" + getMeetingLocation() + "'" +
-            ", chatLink='" + getChatLink() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
             "}";
     }
 }

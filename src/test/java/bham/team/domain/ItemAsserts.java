@@ -1,6 +1,5 @@
 package bham.team.domain;
 
-import static bham.team.domain.AssertUtils.bigDecimalCompareTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ItemAsserts {
@@ -48,21 +47,15 @@ public class ItemAsserts {
     public static void assertItemUpdatableFieldsEquals(Item expected, Item actual) {
         assertThat(expected)
             .as("Verify Item relevant properties")
-            .satisfies(e -> assertThat(e.getItemTitle()).as("check itemTitle").isEqualTo(actual.getItemTitle()))
-            .satisfies(e ->
-                assertThat(e.getItemPrice()).as("check itemPrice").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getItemPrice())
-            )
-            .satisfies(e -> assertThat(e.getItemSize()).as("check itemSize").isEqualTo(actual.getItemSize()))
-            .satisfies(e -> assertThat(e.getItemCondition()).as("check itemCondition").isEqualTo(actual.getItemCondition()))
-            .satisfies(e -> assertThat(e.getItemCategory()).as("check itemCategory").isEqualTo(actual.getItemCategory()))
+            .satisfies(e -> assertThat(e.getTitle()).as("check title").isEqualTo(actual.getTitle()))
+            .satisfies(e -> assertThat(e.getPrice()).as("check price").isEqualTo(actual.getPrice()))
+            .satisfies(e -> assertThat(e.getCondition()).as("check condition").isEqualTo(actual.getCondition()))
+            .satisfies(e -> assertThat(e.getCategory()).as("check category").isEqualTo(actual.getCategory()))
             .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
-            .satisfies(e -> assertThat(e.getItemColour()).as("check itemColour").isEqualTo(actual.getItemColour()))
-            .satisfies(e -> assertThat(e.getItemImage()).as("check itemImage").isEqualTo(actual.getItemImage()))
-            .satisfies(e ->
-                assertThat(e.getItemImageContentType()).as("check itemImage contenty type").isEqualTo(actual.getItemImageContentType())
-            )
-            .satisfies(e -> assertThat(e.getTimeListed()).as("check timeListed").isEqualTo(actual.getTimeListed()))
-            .satisfies(e -> assertThat(e.getItemLike()).as("check itemLike").isEqualTo(actual.getItemLike()));
+            .satisfies(e -> assertThat(e.getSizeItem()).as("check sizeItem").isEqualTo(actual.getSizeItem()))
+            .satisfies(e -> assertThat(e.getBrand()).as("check brand").isEqualTo(actual.getBrand()))
+            .satisfies(e -> assertThat(e.getColour()).as("check colour").isEqualTo(actual.getColour()))
+            .satisfies(e -> assertThat(e.getTimeListed()).as("check timeListed").isEqualTo(actual.getTimeListed()));
     }
 
     /**
@@ -72,6 +65,10 @@ public class ItemAsserts {
      * @param actual the actual entity
      */
     public static void assertItemUpdatableRelationshipsEquals(Item expected, Item actual) {
-        // empty method
+        assertThat(expected)
+            .as("Verify Item relationships")
+            .satisfies(e -> assertThat(e.getWishlists()).as("check wishlists").isEqualTo(actual.getWishlists()))
+            .satisfies(e -> assertThat(e.getProfileDetails()).as("check profileDetails").isEqualTo(actual.getProfileDetails()))
+            .satisfies(e -> assertThat(e.getSeller()).as("check seller").isEqualTo(actual.getSeller()));
     }
 }

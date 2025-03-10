@@ -1,5 +1,6 @@
 package bham.team.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -31,12 +32,33 @@ public class Review implements Serializable {
     private Integer rating;
 
     @Lob
-    @Column(name = "review_text")
-    private String reviewText;
+    @Column(name = "comments", nullable = false)
+    private String comments;
 
     @NotNull
-    @Column(name = "review_date", nullable = false)
-    private LocalDate reviewDate;
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        allowSetters = true
+    )
+    private UserDetails buyer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        allowSetters = true
+    )
+    private UserDetails seller;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -66,30 +88,69 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
-    public String getReviewText() {
-        return this.reviewText;
+    public String getComments() {
+        return this.comments;
     }
 
-    public Review reviewText(String reviewText) {
-        this.setReviewText(reviewText);
+    public Review comments(String comments) {
+        this.setComments(comments);
         return this;
     }
 
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
-    public LocalDate getReviewDate() {
-        return this.reviewDate;
+    public LocalDate getDate() {
+        return this.date;
     }
 
-    public Review reviewDate(LocalDate reviewDate) {
-        this.setReviewDate(reviewDate);
+    public Review date(LocalDate date) {
+        this.setDate(date);
         return this;
     }
 
-    public void setReviewDate(LocalDate reviewDate) {
-        this.reviewDate = reviewDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public ProfileDetails getProfileDetails() {
+        return this.profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
+    }
+
+    public Review profileDetails(ProfileDetails profileDetails) {
+        this.setProfileDetails(profileDetails);
+        return this;
+    }
+
+    public UserDetails getBuyer() {
+        return this.buyer;
+    }
+
+    public void setBuyer(UserDetails userDetails) {
+        this.buyer = userDetails;
+    }
+
+    public Review buyer(UserDetails userDetails) {
+        this.setBuyer(userDetails);
+        return this;
+    }
+
+    public UserDetails getSeller() {
+        return this.seller;
+    }
+
+    public void setSeller(UserDetails userDetails) {
+        this.seller = userDetails;
+    }
+
+    public Review seller(UserDetails userDetails) {
+        this.setSeller(userDetails);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -117,8 +178,8 @@ public class Review implements Serializable {
         return "Review{" +
             "id=" + getId() +
             ", rating=" + getRating() +
-            ", reviewText='" + getReviewText() + "'" +
-            ", reviewDate='" + getReviewDate() + "'" +
+            ", comments='" + getComments() + "'" +
+            ", date='" + getDate() + "'" +
             "}";
     }
 }

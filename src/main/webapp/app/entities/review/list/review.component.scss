@@ -1,45 +1,48 @@
 :root {
   background-color: #f8dc75;
 }
-
 #page {
   background-color: #f8dc75;
   border-color: #f8dc75;
 }
-
 .commentBoxRight {
   background-color: white;
-  border: none;
-  outline: none;
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 5px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-  gap: 10px;
-  width: 565px;
-  margin-left: 20px;
+  gap: 20px;
+  width: 700px;
+  margin-left: 75px;
+  overflow: hidden;
 }
 .commentBoxRight:hover {
   transform: translateY(-5px);
   transition: all ease 0.3s;
 }
-
 .scrollbarBoxRight {
-  width: 600px;
+  width: 800px;
   height: 500px;
   border: none;
+  justify-content: center;
+  align-items: center;
   overflow-y: scroll;
+  float: left;
 }
 
 .scrollbarBoxRight::-webkit-scrollbar-thumb {
   background-color: black;
 }
-.box {
+.scrollbarBoxRight::-webkit-scrollbar-track {
+  background: #f8dc75;
+}
+
+#box {
   display: grid;
-  padding: 10px;
+  padding: 20px;
   margin: auto;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 5px;
 }
 
 .avRating {
@@ -52,20 +55,18 @@
   width: 300px;
   height: 400px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .avRating h1 {
   font-size: 100px;
   border-radius: 5px;
 }
-.starIn {
+.star {
   font-size: 50px;
 }
 .avRating:hover {
   transform: translateY(-5px);
   transition: all ease 0.3s;
 }
-
 .ratingBoxLeft {
   height: 500px;
   width: 500px;
@@ -73,8 +74,10 @@
   justify-content: center;
   display: grid;
   place-items: center;
+  margin-left: 15px;
 }
 h2 {
+  font-weight: bold;
   text-align: center;
 }
 
@@ -98,20 +101,14 @@ p {
 }
 #date {
   text-align: right;
+  font-size: 13px;
 }
-
 .avatar {
   vertical-align: middle;
   width: 30px;
   height: 30px;
   border-radius: 50%;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-.d-flex justify-content-end {
-  padding: 10px 15px;
-  border-radius: 5px;
-  color: #3e8acc;
 }
 
 #btn btn-primary jh-create-entity create-review {
@@ -124,7 +121,6 @@ p {
 
 button {
   background-color: #e1bf43;
-  color: white;
   display: inline-block;
   border-radius: 14px;
   font-size: 13px;
@@ -142,11 +138,4 @@ button:hover {
 #tD {
   width: 50px;
   position: relative;
-}
-#stars {
-  position: absolute;
-  background-color: gold;
-  top: 0;
-  left: 0;
-  height: 18px;
 }

@@ -19,8 +19,11 @@ type ReviewFormDefaults = Pick<NewReview, 'id'>;
 type ReviewFormGroupContent = {
   id: FormControl<IReview['id'] | NewReview['id']>;
   rating: FormControl<IReview['rating']>;
-  reviewText: FormControl<IReview['reviewText']>;
-  reviewDate: FormControl<IReview['reviewDate']>;
+  comments: FormControl<IReview['comments']>;
+  date: FormControl<IReview['date']>;
+  profileDetails: FormControl<IReview['profileDetails']>;
+  buyer: FormControl<IReview['buyer']>;
+  seller: FormControl<IReview['seller']>;
 };
 
 export type ReviewFormGroup = FormGroup<ReviewFormGroupContent>;
@@ -43,10 +46,15 @@ export class ReviewFormService {
       rating: new FormControl(reviewRawValue.rating, {
         validators: [Validators.required, Validators.min(0), Validators.max(5)],
       }),
-      reviewText: new FormControl(reviewRawValue.reviewText),
-      reviewDate: new FormControl(reviewRawValue.reviewDate, {
+      comments: new FormControl(reviewRawValue.comments, {
         validators: [Validators.required],
       }),
+      date: new FormControl(reviewRawValue.date, {
+        validators: [Validators.required],
+      }),
+      profileDetails: new FormControl(reviewRawValue.profileDetails),
+      buyer: new FormControl(reviewRawValue.buyer),
+      seller: new FormControl(reviewRawValue.seller),
     });
   }
 

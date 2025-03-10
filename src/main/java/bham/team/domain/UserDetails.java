@@ -1,10 +1,12 @@
 package bham.team.domain;
 
-import bham.team.domain.enumeration.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -33,44 +35,51 @@ public class UserDetails implements Serializable {
     private String bioImageContentType;
 
     @NotNull
+    @Pattern(regexp = "^\\S+$")
     @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
-
-    @NotNull
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @NotNull
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private Gender gender;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @NotNull
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private User user;
 
-    @NotNull
-    @Column(name = "phone_number", nullable = false, unique = true)
-    private String phoneNumber;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seller")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "seller" }, allowSetters = true)
+    private Set<Item> itemsOnSales = new HashSet<>();
 
-    @Column(name = "preferences")
-    private String preferences;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "userDetails", "items" }, allowSetters = true)
+    private Set<Wishlist> wishlists = new HashSet<>();
 
-    @NotNull
-    @DecimalMin(value = "1")
-    @DecimalMax(value = "5")
-    @Column(name = "rating", nullable = false)
-    private Float rating;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_user_details__meetup_locations",
+        joinColumns = @JoinColumn(name = "user_details_id"),
+        inverseJoinColumns = @JoinColumn(name = "meetup_locations_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "users" }, allowSetters = true)
+    private Set<Location> meetupLocations = new HashSet<>();
 
-    @NotNull
-    @Column(name = "address", nullable = false)
-    private String address;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "buyer")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "buyer", "seller" }, allowSetters = true)
+    private Set<Review> buyersReviews = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seller")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "buyer", "seller" }, allowSetters = true)
+    private Set<Review> reviewsOfSellers = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "participants")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "participants", "productStatus", "messages" }, allowSetters = true)
+    private Set<Conversation> chats = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -126,45 +135,6 @@ public class UserDetails implements Serializable {
         this.userName = userName;
     }
 
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public UserDetails firstName(String firstName) {
-        this.setFirstName(firstName);
-        return this;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public UserDetails lastName(String lastName) {
-        this.setLastName(lastName);
-        return this;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Gender getGender() {
-        return this.gender;
-    }
-
-    public UserDetails gender(Gender gender) {
-        this.setGender(gender);
-        return this;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
     public LocalDate getBirthDate() {
         return this.birthDate;
     }
@@ -178,69 +148,195 @@ public class UserDetails implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public String getEmail() {
-        return this.email;
+    public User getUser() {
+        return this.user;
     }
 
-    public UserDetails email(String email) {
-        this.setEmail(email);
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public UserDetails user(User user) {
+        this.setUser(user);
         return this;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public Set<Item> getItemsOnSales() {
+        return this.itemsOnSales;
     }
 
-    public String getPhoneNumber() {
-        return this.phoneNumber;
+    public void setItemsOnSales(Set<Item> items) {
+        if (this.itemsOnSales != null) {
+            this.itemsOnSales.forEach(i -> i.setSeller(null));
+        }
+        if (items != null) {
+            items.forEach(i -> i.setSeller(this));
+        }
+        this.itemsOnSales = items;
     }
 
-    public UserDetails phoneNumber(String phoneNumber) {
-        this.setPhoneNumber(phoneNumber);
+    public UserDetails itemsOnSales(Set<Item> items) {
+        this.setItemsOnSales(items);
         return this;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPreferences() {
-        return this.preferences;
-    }
-
-    public UserDetails preferences(String preferences) {
-        this.setPreferences(preferences);
+    public UserDetails addItemsOnSale(Item item) {
+        this.itemsOnSales.add(item);
+        item.setSeller(this);
         return this;
     }
 
-    public void setPreferences(String preferences) {
-        this.preferences = preferences;
-    }
-
-    public Float getRating() {
-        return this.rating;
-    }
-
-    public UserDetails rating(Float rating) {
-        this.setRating(rating);
+    public UserDetails removeItemsOnSale(Item item) {
+        this.itemsOnSales.remove(item);
+        item.setSeller(null);
         return this;
     }
 
-    public void setRating(Float rating) {
-        this.rating = rating;
+    public Set<Wishlist> getWishlists() {
+        return this.wishlists;
     }
 
-    public String getAddress() {
-        return this.address;
+    public void setWishlists(Set<Wishlist> wishlists) {
+        if (this.wishlists != null) {
+            this.wishlists.forEach(i -> i.setUserDetails(null));
+        }
+        if (wishlists != null) {
+            wishlists.forEach(i -> i.setUserDetails(this));
+        }
+        this.wishlists = wishlists;
     }
 
-    public UserDetails address(String address) {
-        this.setAddress(address);
+    public UserDetails wishlists(Set<Wishlist> wishlists) {
+        this.setWishlists(wishlists);
         return this;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public UserDetails addWishlist(Wishlist wishlist) {
+        this.wishlists.add(wishlist);
+        wishlist.setUserDetails(this);
+        return this;
+    }
+
+    public UserDetails removeWishlist(Wishlist wishlist) {
+        this.wishlists.remove(wishlist);
+        wishlist.setUserDetails(null);
+        return this;
+    }
+
+    public Set<Location> getMeetupLocations() {
+        return this.meetupLocations;
+    }
+
+    public void setMeetupLocations(Set<Location> locations) {
+        this.meetupLocations = locations;
+    }
+
+    public UserDetails meetupLocations(Set<Location> locations) {
+        this.setMeetupLocations(locations);
+        return this;
+    }
+
+    public UserDetails addMeetupLocations(Location location) {
+        this.meetupLocations.add(location);
+        return this;
+    }
+
+    public UserDetails removeMeetupLocations(Location location) {
+        this.meetupLocations.remove(location);
+        return this;
+    }
+
+    public Set<Review> getBuyersReviews() {
+        return this.buyersReviews;
+    }
+
+    public void setBuyersReviews(Set<Review> reviews) {
+        if (this.buyersReviews != null) {
+            this.buyersReviews.forEach(i -> i.setBuyer(null));
+        }
+        if (reviews != null) {
+            reviews.forEach(i -> i.setBuyer(this));
+        }
+        this.buyersReviews = reviews;
+    }
+
+    public UserDetails buyersReviews(Set<Review> reviews) {
+        this.setBuyersReviews(reviews);
+        return this;
+    }
+
+    public UserDetails addBuyersReview(Review review) {
+        this.buyersReviews.add(review);
+        review.setBuyer(this);
+        return this;
+    }
+
+    public UserDetails removeBuyersReview(Review review) {
+        this.buyersReviews.remove(review);
+        review.setBuyer(null);
+        return this;
+    }
+
+    public Set<Review> getReviewsOfSellers() {
+        return this.reviewsOfSellers;
+    }
+
+    public void setReviewsOfSellers(Set<Review> reviews) {
+        if (this.reviewsOfSellers != null) {
+            this.reviewsOfSellers.forEach(i -> i.setSeller(null));
+        }
+        if (reviews != null) {
+            reviews.forEach(i -> i.setSeller(this));
+        }
+        this.reviewsOfSellers = reviews;
+    }
+
+    public UserDetails reviewsOfSellers(Set<Review> reviews) {
+        this.setReviewsOfSellers(reviews);
+        return this;
+    }
+
+    public UserDetails addReviewsOfSeller(Review review) {
+        this.reviewsOfSellers.add(review);
+        review.setSeller(this);
+        return this;
+    }
+
+    public UserDetails removeReviewsOfSeller(Review review) {
+        this.reviewsOfSellers.remove(review);
+        review.setSeller(null);
+        return this;
+    }
+
+    public Set<Conversation> getChats() {
+        return this.chats;
+    }
+
+    public void setChats(Set<Conversation> conversations) {
+        if (this.chats != null) {
+            this.chats.forEach(i -> i.removeParticipants(this));
+        }
+        if (conversations != null) {
+            conversations.forEach(i -> i.addParticipants(this));
+        }
+        this.chats = conversations;
+    }
+
+    public UserDetails chats(Set<Conversation> conversations) {
+        this.setChats(conversations);
+        return this;
+    }
+
+    public UserDetails addChats(Conversation conversation) {
+        this.chats.add(conversation);
+        conversation.getParticipants().add(this);
+        return this;
+    }
+
+    public UserDetails removeChats(Conversation conversation) {
+        this.chats.remove(conversation);
+        conversation.getParticipants().remove(this);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -270,15 +366,7 @@ public class UserDetails implements Serializable {
             ", bioImage='" + getBioImage() + "'" +
             ", bioImageContentType='" + getBioImageContentType() + "'" +
             ", userName='" + getUserName() + "'" +
-            ", firstName='" + getFirstName() + "'" +
-            ", lastName='" + getLastName() + "'" +
-            ", gender='" + getGender() + "'" +
             ", birthDate='" + getBirthDate() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", preferences='" + getPreferences() + "'" +
-            ", rating=" + getRating() +
-            ", address='" + getAddress() + "'" +
             "}";
     }
 }

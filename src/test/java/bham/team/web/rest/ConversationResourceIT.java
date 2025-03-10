@@ -2,28 +2,35 @@ package bham.team.web.rest;
 
 import static bham.team.domain.ConversationAsserts.*;
 import static bham.team.web.rest.TestUtil.createUpdateProxyForBean;
-import static bham.team.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import bham.team.IntegrationTest;
 import bham.team.domain.Conversation;
 import bham.team.repository.ConversationRepository;
+import bham.team.service.ConversationService;
+import bham.team.service.dto.ConversationDTO;
+import bham.team.service.mapper.ConversationMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,12 +40,13 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link ConversationResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class ConversationResourceIT {
 
-    private static final ZonedDateTime DEFAULT_DATE_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_DATE_CREATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/conversations";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -51,6 +59,15 @@ class ConversationResourceIT {
 
     @Autowired
     private ConversationRepository conversationRepository;
+
+    @Mock
+    private ConversationRepository conversationRepositoryMock;
+
+    @Autowired
+    private ConversationMapper conversationMapper;
+
+    @Mock
+    private ConversationService conversationServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -100,18 +117,20 @@ class ConversationResourceIT {
     void createConversation() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the Conversation
-        var returnedConversation = om.readValue(
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
+        var returnedConversationDTO = om.readValue(
             restConversationMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversation)))
+                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversationDTO)))
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(),
-            Conversation.class
+            ConversationDTO.class
         );
 
         // Validate the Conversation in the database
         assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        var returnedConversation = conversationMapper.toEntity(returnedConversationDTO);
         assertConversationUpdatableFieldsEquals(returnedConversation, getPersistedConversation(returnedConversation));
 
         insertedConversation = returnedConversation;
@@ -122,12 +141,13 @@ class ConversationResourceIT {
     void createConversationWithExistingId() throws Exception {
         // Create the Conversation with an existing ID
         conversation.setId(1L);
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restConversationMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversation)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversationDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Conversation in the database
@@ -142,9 +162,10 @@ class ConversationResourceIT {
         conversation.setDateCreated(null);
 
         // Create the Conversation, which fails.
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
 
         restConversationMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversation)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversationDTO)))
             .andExpect(status().isBadRequest());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
@@ -162,7 +183,24 @@ class ConversationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(conversation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].dateCreated").value(hasItem(sameInstant(DEFAULT_DATE_CREATED))));
+            .andExpect(jsonPath("$.[*].dateCreated").value(hasItem(DEFAULT_DATE_CREATED.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllConversationsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(conversationServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restConversationMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(conversationServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllConversationsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(conversationServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restConversationMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(conversationRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -177,7 +215,7 @@ class ConversationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(conversation.getId().intValue()))
-            .andExpect(jsonPath("$.dateCreated").value(sameInstant(DEFAULT_DATE_CREATED)));
+            .andExpect(jsonPath("$.dateCreated").value(DEFAULT_DATE_CREATED.toString()));
     }
 
     @Test
@@ -200,12 +238,13 @@ class ConversationResourceIT {
         // Disconnect from session so that the updates on updatedConversation are not directly saved in db
         em.detach(updatedConversation);
         updatedConversation.dateCreated(UPDATED_DATE_CREATED);
+        ConversationDTO conversationDTO = conversationMapper.toDto(updatedConversation);
 
         restConversationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedConversation.getId())
+                put(ENTITY_API_URL_ID, conversationDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedConversation))
+                    .content(om.writeValueAsBytes(conversationDTO))
             )
             .andExpect(status().isOk());
 
@@ -220,12 +259,15 @@ class ConversationResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         conversation.setId(longCount.incrementAndGet());
 
+        // Create the Conversation
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restConversationMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, conversation.getId())
+                put(ENTITY_API_URL_ID, conversationDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(conversation))
+                    .content(om.writeValueAsBytes(conversationDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -239,12 +281,15 @@ class ConversationResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         conversation.setId(longCount.incrementAndGet());
 
+        // Create the Conversation
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restConversationMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(conversation))
+                    .content(om.writeValueAsBytes(conversationDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -258,9 +303,12 @@ class ConversationResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         conversation.setId(longCount.incrementAndGet());
 
+        // Create the Conversation
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restConversationMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversation)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(conversationDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Conversation in the database
@@ -332,12 +380,15 @@ class ConversationResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         conversation.setId(longCount.incrementAndGet());
 
+        // Create the Conversation
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restConversationMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, conversation.getId())
+                patch(ENTITY_API_URL_ID, conversationDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(conversation))
+                    .content(om.writeValueAsBytes(conversationDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -351,12 +402,15 @@ class ConversationResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         conversation.setId(longCount.incrementAndGet());
 
+        // Create the Conversation
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restConversationMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(conversation))
+                    .content(om.writeValueAsBytes(conversationDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -370,9 +424,12 @@ class ConversationResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         conversation.setId(longCount.incrementAndGet());
 
+        // Create the Conversation
+        ConversationDTO conversationDTO = conversationMapper.toDto(conversation);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restConversationMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(conversation)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(conversationDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Conversation in the database

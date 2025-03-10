@@ -32,6 +32,7 @@ describe('Item Management Component', () => {
                 page: '1',
                 size: '1',
                 sort: 'id,desc',
+                'filter[someId.in]': 'dc4279ea-cfb9-11ec-9d64-0242ac120002',
               }),
             ),
             snapshot: {
@@ -40,6 +41,7 @@ describe('Item Management Component', () => {
                 page: '1',
                 size: '1',
                 sort: 'id,desc',
+                'filter[someId.in]': 'dc4279ea-cfb9-11ec-9d64-0242ac120002',
               }),
             },
           },
@@ -118,6 +120,18 @@ describe('Item Management Component', () => {
 
     // THEN
     expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ sort: ['id,desc'] }));
+  });
+
+  it('should infinite scroll', () => {
+    // GIVEN
+    comp.loadNextPage();
+    comp.loadNextPage();
+    comp.loadNextPage();
+
+    // THEN
+    expect(service.query).toHaveBeenCalledTimes(3);
+    expect(service.query).toHaveBeenNthCalledWith(2, expect.objectContaining({ page: '1' }));
+    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ page: '2' }));
   });
 
   describe('delete', () => {

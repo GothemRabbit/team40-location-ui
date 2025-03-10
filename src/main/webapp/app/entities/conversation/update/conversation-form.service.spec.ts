@@ -21,8 +21,8 @@ describe('Conversation Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             dateCreated: expect.any(Object),
-            userOne: expect.any(Object),
-            userTwo: expect.any(Object),
+            profileDetails: expect.any(Object),
+            participants: expect.any(Object),
           }),
         );
       });
@@ -34,8 +34,8 @@ describe('Conversation Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             dateCreated: expect.any(Object),
-            userOne: expect.any(Object),
-            userTwo: expect.any(Object),
+            profileDetails: expect.any(Object),
+            participants: expect.any(Object),
           }),
         );
       });
