@@ -16,6 +16,7 @@ import { ConversationDeleteDialogComponent } from '../delete/conversation-delete
   standalone: true,
   selector: 'jhi-conversation',
   templateUrl: './conversation.component.html',
+  styleUrls: ['./conversation.component.css'],
   imports: [
     RouterModule,
     FormsModule,

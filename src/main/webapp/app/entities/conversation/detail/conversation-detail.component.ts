@@ -9,6 +9,7 @@ import { IConversation } from '../conversation.model';
   standalone: true,
   selector: 'jhi-conversation-detail',
   templateUrl: './conversation-detail.component.html',
+  styleUrls: ['./conversation-detail.component.css'],
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class ConversationDetailComponent {
