@@ -60,6 +60,11 @@
         <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
           <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
         </button>
+
+        <button type="submit" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+          <fa-icon icon="times"></fa-icon>
+          <span class="d-none d-md-inline">Delete</span>
+        </button>
       </div>
     }
   </div>
