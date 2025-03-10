@@ -56,12 +56,22 @@ export class ItemService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  // find(id: number): Observable<IItem> {
+  //   return this.http.get<IItem>(`${this.resourceUrl}/${id}?eagerload=true`); // Ensures images are loaded
+  // }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestItem[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
+
+  // //for like
+  // query(req?: any): Observable<EntityArrayResponseType> {
+  //   const options = createRequestOption(req);
+  //   return this.http.get<IItem[]>(this.resourceUrl, { params: options, observe: 'response' });
+  // }
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });

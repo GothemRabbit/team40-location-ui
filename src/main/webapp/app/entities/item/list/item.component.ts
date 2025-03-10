@@ -17,6 +17,10 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.component';
 import { EntityArrayResponseType, ItemService } from '../service/item.service';
 import { IItem } from '../item.model';
+import { ILikes } from '../../likes/likes.model';
+import { LikesService } from '../../likes/service/likes.service';
+import { ProfileDetailsService } from '../../profile-details/service/profile-details.service';
+import { AccountService } from '../../../core/auth/account.service';
 
 @Component({
   standalone: true,
@@ -35,6 +39,7 @@ import { IItem } from '../item.model';
   ],
 })
 export class ItemComponent implements OnInit {
+  username?: string;
   subscription: Subscription | null = null;
   items?: IItem[];
   isLoading = false;
@@ -54,10 +59,15 @@ export class ItemComponent implements OnInit {
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
+  private readonly accountService = inject(AccountService);
+  private readonly profileDetailsService = inject(ProfileDetailsService);
+  //private likeService : LikesService;
 
   trackId = (item: IItem): number => this.itemService.getItemIdentifier(item);
 
   ngOnInit(): void {
+    this.username = this.accountService.getCurrentUserusername();
+
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -82,6 +92,23 @@ export class ItemComponent implements OnInit {
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
   }
+
+  // isLiked(item: IItem): boolean {
+  //   // Check if the current profile has liked the item
+  //   return item.likes?.some(like => like.profileDetails?.id == this.username) ?? false;
+  // }
+
+  toggleLike(item: IItem): void {
+    if (!this.username) {
+      console.error('Profile ID not loaded.');
+      return;
+    }
+  }
+
+  // // ⭐ Toggle Dropdown Visibility
+  // toggleDropdown(item: IItem): void {
+  //   item.dropDown = !item.dropDown;
+  // }
 
   delete(item: IItem): void {
     const modalRef = this.modalService.open(ItemDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
@@ -111,11 +138,11 @@ export class ItemComponent implements OnInit {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    this.fillComponentAttributesFromResponseHeader(response.headers);
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.items = dataFromBody;
-  }
+  // protected onResponseSuccess(response: EntityArrayResponseType): void {
+  //   this.fillComponentAttributesFromResponseHeader(response.headers);
+  //   const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+  //   this.items = dataFromBody;
+  // }
 
   protected fillComponentAttributesFromResponseBody(data: IItem[] | null): IItem[] {
     // If there is previous link, data is a infinite scroll pagination content.
@@ -170,5 +197,15 @@ export class ItemComponent implements OnInit {
         queryParams: queryParamsObj,
       });
     });
+  }
+
+  protected onResponseSuccess(response: EntityArrayResponseType): void {
+    this.fillComponentAttributesFromResponseHeader(response.headers);
+    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+
+    this.items = dataFromBody.map(item => ({
+      ...item,
+      images: item.images ?? [],
+    }));
   }
 }
