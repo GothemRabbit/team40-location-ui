@@ -35,7 +35,6 @@ export default class SettingsComponent implements OnInit {
     authorities: new FormControl(initialAccount.authorities, { nonNullable: true }),
     imageUrl: new FormControl(initialAccount.imageUrl, { nonNullable: true }),
     login: new FormControl(initialAccount.login, { nonNullable: true }),
-    username: new FormControl(initialAccount.username, { nonNullable: true }),
   });
 
   private readonly accountService = inject(AccountService);

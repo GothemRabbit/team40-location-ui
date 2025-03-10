@@ -184,13 +184,6 @@ public class ItemResource {
         return ResponseUtil.wrapOrNotFound(itemDTO);
     }
 
-    //getting item with likes
-    @GetMapping("/items/{id}")
-    public ResponseEntity<ItemDTO> getItemWithLikes(@PathVariable Long id) {
-        Optional<ItemDTO> itemDTO = itemService.findOneWithLikes(id);
-        return ResponseUtil.wrapOrNotFound(itemDTO);
-    }
-
     /**
      * {@code DELETE  /items/:id} : delete the "id" item.
      *

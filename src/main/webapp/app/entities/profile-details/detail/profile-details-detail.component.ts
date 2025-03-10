@@ -10,10 +10,12 @@ import { IProfileDetails } from '../profile-details.model';
   standalone: true,
   selector: 'jhi-profile-details-detail',
   templateUrl: './profile-details-detail.component.html',
+  styleUrl: './profile-details-detail.component.scss',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class ProfileDetailsDetailComponent {
   profileDetails = input<IProfileDetails | null>(null);
+  activeTab = 'listings';
 
   protected dataUtils = inject(DataUtils);
 
