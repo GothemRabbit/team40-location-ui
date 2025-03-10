@@ -149,29 +149,29 @@
   <!-- Optionally keep the JHipster Table View Below -->
   <div *ngIf="images && images.length > 0" class="table-responsive table-entities" id="entities">
     <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span>ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="images">
-            <div class="d-flex">
-              <span>Images</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="item.id">
-            <div class="d-flex">
-              <span>Item</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
+      <!--      <thead>-->
+      <!--        <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">-->
+      <!--          <th scope="col" jhiSortBy="id">-->
+      <!--            <div class="d-flex">-->
+      <!--              <span>ID</span>-->
+      <!--              <fa-icon class="p-1" icon="sort"></fa-icon>-->
+      <!--            </div>-->
+      <!--          </th>-->
+      <!--          <th scope="col" jhiSortBy="images">-->
+      <!--            <div class="d-flex">-->
+      <!--              <span>Images</span>-->
+      <!--              <fa-icon class="p-1" icon="sort"></fa-icon>-->
+      <!--            </div>-->
+      <!--          </th>-->
+      <!--          <th scope="col" jhiSortBy="item.id">-->
+      <!--            <div class="d-flex">-->
+      <!--              <span>Item</span>-->
+      <!--              <fa-icon class="p-1" icon="sort"></fa-icon>-->
+      <!--            </div>-->
+      <!--          </th>-->
+      <!--          <th scope="col"></th>-->
+      <!--        </tr>-->
+      <!--      </thead>-->
       <tbody>
         <tr *ngFor="let img of images; trackBy: trackId">
           <td>
@@ -213,6 +213,7 @@
     </table>
   </div>
 </div>
+
 <!--<div>-->
 <!--  <h2 id="page-heading" data-cy="ImagesHeading">-->
 <!--    <span>Images</span>-->
