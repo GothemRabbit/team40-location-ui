@@ -102,6 +102,10 @@ public class ItemService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public Optional<ItemDTO> findOneWithLikes(Long id) {
+        return itemRepository.findOneWithLikes(id).map(itemMapper::toDto); // Assuming itemMapper is used to map the entity to DTO
+    }
+
     /**
      * Get one item by id.
      *

@@ -4,6 +4,8 @@ import { IProfileDetails } from 'app/entities/profile-details/profile-details.mo
 import { IUserDetails } from 'app/entities/user-details/user-details.model';
 import { Condition } from 'app/entities/enumerations/condition.model';
 import { Category } from 'app/entities/enumerations/category.model';
+import { IImages } from '../images/images.model';
+import { ILikes } from '../likes/likes.model';
 
 export interface IItem {
   id: number;
@@ -19,6 +21,8 @@ export interface IItem {
   wishlists?: Pick<IWishlist, 'id'>[] | null;
   profileDetails?: Pick<IProfileDetails, 'id'> | null;
   seller?: Pick<IUserDetails, 'id'> | null;
+  images?: IImages[];
+  likes?: ILikes[];
 }
 
 export type NewItem = Omit<IItem, 'id'> & { id: null };

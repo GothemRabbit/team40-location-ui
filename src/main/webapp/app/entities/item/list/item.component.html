@@ -1,23 +1,8 @@
 <div>
   <h2 id="page-heading" data-cy="ItemHeading">
-    <span>Items</span>
+    <span>Item List</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-item"
-        [routerLink]="['/item/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Item</span>
-      </button>
-    </div>
+    <div class="d-flex justify-content-end"></div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -31,170 +16,48 @@
   }
 
   @if (items && items.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span>ID</span>
+    <div class="row g-4">
+      @for (item of items; track trackId(item)) {
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">
+              <!--               <span class="heart-icon" (click)="toggleLike(item)">-->
+              <!--               <span *ngIf="isLiked(item)" style="color: red;">&#10084;</span> &lt;!&ndash; Filled heart for liked &ndash;&gt;-->
+              <!--               <span *ngIf="!isLiked(item)" style="color: grey;">&#9825;</span> &lt;!&ndash; Empty heart for not liked &ndash;&gt;-->
+              <!--             </span>-->
+              <!--              <div class="dropdown">-->
+              <!--                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>-->
+              <!--                &lt;!&ndash;                <div class="dropdown-content" *ngIf="item.dropDown">&ndash;&gt;-->
+              <!--                &lt;!&ndash;                  <a href="#">Edit</a>&ndash;&gt;-->
+              <!--                &lt;!&ndash;                  <a href="#">Delete</a>&ndash;&gt;-->
+              <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+              <!--              </div>-->
+            </div>
+            @if (item.images && item.images.length > 0) {
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
+              </a>
+            } @else {
+              <!-- Default Placeholder Image -->
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
+              </a>
+            }
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
+            <div class="card-body">
+              <h5 class="card-title">
+                <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
+              </h5>
+              <div class="texts">
+                <p class="card-text">{{ item.sizeItem }}</p>
+                <p class="card-text"><strong>£</strong> {{ item.price }}</p>
               </div>
-            </th>
-            <th scope="col" jhiSortBy="title">
-              <div class="d-flex">
-                <span>Title</span>
+            </div>
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="price">
-              <div class="d-flex">
-                <span>Price</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="condition">
-              <div class="d-flex">
-                <span>Condition</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="category">
-              <div class="d-flex">
-                <span>Category</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="description">
-              <div class="d-flex">
-                <span>Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="sizeItem">
-              <div class="d-flex">
-                <span>Size Item</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="brand">
-              <div class="d-flex">
-                <span>Brand</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="colour">
-              <div class="d-flex">
-                <span>Colour</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="timeListed">
-              <div class="d-flex">
-                <span>Time Listed</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="profileDetails.id">
-              <div class="d-flex">
-                <span>Profile Details</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="seller.id">
-              <div class="d-flex">
-                <span>Seller</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
-          @for (item of items; track trackId(item)) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/item', item.id, 'view']">{{ item.id }}</a>
-              </td>
-              <td>{{ item.title }}</td>
-              <td>{{ item.price }}</td>
-              <td>
-                {{
-                  {
-                    null: '',
-                    BRANDNEW: 'BRANDNEW',
-                    LIKENEW: 'LIKENEW',
-                    FAIRLYUSED: 'FAIRLYUSED',
-                    WELLUSED: 'WELLUSED',
-                    HEAVILYUSED: 'HEAVILYUSED',
-                  }[item.condition ?? 'null']
-                }}
-              </td>
-              <td>
-                {{
-                  {
-                    null: '',
-                    FOOTWEAR: 'FOOTWEAR',
-                    CLOTHING: 'CLOTHING',
-                    HEADWEAR: 'HEADWEAR',
-                    ELECTRONICS: 'ELECTRONICS',
-                    HOBBIES: 'HOBBIES',
-                    BAGS: 'BAGS',
-                    OTHERS: 'OTHERS',
-                  }[item.category ?? 'null']
-                }}
-              </td>
-              <td>{{ item.description }}</td>
-              <td>{{ item.sizeItem }}</td>
-              <td>{{ item.brand }}</td>
-              <td>{{ item.colour }}</td>
-              <td>{{ item.timeListed | formatMediumDatetime }}</td>
-              <td>
-                @if (item.profileDetails) {
-                  <div>
-                    <a [routerLink]="['/profile-details', item.profileDetails.id, 'view']">{{ item.profileDetails.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (item.seller) {
-                  <div>
-                    <a [routerLink]="['/user-details', item.seller.id, 'view']">{{ item.seller.id }}</a>
-                  </div>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/item', item.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
-                  </a>
-
-                  <a [routerLink]="['/item', item.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(item)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+            <div class="d-flex justify-content-between"></div>
+          </div>
+        </div>
+      }
     </div>
   }
 </div>

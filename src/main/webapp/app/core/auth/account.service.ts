@@ -68,6 +68,12 @@ export class AccountService {
     return this.authenticationState.asObservable();
   }
 
+  //get profile id
+  getCurrentUserusername(): string {
+    const user = this.userIdentity(); // Get the current user from the signal
+    return user?.username ?? 'user cannot be found'; // Return the profileId or -1 if not found
+  }
+
   private fetch(): Observable<Account> {
     return this.http.get<Account>(this.applicationConfigService.getEndpointFor('api/account'));
   }
