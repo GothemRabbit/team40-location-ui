@@ -32,8 +32,8 @@ export class ImagesComponent implements OnInit {
   subscription: Subscription | null = null;
   images?: IImages[];
   isLoading = false;
-
   sortState = sortStateSignal({});
+  currentSlideIndex = 0;
 
   public readonly router = inject(Router);
   protected readonly imagesService = inject(ImagesService);
@@ -42,8 +42,9 @@ export class ImagesComponent implements OnInit {
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
-  trackId = (item: IImages): number => this.imagesService.getImagesIdentifier(item);
+  trackId(index: number, item: IImages): number {
+    return this.imagesService.getImagesIdentifier(item);
+  }
 
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
@@ -58,14 +59,21 @@ export class ImagesComponent implements OnInit {
       .subscribe();
   }
 
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
+  // byteSize(base64String: string | null | undefined): string {
+  //   return this.dataUtils.byteSize(base64String);
+  // }
+  byteSize(base64String: string | null | undefined): string {
+    return this.dataUtils.byteSize(base64String ?? '');
   }
-
-  openFile(base64String: string, contentType: string | null | undefined): void {
-    return this.dataUtils.openFile(base64String, contentType);
+  // openFile(base64String: string, contentType: string | null | undefined): void {
+  //   return this.dataUtils.openFile(base64String, contentType);
+  // }
+  openFile(base64String: string | null | undefined, contentType: string | null | undefined): void {
+    if (!base64String) {
+      return;
+    }
+    return this.dataUtils.openFile(base64String, contentType ?? '');
   }
-
   delete(images: IImages): void {
     const modalRef = this.modalService.open(ImagesDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.images = images;
@@ -90,6 +98,21 @@ export class ImagesComponent implements OnInit {
     this.handleNavigation(event);
   }
 
+  nextSlide(): void {
+    if (this.images && this.images.length > 0) {
+      this.currentSlideIndex = (this.currentSlideIndex + 1) % this.images.length;
+    }
+  }
+
+  prevSlide(): void {
+    if (this.images && this.images.length > 0) {
+      this.currentSlideIndex = (this.currentSlideIndex - 1 + this.images.length) % this.images.length;
+    }
+  }
+
+  goToSlide(index: number): void {
+    this.currentSlideIndex = index;
+  }
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
