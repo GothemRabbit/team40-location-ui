@@ -45,9 +45,9 @@ export class ItemDetailComponent {
     });
   }
 
-  hasUserLiked(): boolean {
-    return this.item()?.isLikedByUser ?? false;
-  }
+  // hasUserLiked(): boolean {
+  //   return this.item()?.isLikedByUser ?? false;
+  // }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
