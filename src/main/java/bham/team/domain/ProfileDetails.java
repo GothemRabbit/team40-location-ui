@@ -42,7 +42,7 @@ public class ProfileDetails implements Serializable {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(unique = true)
     private User user;
 

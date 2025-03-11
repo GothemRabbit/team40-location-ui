@@ -15,7 +15,7 @@
             <a (click)="openFile(profileDetailsRef.bioImage ?? '', profileDetailsRef.bioImageContentType)">
               <img
                 [src]="'data:' + profileDetailsRef.bioImageContentType + ';base64,' + profileDetailsRef.bioImage"
-                style="max-width: 100%"
+                class="profile-image"
                 alt="profileDetails"
               />
             </a>
@@ -50,10 +50,10 @@
           <a class="nav-link" [class.active]="activeTab === 'favorites'" (click)="activeTab = 'favorites'"> Favorites</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'"> Purchase History</a>
+          <a class="nav-link" [class.active]="activeTab === 'wishlist'" (click)="activeTab = 'wishlist'"> Wishlist</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'"> Reviews</a>
+          <a class="nav-link" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'"> Purchase History</a>
         </li>
       </ul>
 

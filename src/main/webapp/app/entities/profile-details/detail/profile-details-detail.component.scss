@@ -9,6 +9,11 @@
   align-items: center;
   position: relative;
 }
+.profile-image {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+}
 
 .back-text {
   cursor: pointer;
@@ -93,27 +98,4 @@
 .tab-content {
   width: 100%;
   padding: 20px;
-}
-
-.search-bar {
-  display: flex;
-  padding: 6px;
-  border-radius: 20px;
-  background: #f8dc75;
-  width: 300px;
-}
-
-.search-bar input {
-  border: none;
-  background-color: transparent;
-  outline: none;
-  flex-grow: 1;
-  padding-left: 8px;
-}
-
-.search-container {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 50px;
 }
