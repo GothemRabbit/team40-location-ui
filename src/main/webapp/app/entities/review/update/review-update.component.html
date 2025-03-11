@@ -64,11 +64,18 @@
             </div>
 
             <div class="mb-4">
-              <label class="form-label" for="field_buyer"></label>
-              <select class="num" id="field_buyer" data-cy="buyer" name="buyer" formControlName="buyer" [compareWith]="compareUserDetails">
+              <label class="form-label" for="field_profileDetails"></label>
+              <select
+                class="num"
+                id="field_profileDetails"
+                data-cy="profileDetails"
+                name="profileDetails"
+                formControlName="profileDetails"
+                [compareWith]="compareProfileDetails"
+              >
                 <option [ngValue]="null"></option>
-                @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-                  <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+                @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+                  <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
                 }
               </select>
             </div>
