@@ -131,7 +131,9 @@
           <div class="buttons">
             <button class="btn btn-yellow">Reserve Item</button>
             <button class="btn btn-blue">Message Seller</button>
-            <!--            <button class="btn btn-red">Add To Favourite ❤️</button>-->
+            <button (click)="toggleLike()" [class.liked]="hasUserLiked()">
+              {{ hasUserLiked() ? 'Unlike' : 'Like' }}
+            </button>
           </div>
         </div>
       </section>

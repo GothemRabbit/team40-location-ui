@@ -25,7 +25,7 @@ export interface IItem {
   images?: IImages[];
   likes?: ILikes[];
   likesCount?: number;
-  isLikedbyUser?: boolean;
+  isLikedByUser?: boolean;
   status?: IProductStatus | null;
 }
 

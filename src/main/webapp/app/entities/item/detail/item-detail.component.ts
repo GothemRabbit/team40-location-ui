@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
@@ -15,7 +15,9 @@ import { ItemService } from '../service/item.service';
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, ImagesComponent],
 })
 export class ItemDetailComponent {
-  item = input<IItem | null>(null);
+  //item = input<IItem | null>(null);
+  item = signal<IItem | null>(null);
+  //isLikedByUser = computed(() => this.item()?.isLikedByUser ?? false);
 
   protected dataUtils = inject(DataUtils);
 
@@ -23,6 +25,28 @@ export class ItemDetailComponent {
     private route: ActivatedRoute,
     private itemService: ItemService,
   ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const itemId = params['id'];
+      if (itemId) {
+        this.loadItem(itemId);
+      }
+    });
+  }
+
+  loadItem(itemId: number): void {
+    this.itemService.find(itemId).subscribe({
+      next: response => {
+        this.item.update(() => response.body); // ✅ Correctly updating InputSignal
+      },
+      error: err => console.error('Error fetching item:', err),
+    });
+  }
+
+  hasUserLiked(): boolean {
+    return this.item()?.isLikedByUser ?? false;
+  }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
@@ -34,5 +58,16 @@ export class ItemDetailComponent {
 
   previousState(): void {
     window.history.back();
+  }
+
+  toggleLike(): void {
+    if (this.item()) {
+      this.itemService.likeItem(this.item()!.id).subscribe({
+        next: response => {
+          this.item.update(() => response.body); // Update UI with new like status
+        },
+        error: err => console.error('Error toggling like:', err),
+      });
+    }
   }
 }
