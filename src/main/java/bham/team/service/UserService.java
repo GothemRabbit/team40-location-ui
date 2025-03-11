@@ -2,19 +2,25 @@ package bham.team.service;
 
 import bham.team.config.Constants;
 import bham.team.domain.Authority;
+import bham.team.domain.ProfileDetails;
 import bham.team.domain.User;
 import bham.team.repository.AuthorityRepository;
+import bham.team.repository.ProfileDetailsRepository;
 import bham.team.repository.UserRepository;
 import bham.team.security.AuthoritiesConstants;
 import bham.team.security.SecurityUtils;
 import bham.team.service.dto.AdminUserDTO;
 import bham.team.service.dto.UserDTO;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +46,9 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
+
+    @Autowired
+    private ProfileDetailsRepository profileDetailsRepository;
 
     public UserService(
         UserRepository userRepository,
@@ -115,8 +124,8 @@ public class UserService {
         newUser.setLogin(userDTO.getLogin().toLowerCase());
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
+        //        newUser.setFirstName(userDTO.getFirstName());
+        //        newUser.setLastName(userDTO.getLastName());
         if (userDTO.getEmail() != null) {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
@@ -132,7 +141,25 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         LOG.debug("Created Information for User: {}", newUser);
+
+        //create new profile details , link by username and user id
+        ProfileDetails profileDetails = new ProfileDetails();
+        profileDetails.setUser(newUser);
+        profileDetails.setUserName(userDTO.getLogin());
+        profileDetails.setBioImage(getDefaultProfilePicture());
+        profileDetailsRepository.save(profileDetails);
+
         return newUser;
+    }
+
+    private byte[] getDefaultProfilePicture() {
+        try {
+            // Replace with the path to your default image (ensure the file is in resources or a known path)
+            return Files.readAllBytes(Paths.get("src/main/webapp/content/images/Default_profile_picture.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // Return null if image read fails
+        }
     }
 
     private boolean removeNonActivatedUser(User existingUser) {

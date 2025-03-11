@@ -55,6 +55,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Email
     @Size(min = 5, max = 254)
     @Column(length = 254, unique = true)
+    @Pattern(regexp = "^[a-zA-Z0-9]+@student\\.bham\\.ac\\.uk$")
     private String email;
 
     @NotNull
