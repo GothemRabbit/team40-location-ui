@@ -15,7 +15,7 @@
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
   border: 1px solid #e6d57a; /* Light yellow border */
-  background: #f8f5f5;
+  background: white;
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
@@ -30,7 +30,6 @@
   display: flex;
   justify-content: space-between; /* Pushes icons to opposite sides */
   align-items: center; /* Ensures vertical alignment */
-  background: #f8f5f5;
   //bottom: px;
   // position: relative;
 }
@@ -109,7 +108,7 @@
 }
 
 .dropdown-content a:hover {
-  background: #ddd;
+  background: white;
 }
 
 .card-title {
