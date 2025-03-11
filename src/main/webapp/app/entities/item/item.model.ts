@@ -6,6 +6,7 @@ import { Condition } from 'app/entities/enumerations/condition.model';
 import { Category } from 'app/entities/enumerations/category.model';
 import { IImages } from '../images/images.model';
 import { ILikes } from '../likes/likes.model';
+import { IProductStatus } from '../product-status/product-status.model';
 
 export interface IItem {
   id: number;
@@ -23,6 +24,9 @@ export interface IItem {
   seller?: Pick<IUserDetails, 'id'> | null;
   images?: IImages[];
   likes?: ILikes[];
+  likesCount?: number;
+  isLikedbyUser?: boolean;
+  status?: IProductStatus | null;
 }
 
 export type NewItem = Omit<IItem, 'id'> & { id: null };

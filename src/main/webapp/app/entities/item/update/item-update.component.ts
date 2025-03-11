@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ import { ItemFormGroup, ItemFormService } from './item-form.service';
   standalone: true,
   selector: 'jhi-item-update',
   templateUrl: './item-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterLink],
 })
 export class ItemUpdateComponent implements OnInit {
   isSaving = false;

@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit, WritableSignal, computed, inject, signal } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, tap, forkJoin } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
@@ -21,6 +21,7 @@ import { ILikes } from '../../likes/likes.model';
 import { LikesService } from '../../likes/service/likes.service';
 import { ProfileDetailsService } from '../../profile-details/service/profile-details.service';
 import { AccountService } from '../../../core/auth/account.service';
+import { IImages } from '../../images/images.model';
 
 @Component({
   standalone: true,
@@ -75,6 +76,33 @@ export class ItemComponent implements OnInit {
         tap(() => this.load()),
       )
       .subscribe();
+  }
+
+  loadAll(): void {
+    this.itemService.query().subscribe(response => {
+      this.items = response.body ?? [];
+      this.loadImagesForItems();
+    });
+  }
+
+  loadImagesForItems(): void {
+    if (!this.items || this.items.length === 0) {
+      console.error('No items found to load images for.');
+      return;
+    }
+
+    const requests: Observable<IImages[]>[] = this.items.map(item => this.itemService.getImagesForItem(item.id));
+
+    forkJoin(requests).subscribe((imagesArray: IImages[][]) => {
+      if (!this.items) {
+        console.error('this.items is undefined inside subscribe');
+        return;
+      }
+
+      this.items.forEach((item: IItem, index: number) => {
+        item.images = imagesArray[index] ?? [];
+      });
+    });
   }
 
   reset(): void {
