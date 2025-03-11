@@ -44,10 +44,6 @@ export class ItemDetailComponent implements OnInit {
     });
   }
 
-  hasUserLiked(): boolean {
-    return this.item()?.isLikedByUser ?? false;
-  }
-
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
@@ -61,13 +57,36 @@ export class ItemDetailComponent implements OnInit {
   }
 
   toggleLike(): void {
-    if (this.item()) {
-      this.itemService.likeItem(this.item()!.id).subscribe({
-        next: response => {
-          this.item.update(() => response.body); // Update UI with new like status
-        },
-        error: err => console.error('Error toggling like:', err),
-      });
-    }
+    const currentItem = this.item();
+    if (!currentItem) return;
+
+    // Ensure `likesCount` is a valid number
+    const currentLikes = currentItem.likesCount ?? 0;
+    const isLiked = !currentItem.isLikedByUser;
+    const updatedLikes = isLiked ? currentLikes + 1 : Math.max(0, currentLikes - 1); // Avoid negative values
+
+    // Optimistically update UI
+    this.item.update(() => ({
+      ...currentItem,
+      isLikedByUser: isLiked,
+      likesCount: updatedLikes,
+    }));
+
+    // Send API request
+    this.itemService.likeItem(currentItem.id).subscribe({
+      next: response => {
+        if (response.body) {
+          this.item.update(() => response.body);
+        }
+      },
+      error: err => {
+        console.error('Error toggling like:', err);
+        this.item.update(() => currentItem); // Revert UI if API call fails
+      },
+    });
+  }
+
+  hasUserLiked(): boolean {
+    return this.item()?.isLikedByUser ?? false;
   }
 }

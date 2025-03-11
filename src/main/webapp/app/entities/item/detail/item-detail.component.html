@@ -131,8 +131,8 @@
           <div class="buttons">
             <button class="btn btn-yellow">Reserve Item</button>
             <button class="btn btn-blue">Message Seller</button>
-            <button (click)="toggleLike()" [class.liked]="hasUserLiked()">
-              {{ hasUserLiked() ? 'Unlike' : 'Like' }}
+            <button (click)="toggleLike()" class="like-button">
+              <span [class.filled]="hasUserLiked()">❤</span> {{ item()?.likesCount || 0 }}
             </button>
           </div>
         </div>

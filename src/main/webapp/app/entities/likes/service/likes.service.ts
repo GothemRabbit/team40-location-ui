@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ILikes, NewLikes } from '../likes.model';
+import { map } from 'rxjs/operators';
 
 export type PartialUpdateLikes = Partial<ILikes> & Pick<ILikes, 'id'>;
 
@@ -70,5 +71,48 @@ export class LikesService {
       return [...likesToAdd, ...likesCollection];
     }
     return likesCollection;
+  }
+
+  toggleLike(itemId: number, profileId: number): Observable<EntityResponseType | HttpResponse<{}>> {
+    return this.findLikeByUserAndItem(itemId, profileId).pipe(
+      switchMap(existingLike => {
+        if (existingLike.body) {
+          return existingLike.body.liked
+            ? this.delete(existingLike.body.id) // This returns HttpResponse<{}>, so we allow it
+            : this.update({ ...existingLike.body, liked: true });
+        } else {
+          const newLike: NewLikes = {
+            id: null,
+            liked: true,
+            item: { id: itemId },
+            profileDetails: { id: profileId },
+          };
+          return this.create(newLike);
+        }
+      }),
+    );
+  }
+
+  findLikeByUserAndItem(itemId: number, profileId: number): Observable<EntityResponseType> {
+    return this.query({ 'itemId.equals': itemId, 'profileDetailsId.equals': profileId }).pipe(
+      map(response => {
+        if (response.body && response.body.length > 0) {
+          return new HttpResponse<ILikes>({ body: response.body[0] });
+        }
+        return new HttpResponse<ILikes>({
+          body: { id: 0, liked: false, item: null, profileDetails: null }, // Default like object
+        });
+      }),
+    );
+  }
+
+  getLikeStatus(itemId: number, profileId: number): Observable<boolean> {
+    return this.findLikeByUserAndItem(itemId, profileId).pipe(map(like => like.body?.liked ?? false));
+  }
+
+  getTotalLikes(itemId: number): Observable<number> {
+    return this.query({ 'itemId.equals': itemId }).pipe(
+      map(response => (response.body ? response.body.filter(like => like.liked).length : 0)),
+    );
   }
 }
