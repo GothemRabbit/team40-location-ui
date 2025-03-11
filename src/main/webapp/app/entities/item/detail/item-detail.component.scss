@@ -25,15 +25,26 @@
 }
 
 .product-image {
-  width: 65%;
-  padding-left: 80px;
+  flex: 1; /* Takes 1 part of the available space */
+  max-width: 40%;
 }
 
 .product-image img {
   width: 100%;
+  max-width: 60%;
   height: auto;
   border: 1px solid #000000;
 }
+
+//@media (max-width: 768px) {
+//  .product-container {
+//    flex-direction: column; /* Stack items on smaller screens */
+//    align-items: center;
+//  }
+//
+//  .product-image, .product-details {
+//    max-width: 100%;
+//  }
 
 .title-price {
   display: flex;

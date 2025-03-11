@@ -19,10 +19,10 @@
           <dd>
             @if (imagesRef.images) {
               <div>
-                <a (click)="openFile(imagesRef.images ?? '', imagesRef.imagesContentType)">
+                <a (click)="openFile(imagesRef.images, imagesRef.imagesContentType)">
                   <img [src]="'data:' + imagesRef.imagesContentType + ';base64,' + imagesRef.images" style="max-width: 100%" alt="images" />
                 </a>
-                {{ imagesRef.imagesContentType }}, {{ byteSize(imagesRef.images ?? '') }}
+                {{ imagesRef.imagesContentType }}, {{ byteSize(imagesRef.images) }}
               </div>
             }
           </dd>

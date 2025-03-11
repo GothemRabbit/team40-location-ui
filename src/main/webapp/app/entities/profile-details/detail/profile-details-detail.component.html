@@ -12,7 +12,7 @@
       <div class="topProfile-container">
         <div>
           @if (profileDetailsRef.bioImage) {
-            <a (click)="openFile(profileDetailsRef.bioImage ?? '', profileDetailsRef.bioImageContentType)">
+            <a (click)="openFile(profileDetailsRef.bioImage, profileDetailsRef.bioImageContentType)">
               <img
                 [src]="'data:' + profileDetailsRef.bioImageContentType + ';base64,' + profileDetailsRef.bioImage"
                 class="profile-image"

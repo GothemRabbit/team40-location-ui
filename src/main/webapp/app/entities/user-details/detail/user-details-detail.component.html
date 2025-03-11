@@ -19,7 +19,7 @@
           <dd>
             @if (userDetailsRef.bioImage) {
               <div>
-                <a (click)="openFile(userDetailsRef.bioImage ?? '', userDetailsRef.bioImageContentType)">
+                <a (click)="openFile(userDetailsRef.bioImage, userDetailsRef.bioImageContentType)">
                   <img
                     [src]="'data:' + userDetailsRef.bioImageContentType + ';base64,' + userDetailsRef.bioImage"
                     style="max-width: 100%"

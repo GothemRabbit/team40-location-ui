@@ -1,6 +1,7 @@
 package bham.team.repository;
 
 import bham.team.domain.Images;
+import java.util.Set;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ImagesRepository extends JpaRepository<Images, Long> {}
+public interface ImagesRepository extends JpaRepository<Images, Long> {
+    Set<Images> findByItemId(Long itemId);
+}

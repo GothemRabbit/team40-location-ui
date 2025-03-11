@@ -1,6 +1,7 @@
 package bham.team.service;
 
 import bham.team.domain.Item;
+import bham.team.repository.ImagesRepository;
 import bham.team.repository.ItemRepository;
 import bham.team.service.dto.ItemDTO;
 import bham.team.service.mapper.ItemMapper;
@@ -28,6 +29,8 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     private final ItemMapper itemMapper;
+
+    private ImagesRepository imagesRepository;
 
     public ItemService(ItemRepository itemRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
@@ -126,5 +129,9 @@ public class ItemService {
     public void delete(Long id) {
         LOG.debug("Request to delete Item : {}", id);
         itemRepository.deleteById(id);
+    }
+
+    public Optional<Item> getItemWithImages(Long itemId) {
+        return itemRepository.findById(itemId);
     }
 }

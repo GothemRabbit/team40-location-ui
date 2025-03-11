@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, NgZone, OnInit, inject, Input } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -34,6 +34,8 @@ export class ImagesComponent implements OnInit {
   isLoading = false;
   sortState = sortStateSignal({});
   currentSlideIndex = 0;
+  @Input() image?: IImages;
+  @Input() classFilter?: string;
 
   public readonly router = inject(Router);
   protected readonly imagesService = inject(ImagesService);
@@ -113,6 +115,7 @@ export class ImagesComponent implements OnInit {
   goToSlide(index: number): void {
     this.currentSlideIndex = index;
   }
+
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }

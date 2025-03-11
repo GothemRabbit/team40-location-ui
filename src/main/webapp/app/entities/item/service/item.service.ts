@@ -8,6 +8,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IItem, NewItem } from '../item.model';
+import { IImages } from '../../images/images.model';
 
 export type PartialUpdateItem = Partial<IItem> & Pick<IItem, 'id'>;
 
@@ -56,6 +57,18 @@ export class ItemService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  // find(id: number): Observable<IItem> {
+  //   return this.http
+  //     .get<IItem>(`${this.resourceUrl}/${id}`)
+  //     .pipe(map(item => ({
+  //       ...item,
+  //       images: item.images || [] // Ensure images are initialized
+  //     })));
+  // }
+
+  getImagesForItem(itemId: number): Observable<IImages[]> {
+    return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
+  }
   // find(id: number): Observable<IItem> {
   //   return this.http.get<IItem>(`${this.resourceUrl}/${id}?eagerload=true`); // Ensures images are loaded
   // }

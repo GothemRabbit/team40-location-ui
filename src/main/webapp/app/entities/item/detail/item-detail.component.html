@@ -1,111 +1,134 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (item(); as itemRef) {
-      <div>
-        <h2 data-cy="itemDetailsHeading"><span>Item</span></h2>
+<div class="container">
+  @if (item(); as itemRef) {
+    <div class="breadcrumb">
+      <a class="home-page" href="#"> Home</a> > <a class="category" href="#"> Clothes</a> >
+      <span class="item-title">{{ itemRef.title }}</span>
+    </div>
 
-        <hr />
+    <div class="back-button">
+      <a href="javascript:history.back()">< Back</a>
+    </div>
 
-        <jhi-alert-error></jhi-alert-error>
+    <div>
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
 
-        <jhi-alert></jhi-alert>
+      <section class="product-container">
+        <div class="product-image">
+          <jhi-images></jhi-images>
+          <!--          @if (itemRef.images) {-->
+          <!--            <div>-->
+          <!--              <a (click)="openFile(itemRef.images ?? '', itemRef.itemImageContentType)">-->
+          <!--                <img [src]="'data:' + itemRef.itemImageContentType + ';base64,' + itemRef.itemImage" style="max-width: 100%" alt="item" />-->
+          <!--              </a>-->
+          <!--            </div>-->
+          <!--            <div class="thumbnails">-->
+          <!--              <img src="image1.jpg" alt="thumb" />-->
+          <!--              <img src="image2.jpg" alt="thumb" />-->
+          <!--              <img src="image3.jpg" alt="thumb" />-->
+          <!--              <img src="image4.jpg" alt="thumb" />-->
+          <!--            </div>-->
+          <!--          }-->
+          <div class="itemLike">
+            <dt><span>Hearts</span></dt>
+            <dd>
+              <span>{{ itemRef.likes }}</span>
+            </dd>
+          </div>
+        </div>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
-            <span>{{ itemRef.id }}</span>
-          </dd>
-          <dt><span>Title</span></dt>
-          <dd>
-            <span>{{ itemRef.title }}</span>
-          </dd>
-          <dt><span>Price</span></dt>
-          <dd>
-            <span>{{ itemRef.price }}</span>
-          </dd>
-          <dt><span>Condition</span></dt>
-          <dd>
-            <span>{{
-              {
-                null: '',
-                BRANDNEW: 'BRANDNEW',
-                LIKENEW: 'LIKENEW',
-                FAIRLYUSED: 'FAIRLYUSED',
-                WELLUSED: 'WELLUSED',
-                HEAVILYUSED: 'HEAVILYUSED',
-              }[itemRef.condition ?? 'null']
-            }}</span>
-          </dd>
-          <dt><span>Category</span></dt>
-          <dd>
-            <span>{{
-              {
-                null: '',
-                FOOTWEAR: 'FOOTWEAR',
-                CLOTHING: 'CLOTHING',
-                HEADWEAR: 'HEADWEAR',
-                ELECTRONICS: 'ELECTRONICS',
-                HOBBIES: 'HOBBIES',
-                BAGS: 'BAGS',
-                OTHERS: 'OTHERS',
-              }[itemRef.category ?? 'null']
-            }}</span>
-          </dd>
-          <dt><span>Description</span></dt>
-          <dd>
-            <span>{{ itemRef.description }}</span>
-          </dd>
-          <dt><span>Size Item</span></dt>
-          <dd>
-            <span>{{ itemRef.sizeItem }}</span>
-          </dd>
-          <dt><span>Brand</span></dt>
-          <dd>
-            <span>{{ itemRef.brand }}</span>
-          </dd>
-          <dt><span>Colour</span></dt>
-          <dd>
-            <span>{{ itemRef.colour }}</span>
-          </dd>
-          <dt><span>Time Listed</span></dt>
-          <dd>
-            <span>{{ itemRef.timeListed | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span>Wishlist</span></dt>
-          <dd>
-            @for (wishlist of itemRef.wishlists; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/wishlist', wishlist.id, 'view']">{{ wishlist?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-          <dt><span>Profile Details</span></dt>
-          <dd>
-            @if (item()!.profileDetails) {
-              <div>
-                <a [routerLink]="['/profile-details', item()!.profileDetails?.id, 'view']">{{ itemRef.profileDetails?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Seller</span></dt>
-          <dd>
-            @if (item()!.seller) {
-              <div>
-                <a [routerLink]="['/user-details', item()!.seller?.id, 'view']">{{ itemRef.seller?.id }}</a>
-              </div>
-            }
-          </dd>
-        </dl>
+        <div class="product-details">
+          <div class="top">
+            <div class="title-price">
+              <dt>
+                <span>{{ itemRef.title }}</span>
+              </dt>
+              <dt>
+                <span>£ {{ itemRef.price }}</span>
+              </dt>
+            </div>
+            <div class="brand-size">
+              <dt>
+                <span>Brand - {{ itemRef.sizeItem }}</span>
+              </dt>
+            </div>
+            <div class="timeListed">
+              <dd>
+                <span>Listed on {{ itemRef.timeListed | formatMediumDate }}</span>
+              </dd>
+            </div>
+            <hr style="border: 1px solid black; width: 100%" />
+          </div>
+          <div class="details">
+            <div class="details-left">
+              <dt><span>Brand</span></dt>
+              <dt><span>Size</span></dt>
+              <dt><span>Item Condition</span></dt>
+              <dt><span>Item Colour</span></dt>
+              <!--              <dt><span>Item Category</span></dt>-->
+              <dt><span>Meet-up Location</span></dt>
+              <dt><span>Views</span></dt>
+              <dt><span>Interested</span></dt>
+            </div>
+            <div class="details-right">
+              <dt>Brand</dt>
+              <dt>{{ itemRef.sizeItem }}</dt>
+              <dt>
+                {{
+                  {
+                    null: '',
+                    BRANDNEW: 'Brand New',
+                    LIKENEW: 'Like New',
+                    FAIRLYUSED: 'Fairly Used',
+                    WELLUSED: 'Well Used',
+                    HEAVILYUSED: 'Heavily Used',
+                  }[itemRef.condition ?? 'null']
+                }}
+              </dt>
+              <dt>{{ itemRef.colour }}</dt>
+              <!--              <dt>{{-->
+              <!--                  {-->
+              <!--                    null: '',-->
+              <!--                    FOOTWEAR: 'Foot Wear',-->
+              <!--                    CLOTHING: 'Clothing',-->
+              <!--                    HEADWEAR: 'Head Wear',-->
+              <!--                    ELECTRONICS: 'Electronics',-->
+              <!--                    HOBBIES: 'Hobbies',-->
+              <!--                    BAGS: 'Bags',-->
+              <!--                    OTHERS: 'Others',-->
+              <!--                  }[itemRef.itemCategory ?? 'null']-->
+              <!--                }}</dt>-->
+              <dt>Meet-up Location</dt>
+              <dt>No of views</dt>
+              <dt>No of likes</dt>
+            </div>
+          </div>
+          <hr style="border: 1px solid black; width: 100%" />
+          <div class="description">
+            <dt><span>Description</span></dt>
+            <dd>
+              <span>{{ itemRef.description }}</span>
+            </dd>
+          </div>
+          <hr style="border: 1px solid black; width: 100%" />
+          <div class="seller">
+            <p>By Seller</p>
+            <p>⭐⭐⭐⭐☆</p>
+          </div>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-        </button>
+          <div class="buttons">
+            <button class="btn btn-yellow">Reserve Item</button>
+            <button class="btn btn-blue">Message Seller</button>
+            <!--            <button class="btn btn-red">Add To Favourite ❤️</button>-->
+          </div>
+        </div>
+      </section>
 
-        <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-        </button>
-      </div>
-    }
-  </div>
+      <dl class="row-md jh-entity-details"></dl>
+
+      <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  }
 </div>

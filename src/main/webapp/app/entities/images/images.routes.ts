@@ -11,7 +11,7 @@ const imagesRoute: Routes = [
     data: {
       defaultSort: `id,${ASC}`,
     },
-    canActivate: [UserRouteAccessService],
+    //canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
@@ -19,7 +19,7 @@ const imagesRoute: Routes = [
     resolve: {
       images: ImagesResolve,
     },
-    canActivate: [UserRouteAccessService],
+    //canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
