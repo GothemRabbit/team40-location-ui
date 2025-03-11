@@ -1,6 +1,4 @@
 <head>
-  <!--  <meta name="viewport" content="width=device-width, initial-scale=1" />-->
-  <!--  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />-->
   <style>
     * {
       box-sizing: border-box;
@@ -12,17 +10,14 @@
     .mySlides {
       display: none;
     }
-
     img {
       vertical-align: middle;
     }
-
     .slideshow-container {
       max-width: 45%;
       position: relative;
       margin: auto;
     }
-
     .prev,
     .next {
       cursor: pointer;
@@ -36,19 +31,13 @@
       transition: 0.6s ease;
       user-select: none;
     }
-
-    /* Position the "next button" to the right */
     .next {
       right: 0;
     }
-
-    /* On hover, add a dark background color */
     .prev:hover,
     .next:hover {
       background-color: rgba(0, 0, 0, 0.8);
     }
-
-    /* Number text (e.g., 1/3) */
     .numbertext {
       color: #f2f2f2;
       font-size: 15px;
@@ -57,13 +46,10 @@
       top: 0;
       left: 0;
     }
-
-    /* Thumbnail container (replacing dots) */
     .thumbnail-container {
       text-align: center;
       margin-top: 10px;
     }
-
     .thumbnail {
       cursor: pointer;
       height: 50px;
@@ -71,19 +57,15 @@
       opacity: 0.6;
       transition: opacity 0.6s ease;
     }
-
     .thumbnail.active,
     .thumbnail:hover {
       opacity: 1;
     }
-
-    /* Fading animation */
     .fade {
       animation-name: fade;
       animation-duration: 0.4s;
       animation-fill-mode: forwards;
     }
-
     @keyframes fade {
       from {
         opacity: 0.6;
@@ -103,9 +85,7 @@
       <div class="d-flex justify-content-end">
         <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
           <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-          <!--        <span>Refresh list</span>-->
         </button>
-
         <button
           id="jh-create-entity"
           data-cy="entityCreateButton"
@@ -129,7 +109,10 @@
     <div *ngIf="images && images.length > 0" class="slideshow-container">
       <div class="mySlides fade" *ngFor="let img of images; let i = index" [style.display]="currentSlideIndex === i ? 'block' : 'none'">
         <div class="numbertext">{{ i + 1 }} / {{ images.length }}</div>
-        <img [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')" style="width: 100%" />
+        <!-- Make only the main image clickable -->
+        <a [routerLink]="['/images', img.id, 'view']">
+          <img [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')" style="width: 100%" />
+        </a>
         <div class="text">Caption {{ i + 1 }}</div>
       </div>
 
@@ -138,7 +121,7 @@
       <a class="next" (click)="nextSlide()">❯</a>
     </div>
 
-    <!-- Thumbnail Container Replacing Dots -->
+    <!-- Thumbnail Container (for slideshow navigation) -->
     <div *ngIf="images && images.length > 0" class="thumbnail-container">
       <img
         *ngFor="let img of images; let i = index"
@@ -149,179 +132,331 @@
         alt="Thumbnail {{ i + 1 }}"
       />
     </div>
-
-    <!-- Optionally keep the JHipster Table View Below -->
-    <div *ngIf="images && images.length > 0" class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <!--      <thead>-->
-        <!--        <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">-->
-        <!--          <th scope="col" jhiSortBy="id">-->
-        <!--            <div class="d-flex">-->
-        <!--              <span>ID</span>-->
-        <!--              <fa-icon class="p-1" icon="sort"></fa-icon>-->
-        <!--            </div>-->
-        <!--          </th>-->
-        <!--          <th scope="col" jhiSortBy="images">-->
-        <!--            <div class="d-flex">-->
-        <!--              <span>Images</span>-->
-        <!--              <fa-icon class="p-1" icon="sort"></fa-icon>-->
-        <!--            </div>-->
-        <!--          </th>-->
-        <!--          <th scope="col" jhiSortBy="item.id">-->
-        <!--            <div class="d-flex">-->
-        <!--              <span>Item</span>-->
-        <!--              <fa-icon class="p-1" icon="sort"></fa-icon>-->
-        <!--            </div>-->
-        <!--          </th>-->
-        <!--          <th scope="col"></th>-->
-        <!--        </tr>-->
-        <!--      </thead>-->
-        <tbody>
-          <tr *ngFor="let img of images; trackBy: trackId">
-            <td>
-              <a [routerLink]="['/images', img.id, 'view']">{{ img.id }}</a>
-            </td>
-            <td>
-              <a (click)="openFile(img.images, img.imagesContentType)">
-                <img
-                  [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"
-                  style="max-height: 30px"
-                  alt="Image thumbnail"
-                />
-              </a>
-              <span>{{ img.imagesContentType }}, {{ byteSize(img.images) }}</span>
-            </td>
-            <td>
-              <div *ngIf="img.item">
-                <a [routerLink]="['/item', img.item.id, 'view']">{{ img.item.id }}</a>
-              </div>
-            </td>
-            <td class="text-end">
-              <div class="btn-group">
-                <a [routerLink]="['/images', img.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                  <fa-icon icon="eye"></fa-icon>
-                  <span class="d-none d-md-inline">View</span>
-                </a>
-                <a [routerLink]="['/images', img.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                  <fa-icon icon="pencil-alt"></fa-icon>
-                  <span class="d-none d-md-inline">Edit</span>
-                </a>
-                <button type="submit" (click)="delete(img)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                  <fa-icon icon="times"></fa-icon>
-                  <span class="d-none d-md-inline">Delete</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
-
-  <!--<div>-->
-  <!--  <h2 id="page-heading" data-cy="ImagesHeading">-->
-  <!--    <span>Images</span>-->
-
-  <!--    <div class="d-flex justify-content-end">-->
-  <!--      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">-->
-  <!--        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>-->
-  <!--        <span>Refresh list</span>-->
-  <!--      </button>-->
-
-  <!--      <button-->
-  <!--        id="jh-create-entity"-->
-  <!--        data-cy="entityCreateButton"-->
-  <!--        class="btn btn-primary jh-create-entity create-images"-->
-  <!--        [routerLink]="['/images/new']"-->
-  <!--      >-->
-  <!--        <fa-icon icon="plus"></fa-icon>-->
-  <!--        <span>Create a new Images</span>-->
-  <!--      </button>-->
-  <!--    </div>-->
-  <!--  </h2>-->
-
-  <!--  <jhi-alert-error></jhi-alert-error>-->
-
-  <!--  <jhi-alert></jhi-alert>-->
-
-  <!--  @if (images?.length === 0) {-->
-  <!--    <div class="alert alert-warning" id="no-result">-->
-  <!--      <span>No Images found</span>-->
-  <!--    </div>-->
-  <!--  }-->
-
-  <!--  @if (images && images.length > 0) {-->
-  <!--    <div class="table-responsive table-entities" id="entities">-->
-  <!--      <table class="table table-striped" aria-describedby="page-heading">-->
-  <!--        <thead>-->
-  <!--          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">-->
-  <!--            <th scope="col" jhiSortBy="id">-->
-  <!--              <div class="d-flex">-->
-  <!--                <span>ID</span>-->
-
-  <!--                <fa-icon class="p-1" icon="sort"></fa-icon>-->
-  <!--              </div>-->
-  <!--            </th>-->
-  <!--            <th scope="col" jhiSortBy="images">-->
-  <!--              <div class="d-flex">-->
-  <!--                <span>Images</span>-->
-
-  <!--                <fa-icon class="p-1" icon="sort"></fa-icon>-->
-  <!--              </div>-->
-  <!--            </th>-->
-  <!--            <th scope="col" jhiSortBy="item.id">-->
-  <!--              <div class="d-flex">-->
-  <!--                <span>Item</span>-->
-  <!--                <fa-icon class="p-1" icon="sort"></fa-icon>-->
-  <!--              </div>-->
-  <!--            </th>-->
-  <!--            <th scope="col"></th>-->
-  <!--          </tr>-->
-  <!--        </thead>-->
-  <!--        <tbody>-->
-  <!--          @for (images of images; track trackId(images)) {-->
-  <!--            <tr data-cy="entityTable">-->
-  <!--              <td>-->
-  <!--                <a [routerLink]="['/images', images.id, 'view']">{{ images.id }}</a>-->
-  <!--              </td>-->
-  <!--              <td>-->
-  <!--                @if (images.images) {-->
-  <!--                  <a (click)="openFile(images.images, images.imagesContentType)">-->
-  <!--                    <img [src]="'data:' + images.imagesContentType + ';base64,' + images.images" style="max-height: 30px" alt="images" />-->
-  <!--                  </a>-->
-  <!--                  <span>{{ images.imagesContentType }}, {{ byteSize(images.images) }}</span>-->
-  <!--                }-->
-  <!--              </td>-->
-  <!--              <td>-->
-  <!--                @if (images.item) {-->
-  <!--                  <div>-->
-  <!--                    <a [routerLink]="['/item', images.item.id, 'view']">{{ images.item.id }}</a>-->
-  <!--                  </div>-->
-  <!--                }-->
-  <!--              </td>-->
-  <!--              <td class="text-end">-->
-  <!--                <div class="btn-group">-->
-  <!--                  <a [routerLink]="['/images', images.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">-->
-  <!--                    <fa-icon icon="eye"></fa-icon>-->
-  <!--                    <span class="d-none d-md-inline">View</span>-->
-  <!--                  </a>-->
-
-  <!--                  <a [routerLink]="['/images', images.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">-->
-  <!--                    <fa-icon icon="pencil-alt"></fa-icon>-->
-  <!--                    <span class="d-none d-md-inline">Edit</span>-->
-  <!--                  </a>-->
-
-  <!--                  <button type="submit" (click)="delete(images)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">-->
-  <!--                    <fa-icon icon="times"></fa-icon>-->
-  <!--                    <span class="d-none d-md-inline">Delete</span>-->
-  <!--                  </button>-->
-  <!--                </div>-->
-  <!--              </td>-->
-  <!--            </tr>-->
-  <!--          }-->
-  <!--        </tbody>-->
-  <!--      </table>-->
-  <!--    </div>-->
-  <!--  }-->
-  <!--</div>-->
 </body>
+
+<!--<head>-->
+<!--  &lt;!&ndash;  <meta name="viewport" content="width=device-width, initial-scale=1" />&ndash;&gt;-->
+<!--  &lt;!&ndash;  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />&ndash;&gt;-->
+<!--  <style>-->
+<!--    * {-->
+<!--      box-sizing: border-box;-->
+<!--    }-->
+<!--    body {-->
+<!--      font-family: Verdana, sans-serif;-->
+<!--      margin: 0;-->
+<!--    }-->
+<!--    .mySlides {-->
+<!--      display: none;-->
+<!--    }-->
+
+<!--    img {-->
+<!--      vertical-align: middle;-->
+<!--    }-->
+
+<!--    .slideshow-container {-->
+<!--      max-width: 45%;-->
+<!--      position: relative;-->
+<!--      margin: auto;-->
+<!--    }-->
+
+<!--    .prev,-->
+<!--    .next {-->
+<!--      cursor: pointer;-->
+<!--      position: absolute;-->
+<!--      top: 50%;-->
+<!--      padding: 16px;-->
+<!--      margin-top: -22px;-->
+<!--      color: white;-->
+<!--      font-weight: bold;-->
+<!--      font-size: 18px;-->
+<!--      transition: 0.6s ease;-->
+<!--      user-select: none;-->
+<!--    }-->
+
+<!--    /* Position the "next button" to the right */-->
+<!--    .next {-->
+<!--      right: 0;-->
+<!--    }-->
+
+<!--    /* On hover, add a dark background color */-->
+<!--    .prev:hover,-->
+<!--    .next:hover {-->
+<!--      background-color: rgba(0, 0, 0, 0.8);-->
+<!--    }-->
+
+<!--    /* Number text (e.g., 1/3) */-->
+<!--    .numbertext {-->
+<!--      color: #f2f2f2;-->
+<!--      font-size: 15px;-->
+<!--      padding: 8px 12px;-->
+<!--      position: absolute;-->
+<!--      top: 0;-->
+<!--      left: 0;-->
+<!--    }-->
+
+<!--    /* Thumbnail container (replacing dots) */-->
+<!--    .thumbnail-container {-->
+<!--      text-align: center;-->
+<!--      margin-top: 10px;-->
+<!--    }-->
+
+<!--    .thumbnail {-->
+<!--      cursor: pointer;-->
+<!--      height: 50px;-->
+<!--      margin: 0 2px;-->
+<!--      opacity: 0.6;-->
+<!--      transition: opacity 0.6s ease;-->
+<!--    }-->
+
+<!--    .thumbnail.active,-->
+<!--    .thumbnail:hover {-->
+<!--      opacity: 1;-->
+<!--    }-->
+
+<!--    /* Fading animation */-->
+<!--    .fade {-->
+<!--      animation-name: fade;-->
+<!--      animation-duration: 0.4s;-->
+<!--      animation-fill-mode: forwards;-->
+<!--    }-->
+
+<!--    @keyframes fade {-->
+<!--      from {-->
+<!--        opacity: 0.6;-->
+<!--      }-->
+<!--      to {-->
+<!--        opacity: 1;-->
+<!--      }-->
+<!--    }-->
+
+<!--    .image-card {-->
+<!--      display: inline-block;-->
+<!--      width: 200px;-->
+<!--      border: 1px solid #ccc;-->
+<!--      border-radius: 8px;-->
+<!--      overflow: hidden;-->
+<!--      cursor: pointer;-->
+<!--      transition: transform 0.3s ease;-->
+<!--      text-align: center;-->
+<!--    }-->
+
+<!--  </style>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--  <div>-->
+<!--    &lt;!&ndash; JHipster Page Heading & Controls &ndash;&gt;-->
+<!--    <h2 id="page-heading" data-cy="ImagesHeading">-->
+<!--      <span>Images</span>-->
+<!--      <div class="d-flex justify-content-end">-->
+<!--        <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">-->
+<!--          <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>-->
+<!--          &lt;!&ndash;        <span>Refresh list</span>&ndash;&gt;-->
+<!--        </button>-->
+
+<!--        <button-->
+<!--          id="jh-create-entity"-->
+<!--          data-cy="entityCreateButton"-->
+<!--          class="btn btn-primary jh-create-entity create-images"-->
+<!--          [routerLink]="['/images/new']">-->
+<!--          <fa-icon icon="plus"></fa-icon>-->
+<!--          <span>Create a new Images</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </h2>-->
+
+<!--    <jhi-alert-error></jhi-alert-error>-->
+<!--    <jhi-alert></jhi-alert>-->
+
+<!--    <div *ngIf="images?.length === 0" class="alert alert-warning" id="no-result">-->
+<!--      <span>No Images found</span>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Custom Slideshow View (if images exist) &ndash;&gt;-->
+<!--    <div *ngIf="images && images.length > 0" class="slideshow-container">-->
+<!--      <div class="mySlides fade" *ngFor="let img of images; let i = index" [style.display]="currentSlideIndex === i ? 'block' : 'none'">-->
+<!--        <div class="numbertext">{{ i + 1 }} / {{ images.length }}</div>-->
+<!--        <img [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')" style="width: 100%" />-->
+<!--        <div class="text">Caption {{ i + 1 }}</div>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; Navigation Buttons &ndash;&gt;-->
+<!--      <a class="prev" (click)="prevSlide()">❮</a>-->
+<!--      <a class="next" (click)="nextSlide()">❯</a>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Thumbnail Container Replacing Dots &ndash;&gt;-->
+<!--    <div *ngIf="images && images.length > 0" class="thumbnail-container">-->
+<!--      <img-->
+<!--        *ngFor="let img of images; let i = index"-->
+<!--        class="thumbnail"-->
+<!--        [class.active]="currentSlideIndex === i"-->
+<!--        [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"-->
+<!--        (click)="goToSlide(i)"-->
+<!--        alt="Thumbnail {{ i + 1 }}"-->
+<!--      />-->
+<!--    </div>-->
+
+<!--    <a *ngFor="let img of images; trackBy: trackId"-->
+<!--       [routerLink]="['/images', img.id, 'view']"-->
+<!--       class="image-card">-->
+<!--      <img [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"-->
+<!--           alt="Image {{ img.id }}" />-->
+<!--      <div class="image-info">-->
+<!--        <p>ID: {{ img.id }}</p>-->
+<!--        <div *ngIf="img.item">-->
+<!--          <p>Item: {{ img.item.id }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </a>-->
+
+<!--    <div *ngIf="images && images.length > 0" class="table-responsive table-entities" id="entities">-->
+<!--      <table class="table table-striped" aria-describedby="page-heading">-->
+<!--        <tbody>-->
+<!--        <tr *ngFor="let img of images; trackBy: trackId">-->
+<!--          <td>-->
+<!--            <a [routerLink]="['/images', img.id, 'view']">{{ img.id }}</a>-->
+<!--          </td>-->
+<!--          <td>-->
+<!--            <a (click)="openFile(img.images, img.imagesContentType)">-->
+<!--              <img-->
+<!--                [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"-->
+<!--                style="max-height: 30px"-->
+<!--                alt="Image thumbnail"-->
+<!--              />-->
+<!--            </a>-->
+<!--            <span>{{ img.imagesContentType }}, {{ byteSize(img.images) }}</span>-->
+<!--          </td>-->
+<!--          <td>-->
+<!--            <div *ngIf="img.item">-->
+<!--              <a [routerLink]="['/item', img.item.id, 'view']">{{ img.item.id }}</a>-->
+<!--            </div>-->
+<!--          </td>-->
+<!--          <td class="text-end">-->
+<!--            <div class="btn-group">-->
+<!--              <a [routerLink]="['/images', img.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">-->
+<!--                <fa-icon icon="eye"></fa-icon>-->
+<!--                <span>View</span>-->
+<!--              </a>-->
+<!--              <a [routerLink]="['/images', img.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">-->
+<!--                <fa-icon icon="pencil-alt"></fa-icon>-->
+<!--                <span>Edit</span>-->
+<!--              </a>-->
+<!--              <button type="submit" (click)="delete(img)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">-->
+<!--                <fa-icon icon="times"></fa-icon>-->
+<!--                <span>Delete</span>-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--      </table>-->
+<!--    </div>-->
+
+<!--<div>-->
+<!--  <h2 id="page-heading" data-cy="ImagesHeading">-->
+<!--    <span>Images</span>-->
+
+<!--    <div class="d-flex justify-content-end">-->
+<!--      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">-->
+<!--        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>-->
+<!--        <span>Refresh list</span>-->
+<!--      </button>-->
+
+<!--      <button-->
+<!--        id="jh-create-entity"-->
+<!--        data-cy="entityCreateButton"-->
+<!--        class="btn btn-primary jh-create-entity create-images"-->
+<!--        [routerLink]="['/images/new']"-->
+<!--      >-->
+<!--        <fa-icon icon="plus"></fa-icon>-->
+<!--        <span>Create a new Images</span>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </h2>-->
+
+<!--  <jhi-alert-error></jhi-alert-error>-->
+
+<!--  <jhi-alert></jhi-alert>-->
+
+<!--  @if (images?.length === 0) {-->
+<!--    <div class="alert alert-warning" id="no-result">-->
+<!--      <span>No Images found</span>-->
+<!--    </div>-->
+<!--  }-->
+
+<!--  @if (images && images.length > 0) {-->
+<!--    <div class="table-responsive table-entities" id="entities">-->
+<!--      <table class="table table-striped" aria-describedby="page-heading">-->
+<!--        <thead>-->
+<!--          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">-->
+<!--            <th scope="col" jhiSortBy="id">-->
+<!--              <div class="d-flex">-->
+<!--                <span>ID</span>-->
+
+<!--                <fa-icon class="p-1" icon="sort"></fa-icon>-->
+<!--              </div>-->
+<!--            </th>-->
+<!--            <th scope="col" jhiSortBy="images">-->
+<!--              <div class="d-flex">-->
+<!--                <span>Images</span>-->
+
+<!--                <fa-icon class="p-1" icon="sort"></fa-icon>-->
+<!--              </div>-->
+<!--            </th>-->
+<!--            <th scope="col" jhiSortBy="item.id">-->
+<!--              <div class="d-flex">-->
+<!--                <span>Item</span>-->
+<!--                <fa-icon class="p-1" icon="sort"></fa-icon>-->
+<!--              </div>-->
+<!--            </th>-->
+<!--            <th scope="col"></th>-->
+<!--          </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--          @for (images of images; track trackId(images)) {-->
+<!--            <tr data-cy="entityTable">-->
+<!--              <td>-->
+<!--                <a [routerLink]="['/images', images.id, 'view']">{{ images.id }}</a>-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                @if (images.images) {-->
+<!--                  <a (click)="openFile(images.images, images.imagesContentType)">-->
+<!--                    <img [src]="'data:' + images.imagesContentType + ';base64,' + images.images" style="max-height: 30px" alt="images" />-->
+<!--                  </a>-->
+<!--                  <span>{{ images.imagesContentType }}, {{ byteSize(images.images) }}</span>-->
+<!--                }-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                @if (images.item) {-->
+<!--                  <div>-->
+<!--                    <a [routerLink]="['/item', images.item.id, 'view']">{{ images.item.id }}</a>-->
+<!--                  </div>-->
+<!--                }-->
+<!--              </td>-->
+<!--              <td class="text-end">-->
+<!--                <div class="btn-group">-->
+<!--                  <a [routerLink]="['/images', images.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">-->
+<!--                    <fa-icon icon="eye"></fa-icon>-->
+<!--                    <span class="d-none d-md-inline">View</span>-->
+<!--                  </a>-->
+
+<!--                  <a [routerLink]="['/images', images.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">-->
+<!--                    <fa-icon icon="pencil-alt"></fa-icon>-->
+<!--                    <span class="d-none d-md-inline">Edit</span>-->
+<!--                  </a>-->
+
+<!--                  <button type="submit" (click)="delete(images)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">-->
+<!--                    <fa-icon icon="times"></fa-icon>-->
+<!--                    <span class="d-none d-md-inline">Delete</span>-->
+<!--                  </button>-->
+<!--                </div>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          }-->
+<!--        </tbody>-->
+<!--      </table>-->
+<!--    </div>-->
+<!--  }-->
+<!--</div>-->
