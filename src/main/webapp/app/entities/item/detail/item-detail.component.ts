@@ -7,6 +7,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { IItem } from '../item.model';
 import { ImagesComponent } from '../../images/list/images.component';
 import { ItemService } from '../service/item.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -61,13 +62,21 @@ export class ItemDetailComponent {
   }
 
   toggleLike(): void {
-    if (this.item()) {
-      this.itemService.likeItem(this.item()!.id).subscribe({
-        next: response => {
-          this.item.update(() => response.body); // Update UI with new like status
-        },
-        error: err => console.error('Error toggling like:', err),
-      });
+    const currentItem = this.item();
+    if (!currentItem) {
+      return;
     }
+
+    this.itemService.likeItem(currentItem.id).subscribe({
+      next: (response: HttpResponse<IItem>) => {
+        const updatedItem = response.body;
+        if (updatedItem) {
+          this.item.update(() => updatedItem); // Update UI with new like status
+        }
+      },
+      error(err) {
+        console.error('Error toggling like:', err);
+      },
+    });
   }
 }
