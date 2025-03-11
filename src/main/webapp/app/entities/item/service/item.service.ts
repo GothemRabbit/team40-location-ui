@@ -17,9 +17,7 @@ type RestOf<T extends IItem | NewItem> = Omit<T, 'timeListed'> & {
 };
 
 export type RestItem = RestOf<IItem>;
-
 export type NewRestItem = RestOf<NewItem>;
-
 export type PartialUpdateRestItem = RestOf<PartialUpdateItem>;
 
 export type EntityResponseType = HttpResponse<IItem>;
@@ -51,27 +49,29 @@ export class ItemService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  // ✅ Updated find method to ensure images are always included
   find(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<RestItem>(`${this.resourceUrl}/${id}`, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http.get<RestItem>(`${this.resourceUrl}/${id}?eagerload=true`, { observe: 'response' }).pipe(
+      map(res => {
+        const item = this.convertResponseFromServer(res).body;
+        if (item) {
+          item.images = item.images ?? []; // Ensure images array is initialized
+        }
+        return res.clone({ body: item });
+      }),
+    );
   }
 
-  // find(id: number): Observable<IItem> {
-  //   return this.http
-  //     .get<IItem>(`${this.resourceUrl}/${id}`)
-  //     .pipe(map(item => ({
-  //       ...item,
-  //       images: item.images || [] // Ensure images are initialized
-  //     })));
-  // }
+  // ✅ New method to like/unlike an item
+  likeItem(itemId: number): Observable<EntityResponseType> {
+    return this.http
+      .post<RestItem>(`${this.resourceUrl}/${itemId}/like`, {}, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
 
   getImagesForItem(itemId: number): Observable<IImages[]> {
     return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
   }
-  // find(id: number): Observable<IItem> {
-  //   return this.http.get<IItem>(`${this.resourceUrl}/${id}?eagerload=true`); // Ensures images are loaded
-  // }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
@@ -79,12 +79,6 @@ export class ItemService {
       .get<RestItem[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
-
-  // //for like
-  // query(req?: any): Observable<EntityArrayResponseType> {
-  //   const options = createRequestOption(req);
-  //   return this.http.get<IItem[]>(this.resourceUrl, { params: options, observe: 'response' });
-  // }
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
