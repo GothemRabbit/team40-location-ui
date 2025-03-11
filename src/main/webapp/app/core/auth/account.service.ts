@@ -68,7 +68,7 @@ export class AccountService {
     return this.authenticationState.asObservable();
   }
 
-  //get profile id
+  // get profile id
   getCurrentUserusername(): string {
     const user = this.userIdentity(); // Get the current user from the signal
     return user?.username ?? 'user cannot be found'; // Return the profileId or -1 if not found
