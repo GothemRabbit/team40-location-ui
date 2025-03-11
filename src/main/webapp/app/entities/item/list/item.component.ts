@@ -62,7 +62,7 @@ export class ItemComponent implements OnInit {
   protected ngZone = inject(NgZone);
   private readonly accountService = inject(AccountService);
   private readonly profileDetailsService = inject(ProfileDetailsService);
-  //private likeService : LikesService;
+  // private likeService : LikesService;
 
   trackId = (item: IItem): number => this.itemService.getItemIdentifier(item);
 

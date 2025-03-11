@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
@@ -15,10 +15,10 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './item-detail.component.html',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, ImagesComponent],
 })
-export class ItemDetailComponent {
-  //item = input<IItem | null>(null);
+export class ItemDetailComponent implements OnInit {
+  // item = input<IItem | null>(null);
   item = signal<IItem | null>(null);
-  //isLikedByUser = computed(() => this.item()?.isLikedByUser ?? false);
+  // isLikedByUser = computed(() => this.item()?.isLikedByUser ?? false);
 
   protected dataUtils = inject(DataUtils);
 
