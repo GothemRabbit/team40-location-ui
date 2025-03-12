@@ -185,7 +185,7 @@ public class ItemResource {
     }
 
     //getting item with likes
-    @GetMapping("/items/{id}")
+    @GetMapping("/{id}/likes")
     public ResponseEntity<ItemDTO> getItemWithLikes(@PathVariable Long id) {
         Optional<ItemDTO> itemDTO = itemService.findOneWithLikes(id);
         return ResponseUtil.wrapOrNotFound(itemDTO);

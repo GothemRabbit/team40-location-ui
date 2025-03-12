@@ -50,6 +50,8 @@ public class ItemDTO implements Serializable {
 
     private UserDetailsDTO seller;
 
+    private Integer likeCount;
+
     public Long getId() {
         return id;
     }
@@ -152,6 +154,14 @@ public class ItemDTO implements Serializable {
 
     public void setSeller(UserDetailsDTO seller) {
         this.seller = seller;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
     }
 
     @Override
