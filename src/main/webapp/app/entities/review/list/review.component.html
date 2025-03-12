@@ -7,6 +7,9 @@
   @if (reviews?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>No Reviews found</span>
+      <button data-cy="entityCreateButton" class="btn jh-create-entity create-review" [routerLink]="['/review/new']">
+        <span>Write a Review!</span>
+      </button>
     </div>
   }
   @if (reviews && reviews.length > 0) {
@@ -14,7 +17,7 @@
       <div class="ratingBoxLeft">
         <div class="avRating">
           <h2>reviews of user</h2>
-          <h1>3</h1>
+          <h1>{{ reviews.length }}</h1>
           <div class="star">&#9733;&#9733;&#9733;&#9734;&#9734;</div>
           <p>{{ reviews.length }} reviews</p>
           <p>give us your review we would love to hear your thought on our sellers</p>
