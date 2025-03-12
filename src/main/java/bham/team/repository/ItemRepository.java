@@ -34,4 +34,6 @@ public interface ItemRepository extends ItemRepositoryWithBagRelationships, JpaR
 
     @Query("SELECT i FROM Item i LEFT JOIN FETCH i.images WHERE i.id = :id")
     Optional<Item> findByIdWithImages(@Param("id") Long id);
+
+    List<Item> findAll();
 }

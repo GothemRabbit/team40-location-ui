@@ -134,4 +134,10 @@ public class ItemService {
     public Optional<Item> getItemWithImages(Long itemId) {
         return itemRepository.findById(itemId);
     }
+
+    @Transactional(readOnly = true)
+    public List<ItemDTO> findAll() {
+        LOG.debug("Request to get all Items");
+        return itemRepository.findAll().stream().map(itemMapper::toDto).collect(Collectors.toList());
+    }
 }
