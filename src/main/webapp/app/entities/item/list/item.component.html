@@ -35,7 +35,7 @@
             </div>
             @if (item.images && item.images.length > 0) {
               <a [routerLink]="['/item', item.id, 'view']">
-                <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[item.images.length - 1].images" alt="Item Image" />
+                <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
               </a>
             } @else {
               <!-- Default Placeholder Image -->
