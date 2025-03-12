@@ -1,0 +1,20 @@
+.conversation-list.container {
+  background-color: #dbd9b7;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+}
+
+.list-group-item.list-group-item-action.mb-2 {
+  border: 1px solid #7c7254;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+  color: #031d42;
+}
+
+.list-group-item.list-group-item-action.mb-2:hover {
+  background-color: #e1c18f;
+  border-color: #031d42;
+  cursor: pointer;
+}

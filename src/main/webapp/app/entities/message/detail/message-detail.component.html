@@ -1,58 +1,59 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (message(); as messageRef) {
-      <div>
-        <h2 data-cy="messageDetailsHeading"><span>Message</span></h2>
+<div class="container message-detail">
+  <div class="row justify-content-center">
+    <div class="col-8">
+      @if (message(); as messageRef) {
+        <div class="message-header d-flex justify-content-between align-items-center">
+          <h2 data-cy="messageDetailsHeading">Message</h2>
+          <div>
+            <button type="submit" (click)="previousState()" class="btn btn-info me-2" data-cy="entityDetailsBackButton">
+              <fa-icon icon="arrow-left"></fa-icon>
+              <span>Back</span>
+            </button>
+
+            <button type="button" [routerLink]="['/message', messageRef.id, 'edit']" class="btn btn-primary">
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span>Edit</span>
+            </button>
+          </div>
+        </div>
 
         <hr />
 
         <jhi-alert-error></jhi-alert-error>
-
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
           <dt><span>ID</span></dt>
-          <dd>
-            <span>{{ messageRef.id }}</span>
-          </dd>
+          <dd>{{ messageRef.id }}</dd>
+
           <dt><span>Content</span></dt>
-          <dd>
-            <span>{{ messageRef.content }}</span>
-          </dd>
+          <dd>{{ messageRef.content }}</dd>
+
           <dt><span>Timestamp</span></dt>
-          <dd>
-            <span>{{ messageRef.timestamp | formatMediumDatetime }}</span>
-          </dd>
+          <dd>{{ messageRef.timestamp | formatMediumDatetime }}</dd>
+
           <dt><span>Is Read</span></dt>
-          <dd>
-            <span>{{ messageRef.isRead }}</span>
-          </dd>
+          <dd>{{ messageRef.isRead }}</dd>
+
           <dt><span>Conversation</span></dt>
           <dd>
-            @if (message()!.conversation) {
-              <div>
-                <a [routerLink]="['/conversation', message()!.conversation?.id, 'view']">{{ messageRef.conversation?.id }}</a>
-              </div>
+            @if (messageRef.conversation) {
+              <a [routerLink]="['/conversation', messageRef.conversation.id, 'view']">
+                {{ messageRef.conversation.id }}
+              </a>
             }
           </dd>
+
           <dt><span>Profile Details</span></dt>
           <dd>
-            @if (message()!.profileDetails) {
-              <div>
-                <a [routerLink]="['/profile-details', message()!.profileDetails?.id, 'view']">{{ messageRef.profileDetails?.id }}</a>
-              </div>
+            @if (messageRef.profileDetails) {
+              <a [routerLink]="['/profile-details', messageRef.profileDetails.id, 'view']">
+                {{ messageRef.profileDetails.id }}
+              </a>
             }
           </dd>
         </dl>
-
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-        </button>
-
-        <button type="button" [routerLink]="['/message', messageRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-        </button>
-      </div>
-    }
+      }
+    </div>
   </div>
 </div>

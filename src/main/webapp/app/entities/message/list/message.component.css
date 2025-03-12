@@ -1,0 +1,20 @@
+.message-list.container {
+  background-color: #dbd9b7;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+}
+
+.message-list-item {
+  border: 1px solid #7c7254;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+  color: #031d42;
+}
+
+.message-list-item:hover {
+  background-color: #e1c18f;
+  border-color: #031d42;
+  cursor: pointer;
+}
