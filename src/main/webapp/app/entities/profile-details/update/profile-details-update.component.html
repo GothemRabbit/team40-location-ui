@@ -1,7 +1,7 @@
-<div class="d-flex justify-content-center">
+<div class="container">
   <jhi-alert-error></jhi-alert-error>
 
-  <div class="col-8">
+  <div class="main-content">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-profile-details-heading" data-cy="UserDetailsCreateUpdateHeading">Settings</h2>
 
@@ -117,7 +117,7 @@
                   formControlName="birthDate"
                 />
                 <button type="button" class="btn btn-secondary" (click)="birthDateDp.toggle()">
-                  <fa-icon icon="calendar-alt"></fa-icon>
+                  <fa-icon icon="whale"></fa-icon>
                 </button>
               </div>
             </div>
@@ -135,12 +135,43 @@
               }
             </div>
           </div>
+
+          <div *ngIf="activeTab === 'display'">
+            <h3>Display Settings</h3>
+
+            <div class="mb-3">
+              <label class="form-label">Appearance</label>
+              <div class="switch-container">
+                <label class="display-label">Light</label>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider round"></span>
+                </label>
+                <label class="display-label">Dark</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Text Size</label>
+              <div class="slide-container">
+                <label class="text-label-small">Aa</label>
+                <input type="range" min="1" max="100" value="50" class="text-slider" id="myRange" />
+                <label class="text-label-big">Aa</label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+      <div class="buttons-container">
+        <button
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          class="btn btn-secondary cancelButton"
+          (click)="previousState()"
+        >
+          <span>Cancel</span>
         </button>
 
         <button
@@ -148,9 +179,9 @@
           id="save-entity"
           data-cy="entityCreateSaveButton"
           [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
+          class="btn btn-primary saveButton"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+          <span>Save</span>
         </button>
       </div>
     </form>
