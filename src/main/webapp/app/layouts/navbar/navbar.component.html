@@ -32,6 +32,19 @@
             <!--            </span>-->
           </a>
         </li>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
+            <fa-icon icon="home"></fa-icon>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/conversation" (click)="collapseNavbar()">
+            <fa-icon icon="message"></fa-icon>
+            <span>Chat</span>
+          </a>
+        </li>
+
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         @if (account() !== null) {
           <li
