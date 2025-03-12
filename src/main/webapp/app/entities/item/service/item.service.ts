@@ -49,7 +49,7 @@ export class ItemService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  // ✅ Updated find method to ensure images are always included
+  // Updated find method to ensure images are always included
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<RestItem>(`${this.resourceUrl}/${id}?eagerload=true`, { observe: 'response' }).pipe(
       map(res => {
@@ -62,11 +62,19 @@ export class ItemService {
     );
   }
 
-  // ✅ New method to like/unlike an item
+  // New method to like/unlike an item
   likeItem(itemId: number): Observable<EntityResponseType> {
-    return this.http
-      .post<RestItem>(`${this.resourceUrl}/${itemId}/like`, {}, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http.post<RestItem>(`${this.resourceUrl}/${itemId}/like`, {}, { observe: 'response' }).pipe(
+      map(res => this.convertResponseFromServer(res)),
+      // Handle potential errors
+      // If an error occurs, return an empty response with a failed status
+      map(response => {
+        if (!response.body) {
+          throw new Error('Invalid response from like API');
+        }
+        return response;
+      }),
+    );
   }
 
   getImagesForItem(itemId: number): Observable<IImages[]> {

@@ -73,12 +73,12 @@ export class LikesService {
     return likesCollection;
   }
 
-  toggleLike(itemId: number, profileId: number): Observable<EntityResponseType | HttpResponse<{}>> {
+  toggleLike(itemId: number, profileId: number): Observable<EntityResponseType> {
     return this.findLikeByUserAndItem(itemId, profileId).pipe(
       switchMap(existingLike => {
-        if (existingLike.body) {
+        if (existingLike.body?.id) {
           return existingLike.body.liked
-            ? this.delete(existingLike.body.id) // This returns HttpResponse<{}>, so we allow it
+            ? this.delete(existingLike.body.id).pipe(map(() => new HttpResponse<ILikes>({ body: null })))
             : this.update({ ...existingLike.body, liked: true });
         } else {
           const newLike: NewLikes = {
@@ -99,9 +99,7 @@ export class LikesService {
         if (response.body && response.body.length > 0) {
           return new HttpResponse<ILikes>({ body: response.body[0] });
         }
-        return new HttpResponse<ILikes>({
-          body: { id: 0, liked: false, item: null, profileDetails: null }, // Default like object
-        });
+        return new HttpResponse<ILikes>({ body: null });
       }),
     );
   }

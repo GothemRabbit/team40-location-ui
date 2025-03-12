@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
@@ -20,11 +20,14 @@ export class ItemDetailComponent implements OnInit {
   // isLikedByUser = computed(() => this.item()?.isLikedByUser ?? false);
 
   protected dataUtils = inject(DataUtils);
+  private route = inject(ActivatedRoute);
+  private itemService = inject(ItemService);
 
-  constructor(
-    private route: ActivatedRoute,
-    private itemService: ItemService,
-  ) {}
+  // constructor(
+  //   private route: ActivatedRoute,
+  //   private itemService: ItemService,
+  //   private dataUtils = inject(DataUtils)
+  // ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -38,7 +41,7 @@ export class ItemDetailComponent implements OnInit {
   loadItem(itemId: number): void {
     this.itemService.find(itemId).subscribe({
       next: response => {
-        this.item.update(() => response.body); // ✅ Correctly updating InputSignal
+        this.item.update(() => response.body); // Correctly updating InputSignal
       },
       error: err => console.error('Error fetching item:', err),
     });
