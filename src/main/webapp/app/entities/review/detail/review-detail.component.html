@@ -1,16 +1,36 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (review(); as reviewRef) {
-      <div>
-        <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
+<div class="page">
+  <div class="d-flex justify-content-center">
+    <div class="col-8">
+      @if (review(); as reviewRef) {
+        <div>
+          <h2 data-cy="reviewDetailsHeading">
+            <span>user{{ reviewRef.id }} review</span>
+          </h2>
+          <div class="commentBoxRight">
+            <div style="display: flex; justify-content: space-between">
+              <p id="userName">
+                <fa-icon icon="user" class="avatar"></fa-icon>
+                user{{ reviewRef.id }}
+              </p>
+              <p id="rates">
+                <span id="stars" *ngFor="let index of [1, 2, 3, 4, 5]">
+                  {{ index >= (reviewRef.rating || 0) ? '&#9734;' : '&#9733;' }}
+                </span>
+              </p>
+            </div>
+            <p id="dialogue">
+              {{ reviewRef.comments }}
+            </p>
+            <p id="date">
+              {{ reviewRef.date | formatMediumDate }}
+            </p>
+          </div>
 
-        <hr />
+          <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert-error></jhi-alert-error>
+          <jhi-alert></jhi-alert>
 
-        <jhi-alert></jhi-alert>
-
-        <dl class="row-md jh-entity-details">
+          <!-- <dl class="row-md jh-entity-details">
           <dt><span>ID</span></dt>
           <dd>
             <span>{{ reviewRef.id }}</span>
@@ -51,21 +71,22 @@
               </div>
             }
           </dd>
-        </dl>
+        </dl> -->
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
-        </button>
+          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+          </button>
 
-        <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-        </button>
+          <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+          </button>
 
-        <button type="submit" (click)="delete(reviewRef)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-          <fa-icon icon="times"></fa-icon>
-          <span class="d-none d-md-inline">Delete</span>
-        </button>
-      </div>
-    }
+          <button type="submit" (click)="delete(reviewRef)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+            <fa-icon icon="times"></fa-icon>
+            <span class="d-none d-md-inline">Delete</span>
+          </button>
+        </div>
+      }
+    </div>
   </div>
 </div>

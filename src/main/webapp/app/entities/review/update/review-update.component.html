@@ -3,7 +3,7 @@
     <div class="col-8">
       <div class="formBorder">
         <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-          <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Create or edit a Review</h2>
+          <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Give us your Review!</h2>
 
           <div>
             <jhi-alert-error></jhi-alert-error>
@@ -44,7 +44,15 @@
             @let ratingRef = editForm.get('rating')!;
             <div class="mb-4">
               <label class="form-label" for="field_rating"></label>
-              <input type="number" class="num" name="rating" id="field_rating" data-cy="rating" formControlName="rating" />
+              <input
+                type="number"
+                class="num"
+                name="rating"
+                id="field_rating"
+                data-cy="rating"
+                formControlName="rating"
+                placeholder="rating"
+              />
               @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
                 <div>
                   @if (editForm.get('rating')?.errors?.required) {
@@ -75,7 +83,7 @@
               >
                 <option [ngValue]="null"></option>
                 @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
-                  <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+                  <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.userName }}</option>
                 }
               </select>
             </div>

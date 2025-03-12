@@ -7,9 +7,25 @@
   @if (reviews?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>No Reviews found</span>
-      <button data-cy="entityCreateButton" class="btn jh-create-entity create-review" [routerLink]="['/review/new']">
-        <span>Write a Review!</span>
-      </button>
+      <div class="ratingBoxLeft2">
+        <div class="avRating">
+          <h2>reviews of user</h2>
+          <h1>{{ 0 }}</h1>
+          <p>reviews</p>
+          <p>have been given to this user</p>
+          <p>give us your review we would love to hear your thought on our sellers</p>
+          <div class="star">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button class="btn me-2" (click)="load()" [disabled]="isLoading">
+            <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+            <span>Refresh list</span>
+          </button>
+          <button data-cy="entityCreateButton" class="btn jh-create-entity create-review" [routerLink]="['/review/new']">
+            <span>Write a Review!</span>
+          </button>
+        </div>
+      </div>
     </div>
   }
   @if (reviews && reviews.length > 0) {
@@ -18,9 +34,10 @@
         <div class="avRating">
           <h2>reviews of user</h2>
           <h1>{{ reviews.length }}</h1>
-          <div class="star">&#9733;&#9733;&#9733;&#9734;&#9734;</div>
-          <p>{{ reviews.length }} reviews</p>
+          <p>reviews</p>
+          <p>have been given to this user</p>
           <p>give us your review we would love to hear your thought on our sellers</p>
+          <div class="star">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         </div>
         <div class="d-flex justify-content-center">
           <button class="btn me-2" (click)="load()" [disabled]="isLoading">
@@ -49,7 +66,7 @@
                 <span *ngFor="let star of [1, 2, 3, 4, 5]">
                   <span [innerHTML]="star <= (review.rating || 0) ? '&#9733;' : '&#9734;'"></span>
                 </span>
-                <span class="score"> ({{ review.rating }})</span>
+                <!---<span class="score"> ({{ review.rating }})</span>-->
               </p>
             </div>
             <p id="dialogue">
