@@ -7,6 +7,7 @@ import bham.team.service.mapper.ImagesMapper;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,6 +99,13 @@ public class ImagesService {
     public Optional<ImagesDTO> findOne(Long id) {
         LOG.debug("Request to get Images : {}", id);
         return imagesRepository.findById(id).map(imagesMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ImagesDTO> findAllByItemId(Long itemId) {
+        // If your repository returns a Set:
+        Set<Images> images = imagesRepository.findByItemId(itemId);
+        return images.stream().map(imagesMapper::toDto).collect(Collectors.toList());
     }
 
     /**
