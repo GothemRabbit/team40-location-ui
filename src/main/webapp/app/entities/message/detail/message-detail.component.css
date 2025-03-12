@@ -1,0 +1,13 @@
+.message-detail {
+  background-color: #dbd9b7;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  color: #031d42;
+}
+
+.message-header {
+  background-color: #e1c18f;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}

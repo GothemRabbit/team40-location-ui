@@ -17,6 +17,7 @@ import { MessageDeleteDialogComponent } from '../delete/message-delete-dialog.co
   standalone: true,
   selector: 'jhi-message',
   templateUrl: './message.component.html',
+  styleUrls: ['./message.component.css'],
   imports: [
     RouterModule,
     FormsModule,

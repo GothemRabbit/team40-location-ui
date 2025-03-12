@@ -10,6 +10,7 @@ import { IMessage } from '../message.model';
   standalone: true,
   selector: 'jhi-message-detail',
   templateUrl: './message-detail.component.html',
+  styleUrls: ['./message-detail.component.css'],
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class MessageDetailComponent {

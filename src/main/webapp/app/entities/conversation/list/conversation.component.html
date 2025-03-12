@@ -1,27 +1,23 @@
-<div>
-  <h2 id="page-heading" data-cy="ConversationHeading">
-    <span>Conversations</span>
+<div class="conversation-list container">
+  <h2 id="page-heading" data-cy="ConversationHeading">Conversations</h2>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-conversation"
-        [routerLink]="['/conversation/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Conversation</span>
-      </button>
-    </div>
-  </h2>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+      <span>Refresh list</span>
+    </button>
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-conversation"
+      [routerLink]="['/conversation/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>Create a new Conversation</span>
+    </button>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
 
   @if (conversations?.length === 0) {
@@ -31,84 +27,34 @@
   }
 
   @if (conversations && conversations.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span>ID</span>
+    <div class="list-group">
+      @for (conversation of conversations; track trackId(conversation)) {
+        <a
+          class="list-group-item list-group-item-action mb-2"
+          data-cy="entityTable"
+          [routerLink]="['/conversation', conversation.id, 'view']"
+        >
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Conversation #{{ conversation.id }}</h5>
+            <small>{{ conversation.dateCreated | formatMediumDatetime }}</small>
+          </div>
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dateCreated">
-              <div class="d-flex">
-                <span>Date Created</span>
+          <!-- Display optional details -->
+          <p class="mb-1">
+            <strong>Profile Details:</strong>
+            @for (profileDetails of conversation.profileDetails; track $index; let last = $last) {
+              <span> {{ profileDetails.id }}{{ last ? '' : ', ' }} </span>
+            }
+          </p>
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="profileDetails.id">
-              <div class="d-flex">
-                <span>Profile Details</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="participants.id">
-              <div class="d-flex">
-                <span>Participants</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (conversation of conversations; track trackId(conversation)) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/conversation', conversation.id, 'view']">{{ conversation.id }}</a>
-              </td>
-              <td>{{ conversation.dateCreated | formatMediumDatetime }}</td>
-              <td>
-                @for (profileDetails of conversation.profileDetails; track $index; let last = $last) {
-                  <span>
-                    <a class="form-control-static" [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails.id }}</a
-                    >{{ last ? '' : ', ' }}
-                  </span>
-                }
-              </td>
-              <td>
-                @for (participants of conversation.participants; track $index; let last = $last) {
-                  <span>
-                    <a class="form-control-static" [routerLink]="['/user-details', participants.id, 'view']">{{ participants.id }}</a
-                    >{{ last ? '' : ', ' }}
-                  </span>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/conversation', conversation.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
-                  </a>
-
-                  <a [routerLink]="['/conversation', conversation.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(conversation)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+          <p class="mb-1">
+            <strong>Participants:</strong>
+            @for (participants of conversation.participants; track $index; let last = $last) {
+              <span> {{ participants.id }}{{ last ? '' : ', ' }} </span>
+            }
+          </p>
+        </a>
+      }
     </div>
   }
 </div>
