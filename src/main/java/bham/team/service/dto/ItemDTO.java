@@ -52,6 +52,8 @@ public class ItemDTO implements Serializable {
 
     private Integer likeCount;
 
+    private Set<ImagesDTO> images = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -164,6 +166,14 @@ public class ItemDTO implements Serializable {
         this.likeCount = likeCount;
     }
 
+    public Set<ImagesDTO> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<ImagesDTO> images) {
+        this.images = images;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -202,6 +212,7 @@ public class ItemDTO implements Serializable {
             ", wishlists=" + getWishlists() +
             ", profileDetails=" + getProfileDetails() +
             ", seller=" + getSeller() +
+            ", images=" + getImages() +
             "}";
     }
 }

@@ -10,16 +10,20 @@ import bham.team.service.dto.UserDetailsDTO;
 import bham.team.service.dto.WishlistDTO;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * Mapper for the entity {@link Item} and its DTO {@link ItemDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { ImagesMapper.class })
 public interface ItemMapper extends EntityMapper<ItemDTO, Item> {
     @Mapping(target = "wishlists", source = "wishlists", qualifiedByName = "wishlistIdSet")
     @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
     @Mapping(target = "seller", source = "seller", qualifiedByName = "userDetailsId")
+    @Mapping(target = "images", source = "images")
     ItemDTO toDto(Item s);
 
     @Mapping(target = "removeWishlist", ignore = true)
