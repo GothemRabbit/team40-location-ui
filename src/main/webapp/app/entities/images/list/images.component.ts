@@ -44,9 +44,9 @@ export class ImagesComponent implements OnInit {
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-  trackId(index: number, item: IImages): number {
+  trackId = (index: number, item: IImages): number => {
     return this.imagesService.getImagesIdentifier(item);
-  }
+  };
 
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])

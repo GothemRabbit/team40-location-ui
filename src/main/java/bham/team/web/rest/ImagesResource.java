@@ -154,6 +154,12 @@ public class ImagesResource {
         return ResponseUtil.wrapOrNotFound(imagesDTO);
     }
 
+    @GetMapping("/item/{itemId}")
+    public List<ImagesDTO> getImagesByItem(@PathVariable Long itemId) {
+        LOG.debug("REST request to get all Images for Item ID: {}", itemId);
+        return imagesService.findAllByItemId(itemId);
+    }
+
     /**
      * {@code DELETE  /images/:id} : delete the "id" images.
      *

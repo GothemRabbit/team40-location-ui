@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
@@ -20,11 +20,14 @@ export class ItemDetailComponent implements OnInit {
   // isLikedByUser = computed(() => this.item()?.isLikedByUser ?? false);
 
   protected dataUtils = inject(DataUtils);
+  private route = inject(ActivatedRoute);
+  private itemService = inject(ItemService);
 
-  constructor(
-    private route: ActivatedRoute,
-    private itemService: ItemService,
-  ) {}
+  // constructor(
+  //   private route: ActivatedRoute,
+  //   private itemService: ItemService,
+  //   private dataUtils = inject(DataUtils)
+  // ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -38,7 +41,7 @@ export class ItemDetailComponent implements OnInit {
   loadItem(itemId: number): void {
     this.itemService.find(itemId).subscribe({
       next: response => {
-        this.item.update(() => response.body); // ✅ Correctly updating InputSignal
+        this.item.update(() => response.body); // Correctly updating InputSignal
       },
       error: err => console.error('Error fetching item:', err),
     });
@@ -61,7 +64,8 @@ export class ItemDetailComponent implements OnInit {
     if (!currentItem) return;
 
     // Ensure `likesCount` is a valid number
-    const currentLikes = currentItem.likesCount ?? 0;
+    // const currentLikes = currentItem.likesCount ?? 0;
+    const currentLikes = Number(currentItem.likesCount) || 0;
     const isLiked = !currentItem.isLikedByUser;
     const updatedLikes = isLiked ? currentLikes + 1 : Math.max(0, currentLikes - 1); // Avoid negative values
 
@@ -76,7 +80,7 @@ export class ItemDetailComponent implements OnInit {
     this.itemService.likeItem(currentItem.id).subscribe({
       next: response => {
         if (response.body) {
-          this.item.update(() => response.body);
+          this.item.update(() => response.body as IItem);
         }
       },
       error: err => {
@@ -86,7 +90,10 @@ export class ItemDetailComponent implements OnInit {
     });
   }
 
+  // hasUserLiked(): boolean {
+  //   return this.item()?.isLikedByUser ?? false;
+  // }
   hasUserLiked(): boolean {
-    return this.item()?.isLikedByUser ?? false;
+    return !!this.item()?.isLikedByUser;
   }
 }
