@@ -61,7 +61,8 @@ export class ItemDetailComponent implements OnInit {
     if (!currentItem) return;
 
     // Ensure `likesCount` is a valid number
-    const currentLikes = currentItem.likesCount ?? 0;
+    // const currentLikes = currentItem.likesCount ?? 0;
+    const currentLikes = Number(currentItem.likesCount) || 0;
     const isLiked = !currentItem.isLikedByUser;
     const updatedLikes = isLiked ? currentLikes + 1 : Math.max(0, currentLikes - 1); // Avoid negative values
 
@@ -76,7 +77,7 @@ export class ItemDetailComponent implements OnInit {
     this.itemService.likeItem(currentItem.id).subscribe({
       next: response => {
         if (response.body) {
-          this.item.update(() => response.body);
+          this.item.update(() => response.body as IItem);
         }
       },
       error: err => {
@@ -86,7 +87,10 @@ export class ItemDetailComponent implements OnInit {
     });
   }
 
+  // hasUserLiked(): boolean {
+  //   return this.item()?.isLikedByUser ?? false;
+  // }
   hasUserLiked(): boolean {
-    return this.item()?.isLikedByUser ?? false;
+    return !!this.item()?.isLikedByUser;
   }
 }
