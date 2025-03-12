@@ -46,9 +46,10 @@
                 <a [routerLink]="['/review', review.id, 'view']">user{{ review.id }}</a>
               </p>
               <p id="rates">
-                <span *ngFor="let reviews of [1, 2, 3, 4, 5]">
-                  {{ reviews > (review.rating || 0) ? '&#9734;' : '&#9733;' }}
+                <span *ngFor="let star of [1, 2, 3, 4, 5]">
+                  <span [innerHTML]="star <= (review.rating || 0) ? '&#9733;' : '&#9734;'"></span>
                 </span>
+                <span class="score"> ({{ review.rating }})</span>
               </p>
             </div>
             <p id="dialogue">
