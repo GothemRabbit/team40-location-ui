@@ -115,10 +115,15 @@ public class ItemService {
      * @param id the id of the entity.
      * @return the entity.
      */
+    //    @Transactional(readOnly = true)
+    //    public Optional<ItemDTO> findOne(Long id) {
+    //        LOG.debug("Request to get Item : {}", id);
+    //        return itemRepository.findOneWithEagerRelationships(id).map(itemMapper::toDto);
+    //    }
     @Transactional(readOnly = true)
     public Optional<ItemDTO> findOne(Long id) {
-        LOG.debug("Request to get Item : {}", id);
-        return itemRepository.findOneWithEagerRelationships(id).map(itemMapper::toDto);
+        LOG.debug("Request to get Item with images: {}", id);
+        return itemRepository.findByIdWithImages(id).map(itemMapper::toDto);
     }
 
     /**
@@ -132,6 +137,12 @@ public class ItemService {
     }
 
     public Optional<Item> getItemWithImages(Long itemId) {
-        return itemRepository.findById(itemId);
+        return itemRepository.findByIdWithImages(itemId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ItemDTO> findAllWithImages() {
+        LOG.debug("Request to get all Items with images");
+        return itemRepository.findAllWithImages().stream().map(itemMapper::toDto).collect(Collectors.toList());
     }
 }
