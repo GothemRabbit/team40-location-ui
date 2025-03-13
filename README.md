@@ -15,7 +15,7 @@ TODO:
    - Jasmine (YXY367@student.bham.ac.uk)
    - James (YLA365@student.bham.ac.uk)
    - Saabarin (SXD247@student.bham.ac.uk)
-   - Jalen (HXL109@student.bham.ac.uk)
+   - Jalen (HXx109@student.bham.ac.uk)
    - Hanpei (HXM330@student.bham.ac.uk)
    - Gothem (fxg065@student.bham.ac.uk)
 
