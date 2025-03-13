@@ -114,3 +114,14 @@
 .tab-content.mt-3 {
   width: 100%;
 }
+
+#review,
+#product_status {
+  color: black;
+}
+
+#review:hover,
+#product_status:hover {
+  background: #80ef80;
+  transform: translateY(-5px);
+}

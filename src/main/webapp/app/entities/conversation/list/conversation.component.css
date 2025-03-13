@@ -5,16 +5,20 @@
   padding: 1.5rem 2rem;
   border-radius: 8px;
   font-family: 'Prompt', sans-serif;
+  border: 3px solid;
 }
 
 .list-group-item.list-group-item-action.mb-2 {
   border: 1px solid #7c7254;
   transition:
+    transform 0.2s ease-in-out,
     background-color 0.3s,
     border-color 0.3s,
     color 0.3s;
+
   color: #031d42;
   border-radius: 25px;
+  background: #cfcfc4;
 }
 
 .list-group-item.list-group-item-action.mb-2:hover {

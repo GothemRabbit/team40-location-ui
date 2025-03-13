@@ -27,7 +27,16 @@
             <span class="username">{{ '@' + profileDetailsRef.userName }}</span>
           </dd>
 
-          <dt><span>REVIEWS</span></dt>
+          <dt>
+            <button id="review" type="button" class="btn btn-primary" [routerLink]="['/review']">
+              <fa-icon icon="star"></fa-icon>
+              <span>Reviews</span>
+            </button>
+            <button id="product_status" type="button" class="btn btn-primary" [routerLink]="['/product-status']">
+              <fa-icon icon="box"></fa-icon>
+              <span>Product Status</span>
+            </button>
+          </dt>
           <dd>
             <!--            <span>{{ profileDetailsRef.rating }}</span> supposed to take the average rating from database-->
             <div class="star">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
