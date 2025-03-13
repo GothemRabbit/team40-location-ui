@@ -27,6 +27,7 @@ import { ItemFormGroup, ItemFormService } from './item-form.service';
   selector: 'jhi-item-update',
   templateUrl: './item-update.component.html',
   imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterLink],
+  styleUrl: 'item-update.component.scss',
 })
 export class ItemUpdateComponent implements OnInit {
   isSaving = false;
