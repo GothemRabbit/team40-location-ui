@@ -1,3 +1,8 @@
+#page-heading {
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
 .item-container {
   display: flex;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -10,18 +15,35 @@
 }
 
 .card {
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
   border: 1px solid #e6d57a; /* Light yellow border */
-  background: white;
+  background: #89d1ff;
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
 
   height: 97%;
   width: 100%;
+  a {
+    text-decoration: none;
+  }
+}
+
+.jh-create-entity {
+  background: lightpink;
+  border-radius: 40px;
+  width: 25%;
+  display: block;
+  color: black;
+  font-weight: bold;
+}
+
+.jh-create-entity:hover {
+  transform: translateY(-5px);
+  background: #80ef80;
 }
 
 .card-header {
@@ -44,7 +66,7 @@
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translate(-5px);
   transition: all ease 0.3s;
 }
 

@@ -23,6 +23,13 @@ jhi-item {
   width: 100%;
 }
 
+:host {
+  background-color: #c1d5d9;
+  display: block;
+  min-height: 100vh;
+  border: none;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (-moz-min-device-pixel-ratio: 2),
