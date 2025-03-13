@@ -12,6 +12,7 @@ import { ItemService } from '../service/item.service';
   standalone: true,
   selector: 'jhi-item-detail',
   templateUrl: './item-detail.component.html',
+  styleUrl: 'item-detail.component.scss',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, ImagesComponent],
 })
 export class ItemDetailComponent implements OnInit {

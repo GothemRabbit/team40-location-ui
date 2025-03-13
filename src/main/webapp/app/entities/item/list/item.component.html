@@ -17,6 +17,15 @@
 
   @if (items && items.length > 0) {
     <div class="row g-4">
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-item"
+        [routerLink]="['/item/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Item</span>
+      </button>
       @for (item of items; track trackId(item)) {
         <div class="col-md-3">
           <div class="card">
