@@ -19,18 +19,20 @@ import { ConversationService } from 'app/entities/conversation/service/conversat
 import { ProfileDetailsService } from '../service/profile-details.service';
 import { IProfileDetails } from '../profile-details.model';
 import { ProfileDetailsFormGroup, ProfileDetailsFormService } from './profile-details-form.service';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   standalone: true,
   selector: 'jhi-profile-details-update',
   templateUrl: './profile-details-update.component.html',
   styleUrl: './profile-details-update.component.scss',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, FaIconComponent],
 })
 export class ProfileDetailsUpdateComponent implements OnInit {
   activeTab = 'profileDetails';
   isSaving = false;
   profileDetails: IProfileDetails | null = null;
+  userEmail: string | null = null; // Initialize as null
 
   usersSharedCollection: IUser[] = [];
   locationsSharedCollection: ILocation[] = [];
@@ -61,6 +63,13 @@ export class ProfileDetailsUpdateComponent implements OnInit {
       this.profileDetails = profileDetails;
       if (profileDetails) {
         this.updateForm(profileDetails);
+        // if (profileDetails.user?.id) {
+        //   this.userService.find(profileDetails.user.id).subscribe(user => {
+        //     if (user.body?.email) {
+        //       this.userEmail = user.body.email;
+        //     }
+        //   });
+        // }
       }
 
       this.loadRelationshipsOptions();

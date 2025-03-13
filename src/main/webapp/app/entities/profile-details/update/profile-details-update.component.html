@@ -3,7 +3,7 @@
 
   <div class="main-content">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-profile-details-heading" data-cy="UserDetailsCreateUpdateHeading">Settings</h2>
+      <h2 id="jhi-profile-details-heading" data-cy="UserDetailsCreateUpdateHeading" class="header">Settings</h2>
 
       <div class="row">
         <!-- SideBar -->
@@ -34,27 +34,26 @@
 
             @let bioImageRef = editForm.get('bioImage')!;
             <div class="mb-3">
-              <label class="form-label" for="field_bioImage">Bio Image</label>
-              <div>
-                @if (bioImageRef.value) {
-                  <img
-                    [src]="'data:' + editForm.get('bioImageContentType')!.value + ';base64,' + bioImageRef.value"
-                    style="max-height: 100px"
-                    alt="profileDetails"
-                  />
-                }
-                @if (bioImageRef.value) {
-                  <div class="form-text text-danger clearfix">
-                    <span class="pull-start">{{ editForm.get('bioImageContentType')!.value }}, {{ byteSize(bioImageRef.value!) }}</span>
-                    <button
-                      type="button"
-                      (click)="clearInputImage('bioImage', 'bioImageContentType', 'file_bioImage')"
-                      class="btn btn-secondary btn-xs pull-end"
-                    >
-                      <fa-icon icon="times"></fa-icon>
-                    </button>
-                  </div>
-                }
+              <label class="form-label" for="field_bioImage">Profile Picture</label>
+
+              <div class="image-container">
+                <img
+                  [src]="'data:' + editForm.get('bioImageContentType')!.value + ';base64,' + editForm.get('bioImage')?.value"
+                  style="height: 200px; width: 200px"
+                  alt="profileDetails"
+                />
+
+                <div class="form-text text-danger clearfix">
+                  <button
+                    type="button"
+                    (click)="clearInputImage('bioImage', 'bioImageContentType', 'file_bioImage')"
+                    class="btn btn-secondary btn-xs pull-end delete-button"
+                    style="width: 30px; height: 30px; color: red; border: none; background-color: transparent"
+                  >
+                    <span style="font-size: 25px">X</span>
+                  </button>
+                </div>
+
                 <input
                   type="file"
                   id="file_bioImage"
@@ -63,6 +62,7 @@
                   accept="image/*"
                 />
               </div>
+
               <input type="hidden" class="form-control" name="bioImage" id="field_bioImage" data-cy="bioImage" formControlName="bioImage" />
               <input
                 type="hidden"
@@ -76,7 +76,15 @@
             @let userNameRef = editForm.get('userName')!;
             <div class="mb-3">
               <label class="form-label" for="field_userName">User Name</label>
-              <input type="text" class="form-control" name="userName" id="field_userName" data-cy="userName" formControlName="userName" />
+              <input
+                type="text"
+                class="form-control"
+                name="userName"
+                id="field_userName"
+                data-cy="userName"
+                formControlName="userName"
+                readonly
+              />
               @if (userNameRef.invalid && (userNameRef.dirty || userNameRef.touched)) {
                 <div>
                   @if (editForm.get('userName')?.errors?.required) {
@@ -86,18 +94,23 @@
               }
             </div>
 
-            @let addressRef = editForm.get('address')!;
             <div class="mb-3">
-              <label class="form-label" for="field_address">Address</label>
-              <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
-              @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {
-                <div>
-                  @if (editForm.get('address')?.errors?.required) {
-                    <small class="form-text text-danger">This field is required.</small>
-                  }
-                </div>
-              }
+              <label class="form-label">Meetup Locations</label>
+              <p>User can change meetup locations here. It will be store in the location entity</p>
             </div>
+
+            <!--            @let addressRef = editForm.get('address')!;-->
+            <!--            <div class="mb-3">-->
+            <!--              <label class="form-label" for="field_address">Meetup Locations</label>-->
+            <!--              <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />-->
+            <!--              @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {-->
+            <!--                <div>-->
+            <!--                  @if (editForm.get('address')?.errors?.required) {-->
+            <!--                    <small class="form-text text-danger">This field is required.</small>-->
+            <!--                  }-->
+            <!--                </div>-->
+            <!--              }-->
+            <!--            </div>-->
           </div>
 
           <div *ngIf="activeTab === 'account'">
@@ -122,17 +135,9 @@
               </div>
             </div>
 
-            @let emailRef = editForm.get('email')!;
             <div class="mb-3">
-              <label class="form-label" for="field_email">Email</label>
-              <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-              @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
-                <div>
-                  @if (editForm.get('email')?.errors?.required) {
-                    <small class="form-text text-danger">This field is required.</small>
-                  }
-                </div>
-              }
+              <label class="form-label" for="field_userEmail">Email</label>
+              <input type="text" class="form-control" id="field_userEmail" data-cy="userEmail" [value]="userEmail" readonly />
             </div>
           </div>
 
@@ -181,7 +186,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary saveButton"
         >
-          <span>Save</span>
+          <span style="font-weight: bold">Save</span>
         </button>
       </div>
     </form>

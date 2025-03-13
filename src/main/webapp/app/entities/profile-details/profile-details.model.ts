@@ -9,7 +9,7 @@ export interface IProfileDetails {
   bioImageContentType?: string | null;
   userName?: string | null;
   birthDate?: dayjs.Dayjs | null;
-  user?: Pick<IUser, 'id'> | null;
+  user?: Pick<IUser, 'id' | 'login'> | null;
   locations?: Pick<ILocation, 'id'>[] | null;
   conversations?: Pick<IConversation, 'id'>[] | null;
 }

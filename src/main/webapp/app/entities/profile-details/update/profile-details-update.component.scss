@@ -5,6 +5,10 @@
   padding: 20px;
 }
 
+.header {
+  font-weight: bold;
+}
+
 .main-content {
   flex: 1;
 }
@@ -23,7 +27,7 @@
 }
 
 .list-group-item.active {
-  background-color: #f8dc75; /* Active tab color */
+  background-color: #f8dc75; /* active tab*/
   font-weight: bold;
 }
 
@@ -37,23 +41,32 @@
 .mb-3 {
   background-color: #f5f5f5;
   border-radius: 10px;
-  padding-left: 10px;
-  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+}
+
+.image-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 .form-control {
   background-color: #f5f5f5;
+  width: 80%;
 }
 
-.btn-xs {
-  padding: 4px 8px;
-  font-size: 15px;
+.delete-button {
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 
 .buttons-container {
-  position: sticky; /* Sticky to the bottom of the form */
-  bottom: 0; /* Stick to the bottom */
+  position: sticky;
+  bottom: 0;
   display: flex;
-  justify-content: flex-end; /* Align buttons to the right */
+  justify-content: flex-end;
   margin-top: 20px;
   padding: 10px 0;
   width: 100%;
@@ -62,16 +75,16 @@
 .cancelButton,
 .saveButton {
   position: sticky;
-  bottom: 0; /* Stick to the bottom of the form */
+  bottom: 0;
   z-index: 10;
-  margin: 0 5px; /* Adds space between buttons */
+  margin: 0 5px;
 }
 
 .saveButton {
   background-color: #f8dc75;
 }
 
-/* The switch - the box around the slider */
+/* the box around the slider */
 
 .switch-container {
   display: flex;
@@ -85,14 +98,14 @@
   height: 34px;
 }
 
-/* Hide default HTML checkbox */
+/* Hide HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
+/*  slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -131,7 +144,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
+/* rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
@@ -153,14 +166,14 @@ input:checked + .slider:before {
 
 /* The slider itself */
 .text-slider {
-  -webkit-appearance: none; /* Override default CSS styles */
+  -webkit-appearance: none; /* override CSS styles */
   appearance: none;
-  width: 100%; /* Full-width */
-  height: 10px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+  width: 100%;
+  height: 10px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s; /* transition on hover */
   transition: opacity 0.2s;
   border-radius: 5px;
 }
@@ -170,22 +183,22 @@ input:checked + .slider:before {
   opacity: 1; /* Fully shown on mouse-over */
 }
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+/* The slider handle */
 .text-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none; /* override look */
   appearance: none;
-  width: 15px; /* Set a specific slider handle width */
-  height: 18px; /* Slider handle height */
-  background: #04aa6d; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 15px;
+  height: 18px;
+  background: #f6d044;
+  cursor: pointer;
   border-radius: 5px;
 }
 
 .text-slider::-moz-range-thumb {
-  width: 15px; /* Set a specific slider handle width */
-  height: 15px; /* Slider handle height */
-  background: #04aa6d; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 15px;
+  height: 15px;
+  background: #f6d044;
+  cursor: pointer;
 }
 
 .text-label-small {
@@ -194,6 +207,6 @@ input:checked + .slider:before {
 }
 
 .text-label-big {
-  font-size: 25px;
+  font-size: 30px;
   font-weight: bold;
 }

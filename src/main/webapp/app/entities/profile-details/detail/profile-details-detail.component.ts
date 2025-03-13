@@ -1,10 +1,12 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, Input, input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { IProfileDetails } from '../profile-details.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   standalone: true,
@@ -13,11 +15,28 @@ import { IProfileDetails } from '../profile-details.model';
   styleUrl: './profile-details-detail.component.scss',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class ProfileDetailsDetailComponent {
-  profileDetails = input<IProfileDetails | null>(null);
+export class ProfileDetailsDetailComponent implements OnInit {
+  @Input() profileDetails: IProfileDetails | null = null;
   activeTab = 'listings';
+  isOwner = false;
+  account: Account | null = null;
 
   protected dataUtils = inject(DataUtils);
+  protected accountService = inject(AccountService);
+
+  ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+      this.checkOwnership();
+    });
+  }
+
+  checkOwnership(): void {
+    const profile = this.profileDetails;
+    if (this.account && profile?.user?.login) {
+      this.isOwner = this.account.login === profile.user.login;
+    }
+  }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);

@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -156,6 +159,31 @@ public class ProfileDetailsResource {
         LOG.debug("REST request to get ProfileDetails : {}", id);
         Optional<ProfileDetailsDTO> profileDetailsDTO = profileDetailsService.findOne(id);
         return ResponseUtil.wrapOrNotFound(profileDetailsDTO);
+    }
+
+    @GetMapping("/public-profile/{userName}")
+    public ResponseEntity<ProfileDetailsDTO> getProfileByUserName(@PathVariable String userName) {
+        Optional<ProfileDetailsDTO> profileOpt = profileDetailsService.findByUserName(userName); // you’ll define this in service
+
+        if (profileOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ProfileDetailsDTO profile = profileOpt.get();
+
+        // Get the currently logged-in user's login name
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentLogin = (authentication != null) ? authentication.getName() : null;
+
+        boolean isOwner = currentLogin != null && profile.getUser() != null && currentLogin.equals(profile.getUser().getLogin());
+
+        //        if (!isOwner) {
+        //            profile.setLocation(null);
+        //            profile.setEmail(null);
+        //            // hide other private fields here
+        //        }
+
+        return ResponseEntity.ok(profile);
     }
 
     /**

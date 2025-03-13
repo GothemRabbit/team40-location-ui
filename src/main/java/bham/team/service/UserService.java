@@ -132,7 +132,7 @@ public class UserService {
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
         // new user is not active
-        newUser.setActivated(false);
+        newUser.setActivated(true);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
@@ -154,8 +154,7 @@ public class UserService {
 
     private byte[] getDefaultProfilePicture() {
         try {
-            // Replace with the path to your default image (ensure the file is in resources or a known path)
-            return Files.readAllBytes(Paths.get("src/main/webapp/content/images/Default_profile_picture.jpg"));
+            return Files.readAllBytes(Paths.get("src/main/webapp/content/images/Default_profile_picture.png"));
         } catch (IOException e) {
             e.printStackTrace();
             return null; // Return null if image read fails

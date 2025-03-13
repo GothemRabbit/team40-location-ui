@@ -94,6 +94,10 @@ public class ProfileDetailsService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public Optional<ProfileDetailsDTO> findByUserName(String userName) {
+        return profileDetailsRepository.findByUserName(userName).map(profileDetailsMapper::toDto);
+    }
+
     /**
      * Get all the profileDetails with eager load of many-to-many relationships.
      *

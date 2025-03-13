@@ -27,4 +27,6 @@ public interface ProfileDetailsRepository extends ProfileDetailsRepositoryWithBa
     default Page<ProfileDetails> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    Optional<ProfileDetails> findByUserName(String userName);
 }

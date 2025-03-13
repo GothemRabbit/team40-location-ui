@@ -1,7 +1,7 @@
 <div class="container-fluid">
-  @if (profileDetails(); as profileDetailsRef) {
+  @if (profileDetails; as profileDetailsRef) {
     <div class="profilePage-container">
-      <h2 data-cy="profileDetailsDetailsHeading"><span>Profile</span></h2>
+      <h2 data-cy="profileDetailsDetailsHeading"><span class="header">Profile</span></h2>
       <hr />
 
       <p class="back-text" (click)="previousState()"><fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span></p>
@@ -66,6 +66,11 @@
         <div *ngIf="activeTab === 'favorites'">
           <h3>Favorites</h3>
           <p>Show user's favorites products here ....</p>
+        </div>
+
+        <div *ngIf="activeTab === 'wishlist'">
+          <h3>Wishlists</h3>
+          <p>Show user's wishlists here ....</p>
         </div>
 
         <div *ngIf="activeTab === 'history'">
