@@ -1,0 +1,41 @@
+.listing-form {
+  display: flex;
+  padding-top: 20px;
+  padding-left: -50px;
+  padding-right: 50px;
+  gap: 100px;
+}
+
+.image-upload {
+  width: 50%;
+  margin: auto;
+  padding-left: 10px;
+  border: black;
+}
+
+.itemDetails {
+  width: 50%;
+  padding: 10px;
+  margin: 10px;
+}
+
+.title-des {
+  border: 1.2px solid #000000; /* Light gray border */
+  padding: 10px; /* Spacing inside the box */
+  width: 100%; /* Full width */
+  height: 480px; /* Height */
+  font-size: 16px; /* Text size */
+}
+
+.small-labels {
+  margin: 10px;
+  padding: -20px;
+}
+
+.cat {
+  border: 1.2px solid #000000; /* Light gray border */
+  padding: 10px; /* Spacing inside the box */
+  width: 100%; /* Full width */
+  height: 100px; /* Height */
+  font-size: 16px; /* Text size */
+}
