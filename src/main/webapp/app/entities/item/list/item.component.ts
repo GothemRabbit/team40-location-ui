@@ -27,6 +27,7 @@ import { IImages } from '../../images/images.model';
   standalone: true,
   selector: 'jhi-item',
   templateUrl: './item.component.html',
+  styleUrl: 'item.component.scss',
   imports: [
     RouterModule,
     FormsModule,
