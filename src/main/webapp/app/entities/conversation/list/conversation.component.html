@@ -2,7 +2,7 @@
   <h2 id="page-heading" data-cy="ConversationHeading">Conversations</h2>
 
   <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+    <button id="refresh" class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
       <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
       <span>Refresh list</span>
     </button>
@@ -13,7 +13,7 @@
       [routerLink]="['/conversation/new']"
     >
       <fa-icon icon="plus"></fa-icon>
-      <span>Create a new Conversation</span>
+      <span>New Conversation</span>
     </button>
   </div>
 

@@ -32,12 +32,7 @@
             <!--            </span>-->
           </a>
         </li>
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
-            <fa-icon icon="home"></fa-icon>
-            <span>Home</span>
-          </a>
-        </li>
+
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/conversation" (click)="collapseNavbar()">
             <fa-icon icon="message"></fa-icon>
@@ -367,6 +362,18 @@
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
             @if (accountRef !== null) {
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/profile-details"
+                  routerLinkActive="active"
+                  (click)="collapseNavbar()"
+                  data-cy="settings"
+                >
+                  <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+                  <span>Profile</span>
+                </a>
+              </li>
               <li>
                 <a
                   class="dropdown-item"

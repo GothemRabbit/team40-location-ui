@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
+.container-fluid {
+  background-color: #c1d5d9;
+  border: none;
+  box-shadow: none;
+  font-family: 'Prompt', sans-serif;
+  height: auto;
+}
+
+.jh-card {
+  background-color: #c1d5d9;
+  border: none;
+  box-shadow: none;
+  margin-top: 0px;
+}
