@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="header">
+  <div class="header d-flex justify-content-between align-items-center mb-3">
     <h1>Product Statuses</h1>
     <div class="actions">
       <button class="btn btn-secondary" (click)="load()" [disabled]="isLoading">
@@ -22,18 +22,15 @@
   <jhi-alert></jhi-alert>
 
   @if (productStatuses?.length === 0) {
-    <div class="empty-state">
-      <p>No Product Status Found</p>
-    </div>
+    <div class="alert alert-warning">No Product Status Found</div>
   }
 
   @if (productStatuses && productStatuses.length > 0) {
-    <!-- ==================== 当前预约 ================ -->
-    <section class="reservation-section">
-      <div class="section-header">
+    <section class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
         <h2>Current Reservations</h2>
         <button
-          class="sort-btn"
+          class="btn btn-sm btn-outline-secondary sort-btn"
           (click)="
             navigateToWithComponentValues({
               predicate: 'createdAt',
@@ -48,114 +45,80 @@
         </button>
       </div>
 
-      @for (productStatus of productStatuses; track trackId(productStatus)) {
-        @if (productStatus.status === 'PENDING' || productStatus.status === 'RESERVED') {
-          <a class="card-link" [routerLink]="['/product-status', productStatus.id, 'view']">
-            <div class="card">
-              <div class="card-content">
-                <div class="thumbnail">
-                  <span>X</span>
-                </div>
-                <div class="details">
-                  <h3>Item Title (ID: {{ productStatus.id }})</h3>
-                  <p>Location: {{ productStatus.location }}</p>
-                  <p>Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
-                  <!-- Chat 按钮：阻止冒泡 -->
-                  <p>
-                    <a
-                      [href]="productStatus.conversation"
-                      target="_blank"
-                      class="btn btn-sm btn-info"
-                      style="text-decoration: none"
-                      (click)="$event.stopPropagation()"
-                    >
-                      Chat
-                    </a>
-                  </p>
-                </div>
-                <div class="status-actions">
-                  <span class="status {{ productStatus.status }}">{{ productStatus.status }}</span>
-                  <p>Created: {{ productStatus.createdAt | formatMediumDatetime }}</p>
-                  <p>Updated: {{ productStatus.updatedAt | formatMediumDatetime }}</p>
-                  <div class="actions">
-                    <!-- Delete 按钮：阻止默认行为 + 冒泡 -->
-                    <button
-                      class="btn btn-sm btn-danger"
-                      (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
+      <div class="list-group">
+        @for (productStatus of productStatuses; track trackId(productStatus)) {
+          @if (productStatus.status === 'PENDING' || productStatus.status === 'RESERVED') {
+            <a
+              class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
+              [routerLink]="['/product-status', productStatus.id, 'view']"
+            >
+              <div class="me-3">
+                <h5 class="mb-1">Item Title (ID: {{ productStatus.id }})</h5>
+                <p class="mb-1">Location: {{ productStatus.location }}</p>
+                <p class="mb-1">Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
+                <a
+                  [href]="productStatus.conversation"
+                  target="_blank"
+                  class="btn btn-sm btn-info"
+                  style="text-decoration: none"
+                  (click)="$event.stopPropagation()"
+                >
+                  Chat
+                </a>
               </div>
-            </div>
-          </a>
+              <div class="text-end">
+                <span class="badge bg-secondary me-2">{{ productStatus.status }}</span>
+                <p class="mb-1">Created: {{ productStatus.createdAt | formatMediumDatetime }}</p>
+                <p class="mb-1">Updated: {{ productStatus.updatedAt | formatMediumDatetime }}</p>
+                <button class="btn btn-sm btn-danger" (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)">
+                  Delete
+                </button>
+              </div>
+            </a>
+          }
         }
-      }
+      </div>
     </section>
 
-    <!-- ============ 过去预约 ================== -->
-    <section class="reservation-section">
-      <div class="section-header">
+    <section>
+      <div class="d-flex justify-content-between align-items-center mb-2">
         <h2>Past Reservations</h2>
-        <button
-          class="sort-btn"
-          (click)="
-            navigateToWithComponentValues({
-              predicate: 'createdAt',
-              order: sortState()?.order === 'desc' ? 'asc' : 'desc',
-            });
-            load()
-          "
-        >
-          Reservations Date
-          <span *ngIf="sortState()?.order === 'desc'">▲</span>
-          <span *ngIf="sortState()?.order !== 'desc'">▼</span>
-        </button>
       </div>
 
-      @for (productStatus of productStatuses; track trackId(productStatus)) {
-        @if (productStatus.status === 'COMPLETED' || productStatus.status === 'CANCELLED') {
-          <a class="card-link" [routerLink]="['/product-status', productStatus.id, 'view']">
-            <div class="card">
-              <div class="card-content">
-                <div class="thumbnail">
-                  <span>X</span>
-                </div>
-                <div class="details">
-                  <h3>Item Title (ID: {{ productStatus.id }})</h3>
-                  <p>Location: {{ productStatus.location }}</p>
-                  <p>Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
-                  <p>
-                    <a
-                      [href]="productStatus.conversation"
-                      target="_blank"
-                      class="btn btn-sm btn-info"
-                      style="text-decoration: none"
-                      (click)="$event.stopPropagation()"
-                    >
-                      Chat
-                    </a>
-                  </p>
-                </div>
-                <div class="status-actions">
-                  <span class="status {{ productStatus.status }}">{{ productStatus.status }}</span>
-                  <p>Created: {{ productStatus.createdAt | formatMediumDatetime }}</p>
-                  <p>Updated: {{ productStatus.updatedAt | formatMediumDatetime }}</p>
-                  <div class="actions">
-                    <button
-                      class="btn btn-sm btn-danger"
-                      (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
+      <div class="list-group">
+        @for (productStatus of productStatuses; track trackId(productStatus)) {
+          @if (productStatus.status === 'COMPLETED' || productStatus.status === 'CANCELLED') {
+            <a
+              class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
+              [routerLink]="['/product-status', productStatus.id, 'view']"
+            >
+              <div class="me-3">
+                <h5 class="mb-1">Item Title (ID: {{ productStatus.id }})</h5>
+                <p class="mb-1">Location: {{ productStatus.location }}</p>
+                <p class="mb-1">Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
+                <a
+                  [href]="productStatus.conversation"
+                  target="_blank"
+                  class="btn btn-sm btn-info"
+                  style="text-decoration: none"
+                  (click)="$event.stopPropagation()"
+                >
+                  Chat
+                </a>
               </div>
-            </div>
-          </a>
+
+              <div class="text-end">
+                <span class="badge bg-secondary me-2">{{ productStatus.status }}</span>
+                <p class="mb-1">Created: {{ productStatus.createdAt | formatMediumDatetime }}</p>
+                <p class="mb-1">Updated: {{ productStatus.updatedAt | formatMediumDatetime }}</p>
+                <button class="btn btn-sm btn-danger" (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)">
+                  Delete
+                </button>
+              </div>
+            </a>
+          }
         }
-      }
+      </div>
     </section>
   }
 </div>
@@ -211,17 +174,13 @@
     color: white;
   }
   .btn-primary {
-    background: #6fa8dc;
-    color: white;
-  }
-  .btn-primary {
     background: #007bff;
     color: white;
   }
   .btn:hover {
     opacity: 0.9;
   }
-  .empty-state {
+  .alert {
     text-align: center;
     padding: 40px;
     color: #6e6e73;
@@ -238,18 +197,18 @@
     gap: 16px;
     margin-bottom: 20px;
   }
+  /* 自定义 sort-btn 样式 */
   .sort-btn {
-    background-color: #ffedcc;
-    color: #1d1d1f;
-    padding: 6px 12px;
+    background-color: #ffedcc !important;
+    color: #1d1d1f !important;
+    border: none !important;
     border-radius: 9999px;
-    border: none;
-    cursor: pointer;
     font-weight: 600;
-    transition: background 0.2s ease;
+    transition: background-color 0.2s ease;
   }
   .sort-btn:hover {
-    background-color: #ffe0a6;
+    background-color: #ffe0a6 !important;
+    color: #1d1d1f !important;
   }
   .card-link {
     text-decoration: none;
@@ -258,8 +217,9 @@
   }
   .card {
     background-color: rgb(248, 220, 117);
-    max-width: 1000px;
-    margin: auto;
+    max-width: 960px;
+    width: 100%;
+    margin: 0 auto;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -272,6 +232,7 @@
     display: flex;
     padding: 20px;
     align-items: center;
+    width: 100%;
   }
   .thumbnail {
     width: 120px;
@@ -311,33 +272,26 @@
     font-size: 12px;
     margin-bottom: 10px;
   }
-
-  /* 添加状态颜色 */
   .status.AVAILABLE {
     background-color: #87ceeb;
     color: white;
   }
-
   .status.PENDING {
     background-color: #ff8c00;
     color: white;
   }
-
   .status.RESERVED {
     background-color: #ffd700;
     color: #1d1d1f;
   }
-
   .status.COMPLETED {
     background-color: #28a745;
     color: white;
   }
-
   .status.CANCELLED {
     background-color: #f5f5f7;
     color: #86868b;
   }
-
   .status-actions p {
     margin: 5px 0;
     color: #6e6e73;
@@ -348,5 +302,27 @@
     display: flex;
     gap: 8px;
     justify-content: flex-end;
+  }
+  .list-group-item {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .list-group-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+  .list-group {
+    margin: 0;
+    padding: 0;
+  }
+  .badge {
+    border-radius: 9999px;
+    font-weight: 500;
+    padding: 4px 10px;
   }
 </style>
