@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
-      <span class="navbar-title">Buy 2 Use</span>
+      <span class="navbar-title">Buy2Use</span>
       <span class="navbar-version">{{ version }}</span>
     </a>
     <a
@@ -19,328 +19,22 @@
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed()">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
-            <div class="search">
-              <fa-icon icon="search"></fa-icon>
-              <input class="search-input" type="search" placeholder="Search" />
-            </div>
-
-            <!--            <span>-->
-            <!--              <fa-icon icon="home"></fa-icon>-->
-            <!--              <span>Home</span>-->
-            <!--            </span>-->
-          </a>
-        </li>
-
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <div class="search me-3">
+            <fa-icon icon="search"></fa-icon>
+            <input class="search-input" type="search" placeholder="Search" />
+          </div>
           <a class="nav-link" routerLink="/conversation" (click)="collapseNavbar()">
             <fa-icon icon="message"></fa-icon>
             <span>Chat</span>
           </a>
+          <a class="nav-link" routerLink="/product-status" (click)="collapseNavbar()">
+            <fa-icon icon="book"></fa-icon>
+            <span>Product</span>
+            <span>Status</span>
+          </a>
         </li>
 
-        <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-        @if (account() !== null) {
-          <li
-            *jhiHasAnyAuthority="'ROLE_ADMIN'"
-            ngbDropdown
-            class="nav-item dropdown pointer"
-            display="dynamic"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
-              <span>
-                <fa-icon icon="th-list"></fa-icon>
-                <span>Entities</span>
-              </span>
-            </a>
-            <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-              <!--              <li>-->
-              <!--                <a-->
-              <!--                  class="dropdown-item"-->
-              <!--                  routerLink="/user-details"-->
-              <!--                  routerLinkActive="active"-->
-              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
-              <!--                  (click)="collapseNavbar()"-->
-              <!--                >-->
-              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
-              <!--                  <span>User Details</span>-->
-              <!--                </a>-->
-              <!--              </li>-->
-              <!--              <li>-->
-              <!--                <a-->
-              <!--                  class="dropdown-item"-->
-              <!--                  routerLink="/authentication"-->
-              <!--                  routerLinkActive="active"-->
-              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
-              <!--                  (click)="collapseNavbar()"-->
-              <!--                >-->
-              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
-              <!--                  <span>Authentication</span>-->
-              <!--                </a>-->
-              <!--              </li>-->
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/item"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Item</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/message"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Message</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/conversation"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Conversation</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/product-status"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Product Status</span>
-                </a>
-              </li>
-              <!--              <li>-->
-              <!--                <a-->
-              <!--                  class="dropdown-item"-->
-              <!--                  routerLink="/user-interaction"-->
-              <!--                  routerLinkActive="active"-->
-              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
-              <!--                  (click)="collapseNavbar()"-->
-              <!--                >-->
-              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
-              <!--                  <span>User Interaction</span>-->
-              <!--                </a>-->
-              <!--              </li>-->
-              <!--              <li>-->
-              <!--                <a-->
-              <!--                  class="dropdown-item"-->
-              <!--                  routerLink="/reservation"-->
-              <!--                  routerLinkActive="active"-->
-              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
-              <!--                  (click)="collapseNavbar()"-->
-              <!--                >-->
-              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
-              <!--                  <span>Reservation</span>-->
-              <!--                </a>-->
-              <!--              </li>-->
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/review"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Review</span>
-                </a>
-              </li>
-              <!--              <li>-->
-              <!--                <a-->
-              <!--                  class="dropdown-item"-->
-              <!--                  routerLink="/notification"-->
-              <!--                  routerLinkActive="active"-->
-              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
-              <!--                  (click)="collapseNavbar()"-->
-              <!--                >-->
-              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
-              <!--                  <span>Notification</span>-->
-              <!--                </a>-->
-              <!--              </li>-->
-              <!--              <li>-->
-              <!--                <a-->
-              <!--                  class="dropdown-item"-->
-              <!--                  routerLink="/user-search-history"-->
-              <!--                  routerLinkActive="active"-->
-              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
-              <!--                  (click)="collapseNavbar()"-->
-              <!--                >-->
-              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
-              <!--                  <span>User Search History</span>-->
-              <!--                </a>-->
-              <!--              </li>-->
-              <!--              <li>-->
-              <!--                <a-->
-              <!--                  class="dropdown-item"-->
-              <!--                  routerLink="/user-recommendation"-->
-              <!--                  routerLinkActive="active"-->
-              <!--                  [routerLinkActiveOptions]="{ exact: true }"-->
-              <!--                  (click)="collapseNavbar()"-->
-              <!--                >-->
-              <!--                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
-              <!--                  <span>User Recommendation</span>-->
-              <!--                </a>-->
-              <!--              </li>-->
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/location"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Location</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/likes"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Likes</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/images"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Images</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/wishlist"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Wishlist</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  routerLink="/profile-details"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="collapseNavbar()"
-                >
-                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                  <span>Profile Details</span>
-                </a>
-              </li>
-              <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
-            </ul>
-          </li>
-        }
-        <li
-          *jhiHasAnyAuthority="'ROLE_ADMIN'"
-          ngbDropdown
-          class="nav-item dropdown pointer"
-          display="dynamic"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
-            <span>
-              <fa-icon icon="users-cog"></fa-icon>
-              <span>Administration</span>
-            </span>
-          </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
-            <li>
-              <a
-                class="dropdown-item"
-                routerLink="/authority"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="collapseNavbar()"
-              >
-                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span>Authority</span>
-              </a>
-            </li>
-            <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
-            <li>
-              <a class="dropdown-item" routerLink="/admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
-                <span>User management</span>
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
-                <span>Metrics</span>
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/admin/health" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
-                <span>Health</span>
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/admin/configuration" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon>
-                <span>Configuration</span>
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/admin/logs" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon>
-                <span>Logs</span>
-              </a>
-            </li>
-            @if (openAPIEnabled) {
-              <li>
-                <a class="dropdown-item" routerLink="/admin/docs" routerLinkActive="active" (click)="collapseNavbar()">
-                  <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
-                  <span>API</span>
-                </a>
-              </li>
-            }
-            @if (!inProduction) {
-              <li>
-                <a class="dropdown-item" href="./h2-console/" target="_tab" (click)="collapseNavbar()">
-                  <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
-                  <span>Database</span>
-                </a>
-              </li>
-            }
-          </ul>
-        </li>
         <li
           ngbDropdown
           class="nav-item dropdown pointer"
@@ -399,6 +93,63 @@
                   <span>Password</span>
                 </a>
               </li>
+
+              @if (accountRef?.authorities?.includes('ROLE_ADMIN')) {
+                <li class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" routerLink="/authority" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                    <span>Authority</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+                    <span>User management</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
+                    <span>Metrics</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/admin/health" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
+                    <span>Health</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/admin/configuration" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon>
+                    <span>Configuration</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/admin/logs" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon>
+                    <span>Logs</span>
+                  </a>
+                </li>
+                @if (openAPIEnabled) {
+                  <li>
+                    <a class="dropdown-item" routerLink="/admin/docs" routerLinkActive="active" (click)="collapseNavbar()">
+                      <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
+                      <span>API</span>
+                    </a>
+                  </li>
+                }
+                @if (!inProduction) {
+                  <li>
+                    <a class="dropdown-item" href="./h2-console/" target="_tab" (click)="collapseNavbar()">
+                      <fa-icon icon="database" [fixedWidth]="true"></fa-icon>
+                      <span>Database</span>
+                    </a>
+                  </li>
+                }
+              }
+
               <li>
                 <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout">
                   <fa-icon icon="sign-out-alt" [fixedWidth]="true"></fa-icon>

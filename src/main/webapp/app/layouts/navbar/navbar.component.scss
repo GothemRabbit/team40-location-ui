@@ -8,7 +8,7 @@ Navbar
 ========================================================================== */
 
 .navbar-version {
-  font-size: 0.65em;
+  font-size: 0.4em;
   background-color: $navbar-dark-color;
 }
 
@@ -45,23 +45,29 @@ nav {
   background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
 
   font-family: 'Fira Mono', sans-serif;
-  font-size: 22px;
+  font-size: 18px;
+}
 
-  .navbar-brand,
-  .navbar-title,
-  .navbar-version,
-  .nav-link,
-  .fa-icon {
-    color: #e2d3f4;
-  }
+.navbar-brand,
+.navbar-title,
+.navbar-version,
+.nav-link {
+  color: #e2d3f4;
+}
 
-  .navbar-brand:hover,
-  .navbar-title:hover,
-  .navbar-version:hover,
-  .nav-link:hover,
-  .fa-icon:hover {
-    color: black;
-  }
+.fa-icon {
+  color: black;
+}
+
+.fa-icon:hover {
+  color: #dddddd;
+}
+
+.navbar-brand:hover,
+.navbar-title:hover,
+.navbar-version:hover,
+.nav-link:hover {
+  color: black;
 }
 
 .navbar {

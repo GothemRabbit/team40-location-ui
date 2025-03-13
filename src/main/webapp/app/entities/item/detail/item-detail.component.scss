@@ -16,18 +16,6 @@
   padding-left: 4px;
 }
 
-//.product-container {
-//  display: flex;
-//  flex-direction: column;
-//  align-items: center;
-//  padding: 1rem;
-//}
-//
-//.product-image {
-//  max-width: 100%;
-//  margin: auto;
-//}
-
 .product-container {
   display: flex;
   padding-top: 20px;
@@ -49,14 +37,18 @@
 }
 
 .mySlides {
-  display: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 600px;
+  margin: auto;
 }
 
 .mySlides img {
-  /*width: 100%;*/
-  max-height: 600px;
-  /*border: 1px solid #ccc;*/
+  max-width: 100%;
+  max-height: 100%;
   vertical-align: middle;
+  object-fit: contain;
 }
 
 .prev,
