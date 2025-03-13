@@ -14,40 +14,75 @@
       <jhi-alert></jhi-alert>
 
       <section class="product-container">
-        <div class="product-image">
-          <!--          <jhi-images></jhi-images>-->
-          <div *ngIf="item()?.images?.length">
-            <h3>Item Images</h3>
-            <div *ngFor="let image of item()?.images">
-              <img
-                *ngIf="image.images"
-                [src]="'data:' + image.imagesContentType + ';base64,' + image.images"
-                alt="Item Image"
-                width="200"
-                height="150"
-              />
+        <div class="product-image" *ngIf="item()?.images?.length; else noImage">
+          <!-- Slideshow Container -->
+          <div class="slideshow-container">
+            <div
+              class="mySlides fade"
+              *ngFor="let image of item()?.images; let i = index"
+              [style.display]="currentSlideIndex === i ? 'block' : 'none'"
+            >
+              <!-- Only the main image is clickable -->
+              <a [routerLink]="['/images', image.id, 'view']">
+                <img [src]="'data:' + (image.imagesContentType || 'image/png') + ';base64,' + (image.images || '')" alt="Item Image" />
+              </a>
             </div>
+            <!-- Navigation Buttons -->
+            <a class="prev" (click)="prevSlide()">&#10094;</a>
+            <a class="next" (click)="nextSlide()">&#10095;</a>
           </div>
-          <!--          @if (itemRef.images) {-->
-          <!--            <div>-->
-          <!--              <a (click)="openFile(itemRef.images ?? '', itemRef.itemImageContentType)">-->
-          <!--                <img [src]="'data:' + itemRef.itemImageContentType + ';base64,' + itemRef.itemImage" style="max-width: 100%" alt="item" />-->
-          <!--              </a>-->
-          <!--            </div>-->
-          <!--            <div class="thumbnails">-->
-          <!--              <img src="image1.jpg" alt="thumb" />-->
-          <!--              <img src="image2.jpg" alt="thumb" />-->
-          <!--              <img src="image3.jpg" alt="thumb" />-->
-          <!--              <img src="image4.jpg" alt="thumb" />-->
-          <!--            </div>-->
-          <!--          }-->
-          <div class="itemLike">
-            <dt><span>Hearts</span></dt>
-            <dd>
-              <span>{{ itemRef.likes }}</span>
-            </dd>
+
+          <!-- Thumbnail Container -->
+          <div class="thumbnail-container">
+            <img
+              *ngFor="let image of item()?.images; let i = index"
+              class="thumbnail"
+              [class.active]="currentSlideIndex === i"
+              [src]="'data:' + (image.imagesContentType || 'image/png') + ';base64,' + (image.images || '')"
+              (click)="goToSlide(i)"
+              alt="Thumbnail {{ i + 1 }}"
+            />
           </div>
         </div>
+        <ng-template #noImage>
+          <img src="assets/images/placeholder.png" alt="No Image Available" class="placeholder" />
+        </ng-template>
+
+        <!--      <section class="product-container">-->
+        <!--        <div class="product-image">-->
+        <!--          &lt;!&ndash;          <jhi-images></jhi-images>&ndash;&gt;-->
+        <!--          <div *ngIf="item()?.images?.length">-->
+        <!--            <h3>Item Images</h3>-->
+        <!--            <div *ngFor="let image of item()?.images">-->
+        <!--              <img-->
+        <!--                *ngIf="image.images"-->
+        <!--                [src]="'data:' + image.imagesContentType + ';base64,' + image.images"-->
+        <!--                alt="Item Image"-->
+        <!--                width="200"-->
+        <!--                height="150"-->
+        <!--              />-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          &lt;!&ndash;          @if (itemRef.images) {&ndash;&gt;-->
+        <!--          &lt;!&ndash;            <div>&ndash;&gt;-->
+        <!--          &lt;!&ndash;              <a (click)="openFile(itemRef.images ?? '', itemRef.itemImageContentType)">&ndash;&gt;-->
+        <!--          &lt;!&ndash;                <img [src]="'data:' + itemRef.itemImageContentType + ';base64,' + itemRef.itemImage" style="max-width: 100%" alt="item" />&ndash;&gt;-->
+        <!--          &lt;!&ndash;              </a>&ndash;&gt;-->
+        <!--          &lt;!&ndash;            </div>&ndash;&gt;-->
+        <!--          &lt;!&ndash;            <div class="thumbnails">&ndash;&gt;-->
+        <!--          &lt;!&ndash;              <img src="image1.jpg" alt="thumb" />&ndash;&gt;-->
+        <!--          &lt;!&ndash;              <img src="image2.jpg" alt="thumb" />&ndash;&gt;-->
+        <!--          &lt;!&ndash;              <img src="image3.jpg" alt="thumb" />&ndash;&gt;-->
+        <!--          &lt;!&ndash;              <img src="image4.jpg" alt="thumb" />&ndash;&gt;-->
+        <!--          &lt;!&ndash;            </div>&ndash;&gt;-->
+        <!--          &lt;!&ndash;          }&ndash;&gt;-->
+        <!--          <div class="itemLike">-->
+        <!--            <dt><span>Hearts</span></dt>-->
+        <!--            <dd>-->
+        <!--              <span>{{ itemRef.likes }}</span>-->
+        <!--            </dd>-->
+        <!--          </div>-->
+        <!--        </div>-->
 
         <div class="product-details">
           <div class="top">
@@ -155,3 +190,88 @@
     </div>
   }
 </div>
+
+<style>
+  .product-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .product-image {
+    max-width: 100%;
+    margin: auto;
+  }
+
+  .slideshow-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .mySlides {
+    display: none;
+  }
+
+  .mySlides img {
+    /*width: 100%;*/
+    max-height: 600px;
+    /*border: 1px solid #ccc;*/
+    vertical-align: middle;
+  }
+
+  .prev,
+  .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    user-select: none;
+  }
+  .next {
+    right: 0;
+  }
+  .prev:hover,
+  .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .thumbnail-container {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .thumbnail {
+    cursor: pointer;
+    height: 50px;
+    margin: 0 2px;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+
+  .thumbnail.active,
+  .thumbnail:hover {
+    opacity: 1;
+  }
+
+  .fade {
+    animation-name: fade;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0.6;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
