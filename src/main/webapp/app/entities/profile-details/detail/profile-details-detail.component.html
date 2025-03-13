@@ -28,21 +28,14 @@
           </dd>
 
           <dt>
-            <button id="review" type="button" class="btn btn-primary" [routerLink]="['/review']">
-              <fa-icon icon="star"></fa-icon>
-              <span>Reviews</span>
-            </button>
-            <button id="product_status" type="button" class="btn btn-primary" [routerLink]="['/product-status']">
-              <fa-icon icon="box"></fa-icon>
-              <span>Product Status</span>
-            </button>
+            <a id="review" [routerLink]="['/review']" class="review-link"> Reviews </a>
           </dt>
           <dd>
             <!--            <span>{{ profileDetailsRef.rating }}</span> supposed to take the average rating from database-->
             <div class="star">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
           </dd>
 
-          <dt><span>MEETUP LOCATIONS</span></dt>
+          <a id="meet-up locations" [routerLink]="['/location']" class="location-link"> Location </a>
           <dd class="address-container">
             <button type="button" [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']" class="btn btn-primary">
               <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>

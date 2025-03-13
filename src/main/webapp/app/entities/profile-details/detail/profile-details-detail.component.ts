@@ -7,6 +7,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { IProfileDetails } from '../profile-details.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import reviewRoute from '../../review/review.routes';
 
 @Component({
   standalone: true,
