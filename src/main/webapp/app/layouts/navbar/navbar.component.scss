@@ -1,6 +1,7 @@
 @import 'bootstrap/scss/functions';
 @import 'bootswatch/dist/materia/variables';
 @import 'bootstrap/scss/variables';
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@700&display=swap');
 
 /* ==========================================================================
 Navbar
@@ -40,8 +41,27 @@ Navbar
   width: 1.5em;
 }
 nav {
-  //background-color: #f8dc75;
-  background-color: #f8f7f7;
+  background: rgb(34, 54, 62);
+  background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
+
+  font-family: 'Fira Mono', sans-serif;
+  font-size: 22px;
+
+  .navbar-brand,
+  .navbar-title,
+  .navbar-version,
+  .nav-link,
+  .fa-icon {
+    color: #e2d3f4;
+  }
+
+  .navbar-brand:hover,
+  .navbar-title:hover,
+  .navbar-version:hover,
+  .nav-link:hover,
+  .fa-icon:hover {
+    color: black;
+  }
 }
 
 .navbar {
