@@ -145,4 +145,10 @@ public class ItemService {
         LOG.debug("Request to get all Items with images");
         return itemRepository.findAllWithImages().stream().map(itemMapper::toDto).collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public List<ItemDTO> findAll() {
+        LOG.debug("Request to get all Items");
+        return itemRepository.findAll().stream().map(itemMapper::toDto).collect(Collectors.toList());
+    }
 }
