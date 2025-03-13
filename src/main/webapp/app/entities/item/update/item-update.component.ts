@@ -21,6 +21,7 @@ import { Category } from 'app/entities/enumerations/category.model';
 import { ItemService } from '../service/item.service';
 import { IItem } from '../item.model';
 import { ItemFormGroup, ItemFormService } from './item-form.service';
+import { ImagesService } from 'app/entities/images/service/images.service';
 
 @Component({
   standalone: true,
@@ -38,6 +39,7 @@ export class ItemUpdateComponent implements OnInit {
   wishlistsSharedCollection: IWishlist[] = [];
   profileDetailsSharedCollection: IProfileDetails[] = [];
   userDetailsSharedCollection: IUserDetails[] = [];
+  newImages: { file: File; preview: string }[] = [];
 
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
@@ -47,7 +49,7 @@ export class ItemUpdateComponent implements OnInit {
   protected profileDetailsService = inject(ProfileDetailsService);
   protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
-
+  protected imagesService = inject(ImagesService);
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ItemFormGroup = this.itemFormService.createItemFormGroup();
 
@@ -57,7 +59,6 @@ export class ItemUpdateComponent implements OnInit {
     this.profileDetailsService.compareProfileDetails(o1, o2);
 
   compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
-
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ item }) => {
       this.item = item;
@@ -75,6 +76,40 @@ export class ItemUpdateComponent implements OnInit {
 
   openFile(base64String: string, contentType: string | null | undefined): void {
     this.dataUtils.openFile(base64String, contentType);
+  }
+
+  onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) {
+      return;
+    }
+    for (const file of Array.from(input.files)) {
+      // Limit to 20 images if needed
+      if (this.newImages.length >= 20) break;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const preview = e.target?.result as string;
+        this.newImages.push({ file, preview });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // onDragOver(event: DragEvent): void {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  // }
+  //
+  // onDrop(event: DragEvent): void {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   if (event.dataTransfer?.files) {
+  //     this.processFiles(event.dataTransfer.files);
+  //   }
+  // }
+
+  removeImage(index: number): void {
+    this.newImages.splice(index, 1);
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
@@ -100,7 +135,16 @@ export class ItemUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IItem>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => {
+        if (response.body) {
+          this.item = response.body;
+          // After saving the item, if there are new images, upload them.
+          if (this.newImages.length > 0) {
+            this.uploadImages(response.body.id);
+          }
+        }
+        this.onSaveSuccess();
+      },
       error: () => this.onSaveError(),
     });
   }
@@ -165,5 +209,44 @@ export class ItemUpdateComponent implements OnInit {
         ),
       )
       .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
+  }
+
+  protected uploadImages(itemId: number): void {
+    for (const imgObj of this.newImages) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const result = e.target?.result as string;
+        // Remove the data URL prefix if present.
+        const base64Data = result.split(',')[1];
+        const imagesDTO = {
+          id: null,
+          images: base64Data,
+          imagesContentType: imgObj.file.type,
+          item: { id: itemId },
+        };
+        this.imagesService.create(imagesDTO).subscribe({
+          next() {
+            // Optionally update UI or log success.
+          },
+          error(err) {
+            console.error('Error uploading image:', err);
+          },
+        });
+      };
+      reader.readAsDataURL(imgObj.file);
+    }
+  }
+
+  private processFiles(files: FileList): void {
+    for (const file of Array.from(files)) {
+      // Limit to 20 images if needed
+      if (this.newImages.length >= 20) break;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const preview = e.target?.result as string;
+        this.newImages.push({ file, preview });
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }

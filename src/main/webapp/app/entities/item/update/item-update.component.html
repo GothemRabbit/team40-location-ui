@@ -6,13 +6,27 @@
       <h2>List an Item</h2>
       <hr style="border: 1px solid black; width: 100%" />
       <section class="listing-form">
+        <!--        <div class="image-upload">-->
+        <!--          <div class="drop-area">Select Photo or drag photos here (Up to 20 photos)</div>-->
+        <!--          <div class="thumbnail-gallery">-->
+        <!--            <div class="thumbnail cover">COVER</div>-->
+        <!--            <div class="thumbnail"></div>-->
+        <!--            <div class="thumbnail"></div>-->
+        <!--            <div class="thumbnail"></div>-->
+        <!--          </div>-->
+        <!--        </div>-->
         <div class="image-upload">
-          <div class="drop-area">Select Photo or drag photos here (Up to 20 photos)</div>
+          <label class="drop-area">
+            Select Photo or drag photos here (Up to 20 photos)
+            <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" style="display: none" />
+          </label>
+
           <div class="thumbnail-gallery">
-            <div class="thumbnail cover">COVER</div>
-            <div class="thumbnail"></div>
-            <div class="thumbnail"></div>
-            <div class="thumbnail"></div>
+            <div class="thumbnail" *ngFor="let img of newImages; let i = index">
+              <img [src]="img.preview" alt="Preview {{ i }}" />
+              <!-- Optional delete button to remove an image before upload -->
+              <button class="btn btn-danger" (click)="removeImage(i)">X</button>
+            </div>
           </div>
         </div>
 
