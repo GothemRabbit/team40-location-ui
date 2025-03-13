@@ -18,6 +18,7 @@ export class ItemDetailComponent implements OnInit {
   // item = input<IItem | null>(null);
   item = signal<IItem | null>(null);
   // isLikedByUser = computed(() => this.item()?.isLikedByUser ?? false);
+  currentSlideIndex = 0;
 
   protected dataUtils = inject(DataUtils);
   private route = inject(ActivatedRoute);
@@ -42,6 +43,9 @@ export class ItemDetailComponent implements OnInit {
     this.itemService.find(itemId).subscribe({
       next: response => {
         this.item.update(() => response.body); // Correctly updating InputSignal
+        if (this.item()?.images?.length) {
+          this.currentSlideIndex = 0;
+        }
       },
       error: err => console.error('Error fetching item:', err),
     });
@@ -95,5 +99,26 @@ export class ItemDetailComponent implements OnInit {
   // }
   hasUserLiked(): boolean {
     return !!this.item()?.isLikedByUser;
+  }
+
+  nextSlide(): void {
+    const images = this.item()?.images;
+    if (images && images.length > 0) {
+      this.currentSlideIndex = (this.currentSlideIndex + 1) % images.length;
+    }
+  }
+
+  prevSlide(): void {
+    const images = this.item()?.images;
+    if (images && images.length > 0) {
+      this.currentSlideIndex = (this.currentSlideIndex - 1 + images.length) % images.length;
+    }
+  }
+
+  goToSlide(index: number): void {
+    const images = this.item()?.images;
+    if (images && index >= 0 && index < images.length) {
+      this.currentSlideIndex = index;
+    }
   }
 }
