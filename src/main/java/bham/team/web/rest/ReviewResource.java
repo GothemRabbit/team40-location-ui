@@ -1,5 +1,8 @@
 package bham.team.web.rest;
 
+import bham.team.domain.ProfileDetails;
+import bham.team.domain.Review;
+import bham.team.domain.UserDetails;
 import bham.team.repository.ReviewRepository;
 import bham.team.service.ReviewService;
 import bham.team.service.dto.ReviewDTO;
@@ -166,7 +169,7 @@ public class ReviewResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable("id") Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = false;
+        /* boolean isAdmin = false;
         for (GrantedAuthority auth : authentication.getAuthorities()) {
             if (auth.getAuthority().equals("ROLE_ADMIN")) {
                 isAdmin = true;
@@ -174,7 +177,7 @@ public class ReviewResource {
         }
         if (isAdmin) {
             throw new BadRequestAlertException(" Only admins can create " + ENTITY_NAME, ENTITY_NAME, " idinvalid ");
-        }
+        }*/
         LOG.debug("REST request to delete Review : {}", id);
         reviewService.delete(id);
         return ResponseEntity.noContent()

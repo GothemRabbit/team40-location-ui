@@ -10,7 +10,7 @@
             <div style="display: flex; justify-content: space-between">
               <p id="userName">
                 <fa-icon icon="user" class="avatar"></fa-icon>
-                user{{ reviewRef.id }}
+                user{{ reviewRef.profileDetails?.id }}
               </p>
               <p id="rates">
                 <span id="stars" *ngFor="let index of [1, 2, 3, 4, 5]">
