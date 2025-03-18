@@ -1,73 +1,71 @@
 <div>
   <h2 id="page-heading" data-cy="ItemHeading">
     <span>Items List</span>
-
-    <div class="d-flex justify-content-end"></div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
 
-  @if (items?.length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span>No Items found</span>
-    </div>
-  }
+  <div class="button-container">
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-item"
+      [routerLink]="['/item/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>Create a new Item</span>
+    </button>
+  </div>
 
-  <button
-    id="jh-create-entity"
-    data-cy="entityCreateButton"
-    class="btn btn-primary jh-create-entity create-item"
-    [routerLink]="['/item/new']"
-  >
-    <fa-icon icon="plus"></fa-icon>
-    <span>Create a new Item</span>
-  </button>
-
-  @if (items && items.length > 0) {
-    <div class="row g-4">
-      @for (item of items; track trackId(item)) {
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-header">
-              <!--               <span class="heart-icon" (click)="toggleLike(item)">-->
-              <!--               <span *ngIf="isLiked(item)" style="color: red;">&#10084;</span> &lt;!&ndash; Filled heart for liked &ndash;&gt;-->
-              <!--               <span *ngIf="!isLiked(item)" style="color: grey;">&#9825;</span> &lt;!&ndash; Empty heart for not liked &ndash;&gt;-->
-              <!--             </span>-->
-              <!--              <div class="dropdown">-->
-              <!--                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>-->
-              <!--                &lt;!&ndash;                <div class="dropdown-content" *ngIf="item.dropDown">&ndash;&gt;-->
-              <!--                &lt;!&ndash;                  <a href="#">Edit</a>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                  <a href="#">Delete</a>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
-              <!--              </div>-->
-            </div>
-            @if (item.images && item.images.length > 0) {
-              <a [routerLink]="['/item', item.id, 'view']">
-                <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
-              </a>
-            } @else {
-              <!-- Default Placeholder Image -->
-              <a [routerLink]="['/item', item.id, 'view']">
-                <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
-              </a>
-            }
-
-            <div class="card-body">
-              <h5 class="card-title">
-                <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
-              </h5>
-              <div class="texts">
-                <p class="card-text">{{ item.sizeItem }}</p>
-                <p class="card-text"><strong>£</strong> {{ item.price }}</p>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-between"></div>
-          </div>
+  <div class="item-container">
+    <div class="item-list">
+      @if (items?.length === 0) {
+        <div class="alert alert-warning" id="no-result">
+          <span>No Items found</span>
         </div>
       }
+      @if (items && items.length > 0) {
+        @for (item of items; track trackId(item)) {
+          <div class="item-card">
+            <div class="card">
+              <div class="card-header">
+                <!--               <span class="heart-icon" (click)="toggleLike(item)">-->
+                <!--               <span *ngIf="isLiked(item)" style="color: red;">&#10084;</span> &lt;!&ndash; Filled heart for liked &ndash;&gt;-->
+                <!--               <span *ngIf="!isLiked(item)" style="color: grey;">&#9825;</span> &lt;!&ndash; Empty heart for not liked &ndash;&gt;-->
+                <!--             </span>-->
+                <!--              <div class="dropdown">-->
+                <!--                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>-->
+                <!--                &lt;!&ndash;                <div class="dropdown-content" *ngIf="item.dropDown">&ndash;&gt;-->
+                <!--                &lt;!&ndash;                  <a href="#">Edit</a>&ndash;&gt;-->
+                <!--                &lt;!&ndash;                  <a href="#">Delete</a>&ndash;&gt;-->
+                <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+                <!--              </div>-->
+              </div>
+              @if (item.images && item.images.length > 0) {
+                <a [routerLink]="['/item', item.id, 'view']">
+                  <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
+                </a>
+              } @else {
+                <!-- Default Placeholder Image -->
+                <a [routerLink]="['/item', item.id, 'view']">
+                  <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
+                </a>
+              }
+
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
+                </h5>
+                <div class="texts">
+                  <p class="card-text">{{ item.sizeItem }}</p>
+                  <p class="card-text"><strong>£</strong> {{ item.price }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
     </div>
-  }
+  </div>
 </div>
