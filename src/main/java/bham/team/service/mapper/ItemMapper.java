@@ -21,7 +21,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = { ImagesMapper.class })
 public interface ItemMapper extends EntityMapper<ItemDTO, Item> {
     @Mapping(target = "wishlists", source = "wishlists", qualifiedByName = "wishlistIdSet")
-    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsUsername")
     @Mapping(target = "seller", source = "seller", qualifiedByName = "userDetailsId")
     @Mapping(target = "images", source = "images")
     ItemDTO toDto(Item s);
@@ -39,13 +39,14 @@ public interface ItemMapper extends EntityMapper<ItemDTO, Item> {
         return wishlist.stream().map(this::toDtoWishlistId).collect(Collectors.toSet());
     }
 
-    @Named("profileDetailsId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
-
     @Named("userDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     UserDetailsDTO toDtoUserDetailsId(UserDetails userDetails);
+
+    @Named("profileDetailsUsername")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "userName", source = "userName")
+    ProfileDetailsDTO toDtoProfileDetailsUsername(ProfileDetails profileDetails);
 }

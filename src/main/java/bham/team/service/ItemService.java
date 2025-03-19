@@ -151,4 +151,10 @@ public class ItemService {
         LOG.debug("Request to get all Items");
         return itemRepository.findAll().stream().map(itemMapper::toDto).collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public Optional<ItemDTO> findOneWithProfileDetails(Long id) {
+        LOG.debug("Request to get Item with profile details: {}", id);
+        return itemRepository.findByIdWithProfileDetails(id).map(itemMapper::toDto);
+    }
 }

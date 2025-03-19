@@ -205,9 +205,4 @@ public class ItemResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
-
-    @GetMapping("/items")
-    public List<ItemDTO> getAllItems() {
-        return itemService.findAll();
-    }
 }
