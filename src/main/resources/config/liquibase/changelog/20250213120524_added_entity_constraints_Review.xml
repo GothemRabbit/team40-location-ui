@@ -10,9 +10,16 @@
     -->
     <changeSet id="20250213120524-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="profile_details_id"
+        <addForeignKeyConstraint baseColumnNames="consumer_id"
                                  baseTableName="review"
-                                 constraintName="fk_review__profile_details_id"
+                                 constraintName="fk_review__consumer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="profile_details"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="retailer_id"
+                                 baseTableName="review"
+                                 constraintName="fk_review__retailer_id"
                                  referencedColumnNames="id"
                                  referencedTableName="profile_details"
                                  />

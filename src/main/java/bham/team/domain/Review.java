@@ -41,10 +41,39 @@ public class Review implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        value = {
+            "user",
+            "items",
+            "wishlists",
+            "locations",
+            "likes",
+            "reviewsGivens",
+            "reviewsRecieveds",
+            "messages",
+            "productStatuses",
+            "conversations",
+        },
         allowSetters = true
     )
-    private ProfileDetails profileDetails;
+    private ProfileDetails consumer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = {
+            "user",
+            "items",
+            "wishlists",
+            "locations",
+            "likes",
+            "reviewsGivens",
+            "reviewsRecieveds",
+            "messages",
+            "productStatuses",
+            "conversations",
+        },
+        allowSetters = true
+    )
+    private ProfileDetails retailer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
@@ -114,16 +143,29 @@ public class Review implements Serializable {
         this.date = date;
     }
 
-    public ProfileDetails getProfileDetails() {
-        return this.profileDetails;
+    public ProfileDetails getConsumer() {
+        return this.consumer;
     }
 
-    public void setProfileDetails(ProfileDetails profileDetails) {
-        this.profileDetails = profileDetails;
+    public void setConsumer(ProfileDetails profileDetails) {
+        this.consumer = profileDetails;
     }
 
-    public Review profileDetails(ProfileDetails profileDetails) {
-        this.setProfileDetails(profileDetails);
+    public Review consumer(ProfileDetails profileDetails) {
+        this.setConsumer(profileDetails);
+        return this;
+    }
+
+    public ProfileDetails getRetailer() {
+        return this.retailer;
+    }
+
+    public void setRetailer(ProfileDetails profileDetails) {
+        this.retailer = profileDetails;
+    }
+
+    public Review retailer(ProfileDetails profileDetails) {
+        this.setRetailer(profileDetails);
         return this;
     }
 

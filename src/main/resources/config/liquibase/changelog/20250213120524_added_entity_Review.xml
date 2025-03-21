@@ -23,7 +23,10 @@
             <column name="date" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="profile_details_id" type="bigint">
+            <column name="consumer_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="retailer_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="buyer_id" type="bigint">

@@ -25,15 +25,27 @@ class ReviewTest {
     }
 
     @Test
-    void profileDetailsTest() {
+    void consumerTest() {
         Review review = getReviewRandomSampleGenerator();
         ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
 
-        review.setProfileDetails(profileDetailsBack);
-        assertThat(review.getProfileDetails()).isEqualTo(profileDetailsBack);
+        review.setConsumer(profileDetailsBack);
+        assertThat(review.getConsumer()).isEqualTo(profileDetailsBack);
 
-        review.profileDetails(null);
-        assertThat(review.getProfileDetails()).isNull();
+        review.consumer(null);
+        assertThat(review.getConsumer()).isNull();
+    }
+
+    @Test
+    void retailerTest() {
+        Review review = getReviewRandomSampleGenerator();
+        ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
+
+        review.setRetailer(profileDetailsBack);
+        assertThat(review.getRetailer()).isEqualTo(profileDetailsBack);
+
+        review.retailer(null);
+        assertThat(review.getRetailer()).isNull();
     }
 
     @Test

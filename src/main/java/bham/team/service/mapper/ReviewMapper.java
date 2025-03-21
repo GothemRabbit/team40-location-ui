@@ -13,7 +13,8 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ReviewMapper extends EntityMapper<ReviewDTO, Review> {
-    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "consumer", source = "consumer", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "retailer", source = "retailer", qualifiedByName = "profileDetailsId")
     @Mapping(target = "buyer", source = "buyer", qualifiedByName = "userDetailsId")
     @Mapping(target = "seller", source = "seller", qualifiedByName = "userDetailsId")
     ReviewDTO toDto(Review s);

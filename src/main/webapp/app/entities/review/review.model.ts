@@ -7,7 +7,8 @@ export interface IReview {
   rating?: number | null;
   comments?: string | null;
   date?: dayjs.Dayjs | null;
-  profileDetails?: Pick<IProfileDetails, 'id'> | null;
+  consumer?: Pick<IProfileDetails, 'id'> | null;
+  retailer?: Pick<IProfileDetails, 'id'> | null;
   buyer?: Pick<IUserDetails, 'id'> | null;
   seller?: Pick<IUserDetails, 'id'> | null;
 }

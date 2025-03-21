@@ -125,8 +125,8 @@ relationship ManyToOne {
 //reviews relationships
 
 relationship ManyToOne  {
-Review to ProfileDetails,
-Review to ProfileDetails
+Review{Consumer} to ProfileDetails{ReviewsGiven},
+Review{Retailer} to ProfileDetails{ReviewsRecieved}
 }
 
 //conversation relationship
