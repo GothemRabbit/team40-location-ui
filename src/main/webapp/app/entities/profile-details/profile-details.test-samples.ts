@@ -3,23 +3,23 @@ import dayjs from 'dayjs/esm';
 import { IProfileDetails, NewProfileDetails } from './profile-details.model';
 
 export const sampleWithRequiredData: IProfileDetails = {
-  id: 30056,
-  userName: '|v/P',
+  id: 31997,
+  userName: "/P'?QU",
 };
 
 export const sampleWithPartialData: IProfileDetails = {
-  id: 17047,
+  id: 26285,
   bioImage: '../fake-data/blob/hipster.png',
   bioImageContentType: 'unknown',
-  userName: '6-le',
+  userName: '2&{;-',
   birthDate: dayjs('2025-03-08'),
 };
 
 export const sampleWithFullData: IProfileDetails = {
-  id: 1876,
+  id: 21312,
   bioImage: '../fake-data/blob/hipster.png',
   bioImageContentType: 'unknown',
-  userName: ';-2^+5',
+  userName: '5',
   birthDate: dayjs('2025-03-08'),
 };
 

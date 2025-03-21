@@ -63,8 +63,15 @@
     },
     {
       "otherEntityName": "review",
-      "otherEntityRelationshipName": "profileDetails",
-      "relationshipName": "review",
+      "otherEntityRelationshipName": "consumer",
+      "relationshipName": "reviewsGiven",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "review",
+      "otherEntityRelationshipName": "retailer",
+      "relationshipName": "reviewsRecieved",
       "relationshipSide": "right",
       "relationshipType": "one-to-many"
     },

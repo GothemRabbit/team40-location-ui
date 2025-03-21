@@ -17,7 +17,6 @@ import { ReviewDeleteDialogComponent } from '../delete/review-delete-dialog.comp
   standalone: true,
   selector: 'jhi-review',
   templateUrl: './review.component.html',
-  styleUrl: '/review.component.scss',
   imports: [
     RouterModule,
     FormsModule,
@@ -33,7 +32,6 @@ export class ReviewComponent implements OnInit {
   subscription: Subscription | null = null;
   reviews?: IReview[];
   isLoading = false;
-  rating: number[] = [];
 
   sortState = sortStateSignal({});
 
@@ -46,6 +44,7 @@ export class ReviewComponent implements OnInit {
   protected ngZone = inject(NgZone);
 
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
+
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
@@ -58,16 +57,7 @@ export class ReviewComponent implements OnInit {
       )
       .subscribe();
   }
-  getAverage(rating: number[] | null): number {
-    if (rating == null || rating.length === 0) {
-      return 0;
-    }
-    let num = 0;
-    rating.forEach(item => {
-      num += item;
-    });
-    return num / rating.length;
-  }
+
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }

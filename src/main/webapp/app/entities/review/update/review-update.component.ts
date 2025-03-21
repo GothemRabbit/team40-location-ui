@@ -22,7 +22,6 @@ import { ReviewFormGroup, ReviewFormService } from './review-form.service';
   standalone: true,
   selector: 'jhi-review-update',
   templateUrl: './review-update.component.html',
-  styleUrl: './review-update.component.scss',
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ReviewUpdateComponent implements OnInit {
@@ -113,7 +112,8 @@ export class ReviewUpdateComponent implements OnInit {
 
     this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
       this.profileDetailsSharedCollection,
-      review.profileDetails,
+      review.consumer,
+      review.retailer,
     );
     this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
       this.userDetailsSharedCollection,
@@ -128,7 +128,11 @@ export class ReviewUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
       .pipe(
         map((profileDetails: IProfileDetails[]) =>
-          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(profileDetails, this.review?.profileDetails),
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+            profileDetails,
+            this.review?.consumer,
+            this.review?.retailer,
+          ),
         ),
       )
       .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
