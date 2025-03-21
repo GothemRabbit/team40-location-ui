@@ -29,7 +29,8 @@ import { IImages } from 'app/entities/images/images.model';
   selector: 'jhi-item-update',
   templateUrl: './item-update.component.html',
   imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterLink],
-  styleUrl: 'item-update.component.scss',
+  // styleUrl: 'item-update.component.scss',
+  styleUrls: ['./item-update.component.scss'],
 })
 export class ItemUpdateComponent implements OnInit {
   isSaving = false;
@@ -136,6 +137,7 @@ export class ItemUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const item = this.itemFormService.getItem(this.editForm);
+    item.images = this.existingImages;
     if (item.id !== null) {
       this.subscribeToSaveResponse(this.itemService.update(item));
     } else {
