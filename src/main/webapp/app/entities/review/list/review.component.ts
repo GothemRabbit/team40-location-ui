@@ -17,6 +17,7 @@ import { ReviewDeleteDialogComponent } from '../delete/review-delete-dialog.comp
   standalone: true,
   selector: 'jhi-review',
   templateUrl: './review.component.html',
+  styleUrl: './review.component.scss',
   imports: [
     RouterModule,
     FormsModule,
@@ -57,7 +58,6 @@ export class ReviewComponent implements OnInit {
       )
       .subscribe();
   }
-
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
