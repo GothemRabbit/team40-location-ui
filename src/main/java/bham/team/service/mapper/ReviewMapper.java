@@ -22,7 +22,9 @@ public interface ReviewMapper extends EntityMapper<ReviewDTO, Review> {
     @Named("profileDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
+    @Mapping(target = "userName", source = "userName")
+    @Mapping(target = "bioImage", source = "bioImage")
+    ProfileDetailsDTO toDtoProfileDetails(ProfileDetails profileDetails);
 
     @Named("userDetailsId")
     @BeanMapping(ignoreByDefault = true)

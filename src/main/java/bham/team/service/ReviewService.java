@@ -151,6 +151,12 @@ public class ReviewService {
         return reviewRepository.findAll().stream().map(reviewMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> findReviewByRetailerID(Long retailerId) {
+        LOG.debug("Request to get all Reviews about Retailer");
+        return reviewRepository.findReviewByRetailerId(retailerId).stream().map(reviewMapper::toDto).collect(Collectors.toList());
+    }
+
     /**
      * Get one review by id.
      *
@@ -160,7 +166,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Optional<ReviewDTO> findOne(Long id) {
         LOG.debug("Request to get Review : {}", id);
-        return reviewRepository.findById(id).map(reviewMapper::toDto);
+        return reviewRepository.findReviewByIdWithConsumerAndRetailer(id).map(reviewMapper::toDto);
     }
 
     /**
