@@ -185,11 +185,11 @@ public class ItemResource {
     }
 
     //getting item with likes
-    @GetMapping("/{id}/likes")
-    public ResponseEntity<ItemDTO> getItemWithLikes(@PathVariable Long id) {
-        Optional<ItemDTO> itemDTO = itemService.findOneWithLikes(id);
-        return ResponseUtil.wrapOrNotFound(itemDTO);
-    }
+    //    @GetMapping("/{id}/likes")
+    //    public ResponseEntity<ItemDTO> getItemWithLikes(@PathVariable Long id) {
+    //        Optional<ItemDTO> itemDTO = itemService.findOneWithLikes(id);
+    //        return ResponseUtil.wrapOrNotFound(itemDTO);
+    //    }
 
     /**
      * {@code DELETE  /items/:id} : delete the "id" item.
@@ -204,5 +204,11 @@ public class ItemResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/items/profile/{profileId}")
+    public ResponseEntity<List<ItemDTO>> getItemsByProfile(@PathVariable Long profileId) {
+        List<ItemDTO> items = itemService.findAllItemsByProfile(profileId);
+        return ResponseEntity.ok().body(items);
     }
 }

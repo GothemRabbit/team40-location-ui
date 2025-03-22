@@ -1,8 +1,11 @@
 package bham.team.service;
 
 import bham.team.domain.Item;
+import bham.team.domain.ProfileDetails;
 import bham.team.repository.ImagesRepository;
 import bham.team.repository.ItemRepository;
+import bham.team.repository.LikesRepository;
+import bham.team.repository.ProfileDetailsRepository;
 import bham.team.service.dto.ItemDTO;
 import bham.team.service.mapper.ItemMapper;
 import java.util.LinkedList;
@@ -30,11 +33,20 @@ public class ItemService {
 
     private final ItemMapper itemMapper;
 
-    private ImagesRepository imagesRepository;
+    private final LikesRepository likesRepository;
 
-    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper) {
+    private ProfileDetailsRepository profileDetailsRepository;
+
+    public ItemService(
+        ItemRepository itemRepository,
+        ItemMapper itemMapper,
+        LikesRepository likesRepository,
+        ProfileDetailsRepository profileDetailsRepository
+    ) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
+        this.likesRepository = likesRepository;
+        this.profileDetailsRepository = profileDetailsRepository;
     }
 
     /**
@@ -43,10 +55,47 @@ public class ItemService {
      * @param itemDTO the entity to save.
      * @return the persisted entity.
      */
+    //    public ItemDTO save(ItemDTO itemDTO) {
+    //        LOG.debug("Request to save Item : {}", itemDTO);
+    //        Item item = itemMapper.toEntity(itemDTO);
+    //
+    //        if (itemDTO.getProfileDetails() != null && itemDTO.getProfileDetails().getId() != null) {
+    //            ProfileDetails profileDetails = profileDetailsRepository.findByIdWithUser(itemDTO.getProfileDetails().getId())
+    //                .orElseThrow(() -> new RuntimeException("ProfileDetails not found"));
+    //            item.setProfileDetails(profileDetails);
+    //        }
+    //
+    //        item = itemRepository.save(item);
+    //        return itemMapper.toDto(item);
+    //    }
+
     public ItemDTO save(ItemDTO itemDTO) {
         LOG.debug("Request to save Item : {}", itemDTO);
+
         Item item = itemMapper.toEntity(itemDTO);
+
+        if (itemDTO.getProfileDetails() != null && itemDTO.getProfileDetails().getId() != null) {
+            LOG.info("Fetching ProfileDetails with ID: {}", itemDTO.getProfileDetails().getId());
+
+            ProfileDetails profileDetails = profileDetailsRepository
+                .findByIdWithUser(itemDTO.getProfileDetails().getId())
+                .orElseThrow(() -> new RuntimeException("ProfileDetails not found"));
+
+            LOG.info("ProfileDetails found: {}", profileDetails);
+
+            item.setProfileDetails(profileDetails);
+            LOG.info("ProfileDetails set on item: {}", item.getProfileDetails());
+        } else {
+            LOG.warn("ProfileDetails is NULL in itemDTO! Item might be saved without a profile.");
+        }
+
         item = itemRepository.save(item);
+        LOG.info(
+            "Item saved with ID: {}, ProfileDetails ID: {}",
+            item.getId(),
+            item.getProfileDetails() != null ? item.getProfileDetails().getId() : "NULL"
+        );
+
         return itemMapper.toDto(item);
     }
 
@@ -59,6 +108,14 @@ public class ItemService {
     public ItemDTO update(ItemDTO itemDTO) {
         LOG.debug("Request to update Item : {}", itemDTO);
         Item item = itemMapper.toEntity(itemDTO);
+
+        if (itemDTO.getProfileDetails() != null && itemDTO.getProfileDetails().getId() != null) {
+            ProfileDetails profileDetails = profileDetailsRepository
+                .findByIdWithUser(itemDTO.getProfileDetails().getId())
+                .orElseThrow(() -> new RuntimeException("ProfileDetails not found"));
+            item.setProfileDetails(profileDetails);
+        }
+
         item = itemRepository.save(item);
         return itemMapper.toDto(item);
     }
@@ -105,8 +162,17 @@ public class ItemService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public Optional<ItemDTO> findOneWithLikes(Long id) {
-        return itemRepository.findOneWithLikes(id).map(itemMapper::toDto); // Assuming itemMapper is used to map the entity to DTO
+    // Fetch Item with Likes Count
+    @Transactional(readOnly = true)
+    public Optional<ItemDTO> findOneWithLikes(Long id, Long profileId) {
+        return itemRepository
+            .findById(id)
+            .map(item -> {
+                ItemDTO dto = itemMapper.toDto(item);
+                dto.setLikeCount(likesRepository.countLikesByItemId(id)); // Set total likes
+                dto.setLikedByUser(likesRepository.existsByItemIdAndProfileId(id, profileId)); // Check if liked
+                return dto;
+            });
     }
 
     /**
@@ -147,9 +213,9 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<ItemDTO> findAll() {
-        LOG.debug("Request to get all Items");
-        return itemRepository.findAll().stream().map(itemMapper::toDto).collect(Collectors.toList());
+    public List<ItemDTO> findAllItemsByProfile(Long profileId) {
+        LOG.debug("Request to get all Items for ProfileDetails: {}", profileId);
+        return itemRepository.findAllItemsByProfileId(profileId).stream().map(itemMapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

@@ -42,4 +42,7 @@ public interface ItemRepository extends ItemRepositoryWithBagRelationships, JpaR
 
     @Query("SELECT i FROM Item i LEFT JOIN FETCH i.profileDetails WHERE i.id = :id")
     Optional<Item> findByIdWithProfileDetails(@Param("id") Long id);
+
+    @Query("SELECT i FROM Item i WHERE i.profileDetails.id = :profileId")
+    List<Item> findAllItemsByProfileId(@Param("profileId") Long profileId);
 }

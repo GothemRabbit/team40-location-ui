@@ -200,4 +200,10 @@ public class ProfileDetailsResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @GetMapping("/profiles/{id}")
+    public ResponseEntity<ProfileDetailsDTO> getProfileWithItems(@PathVariable Long id) {
+        Optional<ProfileDetailsDTO> profileDetails = profileDetailsService.findProfileWithItems(id);
+        return profileDetails.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

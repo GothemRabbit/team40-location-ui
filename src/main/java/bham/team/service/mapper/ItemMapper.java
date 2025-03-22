@@ -21,13 +21,24 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = { ImagesMapper.class })
 public interface ItemMapper extends EntityMapper<ItemDTO, Item> {
     @Mapping(target = "wishlists", source = "wishlists", qualifiedByName = "wishlistIdSet")
-    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsUsername")
+    @Mapping(source = "profileDetails.id", target = "profileDetails")
+    @Mapping(source = "profileDetails.userName", target = "profileDetails.userName")
     @Mapping(target = "seller", source = "seller", qualifiedByName = "userDetailsId")
     @Mapping(target = "images", source = "images")
     ItemDTO toDto(Item s);
 
+    @Mapping(source = "profileDetails", target = "profileDetails")
     @Mapping(target = "removeWishlist", ignore = true)
     Item toEntity(ItemDTO itemDTO);
+
+    default Item fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Item item = new Item();
+        item.setId(id);
+        return item;
+    }
 
     @Named("wishlistId")
     @BeanMapping(ignoreByDefault = true)
@@ -44,9 +55,25 @@ public interface ItemMapper extends EntityMapper<ItemDTO, Item> {
     @Mapping(target = "id", source = "id")
     UserDetailsDTO toDtoUserDetailsId(UserDetails userDetails);
 
-    @Named("profileDetailsUsername")
+    //    @Named("profileDetailsUsername")
+    //    @BeanMapping(ignoreByDefault = true)
+    //    @Mapping(target = "id", source = "id")
+    ////    @Mapping(target = "userName", source = "userName")
+    //    ProfileDetailsDTO toDtoProfileDetailsUsername(ProfileDetails profileDetails);
+
+    @Named("profileDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "userName", source = "userName")
-    ProfileDetailsDTO toDtoProfileDetailsUsername(ProfileDetails profileDetails);
+    @Mapping(target = "userName", source = "userName") // Ensure it fetches username
+    ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
+
+    @Named("profileDetailsIdToEntity")
+    default ProfileDetails profileDetailsIdToEntity(ProfileDetailsDTO profileDetailsDTO) {
+        if (profileDetailsDTO == null) {
+            return null;
+        }
+        ProfileDetails profileDetails = new ProfileDetails();
+        profileDetails.setId(profileDetailsDTO.getId()); // Ensure ID is mapped
+        return profileDetails;
+    }
 }
