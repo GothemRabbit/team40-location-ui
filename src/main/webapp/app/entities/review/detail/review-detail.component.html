@@ -31,7 +31,7 @@
           <dd>
             @if (review()!.consumer) {
               <div>
-                <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']">{{ reviewRef.consumer?.id }}</a>
+                <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']">{{ reviewRef.consumer?.userName }}</a>
               </div>
             }
           </dd>
@@ -39,7 +39,7 @@
           <dd>
             @if (review()!.retailer) {
               <div>
-                <a [routerLink]="['/profile-details', review()!.retailer?.id, 'view']">{{ reviewRef.retailer?.id }}</a>
+                <a [routerLink]="['/profile-details', review()!.retailer?.id, 'view']">{{ reviewRef.retailer?.userName }}</a>
               </div>
             }
           </dd>
