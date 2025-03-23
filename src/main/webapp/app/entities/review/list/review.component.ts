@@ -57,6 +57,13 @@ export class ReviewComponent implements OnInit {
       )
       .subscribe();
   }
+  getAverageRating(): number {
+    if (!this.reviews || this.reviews.length === 0) {
+      return 0;
+    }
+    const average: number = this.reviews.reduce((total, aNumber) => Number(aNumber.rating) + total, 0);
+    return Math.round(average / this.reviews.length);
+  }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);

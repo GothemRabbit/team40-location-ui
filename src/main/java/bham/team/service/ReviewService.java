@@ -8,6 +8,7 @@ import bham.team.security.SecurityUtils;
 import bham.team.service.dto.ReviewDTO;
 import bham.team.service.mapper.ReviewMapper;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -64,6 +65,7 @@ public class ReviewService {
         LOG.debug("Request to save Review : {}", reviewDTO);
         Review review = reviewMapper.toEntity(reviewDTO);
         review.setConsumer(profileDetails.get().userName(currentUserName));
+        review.setDate(LocalDate.now());
         review = reviewRepository.save(review);
         return reviewMapper.toDto(review);
     }
