@@ -24,6 +24,7 @@ import { Account } from 'app/core/auth/account.model';
   standalone: true,
   selector: 'jhi-review-update',
   templateUrl: './review-update.component.html',
+  styleUrl: './review-update.component.scss',
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ReviewUpdateComponent implements OnInit {
