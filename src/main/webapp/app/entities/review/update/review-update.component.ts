@@ -19,6 +19,7 @@ import { IReview } from '../review.model';
 import { ReviewFormGroup, ReviewFormService } from './review-form.service';
 import { AccountService } from '../../../core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   standalone: true,
