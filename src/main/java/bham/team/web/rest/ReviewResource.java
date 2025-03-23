@@ -144,8 +144,8 @@ public class ReviewResource {
     /**
      * this gets code from the profile so it shows all the reviews that have been done about that specific user
      * **/
-    @GetMapping("/reviews/profile/{profileId}")
-    public ResponseEntity<List<ReviewDTO>> getAllReviewsByRetailerID(@PathVariable("id") Long profileId) {
+    @GetMapping("/reviews/{profileId}")
+    public ResponseEntity<List<ReviewDTO>> getAllReviewsByRetailerID(@PathVariable("profileId") Long profileId) {
         LOG.debug("REST request to get all Reviews by RetailerID: {}", profileId);
         List<ReviewDTO> retailerReviews = reviewService.findReviewByRetailerID(profileId);
         return ResponseEntity.ok(retailerReviews);

@@ -45,7 +45,6 @@ export class ReviewComponent implements OnInit {
   protected ngZone = inject(NgZone);
 
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
-
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
@@ -58,6 +57,7 @@ export class ReviewComponent implements OnInit {
       )
       .subscribe();
   }
+
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
