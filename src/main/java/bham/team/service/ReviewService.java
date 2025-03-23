@@ -50,20 +50,20 @@ public class ReviewService {
         Long reviewId = reviewDTO.getId();
         Optional<String> user = SecurityUtils.getCurrentUserLogin();
         String retailerUserName, currentUserName = "";
-        Optional<ProfileDetails> profileDetails = Optional.empty();
+        Optional<ProfileDetails> profileDetails = null;
         if (user.isPresent()) {
             profileDetails = profileDetailsRepository.findByUserName(user.get());
         }
-        if (profileDetails.isPresent()) {
+        if (profileDetails != null || profileDetails.isPresent()) {
             currentUserName = profileDetails.get().getUserName();
         }
         retailerUserName = reviewDTO.getRetailer().getUserName();
         if (retailerUserName.equals(currentUserName)) {
             throw new IllegalArgumentException("You can not write a review about yourself");
         }
-
         LOG.debug("Request to save Review : {}", reviewDTO);
         Review review = reviewMapper.toEntity(reviewDTO);
+        review.setConsumer(profileDetails.get().userName(currentUserName));
         review = reviewRepository.save(review);
         return reviewMapper.toDto(review);
     }
