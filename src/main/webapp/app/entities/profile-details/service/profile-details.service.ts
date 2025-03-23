@@ -32,6 +32,10 @@ export class ProfileDetailsService {
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/profile-details');
 
+  getCurrentUserProfile(): Observable<IProfileDetails> {
+    return this.http.get<IProfileDetails>(`${this.resourceUrl}/current`);
+  }
+
   create(profileDetails: NewProfileDetails): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(profileDetails);
     return this.http

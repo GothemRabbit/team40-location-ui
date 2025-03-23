@@ -9,6 +9,8 @@ import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import NavbarItem from './navbar-item.model';
+import { IProfileDetails } from '../../entities/profile-details/profile-details.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -24,10 +26,12 @@ export default class NavbarComponent implements OnInit {
   version = '';
   account = inject(AccountService).trackCurrentAccount();
   entitiesNavbarItems: NavbarItem[] = [];
+  currentUserProfile: IProfileDetails | null = null;
 
-  private readonly loginService = inject(LoginService);
+  subscription: Subscription | undefined;
   private readonly profileService = inject(ProfileService);
   private readonly router = inject(Router);
+  private readonly loginService = inject(LoginService);
 
   constructor() {
     if (VERSION) {
@@ -40,6 +44,14 @@ export default class NavbarComponent implements OnInit {
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
       this.openAPIEnabled = profileInfo.openAPIEnabled;
+    });
+
+    this.subscription = this.loginService.getProfileDetails().subscribe(profile => {
+      this.currentUserProfile = profile ?? null;
+      if (!profile) {
+        // eslint-disable-next-line no-console
+        console.log('Profile not found. Consider logging in or retrying...');
+      }
     });
   }
 

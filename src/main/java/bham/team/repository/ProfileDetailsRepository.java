@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,6 +20,9 @@ public interface ProfileDetailsRepository extends ProfileDetailsRepositoryWithBa
     default Optional<ProfileDetails> findOneWithEagerRelationships(Long id) {
         return this.fetchBagRelationships(this.findById(id));
     }
+
+    @Query("SELECT pd FROM ProfileDetails pd WHERE pd.user.id = :userId")
+    Optional<ProfileDetails> findProfileDetailsByUserId(@Param("userId") Long userId);
 
     default List<ProfileDetails> findAllWithEagerRelationships() {
         return this.fetchBagRelationships(this.findAll());
