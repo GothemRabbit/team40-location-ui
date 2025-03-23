@@ -13,7 +13,8 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    List<Review> findReviewByRetailerId(Long retailerId);
+    @Query("SELECT review from Review review WHERE review.retailer.id =: retailerId")
+    List<Review> findReviewByRetailerId(@Param("retailerId") Long retailerId);
 
     @Query("SELECT review from Review review LEFT JOIN FETCH review.retailer LEFT JOIN FETCH review.consumer where review.id = :id")
     Optional<Review> findReviewByIdWithConsumerAndRetailer(@Param("id") Long id);
