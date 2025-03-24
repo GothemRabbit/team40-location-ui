@@ -18,14 +18,14 @@ Navbar
   align-items: center;
   padding: 6px;
   border-radius: 20px;
-  background: #f8dc75;
+  background: #ffffff;
   width: 300px;
 }
 
 .search-input {
-  font-size: 14px;
-  //font-family: "Lexen";
-  color: #333333;
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+  color: #777373;
   margin-left: 12px;
   outline: none;
   border: none;
@@ -41,22 +41,49 @@ Navbar
   width: 1.5em;
 }
 nav {
-  background: rgb(34, 54, 62);
-  background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
+  background-color: #dcd8a2;
+  //background: rgb(34, 54, 62);
+  //background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
 
-  font-family: 'Fira Mono', sans-serif;
-  font-size: 18px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 550;
+  font-style: normal;
+  font-size: 20px;
+}
+
+.pt-sans-regular {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pt-sans-bold {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.pt-sans-regular-italic {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.pt-sans-bold-italic {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+  font-style: italic;
 }
 
 .navbar-brand,
 .navbar-title,
 .navbar-version,
 .nav-link {
-  color: #e2d3f4;
+  color: black;
 }
 
 .fa-icon {
-  color: black;
+  color: #f2d349;
 }
 
 .fa-icon:hover {
@@ -67,7 +94,7 @@ nav {
 .navbar-title:hover,
 .navbar-version:hover,
 .nav-link:hover {
-  color: black;
+  color: #5c6e58;
 }
 
 .navbar {
@@ -78,10 +105,6 @@ nav {
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
     background-color: $dark;
-  }
-
-  a.nav-link {
-    font-weight: 400;
   }
 
   .navbar-toggler {
