@@ -183,7 +183,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Optional<ReviewDTO> findOne(Long id) {
         LOG.debug("Request to get Review : {}", id);
-        return reviewRepository.findReviewByIdWithConsumerAndRetailer(id).map(reviewMapper::toDto);
+        return reviewRepository.findById(id).map(reviewMapper::toDto);
     }
 
     /**
