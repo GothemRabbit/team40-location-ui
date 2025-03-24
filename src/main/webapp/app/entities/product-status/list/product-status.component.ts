@@ -21,6 +21,7 @@ import { IProductStatus } from '../product-status.model';
   standalone: true,
   selector: 'jhi-product-status',
   templateUrl: './product-status.component.html',
+  styleUrls: ['../product-status.styles.css'],
   imports: [
     RouterModule,
     FormsModule,

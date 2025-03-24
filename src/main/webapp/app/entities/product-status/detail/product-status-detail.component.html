@@ -53,10 +53,10 @@
           </button>
 
           @if (productStatusRef.status === 'RESERVED') {
-            <button type="button" (click)="onConfirm(); previousState()" class="btn btn-success">
+            <button type="button" (click)="showConfirmDialog('confirm')" class="btn btn-success">
               <fa-icon icon="check"></fa-icon> <span>Confirm</span>
             </button>
-            <button type="button" (click)="onCancel(); previousState()" class="btn btn-danger">
+            <button type="button" (click)="showConfirmDialog('cancel')" class="btn btn-danger">
               <fa-icon icon="times"></fa-icon> <span>Cancel</span>
             </button>
           }
@@ -70,6 +70,20 @@
       </div>
     </div>
   }
+
+  <div class="modal" [class.show]="showConfirmModal" (click)="closeConfirmDialog()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>Warning</h2>
+      <p>
+        Are you sure you want to {{ confirmActionType === 'confirm' ? ' confirm' : 'cancel' }} this product status? This operation cannot be
+        canceled after confirmation.
+      </p>
+      <div class="modal-actions">
+        <button type="button" (click)="executeAction()" class="btn btn-success">confirm</button>
+        <button type="button" (click)="closeConfirmDialog()" class="btn btn-info">cancel</button>
+      </div>
+    </div>
+  </div>
 
   <div class="modal" [class.show]="showModal" (click)="closeReviewModal($event)">
     <div class="modal-content" (click)="stopPropagation($event)">
@@ -97,187 +111,3 @@
     </div>
   </div>
 </div>
-<style>
-  .container {
-    background-color: rgb(248, 220, 117);
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .header {
-    margin-bottom: 30px;
-  }
-
-  h1,
-  h2 {
-    font-weight: 600;
-    color: #1d1d1f;
-    margin: 0 0 20px;
-  }
-
-  h1 {
-    font-size: 32px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  .card {
-    background-color: rgb(248, 220, 117);
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-content {
-    padding: 20px;
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
-  .details {
-    flex: 1;
-    color: #1d1d1f;
-  }
-
-  .details-list {
-    display: grid;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .details-list dt {
-    font-weight: 600;
-    color: #1d1d1f;
-    margin-bottom: 5px;
-    font-size: 16px;
-  }
-
-  .details-list dd {
-    margin: 0 0 15px;
-    color: #6e6e73;
-    font-size: 14px;
-    word-wrap: break-word;
-  }
-
-  .thumbnail {
-    width: 300px;
-    height: 300px;
-    background: #f5f5f7;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #86868b;
-    font-size: 24px;
-    flex-shrink: 0;
-    order: 2;
-  }
-
-  .status-actions {
-    padding: 20px;
-    text-align: right;
-  }
-
-  .actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .btn {
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-weight: 500;
-    border: none;
-    transition: all 0.2s ease;
-  }
-
-  .btn-info {
-    background: #6fa8dc;
-    color: white;
-  }
-
-  .btn-primary {
-    background: #007bff;
-    color: white;
-  }
-
-  .btn-success {
-    background: #28a745;
-    color: white;
-  }
-
-  .btn-danger {
-    background: #dc3545;
-    color: white;
-  }
-
-  .btn:hover {
-    opacity: 0.9;
-  }
-
-  /* 模态窗口样式 */
-  .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  .modal.show {
-    display: flex;
-  }
-
-  .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .form-control {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-  }
-</style>
