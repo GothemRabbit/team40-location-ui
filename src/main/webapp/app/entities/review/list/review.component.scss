@@ -1,18 +1,16 @@
-:root {
-  background-color: #f8dc75;
-}
 #page {
 }
 .commentBoxRight {
   background-color: white;
   padding: 10px;
   margin-bottom: 5px;
-  border-radius: 5px;
+  border-radius: 15px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
   gap: 20px;
   width: 700px;
   margin-left: 75px;
   overflow: hidden;
+  border: 2px solid #8aa899;
 }
 .commentBoxRight:hover {
   transform: translateY(-5px);
@@ -48,7 +46,8 @@
   align-items: center;
   text-align: center;
   padding: 10px;
-  background-color: #d8c0c8;
+  background-color: #8aa899;
+  border: 2px solid #5c6e58;
   border-radius: 5px;
   width: 300px;
   height: 400px;
@@ -104,7 +103,7 @@ p {
 }
 #rates {
   text-align: right;
-  color: gold;
+  color: #f2d349;
 }
 #date {
   text-align: right;
@@ -127,23 +126,47 @@ p {
 }
 
 button {
-  background-color: #61949e;
-  border: 2px solid #d8c0c8;
+  background-color: #8aa899;
+  border: 2px solid #5c6e58;
   display: inline-block;
   border-radius: 14px;
   font-size: 13px;
   height: 50px;
   width: 150px;
   transition-duration: 0.5s;
-  color: black;
+  color: #5c6e58;
 }
 
 button:hover {
-  background-color: black;
-  color: #f8dc75;
+  background-color: #5c6e58;
+  color: #8aa899;
+  border: 2px solid #8aa899;
 }
 
 #tD {
   width: 50px;
   position: relative;
+}
+
+.filterButton {
+  background-color: #8aa899;
+  border: 2px solid #5c6e58;
+  display: inline-block;
+  border-radius: 14px;
+  font-size: 13px;
+  height: 30px;
+  width: 100px;
+  transition-duration: 0.5s;
+  color: #5c6e58;
+}
+
+#filter1 {
+  border-radius: 15px;
+  background-color: #8aa899;
+  border: 2px solid #5c6e58;
+  margin-left: 75px;
+}
+
+#filter1::placeholder {
+  color: #5c6e58;
 }

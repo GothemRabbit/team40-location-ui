@@ -3,8 +3,8 @@
     <div class="col-8">
       <div class="formBorder">
         <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-          <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Give us your Review!</h2>
-
+          <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Give us your review</h2>
+          <hr />
           <div>
             <jhi-alert-error></jhi-alert-error>
 
@@ -14,6 +14,23 @@
                 <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
               </div>
             }
+
+            <div class="mb-4">
+              <label class="form-label" for="field_retailer">Retailer</label>
+              <select
+                class="num"
+                id="field_retailer"
+                data-cy="retailer"
+                name="retailer"
+                formControlName="retailer"
+                [compareWith]="compareProfileDetails"
+              >
+                <option [ngValue]="null"></option>
+                @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+                  <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.userName }}</option>
+                }
+              </select>
+            </div>
 
             @let dateRef = editForm.get('date')!;
             <div class="mb-4">
@@ -53,7 +70,11 @@
             -->
             @let ratingRef = editForm.get('rating')!;
             <div class="mb-4">
-              <ngb-rating id="field_rating" formControlName="rating" data-cy="rating" class="stars" [max]="5"></ngb-rating>
+              <ngb-rating id="field_rating" formControlName="rating" data-cy="rating" class="stars" [max]="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100" [class.bad]="index <= 5">&#9733;</span></ng-template
+                >
+              </ngb-rating>
               <label class="form-label" for="field_rating"></label>
               @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
                 <div>
@@ -73,23 +94,6 @@
               }
             </div>
 
-            <div class="mb-4">
-              <label class="form-label" for="field_retailer">Retailer</label>
-              <select
-                class="form-control"
-                id="field_retailer"
-                data-cy="retailer"
-                name="retailer"
-                formControlName="retailer"
-                [compareWith]="compareProfileDetails"
-              >
-                <option [ngValue]="null"></option>
-                @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
-                  <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.userName }}</option>
-                }
-              </select>
-            </div>
-
             @let commentsRef = editForm.get('comments')!;
             <div>
               <label class="form-label" for="field_comments"></label>
@@ -102,6 +106,7 @@
                 </div>
               }
             </div>
+
             <div class="buttonClass">
               <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
                 <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
