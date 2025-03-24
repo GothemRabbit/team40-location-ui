@@ -1,9 +1,13 @@
 package bham.team.service;
 
 import bham.team.domain.Conversation;
+import bham.team.domain.Message;
 import bham.team.repository.ConversationRepository;
+import bham.team.repository.MessageRepository;
 import bham.team.service.dto.ConversationDTO;
+import bham.team.service.dto.MessageDTO;
 import bham.team.service.mapper.ConversationMapper;
+import bham.team.service.mapper.MessageMapper;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -29,9 +33,20 @@ public class ConversationService {
 
     private final ConversationMapper conversationMapper;
 
-    public ConversationService(ConversationRepository conversationRepository, ConversationMapper conversationMapper) {
+    private final MessageRepository messageRepository;
+
+    private final MessageMapper messageMapper;
+
+    public ConversationService(
+        ConversationRepository conversationRepository,
+        ConversationMapper conversationMapper,
+        MessageRepository messageRepository,
+        MessageMapper messageMapper
+    ) {
         this.conversationRepository = conversationRepository;
         this.conversationMapper = conversationMapper;
+        this.messageRepository = messageRepository;
+        this.messageMapper = messageMapper;
     }
 
     /**
@@ -133,5 +148,17 @@ public class ConversationService {
     public void delete(Long id) {
         LOG.debug("Request to delete Conversation : {}", id);
         conversationRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MessageDTO> findAllMessagesByConversationId(Long conversationId) {
+        LOG.debug("Request to get all Messages for Conversation with ID: {}", conversationId);
+
+        conversationRepository
+            .findById(conversationId)
+            .orElseThrow(() -> new RuntimeException("Conversation not found with id: " + conversationId));
+
+        List<Message> messages = messageRepository.findAllByConversationIdOrderByTimestampAsc(conversationId);
+        return messages.stream().map(messageMapper::toDto).collect(Collectors.toList());
     }
 }

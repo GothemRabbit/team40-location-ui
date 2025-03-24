@@ -3,6 +3,7 @@ package bham.team.web.rest;
 import bham.team.repository.ConversationRepository;
 import bham.team.service.ConversationService;
 import bham.team.service.dto.ConversationDTO;
+import bham.team.service.dto.MessageDTO;
 import bham.team.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -155,13 +156,25 @@ public class ConversationResource {
      * {@code GET  /conversations/:id} : get the "id" conversation.
      *
      * @param id the id of the conversationDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the conversationDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<ConversationDTO> getConversation(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Conversation : {}", id);
         Optional<ConversationDTO> conversationDTO = conversationService.findOne(id);
         return ResponseUtil.wrapOrNotFound(conversationDTO);
+    }
+
+    @GetMapping("/{id}/messages")
+    public ResponseEntity<List<MessageDTO>> getConversationMessages(@PathVariable("id") Long conversationId) {
+        LOG.debug("REST request to get Messages of Conversation : {}", conversationId);
+
+        if (!conversationRepository.existsById(conversationId)) {
+            throw new BadRequestAlertException("Conversation not found", ENTITY_NAME, "idnotfound");
+        }
+
+        List<MessageDTO> messages = conversationService.findAllMessagesByConversationId(conversationId);
+
+        return ResponseEntity.ok(messages);
     }
 
     /**
