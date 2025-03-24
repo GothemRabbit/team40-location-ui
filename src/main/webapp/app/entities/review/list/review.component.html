@@ -55,6 +55,20 @@
         </div>
       </div>
       <div class="scrollbarBoxRight">
+        <!--  <label for="filter">Filter By retailer: </label>
+        <select  id="filter" #filterValue (change)="filterBy(filterValue)">
+          <option value=""> all ratings </option>
+          <option value="0"> 0 </option>
+          <option value="1"> 1 </option>
+          <option value="2"> 2 </option>
+          <option value="3"> 3 </option>
+          <option value="4"> 4 </option>
+          <option value="5"> 5 </option>
+        </select> -->
+
+        <label for="filter1">Filter By retailer: </label>
+        <input id="filter1" type="text" #filterValue1 />
+        <button (click)="filterByRetailer(filterValue1)">Filter</button>
         @for (review of reviews; track trackId(review)) {
           <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
             <div style="display: flex; justify-content: space-between">

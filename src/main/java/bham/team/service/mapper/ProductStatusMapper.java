@@ -42,4 +42,11 @@ public interface ProductStatusMapper extends EntityMapper<ProductStatusDTO, Prod
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     LocationDTO toDtoLocationId(Location location);
+
+    default ProfileDetails profileDetailsFromId(Long id) {
+        if (id == null) return null;
+        ProfileDetails pd = new ProfileDetails();
+        pd.setId(id);
+        return pd;
+    }
 }
