@@ -37,7 +37,7 @@
 
           <a id="meet-up locations" [routerLink]="['/location']" class="location-link"> Location </a>
           <dd class="address-container">
-            <button type="button" [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']" class="btn btn-primary">
+            <button *ngIf="isOwner" type="button" [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']" class="btn btn-primary">
               <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
             </button>
           </dd>
@@ -48,13 +48,13 @@
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'listings'" (click)="activeTab = 'listings'"> Listings</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="isOwner" class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'favorites'" (click)="activeTab = 'favorites'"> Favorites</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'wishlist'" (click)="activeTab = 'wishlist'"> Wishlist</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="isOwner" class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'"> Purchase History</a>
         </li>
       </ul>

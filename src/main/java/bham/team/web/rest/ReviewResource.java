@@ -1,8 +1,5 @@
 package bham.team.web.rest;
 
-import bham.team.domain.ProfileDetails;
-import bham.team.domain.Review;
-import bham.team.domain.UserDetails;
 import bham.team.repository.ReviewRepository;
 import bham.team.service.ReviewService;
 import bham.team.service.dto.ReviewDTO;
@@ -18,9 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -148,6 +142,16 @@ public class ReviewResource {
     }
 
     /**
+     * this gets code from the profile so it shows all the reviews that have been done about that specific user
+     * **/
+    @GetMapping("/reviews/{profileId}")
+    public ResponseEntity<List<ReviewDTO>> getAllReviewsByRetailerID(@PathVariable("profileId") Long profileId) {
+        LOG.debug("REST request to get all Reviews by RetailerID: {}", profileId);
+        List<ReviewDTO> retailerReviews = reviewService.findReviewByRetailerID(profileId);
+        return ResponseEntity.ok(retailerReviews);
+    }
+
+    /**
      * {@code GET  /reviews/:id} : get the "id" review.
      *
      * @param id the id of the reviewDTO to retrieve.
@@ -168,16 +172,6 @@ public class ReviewResource {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable("id") Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        /* boolean isAdmin = false;
-        for (GrantedAuthority auth : authentication.getAuthorities()) {
-            if (auth.getAuthority().equals("ROLE_ADMIN")) {
-                isAdmin = true;
-            }
-        }
-        if (isAdmin) {
-            throw new BadRequestAlertException(" Only admins can create " + ENTITY_NAME, ENTITY_NAME, " idinvalid ");
-        }*/
         LOG.debug("REST request to delete Review : {}", id);
         reviewService.delete(id);
         return ResponseEntity.noContent()

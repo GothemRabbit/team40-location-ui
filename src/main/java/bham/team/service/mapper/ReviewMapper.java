@@ -13,7 +13,8 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ReviewMapper extends EntityMapper<ReviewDTO, Review> {
-    @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "consumer", source = "consumer", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "retailer", source = "retailer", qualifiedByName = "profileDetailsId")
     @Mapping(target = "buyer", source = "buyer", qualifiedByName = "userDetailsId")
     @Mapping(target = "seller", source = "seller", qualifiedByName = "userDetailsId")
     ReviewDTO toDto(Review s);
@@ -21,7 +22,9 @@ public interface ReviewMapper extends EntityMapper<ReviewDTO, Review> {
     @Named("profileDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
+    @Mapping(target = "userName", source = "userName")
+    @Mapping(target = "bioImage", source = "bioImage")
+    ProfileDetailsDTO toDtoProfileDetails(ProfileDetails profileDetails);
 
     @Named("userDetailsId")
     @BeanMapping(ignoreByDefault = true)

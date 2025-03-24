@@ -34,9 +34,13 @@ export class ProfileDetailsDetailComponent implements OnInit {
 
   checkOwnership(): void {
     const profile = this.profileDetails;
-    if (this.account && profile?.user?.login) {
-      this.isOwner = this.account.login === profile.user.login;
-    }
+    // eslint-disable-next-line no-console
+    console.log(profile?.userName);
+    // eslint-disable-next-line no-console
+    console.log(this.account?.login);
+    this.isOwner = this.account?.login === profile?.userName;
+    // eslint-disable-next-line no-console
+    console.log(this.isOwner);
   }
 
   byteSize(base64String: string): string {

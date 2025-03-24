@@ -53,12 +53,14 @@ describe('Review Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call ProfileDetails query and add missing value', () => {
       const review: IReview = { id: 456 };
-      const profileDetails: IProfileDetails = { id: 6701 };
-      review.profileDetails = profileDetails;
+      const consumer: IProfileDetails = { id: 6701 };
+      review.consumer = consumer;
+      const retailer: IProfileDetails = { id: 27227 };
+      review.retailer = retailer;
 
-      const profileDetailsCollection: IProfileDetails[] = [{ id: 27227 }];
+      const profileDetailsCollection: IProfileDetails[] = [{ id: 1702 }];
       jest.spyOn(profileDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: profileDetailsCollection })));
-      const additionalProfileDetails = [profileDetails];
+      const additionalProfileDetails = [consumer, retailer];
       const expectedCollection: IProfileDetails[] = [...additionalProfileDetails, ...profileDetailsCollection];
       jest.spyOn(profileDetailsService, 'addProfileDetailsToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -99,8 +101,10 @@ describe('Review Management Update Component', () => {
 
     it('Should update editForm', () => {
       const review: IReview = { id: 456 };
-      const profileDetails: IProfileDetails = { id: 1702 };
-      review.profileDetails = profileDetails;
+      const consumer: IProfileDetails = { id: 13205 };
+      review.consumer = consumer;
+      const retailer: IProfileDetails = { id: 17417 };
+      review.retailer = retailer;
       const buyer: IUserDetails = { id: 18661 };
       review.buyer = buyer;
       const seller: IUserDetails = { id: 6363 };
@@ -109,7 +113,8 @@ describe('Review Management Update Component', () => {
       activatedRoute.data = of({ review });
       comp.ngOnInit();
 
-      expect(comp.profileDetailsSharedCollection).toContain(profileDetails);
+      expect(comp.profileDetailsSharedCollection).toContain(consumer);
+      expect(comp.profileDetailsSharedCollection).toContain(retailer);
       expect(comp.userDetailsSharedCollection).toContain(buyer);
       expect(comp.userDetailsSharedCollection).toContain(seller);
       expect(comp.review).toEqual(review);

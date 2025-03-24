@@ -186,6 +186,12 @@ public class ProfileDetailsResource {
         return ResponseEntity.ok(profile);
     }
 
+    @GetMapping("/current")
+    public ResponseEntity<ProfileDetailsDTO> getCurrentUserProfile() {
+        Optional<ProfileDetailsDTO> profileDetailsDTO = profileDetailsService.getCurrentUserProfile();
+        return profileDetailsDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     /**
      * {@code DELETE  /profile-details/:id} : delete the "id" profileDetails.
      *

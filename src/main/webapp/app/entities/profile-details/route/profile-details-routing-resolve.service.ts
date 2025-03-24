@@ -9,6 +9,8 @@ import { ProfileDetailsService } from '../service/profile-details.service';
 
 const profileDetailsResolve = (route: ActivatedRouteSnapshot): Observable<null | IProfileDetails> => {
   const id = route.params.id;
+  // eslint-disable-next-line no-console
+  console.log('Profile ID:', id);
   if (id) {
     return inject(ProfileDetailsService)
       .find(id)

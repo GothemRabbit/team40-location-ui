@@ -22,13 +22,15 @@ import { ItemService } from '../service/item.service';
 import { IItem } from '../item.model';
 import { ItemFormGroup, ItemFormService } from './item-form.service';
 import { ImagesService } from 'app/entities/images/service/images.service';
+import { IImages } from 'app/entities/images/images.model';
 
 @Component({
   standalone: true,
   selector: 'jhi-item-update',
   templateUrl: './item-update.component.html',
   imports: [SharedModule, FormsModule, ReactiveFormsModule, RouterLink],
-  styleUrl: 'item-update.component.scss',
+  // styleUrl: 'item-update.component.scss',
+  styleUrls: ['./item-update.component.scss'],
 })
 export class ItemUpdateComponent implements OnInit {
   isSaving = false;
@@ -40,6 +42,8 @@ export class ItemUpdateComponent implements OnInit {
   profileDetailsSharedCollection: IProfileDetails[] = [];
   userDetailsSharedCollection: IUserDetails[] = [];
   newImages: { file: File; preview: string }[] = [];
+  existingImages: IImages[] = [];
+  toBeDeleted: IImages[] = [];
 
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
@@ -112,6 +116,13 @@ export class ItemUpdateComponent implements OnInit {
     this.newImages.splice(index, 1);
   }
 
+  removeExistingImage(index: number): void {
+    const imgToRemove = this.existingImages[index];
+    this.existingImages.splice(index, 1);
+    // Defer actual delete
+    this.toBeDeleted.push(imgToRemove);
+  }
+
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
@@ -126,6 +137,7 @@ export class ItemUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const item = this.itemFormService.getItem(this.editForm);
+    item.images = this.existingImages;
     if (item.id !== null) {
       this.subscribeToSaveResponse(this.itemService.update(item));
     } else {
@@ -138,6 +150,7 @@ export class ItemUpdateComponent implements OnInit {
       next: response => {
         if (response.body) {
           this.item = response.body;
+          this.deleteDeferredImages();
           // After saving the item, if there are new images, upload them.
           if (this.newImages.length > 0) {
             this.uploadImages(response.body.id);
@@ -177,6 +190,10 @@ export class ItemUpdateComponent implements OnInit {
       this.userDetailsSharedCollection,
       item.seller,
     );
+    // <<--- NEW: Copy the existing images from the item into existingImages array
+    if (item.images) {
+      this.existingImages = [...item.images];
+    }
   }
 
   protected loadRelationshipsOptions(): void {
@@ -235,6 +252,23 @@ export class ItemUpdateComponent implements OnInit {
       };
       reader.readAsDataURL(imgObj.file);
     }
+  }
+
+  protected deleteDeferredImages(): void {
+    for (const img of this.toBeDeleted) {
+      if (img.id) {
+        this.imagesService.delete(img.id).subscribe({
+          next() {
+            // success
+          },
+          error(err) {
+            console.error('Error deleting deferred image:', err);
+          },
+        });
+      }
+    }
+    // Clear out the array
+    this.toBeDeleted = [];
   }
 
   private processFiles(files: FileList): void {

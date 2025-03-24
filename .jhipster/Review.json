@@ -27,8 +27,15 @@
   "relationships": [
     {
       "otherEntityName": "profileDetails",
-      "otherEntityRelationshipName": "review",
-      "relationshipName": "profileDetails",
+      "otherEntityRelationshipName": "reviewsGiven",
+      "relationshipName": "consumer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "profileDetails",
+      "otherEntityRelationshipName": "reviewsRecieved",
+      "relationshipName": "retailer",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }

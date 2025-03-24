@@ -17,6 +17,9 @@ import { UserDetailsService } from 'app/entities/user-details/service/user-detai
 import { ReviewService } from '../service/review.service';
 import { IReview } from '../review.model';
 import { ReviewFormGroup, ReviewFormService } from './review-form.service';
+import { AccountService } from '../../../core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   standalone: true,
@@ -28,6 +31,7 @@ import { ReviewFormGroup, ReviewFormService } from './review-form.service';
 export class ReviewUpdateComponent implements OnInit {
   isSaving = false;
   review: IReview | null = null;
+  account: Account | null = null;
 
   profileDetailsSharedCollection: IProfileDetails[] = [];
   userDetailsSharedCollection: IUserDetails[] = [];
@@ -39,7 +43,7 @@ export class ReviewUpdateComponent implements OnInit {
   protected profileDetailsService = inject(ProfileDetailsService);
   protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
-
+  protected accountService = inject(AccountService);
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ReviewFormGroup = this.reviewFormService.createReviewFormGroup();
 
@@ -49,6 +53,9 @@ export class ReviewUpdateComponent implements OnInit {
   compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+    });
     this.activatedRoute.data.subscribe(({ review }) => {
       this.review = review;
       if (review) {
@@ -82,7 +89,11 @@ export class ReviewUpdateComponent implements OnInit {
     this.isSaving = true;
     const review = this.reviewFormService.getReview(this.editForm);
     if (review.id !== null) {
-      this.subscribeToSaveResponse(this.reviewService.update(review));
+      if (this.account?.username !== this.review?.retailer?.userName) {
+        this.subscribeToSaveResponse(this.reviewService.update(review));
+      } else {
+        this.onSaveError();
+      }
     } else {
       this.subscribeToSaveResponse(this.reviewService.create(review));
     }
@@ -113,7 +124,8 @@ export class ReviewUpdateComponent implements OnInit {
 
     this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
       this.profileDetailsSharedCollection,
-      review.profileDetails,
+      review.consumer,
+      review.retailer,
     );
     this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
       this.userDetailsSharedCollection,
@@ -128,7 +140,11 @@ export class ReviewUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IProfileDetails[]>) => res.body ?? []))
       .pipe(
         map((profileDetails: IProfileDetails[]) =>
-          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(profileDetails, this.review?.profileDetails),
+          this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
+            profileDetails,
+            this.review?.consumer,
+            this.review?.retailer,
+          ),
         ),
       )
       .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));

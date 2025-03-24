@@ -22,6 +22,9 @@ public interface ProfileDetailsRepository extends ProfileDetailsRepositoryWithBa
         return this.fetchBagRelationships(this.findById(id));
     }
 
+    @Query("SELECT pd FROM ProfileDetails pd WHERE pd.user.id = :userId")
+    Optional<ProfileDetails> findProfileDetailsByUserId(@Param("userId") Long userId);
+
     default List<ProfileDetails> findAllWithEagerRelationships() {
         return this.fetchBagRelationships(this.findAll());
     }

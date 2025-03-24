@@ -71,10 +71,15 @@ public class ProfileDetails implements Serializable {
     @JsonIgnoreProperties(value = { "item", "profileDetails" }, allowSetters = true)
     private Set<Likes> likes = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profileDetails")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "consumer")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "profileDetails", "buyer", "seller" }, allowSetters = true)
-    private Set<Review> reviews = new HashSet<>();
+    @JsonIgnoreProperties(value = { "consumer", "retailer", "buyer", "seller" }, allowSetters = true)
+    private Set<Review> reviewsGivens = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "retailer")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "consumer", "retailer", "buyer", "seller" }, allowSetters = true)
+    private Set<Review> reviewsRecieveds = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profileDetails")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -287,34 +292,65 @@ public class ProfileDetails implements Serializable {
         return this;
     }
 
-    public Set<Review> getReviews() {
-        return this.reviews;
+    public Set<Review> getReviewsGivens() {
+        return this.reviewsGivens;
     }
 
-    public void setReviews(Set<Review> reviews) {
-        if (this.reviews != null) {
-            this.reviews.forEach(i -> i.setProfileDetails(null));
+    public void setReviewsGivens(Set<Review> reviews) {
+        if (this.reviewsGivens != null) {
+            this.reviewsGivens.forEach(i -> i.setConsumer(null));
         }
         if (reviews != null) {
-            reviews.forEach(i -> i.setProfileDetails(this));
+            reviews.forEach(i -> i.setConsumer(this));
         }
-        this.reviews = reviews;
+        this.reviewsGivens = reviews;
     }
 
-    public ProfileDetails reviews(Set<Review> reviews) {
-        this.setReviews(reviews);
+    public ProfileDetails reviewsGivens(Set<Review> reviews) {
+        this.setReviewsGivens(reviews);
         return this;
     }
 
-    public ProfileDetails addReview(Review review) {
-        this.reviews.add(review);
-        review.setProfileDetails(this);
+    public ProfileDetails addReviewsGiven(Review review) {
+        this.reviewsGivens.add(review);
+        review.setConsumer(this);
         return this;
     }
 
-    public ProfileDetails removeReview(Review review) {
-        this.reviews.remove(review);
-        review.setProfileDetails(null);
+    public ProfileDetails removeReviewsGiven(Review review) {
+        this.reviewsGivens.remove(review);
+        review.setConsumer(null);
+        return this;
+    }
+
+    public Set<Review> getReviewsRecieveds() {
+        return this.reviewsRecieveds;
+    }
+
+    public void setReviewsRecieveds(Set<Review> reviews) {
+        if (this.reviewsRecieveds != null) {
+            this.reviewsRecieveds.forEach(i -> i.setRetailer(null));
+        }
+        if (reviews != null) {
+            reviews.forEach(i -> i.setRetailer(this));
+        }
+        this.reviewsRecieveds = reviews;
+    }
+
+    public ProfileDetails reviewsRecieveds(Set<Review> reviews) {
+        this.setReviewsRecieveds(reviews);
+        return this;
+    }
+
+    public ProfileDetails addReviewsRecieved(Review review) {
+        this.reviewsRecieveds.add(review);
+        review.setRetailer(this);
+        return this;
+    }
+
+    public ProfileDetails removeReviewsRecieved(Review review) {
+        this.reviewsRecieveds.remove(review);
+        review.setRetailer(null);
         return this;
     }
 

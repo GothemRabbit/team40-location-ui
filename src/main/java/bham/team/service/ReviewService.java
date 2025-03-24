@@ -7,8 +7,8 @@ import bham.team.repository.ReviewRepository;
 import bham.team.security.SecurityUtils;
 import bham.team.service.dto.ReviewDTO;
 import bham.team.service.mapper.ReviewMapper;
-import bham.team.web.rest.errors.BadRequestAlertException;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,8 +48,24 @@ public class ReviewService {
      * @return the persisted entity.
      */
     public ReviewDTO save(ReviewDTO reviewDTO) {
+        Long reviewId = reviewDTO.getId();
+        Optional<String> user = SecurityUtils.getCurrentUserLogin();
+        String retailerUserName, currentUserName = "";
+        Optional<ProfileDetails> profileDetails = null;
+        if (user.isPresent()) {
+            profileDetails = profileDetailsRepository.findByUserName(user.get());
+        }
+        if (profileDetails != null || profileDetails.isPresent()) {
+            currentUserName = profileDetails.get().getUserName();
+        }
+        retailerUserName = reviewDTO.getRetailer().getUserName();
+        if (retailerUserName.equals(currentUserName)) {
+            throw new IllegalArgumentException("You can not write a review about yourself");
+        }
         LOG.debug("Request to save Review : {}", reviewDTO);
         Review review = reviewMapper.toEntity(reviewDTO);
+        review.setConsumer(profileDetails.get().userName(currentUserName));
+        review.setDate(LocalDate.now());
         review = reviewRepository.save(review);
         return reviewMapper.toDto(review);
     }
@@ -78,8 +95,8 @@ public class ReviewService {
         if (review.isPresent()) {
             review1 = review.get();
         }
-        id2 = review1.getProfileDetails().getId();
-        if (review1.getProfileDetails() == null || !Objects.equals(id1, id2)) {
+        id2 = review1.getConsumer().getId();
+        if (review1.getConsumer() == null || !Objects.equals(id1, id2)) {
             try {
                 throw new AccessDeniedException("you can not edit this review");
             } catch (AccessDeniedException e) {
@@ -118,8 +135,8 @@ public class ReviewService {
         if (review.isPresent()) {
             review1 = review.get();
         }
-        id2 = review1.getProfileDetails().getId();
-        if (review1.getProfileDetails() == null || !Objects.equals(id1, id2)) {
+        id2 = review1.getConsumer().getId();
+        if (review1.getConsumer() == null || !Objects.equals(id1, id2)) {
             try {
                 throw new AccessDeniedException("you can not edit this review");
             } catch (AccessDeniedException e) {
@@ -151,6 +168,12 @@ public class ReviewService {
         return reviewRepository.findAll().stream().map(reviewMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> findReviewByRetailerID(Long retailerId) {
+        LOG.debug("Request to get Reviews by Retailer ID {}", retailerId);
+        return reviewRepository.findReviewByRetailerId(retailerId).stream().map(reviewMapper::toDto).collect(Collectors.toList());
+    }
+
     /**
      * Get one review by id.
      *
@@ -160,7 +183,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Optional<ReviewDTO> findOne(Long id) {
         LOG.debug("Request to get Review : {}", id);
-        return reviewRepository.findById(id).map(reviewMapper::toDto);
+        return reviewRepository.findReviewByIdWithConsumerAndRetailer(id).map(reviewMapper::toDto);
     }
 
     /**
@@ -169,25 +192,24 @@ public class ReviewService {
      * @param id the id of the entity.
      */
     public void delete(Long id) {
+        // this works
         Optional<String> user = SecurityUtils.getCurrentUserLogin();
         Optional<ProfileDetails> profileDetails = Optional.empty();
         if (user.isPresent()) {
             profileDetails = profileDetailsRepository.findByUserName(user.get());
         }
-
         Long id1 = 0L;
         if (profileDetails.isPresent()) {
-            id1 = profileDetails.get().getId(); //this is current users profile id.
+            id1 = profileDetails.get().getId();
         }
-        // now profile id on the review
         Optional<Review> review = reviewRepository.findById(id);
         Long id2 = 0L;
         Review review1 = new Review();
         if (review.isPresent()) {
             review1 = review.get();
         }
-        id2 = review1.getProfileDetails().getId();
-        if (review1.getProfileDetails() == null || !Objects.equals(id1, id2)) {
+        id2 = review1.getConsumer().getId();
+        if (review1.getConsumer() == null || !Objects.equals(id2, id1)) {
             try {
                 throw new AccessDeniedException("you can not delete this review");
             } catch (AccessDeniedException e) {

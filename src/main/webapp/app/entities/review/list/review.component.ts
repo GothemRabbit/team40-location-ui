@@ -17,7 +17,7 @@ import { ReviewDeleteDialogComponent } from '../delete/review-delete-dialog.comp
   standalone: true,
   selector: 'jhi-review',
   templateUrl: './review.component.html',
-  styleUrl: '/review.component.scss',
+  styleUrl: './review.component.scss',
   imports: [
     RouterModule,
     FormsModule,
@@ -33,7 +33,6 @@ export class ReviewComponent implements OnInit {
   subscription: Subscription | null = null;
   reviews?: IReview[];
   isLoading = false;
-  rating: number[] = [];
 
   sortState = sortStateSignal({});
 
@@ -58,16 +57,14 @@ export class ReviewComponent implements OnInit {
       )
       .subscribe();
   }
-  getAverage(rating: number[] | null): number {
-    if (rating == null || rating.length === 0) {
+  getAverageRating(): number {
+    if (!this.reviews || this.reviews.length === 0) {
       return 0;
     }
-    let num = 0;
-    rating.forEach(item => {
-      num += item;
-    });
-    return num / rating.length;
+    const average: number = this.reviews.reduce((total, aNumber) => Number(aNumber.rating) + total, 0);
+    return Math.round(average / this.reviews.length);
   }
+
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }

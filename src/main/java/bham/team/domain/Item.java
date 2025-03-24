@@ -4,7 +4,9 @@ import bham.team.domain.enumeration.Category;
 import bham.team.domain.enumeration.Condition;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -66,7 +68,7 @@ public class Item implements Serializable {
     @Column(name = "time_listed", nullable = false)
     private Instant timeListed;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "item" }, allowSetters = true)
     private Set<Images> images = new HashSet<>();
