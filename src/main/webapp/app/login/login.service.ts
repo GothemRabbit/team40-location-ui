@@ -7,6 +7,7 @@ import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { Login } from './login.model';
 import { ProfileDetailsService } from '../entities/profile-details/service/profile-details.service';
 import { IProfileDetails } from '../entities/profile-details/profile-details.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
@@ -28,6 +29,9 @@ export class LoginService {
               this.profileDetails.next(profile);
             }),
             map(() => account),
+            catchError((err): Observable<Account | null> => {
+              return of<Account | null>(null);
+            }),
           );
         }
       }),
