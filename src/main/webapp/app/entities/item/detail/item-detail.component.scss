@@ -19,7 +19,7 @@
 .product-container {
   display: flex;
   padding-top: 20px;
-  padding-left: -5px;
+  //padding-left: -5px;
   padding-right: 50px;
   gap: 100px;
 }
@@ -40,15 +40,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   max-height: 600px;
   margin: auto;
 }
 
 .mySlides img {
+  display: block;
   max-width: 100%;
   max-height: 100%;
-  vertical-align: middle;
+  //vertical-align: middle;
   object-fit: contain;
+  margin: auto;
 }
 
 .prev,
@@ -58,15 +61,19 @@
   top: 50%;
   padding: 16px;
   margin-top: -22px;
-  color: white;
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;
   user-select: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 4px;
 }
+
 .next {
   right: 0;
 }
+
 .prev:hover,
 .next:hover {
   background-color: rgba(0, 0, 0, 0.8);
@@ -79,10 +86,15 @@
 
 .thumbnail {
   cursor: pointer;
+  width: 50px;
   height: 50px;
   margin: 0 2px;
   opacity: 0.6;
   transition: opacity 0.3s;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .thumbnail.active,
