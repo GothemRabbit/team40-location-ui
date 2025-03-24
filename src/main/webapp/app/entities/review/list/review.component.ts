@@ -58,11 +58,27 @@ export class ReviewComponent implements OnInit {
       .subscribe();
   }
   getAverageRating(): number {
-    if (!this.reviews || this.reviews.length === 0) {
+    if (this.reviews == null || this.reviews.length === 0) {
       return 0;
     }
-    const average: number = this.reviews.reduce((total, aNumber) => Number(aNumber.rating) + total, 0);
+    const average: number = this.reviews.reduce((total, r) => Number(r.rating) + total, 0);
     return Math.round(average / this.reviews.length);
+  }
+
+  filterBy(nameInput: HTMLSelectElement): void {
+    if (Number(nameInput.value)) {
+      this.reviews = this.reviews?.filter(p => Number(p.rating) === Number(nameInput.value));
+    } else {
+      this.load();
+    }
+  }
+
+  filterByRetailer(nameInput: HTMLInputElement): void {
+    if (nameInput.value) {
+      this.reviews = this.reviews?.filter(p => (p.retailer == null ? p : p.retailer.userName === nameInput.value));
+    } else {
+      this.load();
+    }
   }
 
   byteSize(base64String: string): string {
