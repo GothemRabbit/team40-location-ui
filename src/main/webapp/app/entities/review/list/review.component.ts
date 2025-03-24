@@ -75,9 +75,7 @@ export class ReviewComponent implements OnInit {
 
   filterByRetailer(nameInput: HTMLInputElement): void {
     if (nameInput.value) {
-      this.reviews = this.reviews?.filter(p => (p.retailer == null ? p : p.retailer.userName === nameInput.value));
-    } else {
-      this.load();
+      this.reviews = this.reviews?.filter(p => p.retailer?.userName === nameInput.value);
     }
   }
 
