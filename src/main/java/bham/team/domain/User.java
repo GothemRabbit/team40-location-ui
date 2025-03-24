@@ -83,6 +83,10 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn(unique = true, nullable = false)
+    private ProfileDetails profileDetails;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -189,6 +193,17 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setLangKey(String langKey) {
         this.langKey = langKey;
+    }
+
+    public ProfileDetails getProfileDetails() {
+        return profileDetails;
+    }
+
+    public void setProfileDetails(ProfileDetails profileDetails) {
+        this.profileDetails = profileDetails;
+        if (profileDetails != null) {
+            profileDetails.setUser(this); // Maintain bidirectional reference
+        }
     }
 
     public Set<Authority> getAuthorities() {

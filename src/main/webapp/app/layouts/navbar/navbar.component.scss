@@ -72,6 +72,8 @@ nav {
 
 .navbar {
   padding: 0.2rem 1rem;
+  flex-direction: column;
+  text-align: center;
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {

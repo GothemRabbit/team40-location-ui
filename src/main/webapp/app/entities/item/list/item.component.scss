@@ -58,8 +58,8 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
-  border: 1px solid #e6d57a; /* Light yellow border */
-  background: #89d1ff;
+  border: 1.5px solid #e6d57a; /* Light yellow border */
+  background: white;
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
@@ -72,7 +72,7 @@
 }
 
 .jh-create-entity {
-  background: darkseagreen;
+  background: #e6d57a;
   border-radius: 30px;
   width: 200px;
   display: block;
@@ -83,7 +83,7 @@
 
 .jh-create-entity:hover {
   transform: translateY(-5px);
-  background: #80ef80;
+  background: lightyellow;
 }
 
 .card-header {

@@ -1,5 +1,6 @@
 package bham.team.service.dto;
 
+import bham.team.domain.ProfileDetails;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -32,6 +33,8 @@ public class ProfileDetailsDTO implements Serializable {
     private Set<LocationDTO> locations = new HashSet<>();
 
     private Set<ConversationDTO> conversations = new HashSet<>();
+
+    private Set<ItemDTO> items = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -95,6 +98,14 @@ public class ProfileDetailsDTO implements Serializable {
 
     public void setConversations(Set<ConversationDTO> conversations) {
         this.conversations = conversations;
+    }
+
+    public Set<ItemDTO> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<ItemDTO> items) {
+        this.items = items;
     }
 
     @Override

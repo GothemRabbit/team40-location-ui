@@ -1,5 +1,6 @@
 package bham.team.repository;
 
+import bham.team.domain.Item;
 import bham.team.domain.ProfileDetails;
 import java.util.List;
 import java.util.Optional;
@@ -33,4 +34,10 @@ public interface ProfileDetailsRepository extends ProfileDetailsRepositoryWithBa
     }
 
     Optional<ProfileDetails> findByUserName(String userName);
+
+    @Query("SELECT p FROM ProfileDetails p LEFT JOIN FETCH p.items WHERE p.id = :profileId")
+    Optional<ProfileDetails> findProfileWithItems(@Param("profileId") Long profileId);
+
+    @Query("SELECT pd FROM ProfileDetails pd LEFT JOIN FETCH pd.user WHERE pd.id = :id")
+    Optional<ProfileDetails> findByIdWithUser(@Param("id") Long id);
 }

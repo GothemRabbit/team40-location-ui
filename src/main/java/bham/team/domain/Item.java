@@ -73,8 +73,6 @@ public class Item implements Serializable {
     @JsonIgnoreProperties(value = { "item" }, allowSetters = true)
     private Set<Images> images = new HashSet<>();
 
-    //private List<Images> images = new ArrayList<>();
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_item__wishlist",
@@ -90,6 +88,7 @@ public class Item implements Serializable {
     private ProductStatus productStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_details_id", nullable = false)
     @JsonIgnoreProperties(
         value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
         allowSetters = true
@@ -331,12 +330,6 @@ public class Item implements Serializable {
     }
 
     public void setLikes(Set<Likes> likes) {
-        if (this.likes != null) {
-            this.likes.forEach(i -> i.setItem(null));
-        }
-        if (likes != null) {
-            likes.forEach(i -> i.setItem(this));
-        }
         this.likes = likes;
     }
 
