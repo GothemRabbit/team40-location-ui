@@ -39,7 +39,6 @@ public class ProductStatusResource {
     private String applicationName;
 
     private final ProductStatusService productStatusService;
-
     private final ProductStatusRepository productStatusRepository;
 
     public ProductStatusResource(ProductStatusService productStatusService, ProductStatusRepository productStatusRepository) {
@@ -47,13 +46,6 @@ public class ProductStatusResource {
         this.productStatusRepository = productStatusRepository;
     }
 
-    /**
-     * {@code POST  /product-statuses} : Create a new productStatus.
-     *
-     * @param productStatusDTO the productStatusDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productStatusDTO, or with status {@code 400 (Bad Request)} if the productStatus has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PostMapping("")
     public ResponseEntity<ProductStatusDTO> createProductStatus(@Valid @RequestBody ProductStatusDTO productStatusDTO)
         throws URISyntaxException {
@@ -61,22 +53,12 @@ public class ProductStatusResource {
         if (productStatusDTO.getId() != null) {
             throw new BadRequestAlertException("A new productStatus cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        productStatusDTO = productStatusService.save(productStatusDTO);
-        return ResponseEntity.created(new URI("/api/product-statuses/" + productStatusDTO.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, productStatusDTO.getId().toString()))
-            .body(productStatusDTO);
+        ProductStatusDTO result = productStatusService.save(productStatusDTO);
+        return ResponseEntity.created(new URI("/api/product-statuses/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
-    /**
-     * {@code PUT  /product-statuses/:id} : Updates an existing productStatus.
-     *
-     * @param id the id of the productStatusDTO to save.
-     * @param productStatusDTO the productStatusDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated productStatusDTO,
-     * or with status {@code 400 (Bad Request)} if the productStatusDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the productStatusDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PutMapping("/{id}")
     public ResponseEntity<ProductStatusDTO> updateProductStatus(
         @PathVariable(value = "id", required = false) final Long id,
@@ -94,23 +76,12 @@ public class ProductStatusResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        productStatusDTO = productStatusService.update(productStatusDTO);
+        ProductStatusDTO result = productStatusService.update(productStatusDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, productStatusDTO.getId().toString()))
-            .body(productStatusDTO);
+            .body(result);
     }
 
-    /**
-     * {@code PATCH  /product-statuses/:id} : Partial updates given fields of an existing productStatus, field will ignore if it is null
-     *
-     * @param id the id of the productStatusDTO to save.
-     * @param productStatusDTO the productStatusDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated productStatusDTO,
-     * or with status {@code 400 (Bad Request)} if the productStatusDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the productStatusDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the productStatusDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ProductStatusDTO> partialUpdateProductStatus(
         @PathVariable(value = "id", required = false) final Long id,
@@ -129,19 +100,12 @@ public class ProductStatusResource {
         }
 
         Optional<ProductStatusDTO> result = productStatusService.partialUpdate(productStatusDTO);
-
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, productStatusDTO.getId().toString())
         );
     }
 
-    /**
-     * {@code GET  /product-statuses} : get all the productStatuses.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of productStatuses in body.
-     */
     @GetMapping("")
     public ResponseEntity<List<ProductStatusDTO>> getAllProductStatuses(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of ProductStatuses");
@@ -150,12 +114,6 @@ public class ProductStatusResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /product-statuses/:id} : get the "id" productStatus.
-     *
-     * @param id the id of the productStatusDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productStatusDTO, or with status {@code 404 (Not Found)}.
-     */
     @GetMapping("/{id}")
     public ResponseEntity<ProductStatusDTO> getProductStatus(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ProductStatus : {}", id);
@@ -163,12 +121,6 @@ public class ProductStatusResource {
         return ResponseUtil.wrapOrNotFound(productStatusDTO);
     }
 
-    /**
-     * {@code DELETE  /product-statuses/:id} : delete the "id" productStatus.
-     *
-     * @param id the id of the productStatusDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductStatus(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ProductStatus : {}", id);
