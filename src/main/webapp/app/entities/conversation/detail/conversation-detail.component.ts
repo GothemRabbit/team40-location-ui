@@ -1,10 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import dayjs from 'dayjs/esm';
+import relativeTime from 'dayjs/esm/plugin/relativeTime';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { IConversation } from '../conversation.model';
+import { NewMessage } from 'app/entities/message/message.model';
+import { MessageService } from 'app/entities/message/service/message.service';
+
+// Extend dayjs with the relativeTime plugin
+dayjs.extend(relativeTime);
 
 interface MessageDTO {
   id?: number;
@@ -26,8 +33,12 @@ export class ConversationDetailComponent implements OnInit {
   messages: MessageDTO[] = [];
   loading = false;
   currentUserId = 1;
+  newMessageContent = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService,
+  ) {}
 
   ngOnInit(): void {
     if (this.conversation) {
@@ -46,5 +57,28 @@ export class ConversationDetailComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  sendMessage(): void {
+    if (!this.conversation || !this.newMessageContent.trim()) {
+      return;
+    }
+
+    const newMessage: NewMessage = {
+      id: null,
+      content: this.newMessageContent,
+      timestamp: dayjs(), // This should now be a valid Dayjs instance
+      isRead: false, // Assuming new messages are unread by default
+      conversation: { id: this.conversation.id }, // Use non-null assertion operator
+      profileDetails: { id: this.currentUserId },
+    };
+
+    this.messageService.create(newMessage).subscribe({
+      next: () => {
+        this.newMessageContent = '';
+        this.loadMessages(this.conversation!.id); // Use non-null assertion operator
+      },
+      error: err => console.error('Failed to send message', err),
+    });
   }
 }

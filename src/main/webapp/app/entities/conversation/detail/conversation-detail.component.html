@@ -61,9 +61,11 @@
       <!-- Message input area -->
       <div class="chat-input">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Type a message..." />
-          <button class="btn btn-primary" type="button">
+          <input type="text" class="form-control" placeholder="Type a message..." [(ngModel)]="newMessageContent" />
+          <!-- Button to send the message -->
+          <button class="btn btn-primary" type="button" (click)="sendMessage()">
             <fa-icon icon="paper-plane"></fa-icon>
+            <span>Send Message</span>
           </button>
         </div>
       </div>
