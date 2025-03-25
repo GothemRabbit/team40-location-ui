@@ -58,7 +58,7 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
-  border: 1.5px solid #e6d57a; /* Light yellow border */
+  border: 1.5px solid black; /* Light yellow border */
   background: white;
   transition:
     transform 0.6s ease-in-out,
@@ -98,13 +98,13 @@
 }
 
 .card-img-top {
-  width: 80%; // Makes the image fill the card width
+  width: 85%; // Makes the image fill the card width
   object-fit: cover; // Ensures the image maintains aspect ratio without distortion
   border-radius: 2px; // Rounded corners for the image
   margin: 10px auto; // Center the image with some margin
   margin-top: 50px;
   display: block;
-  border: 1px solid #000000;
+  border: 1px solid transparent;
   height: 130px;
   //padding-top: 10px;
 }
@@ -124,13 +124,13 @@
   font-size: 1.1rem;
   font-weight: 600;
   //color: #333;
-  color: #0022ff; // Bootstrap primary color
+  color: #575555; // Bootstrap primary color
   transition: color 0.3s ease-in-out;
   text-transform: capitalize;
 }
 
 .item-title-link:hover {
-  color: #0056b3; // Darker blue on hover
+  color: black; // Darker blue on hover
   text-decoration: underline;
 }
 
@@ -170,7 +170,7 @@
   display: block;
   padding: 5px 10px;
   text-decoration: none;
-  color: black;
+  color: #575555;
 }
 
 .dropdown-content a:hover {
@@ -184,26 +184,12 @@
 
 .card-text {
   font-size: 0.9rem;
-  color: #666;
+  color: #575555;
   margin-bottom: 5px;
 }
 
 .texts {
   display: flex;
-  justify-content: space-between; /* Pushes icons to opposite sides */
+  justify-content: space-between;
   align-items: center; /* Ensures vertical alignment */
-  //bottom: px;
-  // position: relative;
 }
-
-//
-//.card-details {
-//  display: flex;
-//  justify-content: space-between;
-//  font-weight: bold;
-//}
-
-//&:hover {
-//  transform: translateY(-10px);
-//  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-//}

@@ -1,5 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import dayjs from 'dayjs';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
@@ -121,5 +122,15 @@ export class ItemDetailComponent implements OnInit {
     if (images && index >= 0 && index < images.length) {
       this.currentSlideIndex = index;
     }
+  }
+
+  getDaysSinceListed(timeListed: dayjs.Dayjs | null | undefined): string {
+    if (!timeListed) return 'Unknown';
+
+    const listedDate = dayjs(timeListed);
+    const today = dayjs();
+    const diffDays = today.diff(listedDate, 'day');
+
+    return diffDays === 0 ? 'Listed today' : `Listed ${diffDays} day(s) ago`;
   }
 }

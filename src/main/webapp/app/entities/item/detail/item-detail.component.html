@@ -68,12 +68,12 @@
             </div>
             <div class="brand-size">
               <dt>
-                <span>Brand - {{ itemRef.sizeItem }}</span>
+                <span>{{ itemRef.brand ? itemRef.brand : 'No brand' }} - {{ itemRef.sizeItem ? itemRef.sizeItem : 'No Size' }}</span>
               </dt>
             </div>
             <div class="timeListed">
               <dd>
-                <span>Listed on {{ itemRef.timeListed | formatMediumDate }}</span>
+                <span>{{ getDaysSinceListed(itemRef.timeListed) }}</span>
               </dd>
             </div>
             <hr style="border: 1px solid black; width: 100%" />
@@ -82,16 +82,16 @@
             <div class="details-left">
               <dt><span>Brand</span></dt>
               <dt><span>Size</span></dt>
-              <dt><span>Item Condition</span></dt>
-              <dt><span>Item Colour</span></dt>
-              <!--              <dt><span>Item Category</span></dt>-->
+              <dt><span>Condition</span></dt>
+              <dt><span>Colour</span></dt>
+              <dt><span>Category</span></dt>
               <dt><span>Meet-up Location</span></dt>
               <dt><span>Views</span></dt>
               <dt><span>Interested</span></dt>
             </div>
             <div class="details-right">
-              <dt>Brand</dt>
-              <dt>{{ itemRef.sizeItem }}</dt>
+              <dt>{{ itemRef.brand ? itemRef.brand : 'No brand' }}</dt>
+              <dt>{{ itemRef.sizeItem ? itemRef.sizeItem : 'No Size' }}</dt>
               <dt>
                 {{
                   {
@@ -105,18 +105,20 @@
                 }}
               </dt>
               <dt>{{ itemRef.colour }}</dt>
-              <!--              <dt>{{-->
-              <!--                  {-->
-              <!--                    null: '',-->
-              <!--                    FOOTWEAR: 'Foot Wear',-->
-              <!--                    CLOTHING: 'Clothing',-->
-              <!--                    HEADWEAR: 'Head Wear',-->
-              <!--                    ELECTRONICS: 'Electronics',-->
-              <!--                    HOBBIES: 'Hobbies',-->
-              <!--                    BAGS: 'Bags',-->
-              <!--                    OTHERS: 'Others',-->
-              <!--                  }[itemRef.itemCategory ?? 'null']-->
-              <!--                }}</dt>-->
+              <dt>
+                {{
+                  {
+                    null: '',
+                    FOOTWEAR: 'Foot Wear',
+                    CLOTHING: 'Clothing',
+                    HEADWEAR: 'Head Wear',
+                    ELECTRONICS: 'Electronics',
+                    HOBBIES: 'Hobbies',
+                    BAGS: 'Bags',
+                    OTHERS: 'Others',
+                  }[itemRef.category ?? 'null']
+                }}
+              </dt>
               <dt>Meet-up Location</dt>
               <dt>No of views</dt>
               <dt>No of likes</dt>
@@ -136,8 +138,12 @@
           </div>
 
           <div class="buttons">
-            <button class="btn btn-yellow">Reserve Item</button>
-            <button class="btn btn-blue">Message Seller</button>
+            <button class="btn" [routerLink]="'/product-status/new'">
+              <span>Reserve Item</span>
+            </button>
+            <button class="btn" [routerLink]="'/conversation'">
+              <span>Message Seller</span>
+            </button>
             <button (click)="toggleLike()" class="like-button">
               <span [class.filled]="hasUserLiked()">❤</span> {{ item()?.likesCount || 0 }}
             </button>
@@ -149,15 +155,6 @@
 
       <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
-      </button>
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-item"
-        [routerLink]="['/item/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Item</span>
       </button>
     </div>
   }

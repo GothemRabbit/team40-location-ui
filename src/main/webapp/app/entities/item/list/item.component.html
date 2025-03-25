@@ -58,7 +58,7 @@
                   <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
                 </h5>
                 <div class="texts">
-                  <p class="card-text">{{ item.sizeItem }}</p>
+                  <p class="card-text">{{ item?.sizeItem || 'No size' }}</p>
                   <p class="card-text"><strong>£</strong> {{ item.price }}</p>
                 </div>
               </div>

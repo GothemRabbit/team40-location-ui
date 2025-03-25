@@ -77,13 +77,13 @@
             }
             <div class="small-labels">
               <div class="col-md-4">
-                <input type="text" id="sizeItem" class="form-control small-input" placeholder="Size" />
+                <input type="text" id="sizeItem" formControlName="sizeItem" class="form-control small-input" placeholder="Size" />
               </div>
               <div class="col-md-4">
-                <input type="text" id="brand" class="form-control small-input" placeholder="Brand" />
+                <input type="text" id="brand" formControlName="brand" class="form-control small-input" placeholder="Brand" />
               </div>
               <div class="col-md-4">
-                <input type="text" id="colour" class="form-control small-input" placeholder="Colour" />
+                <input type="text" id="colour" formControlName="colour" class="form-control small-input" placeholder="Colour" />
               </div>
             </div>
 
@@ -185,32 +185,6 @@
           </div>
         </div>
       </section>
-
-      <!--      @let timeListedRef = editForm.get('timeListed')!;-->
-      <!--      <div class="mb-3">-->
-      <!--        <label class="form-label" for="field_timeListed">Time Listed</label>-->
-      <!--        <div class="d-flex">-->
-      <!--          <input-->
-      <!--            id="field_timeListed"-->
-      <!--            data-cy="timeListed"-->
-      <!--            type="datetime-local"-->
-      <!--            class="form-control"-->
-      <!--            name="timeListed"-->
-      <!--            formControlName="timeListed"-->
-      <!--            placeholder="YYYY-MM-DD HH:mm"-->
-      <!--          />-->
-      <!--        </div>-->
-      <!--        @if (timeListedRef.invalid && (timeListedRef.dirty || timeListedRef.touched)) {-->
-      <!--          <div>-->
-      <!--            @if (editForm.get('timeListed')?.errors?.required) {-->
-      <!--              <small class="form-text text-danger">This field is required.</small>-->
-      <!--            }-->
-      <!--            <small class="form-text text-danger" [hidden]="!editForm.get('timeListed')?.errors?.datetimelocal"-->
-      <!--              >This field should be a date and time.</small-->
-      <!--            >-->
-      <!--          </div>-->
-      <!--        }-->
-      <!--      </div>-->
 
       <!--      <div class="mb-3">-->
       <!--        <label for="field_wishlists">Wishlist</label>-->
