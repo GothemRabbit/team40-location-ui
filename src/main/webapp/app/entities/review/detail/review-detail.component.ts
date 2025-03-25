@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
@@ -9,6 +9,8 @@ import { ReviewDeleteDialogComponent } from '../delete/review-delete-dialog.comp
 import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filter, tap } from 'rxjs';
+import { Account } from '../../../core/auth/account.model';
+import { AccountService } from '../../../core/auth/account.service';
 
 @Component({
   standalone: true,
@@ -17,12 +19,22 @@ import { filter, tap } from 'rxjs';
   styleUrl: './review-detail.component.scss',
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class ReviewDetailComponent {
+export class ReviewDetailComponent implements OnInit {
   review = input<IReview | null>(null);
+  isOwner = false;
+  account: Account | null = null;
 
   public readonly router = inject(Router);
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
+  protected accountService = inject(AccountService);
+
+  ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+      this.checkOwnership();
+    });
+  }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
@@ -48,5 +60,16 @@ export class ReviewDetailComponent {
         }),
       )
       .subscribe();
+  }
+
+  checkOwnership(): void {
+    const user = this.review();
+    // eslint-disable-next-line no-console
+    console.log(user?.consumer);
+    // eslint-disable-next-line no-console
+    console.log(this.account?.login);
+    this.isOwner = this.account?.login === this.review()?.consumer?.userName;
+    // eslint-disable-next-line no-console
+    console.log(this.isOwner);
   }
 }
