@@ -24,19 +24,20 @@
             <fa-icon icon="search"></fa-icon>
             <input class="search-input" type="search" placeholder="Search" />
           </div>
-          <a class="nav-link" routerLink="/conversation" (click)="collapseNavbar()">
-            <fa-icon icon="message"></fa-icon>
-            <span>Chat</span>
-          </a>
-          <a class="nav-link" routerLink="/message" (click)="collapseNavbar()">
-            <fa-icon icon="message"></fa-icon>
-            <span>Messages</span>
-          </a>
-          <a class="nav-link" routerLink="/product-status" (click)="collapseNavbar()">
-            <fa-icon icon="book"></fa-icon>
-            <span>Product</span>
-            <span>Status</span>
-          </a>
+          <div class="nav-box">
+            <a class="nav-link" routerLink="/item/new" (click)="collapseNavbar()">
+              <span>Sell</span>
+            </a>
+            <a class="nav-link" routerLink="/conversation" (click)="collapseNavbar()">
+              <fa-icon icon="message"></fa-icon>
+              <span>Chat</span>
+            </a>
+            <a class="nav-link" routerLink="/product-status" (click)="collapseNavbar()">
+              <fa-icon icon="book"></fa-icon>
+              <span>Product</span>
+              <span>Status</span>
+            </a>
+          </div>
         </li>
         <!-- jhipster-needle-add-entity-to-menu -->
         <li
@@ -91,10 +92,11 @@
                   <span>reviews</span>
                 </a>
               </li>
-              <li>
+              <li *ngIf="currentUserProfile !== null">
                 <a
                   class="dropdown-item"
-                  routerLink="/account/settings"
+                  [routerLink]="['/profile-details', currentUserProfile.id, 'edit']"
+                  [queryParams]="{ tab: 'account' }"
                   routerLinkActive="active"
                   (click)="collapseNavbar()"
                   data-cy="settings"

@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +21,8 @@ import { ProfileDetailsService } from '../service/profile-details.service';
 import { IProfileDetails } from '../profile-details.model';
 import { ProfileDetailsFormGroup, ProfileDetailsFormService } from './profile-details-form.service';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   standalone: true,
@@ -32,7 +35,8 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   activeTab = 'profileDetails';
   isSaving = false;
   profileDetails: IProfileDetails | null = null;
-  userEmail: string | null = null; // Initialize as null
+  userEmail: string | undefined = undefined;
+  account: Account | null = null;
 
   usersSharedCollection: IUser[] = [];
   locationsSharedCollection: ILocation[] = [];
@@ -47,6 +51,8 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   protected conversationService = inject(ConversationService);
   protected elementRef = inject(ElementRef);
   protected activatedRoute = inject(ActivatedRoute);
+  protected accountService = inject(AccountService);
+  protected router = inject(Router);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProfileDetailsFormGroup = this.profileDetailsFormService.createProfileDetailsFormGroup();
@@ -59,25 +65,32 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     this.conversationService.compareConversation(o1, o2);
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['tab']) {
+        this.activeTab = params['tab'];
+      }
+    });
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+      this.userEmail = account?.email;
+    });
     this.activatedRoute.data.subscribe(({ profileDetails }) => {
       this.profileDetails = profileDetails;
       if (profileDetails) {
         this.updateForm(profileDetails);
-        // if (profileDetails.user?.id) {
-        //   this.userService.find(profileDetails.user.id).subscribe(user => {
-        //     if (user.body?.email) {
-        //       this.userEmail = user.body.email;
-        //     }
-        //   });
-        // }
       }
 
       this.loadRelationshipsOptions();
     });
   }
 
-  setActiveTab(tabName: string): void {
-    this.activeTab = tabName;
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { tab },
+      queryParamsHandling: 'merge',
+    });
   }
 
   byteSize(base64String: string): string {

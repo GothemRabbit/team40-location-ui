@@ -58,8 +58,8 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
-  border: 1px solid #e6d57a; /* Light yellow border */
-  background: #89d1ff;
+  border: 1.5px solid #e6d57a; /* Light yellow border */
+  background: white;
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
@@ -72,18 +72,19 @@
 }
 
 .jh-create-entity {
-  background: darkseagreen;
+  background: #5c6e58;
   border-radius: 30px;
   width: 200px;
   display: block;
-  color: black;
+  color: white;
   font-weight: bold;
   padding: 10px 15px;
 }
 
 .jh-create-entity:hover {
   transform: translateY(-5px);
-  background: #80ef80;
+  background: #284727;
+  color: #f6bfbf;
 }
 
 .card-header {
@@ -105,7 +106,7 @@
   display: block;
   border: 1px solid #000000;
   height: 130px;
-  padding-top: 10px;
+  //padding-top: 10px;
 }
 
 .card:hover {

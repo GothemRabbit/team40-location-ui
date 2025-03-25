@@ -2,64 +2,32 @@
   <div class="col-8">
     @if (review(); as reviewRef) {
       <div>
-        <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
-
-        <hr />
+        <h2 data-cy="reviewDetailsHeading">
+          <span>{{ reviewRef.consumer?.userName }} review about {{ reviewRef.retailer?.userName }}</span>
+        </h2>
+        <div class="commentBoxRight">
+          <div style="display: flex; justify-content: space-between">
+            <p id="userName">
+              <fa-icon icon="user" class="avatar"></fa-icon>
+              <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']">{{ reviewRef.consumer?.userName }}></a>
+            </p>
+            <p id="rates">
+              <span id="stars" *ngFor="let index of [1, 2, 3, 4, 5]">
+                {{ index >= (reviewRef.rating || 0) ? '&#9734;' : '&#9733;' }}
+              </span>
+            </p>
+          </div>
+          <p id="dialogue">
+            {{ reviewRef.comments }}
+          </p>
+          <p id="date">
+            {{ reviewRef.date | formatMediumDate }}
+          </p>
+        </div>
 
         <jhi-alert-error></jhi-alert-error>
 
         <jhi-alert></jhi-alert>
-
-        <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
-            <span>{{ reviewRef.id }}</span>
-          </dd>
-          <dt><span>Rating</span></dt>
-          <dd>
-            <span>{{ reviewRef.rating }}</span>
-          </dd>
-          <dt><span>Comments</span></dt>
-          <dd>
-            <span>{{ reviewRef.comments }}</span>
-          </dd>
-          <dt><span>Date</span></dt>
-          <dd>
-            <span>{{ reviewRef.date | formatMediumDate }}</span>
-          </dd>
-          <dt><span>Consumer</span></dt>
-          <dd>
-            @if (review()!.consumer) {
-              <div>
-                <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']">{{ reviewRef.consumer?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Retailer</span></dt>
-          <dd>
-            @if (review()!.retailer) {
-              <div>
-                <a [routerLink]="['/profile-details', review()!.retailer?.id, 'view']">{{ reviewRef.retailer?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Buyer</span></dt>
-          <dd>
-            @if (review()!.buyer) {
-              <div>
-                <a [routerLink]="['/user-details', review()!.buyer?.id, 'view']">{{ reviewRef.buyer?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span>Seller</span></dt>
-          <dd>
-            @if (review()!.seller) {
-              <div>
-                <a [routerLink]="['/user-details', review()!.seller?.id, 'view']">{{ reviewRef.seller?.id }}</a>
-              </div>
-            }
-          </dd>
-        </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
@@ -68,7 +36,87 @@
         <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
           <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
         </button>
+
+        <button type="submit" (click)="delete(reviewRef)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+          <fa-icon icon="times"></fa-icon>
+          <span class="d-none d-md-inline">Delete</span>
+        </button>
       </div>
     }
   </div>
 </div>
+
+<!--<div class="d-flex justify-content-center">
+          <div class="col-8">
+            @if (review(); as reviewRef) {
+              <div>
+                <h2 data-cy="reviewDetailsHeading"><span>Review</span></h2>
+
+                <hr />
+
+                <jhi-alert-error></jhi-alert-error>
+
+                <jhi-alert></jhi-alert>
+
+                <dl class="row-md jh-entity-details">
+                  <dt><span>ID</span></dt>
+                  <dd>
+                    <span>{{ reviewRef.id }}</span>
+                  </dd>
+                  <dt><span>Rating</span></dt>
+                  <dd>
+                    <span>{{ reviewRef.rating }}</span>
+                  </dd>
+                  <dt><span>Comments</span></dt>
+                  <dd>
+                    <span>{{ reviewRef.comments }}</span>
+                  </dd>
+                  <dt><span>Date</span></dt>
+                  <dd>
+                    <span>{{ reviewRef.date | formatMediumDate }}</span>
+                  </dd>
+                  <dt><span>Consumer</span></dt>
+                  <dd>
+                    @if (review()!.consumer) {
+                      <div>
+                        <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']">{{ reviewRef.consumer?.userName }}</a>
+                      </div>
+                    }
+                  </dd>
+                  <dt><span>Retailer</span></dt>
+                  <dd>
+                    @if (review()!.retailer) {
+                      <div>
+                        <a [routerLink]="['/profile-details', review()!.retailer?.id, 'view']">{{ reviewRef.retailer?.userName }}</a>
+                      </div>
+                    }
+                  </dd>
+                  <dt><span>Buyer</span></dt>
+                  <dd>
+                    @if (review()!.buyer) {
+                      <div>
+                        <a [routerLink]="['/user-details', review()!.buyer?.id, 'view']">{{ reviewRef.buyer?.id }}</a>
+                      </div>
+                    }
+                  </dd>
+                  <dt><span>Seller</span></dt>
+                  <dd>
+                    @if (review()!.seller) {
+                      <div>
+                        <a [routerLink]="['/user-details', review()!.seller?.id, 'view']">{{ reviewRef.seller?.id }}</a>
+                      </div>
+                    }
+                  </dd>
+                </dl>
+
+                <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+                  <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+                </button>
+
+                <button type="button" [routerLink]="['/review', reviewRef.id, 'edit']" class="btn btn-primary">
+                  <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+                </button>
+              </div>
+            }
+          </div>
+        </div> -->

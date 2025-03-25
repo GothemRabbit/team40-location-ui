@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
@@ -23,6 +23,8 @@ import { IItem } from '../item.model';
 import { ItemFormGroup, ItemFormService } from './item-form.service';
 import { ImagesService } from 'app/entities/images/service/images.service';
 import { IImages } from 'app/entities/images/images.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { LoginService } from 'app/login/login.service';
 
 @Component({
   standalone: true,
@@ -54,6 +56,7 @@ export class ItemUpdateComponent implements OnInit {
   protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
   protected imagesService = inject(ImagesService);
+  protected loginService = inject(LoginService);
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ItemFormGroup = this.itemFormService.createItemFormGroup();
 
@@ -137,12 +140,22 @@ export class ItemUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const item = this.itemFormService.getItem(this.editForm);
-    item.images = this.existingImages;
-    if (item.id !== null) {
-      this.subscribeToSaveResponse(this.itemService.update(item));
-    } else {
-      this.subscribeToSaveResponse(this.itemService.create(item));
-    }
+
+    // Use LoginService to retrieve the current user's profile details, but only take the first emission.
+    this.loginService
+      .getProfileDetails()
+      .pipe(take(1))
+      .subscribe((profileDetails: IProfileDetails | undefined) => {
+        if (profileDetails) {
+          item.profileDetails = profileDetails;
+        }
+        item.images = this.existingImages;
+        if (item.id !== null) {
+          this.subscribeToSaveResponse(this.itemService.update(item));
+        } else {
+          this.subscribeToSaveResponse(this.itemService.create(item));
+        }
+      });
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IItem>>): void {

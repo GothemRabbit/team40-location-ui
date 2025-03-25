@@ -20,7 +20,7 @@ export interface IItem {
   colour?: string | null;
   timeListed?: dayjs.Dayjs | null;
   wishlists?: Pick<IWishlist, 'id'>[] | null;
-  profileDetails?: Pick<IProfileDetails, 'id'> | null;
+  profileDetails?: IProfileDetails | null;
   seller?: Pick<IUserDetails, 'id'> | null;
   images?: IImages[];
   likes?: ILikes[];

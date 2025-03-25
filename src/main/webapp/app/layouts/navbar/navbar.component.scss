@@ -18,14 +18,14 @@ Navbar
   align-items: center;
   padding: 6px;
   border-radius: 20px;
-  background: #f8dc75;
+  background: #ffffff;
   width: 300px;
 }
 
 .search-input {
-  font-size: 14px;
-  //font-family: "Lexen";
-  color: #333333;
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+  color: #777373;
   margin-left: 12px;
   outline: none;
   border: none;
@@ -41,22 +41,49 @@ Navbar
   width: 1.5em;
 }
 nav {
-  background: rgb(34, 54, 62);
-  background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
+  background-color: #dcd8a2;
+  //background: rgb(34, 54, 62);
+  //background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
 
-  font-family: 'Fira Mono', sans-serif;
-  font-size: 18px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 550;
+  font-style: normal;
+  font-size: 20px;
+}
+
+.pt-sans-regular {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pt-sans-bold {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.pt-sans-regular-italic {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.pt-sans-bold-italic {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+  font-style: italic;
 }
 
 .navbar-brand,
 .navbar-title,
 .navbar-version,
 .nav-link {
-  color: #e2d3f4;
+  color: black;
 }
 
 .fa-icon {
-  color: black;
+  color: #f2d349;
 }
 
 .fa-icon:hover {
@@ -66,20 +93,19 @@ nav {
 .navbar-brand:hover,
 .navbar-title:hover,
 .navbar-version:hover,
-.nav-link:hover {
-  color: black;
+.nav-link:hover,
+.nav-box .nav-link:hover {
+  color: #5c6e58;
 }
 
 .navbar {
   padding: 0.2rem 1rem;
+  flex-direction: column;
+  text-align: center;
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
     background-color: $dark;
-  }
-
-  a.nav-link {
-    font-weight: 400;
   }
 
   .navbar-toggler {
@@ -87,6 +113,39 @@ nav {
       color: $navbar-dark-hover-color;
     }
   }
+}
+.nav-box {
+  display: inline-flex; /* Place items side by side in a row */
+  align-items: center; /* Vertically center items */
+  border: 2px solid black; /* Outline the box with a light border */
+  border-radius: 4px; /* Slightly rounded corners */
+  background-color: transparent; /* White background (optional) */
+  padding: 0.25rem 0.25rem; /* Spacing around the links */
+}
+
+.nav-box .nav-link {
+  font-size: 1.05rem;
+  margin: 0 0.15rem; /* Spacing on each side of the links */
+  text-decoration: none; /* Remove underline from links */
+  color: #000; /* Text color (adjust as needed) */
+}
+
+.nav-box .nav-link:not(:first-child) {
+  /* Remove the direct border-left so we can use a pseudo-element */
+  border-left: none;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  position: relative; /* Needed to position the pseudo-element */
+}
+
+.nav-box .nav-link:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  left: 0; /* Aligns the divider on the left edge */
+  top: 25%; /* Start the divider partway down */
+  bottom: 25%; /* End the divider partway up from the bottom */
+  width: 0; /* Vertical line, so width = 0 */
+  border-left: 2px solid black;
 }
 
 /* ==========================================================================

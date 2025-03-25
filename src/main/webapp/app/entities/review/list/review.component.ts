@@ -45,7 +45,6 @@ export class ReviewComponent implements OnInit {
   protected ngZone = inject(NgZone);
 
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
-
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
@@ -58,6 +57,28 @@ export class ReviewComponent implements OnInit {
       )
       .subscribe();
   }
+  getAverageRating(): number {
+    if (this.reviews == null || this.reviews.length === 0) {
+      return 0;
+    }
+    const average: number = this.reviews.reduce((total, r) => Number(r.rating) + total, 0);
+    return Math.round(average / this.reviews.length);
+  }
+
+  filterBy(nameInput: HTMLSelectElement): void {
+    if (Number(nameInput.value)) {
+      this.reviews = this.reviews?.filter(p => Number(p.rating) === Number(nameInput.value));
+    } else {
+      this.load();
+    }
+  }
+
+  filterByRetailer(nameInput: HTMLInputElement): void {
+    if (nameInput.value) {
+      this.reviews = this.reviews?.filter(p => p.retailer?.userName === nameInput.value);
+    }
+  }
+
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }

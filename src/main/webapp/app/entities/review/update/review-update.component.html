@@ -1,4 +1,135 @@
-<div class="d-flex justify-content-center">
+<div class="page">
+  <div class="d-flex justify-content-center">
+    <div class="col-8">
+      <div class="formBorder">
+        <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+          <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Give us your review</h2>
+          <hr />
+          <div>
+            <jhi-alert-error></jhi-alert-error>
+
+            @if (editForm.controls.id.value !== null) {
+              <div class="mb-3">
+                <label class="form-label" for="field_id">ID</label>
+                <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+              </div>
+            }
+
+            <div class="mb-4">
+              <label class="form-label" for="field_retailer">Retailer</label>
+              <select
+                class="num"
+                id="field_retailer"
+                data-cy="retailer"
+                name="retailer"
+                formControlName="retailer"
+                [compareWith]="compareProfileDetails"
+              >
+                <option [ngValue]="null"></option>
+                @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+                  <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.userName }}</option>
+                }
+              </select>
+            </div>
+
+            @let dateRef = editForm.get('date')!;
+            <div class="mb-4">
+              <label class="form-label" for="field_date"></label>
+              <div class="input-group">
+                <input
+                  id="field_date"
+                  data-cy="date"
+                  type="date"
+                  class="date"
+                  name="date"
+                  ngbDatepicker
+                  #dateDp="ngbDatepicker"
+                  formControlName="date"
+                />
+              </div>
+
+              @if (dateRef.invalid && (dateRef.dirty || dateRef.touched)) {
+                <div>
+                  @if (editForm.get('date')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
+            <!--  <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button> -->
+            <!--
+              <input
+                type="number"
+                class="num"
+                name="rating"
+                id="field_rating"
+                data-cy="rating"
+                formControlName="rating"
+                placeholder="rating"
+              />
+            -->
+            @let ratingRef = editForm.get('rating')!;
+            <div class="mb-4">
+              <ngb-rating id="field_rating" formControlName="rating" data-cy="rating" class="stars" [max]="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100" [class.bad]="index <= 5">&#9733;</span></ng-template
+                >
+              </ngb-rating>
+              <label class="form-label" for="field_rating"></label>
+              @if (ratingRef.invalid && (ratingRef.dirty || ratingRef.touched)) {
+                <div>
+                  @if (editForm.get('rating')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                  @if (editForm.get('rating')?.errors?.min) {
+                    <small class="form-text text-danger">This field should be at least 0.</small>
+                  }
+                  @if (editForm.get('rating')?.errors?.max) {
+                    <small class="form-text text-danger">This field cannot be more than 5.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('rating')?.errors?.number"
+                    >This field should be a number.</small
+                  >
+                </div>
+              }
+            </div>
+
+            @let commentsRef = editForm.get('comments')!;
+            <div>
+              <label class="form-label" for="field_comments"></label>
+              <textarea class="mb-4" name="comments" id="field_comments" data-cy="comments" formControlName="comments"></textarea>
+              @if (commentsRef.invalid && (commentsRef.dirty || commentsRef.touched)) {
+                <div>
+                  @if (editForm.get('comments')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="buttonClass">
+              <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+                <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+              </button>
+
+              <button
+                type="submit"
+                id="save-entity"
+                data-cy="entityCreateSaveButton"
+                [disabled]="editForm.invalid || isSaving"
+                class="btn btn-dark"
+              >
+                <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-review-heading" data-cy="ReviewCreateUpdateHeading">Create or edit a Review</h2>
@@ -71,7 +202,7 @@
           }
         </div>
 
-        <div class="mb-3">
+          <div class="mb-3">
           <label class="form-label" for="field_consumer">Consumer</label>
           <select
             class="form-control"
@@ -83,7 +214,7 @@
           >
             <option [ngValue]="null"></option>
             @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
-              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.userName }}</option>
             }
           </select>
         </div>
@@ -100,7 +231,7 @@
           >
             <option [ngValue]="null"></option>
             @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
-              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.userName }}</option>
             }
           </select>
         </div>
@@ -157,4 +288,4 @@
       </div>
     </form>
   </div>
-</div>
+</div> -->

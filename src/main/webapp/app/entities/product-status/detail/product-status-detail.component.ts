@@ -12,6 +12,7 @@ import { ProductStatusService } from '../service/product-status.service';
   standalone: true,
   selector: 'jhi-product-status-detail',
   templateUrl: './product-status-detail.component.html',
+  styleUrls: ['../product-status.styles.css'],
   imports: [SharedModule, RouterModule, CommonModule, FormsModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class ProductStatusDetailComponent {
@@ -20,6 +21,10 @@ export class ProductStatusDetailComponent {
   showModal = false;
   rating: number | null = null;
   comment = '';
+
+  // 确认对话框相关属性
+  showConfirmModal = false;
+  confirmActionType: 'confirm' | 'cancel' | null = null;
 
   constructor(private productStatusService: ProductStatusService) {}
 
@@ -46,6 +51,24 @@ export class ProductStatusDetailComponent {
   submitReview(): void {
     this.closeReviewModal();
   }
+  showConfirmDialog(action: 'confirm' | 'cancel'): void {
+    this.confirmActionType = action;
+    this.showConfirmModal = true;
+  }
+  closeConfirmDialog(): void {
+    this.showConfirmModal = false;
+    this.confirmActionType = null;
+  }
+  executeAction(): void {
+    if (this.confirmActionType === 'confirm') {
+      this.onConfirm();
+    } else if (this.confirmActionType === 'cancel') {
+      this.onCancel();
+    }
+    this.closeConfirmDialog();
+    this.previousState();
+  }
+
   onConfirm(): void {
     const current = this.productStatus();
     if (!current) {

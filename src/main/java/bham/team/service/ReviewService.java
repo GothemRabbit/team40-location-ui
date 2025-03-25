@@ -8,6 +8,7 @@ import bham.team.security.SecurityUtils;
 import bham.team.service.dto.ReviewDTO;
 import bham.team.service.mapper.ReviewMapper;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link bham.team.domain.Review}.
+ * Service Implementation for managing {@link Review}.
  */
 @Service
 @Transactional
@@ -47,8 +48,24 @@ public class ReviewService {
      * @return the persisted entity.
      */
     public ReviewDTO save(ReviewDTO reviewDTO) {
+        Long reviewId = reviewDTO.getId();
+        Optional<String> user = SecurityUtils.getCurrentUserLogin();
+        String retailerUserName, currentUserName = "";
+        Optional<ProfileDetails> profileDetails = null;
+        if (user.isPresent()) {
+            profileDetails = profileDetailsRepository.findByUserName(user.get());
+        }
+        if (profileDetails != null || profileDetails.isPresent()) {
+            currentUserName = profileDetails.get().getUserName();
+        }
+        retailerUserName = reviewDTO.getRetailer().getUserName();
+        if (retailerUserName.equals(currentUserName)) {
+            throw new IllegalArgumentException("You can not write a review about yourself");
+        }
         LOG.debug("Request to save Review : {}", reviewDTO);
         Review review = reviewMapper.toEntity(reviewDTO);
+        review.setConsumer(profileDetails.get().userName(currentUserName));
+        review.setDate(LocalDate.now());
         review = reviewRepository.save(review);
         return reviewMapper.toDto(review);
     }
@@ -153,7 +170,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public List<ReviewDTO> findReviewByRetailerID(Long retailerId) {
-        LOG.debug("Request to get all Reviews about Retailer");
+        LOG.debug("Request to get Reviews by Retailer ID {}", retailerId);
         return reviewRepository.findReviewByRetailerId(retailerId).stream().map(reviewMapper::toDto).collect(Collectors.toList());
     }
 
@@ -166,7 +183,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Optional<ReviewDTO> findOne(Long id) {
         LOG.debug("Request to get Review : {}", id);
-        return reviewRepository.findReviewByIdWithConsumerAndRetailer(id).map(reviewMapper::toDto);
+        return reviewRepository.findById(id).map(reviewMapper::toDto);
     }
 
     /**
