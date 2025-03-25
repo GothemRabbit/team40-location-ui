@@ -72,18 +72,19 @@
 }
 
 .jh-create-entity {
-  background: #e6d57a;
+  background: #5c6e58;
   border-radius: 30px;
   width: 200px;
   display: block;
-  color: black;
+  color: white;
   font-weight: bold;
   padding: 10px 15px;
 }
 
 .jh-create-entity:hover {
   transform: translateY(-5px);
-  background: lightyellow;
+  background: #284727;
+  color: #f6bfbf;
 }
 
 .card-header {

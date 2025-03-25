@@ -93,7 +93,8 @@ nav {
 .navbar-brand:hover,
 .navbar-title:hover,
 .navbar-version:hover,
-.nav-link:hover {
+.nav-link:hover,
+.nav-box .nav-link:hover {
   color: #5c6e58;
 }
 
@@ -112,6 +113,39 @@ nav {
       color: $navbar-dark-hover-color;
     }
   }
+}
+.nav-box {
+  display: inline-flex; /* Place items side by side in a row */
+  align-items: center; /* Vertically center items */
+  border: 2px solid black; /* Outline the box with a light border */
+  border-radius: 4px; /* Slightly rounded corners */
+  background-color: transparent; /* White background (optional) */
+  padding: 0.25rem 0.25rem; /* Spacing around the links */
+}
+
+.nav-box .nav-link {
+  font-size: 1.05rem;
+  margin: 0 0.15rem; /* Spacing on each side of the links */
+  text-decoration: none; /* Remove underline from links */
+  color: #000; /* Text color (adjust as needed) */
+}
+
+.nav-box .nav-link:not(:first-child) {
+  /* Remove the direct border-left so we can use a pseudo-element */
+  border-left: none;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  position: relative; /* Needed to position the pseudo-element */
+}
+
+.nav-box .nav-link:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  left: 0; /* Aligns the divider on the left edge */
+  top: 25%; /* Start the divider partway down */
+  bottom: 25%; /* End the divider partway up from the bottom */
+  width: 0; /* Vertical line, so width = 0 */
+  border-left: 2px solid black;
 }
 
 /* ==========================================================================
