@@ -29,7 +29,7 @@
           {{ conversationRef.dateCreated | formatMediumDatetime }}
         </p>
         <p>
-          <strong>Profile Details:</strong>
+          <strong>Participant 1:</strong>
           <span *ngFor="let profileDetails of conversationRef.profileDetails; let last = last">
             <a [routerLink]="['/profile-details', profileDetails.id, 'view']">
               {{ profileDetails?.id }}
@@ -38,10 +38,10 @@
           </span>
         </p>
         <p>
-          <strong>Participants:</strong>
-          <span *ngFor="let participant of conversationRef.participants; let last = last">
-            <a [routerLink]="['/user-details', participant.id, 'view']">
-              {{ participant?.id }}
+          <strong>Participant 2:</strong>
+          <span *ngFor="let profileDetails of conversationRef.profileDetails; let last = last">
+            <a [routerLink]="['/profile-details', profileDetails.id, 'view']">
+              {{ profileDetails?.id }}
             </a>
             {{ last ? '' : ', ' }}
           </span>
@@ -50,7 +50,8 @@
 
       <!-- Messages -->
       <div class="chat-messages border rounded p-3 mb-3" style="height: 300px; overflow-y: auto">
-        <div *ngFor="let msg of messages" class="chat-bubble">
+        <div *ngFor="let msg of messages" class="chat-bubble" [ngClass]="{ user: msg.profileDetails?.id === currentUserId }">
+          <strong>{{ msg.username }}</strong>
           <strong>{{ msg.content }}</strong>
           <br />
           <small>{{ msg.timestamp | date: 'short' }}</small>

@@ -7,6 +7,7 @@ interface MessageDTO {
   id?: number;
   content?: string;
   timestamp?: string;
+  username?: string;
 }
 
 @Component({

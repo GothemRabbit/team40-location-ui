@@ -10,6 +10,8 @@ interface MessageDTO {
   id?: number;
   content?: string;
   timestamp?: string;
+  username?: string;
+  profileDetails?: { id: number };
 }
 
 @Component({
@@ -23,6 +25,7 @@ export class ConversationDetailComponent implements OnInit {
   @Input() conversation: IConversation | null = null;
   messages: MessageDTO[] = [];
   loading = false;
+  currentUserId = 1;
 
   constructor(private http: HttpClient) {}
 
