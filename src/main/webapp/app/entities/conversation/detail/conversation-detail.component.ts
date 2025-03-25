@@ -9,6 +9,7 @@ import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'ap
 import { IConversation } from '../conversation.model';
 import { NewMessage } from 'app/entities/message/message.model';
 import { MessageService } from 'app/entities/message/service/message.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 // Extend dayjs with the relativeTime plugin
 dayjs.extend(relativeTime);
@@ -38,19 +39,25 @@ export class ConversationDetailComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private messageService: MessageService,
+    private accountService: AccountService,
   ) {}
 
   ngOnInit(): void {
     if (this.conversation) {
       this.loadMessages(this.conversation.id);
     }
+    this.setCurrentUserId();
+  }
+
+  setCurrentUserId(): void {
+    this.currentUserId = this.accountService.getCurrentUserId();
   }
 
   loadMessages(conversationId: number): void {
     this.loading = true;
     this.http.get<MessageDTO[]>(`api/conversations/${conversationId}/messages`).subscribe({
       next: data => (this.messages = data),
-      error: err => console.error(err),
+      error: err => console.error('Failed to load messages:', err),
       complete: () => (this.loading = false),
     });
   }
@@ -67,18 +74,20 @@ export class ConversationDetailComponent implements OnInit {
     const newMessage: NewMessage = {
       id: null,
       content: this.newMessageContent,
-      timestamp: dayjs(), // This should now be a valid Dayjs instance
-      isRead: false, // Assuming new messages are unread by default
-      conversation: { id: this.conversation.id }, // Use non-null assertion operator
+      timestamp: dayjs(),
+      isRead: false,
+      conversation: { id: this.conversation.id },
       profileDetails: { id: this.currentUserId },
     };
 
     this.messageService.create(newMessage).subscribe({
       next: () => {
         this.newMessageContent = '';
-        this.loadMessages(this.conversation!.id); // Use non-null assertion operator
+        if (this.conversation) {
+          this.loadMessages(this.conversation.id);
+        }
       },
-      error: err => console.error('Failed to send message', err),
+      error: err => console.error('Failed to send message:', err),
     });
   }
 }

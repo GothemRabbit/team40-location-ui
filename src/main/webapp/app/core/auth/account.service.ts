@@ -74,6 +74,11 @@ export class AccountService {
     return user?.username ?? 'user cannot be found'; // Return the profileId or -1 if not found
   }
 
+  getCurrentUserId(): number {
+    const user = this.userIdentity();
+    return user?.id ?? -1; // Ensure this ID is valid
+  }
+
   private fetch(): Observable<Account> {
     return this.http.get<Account>(this.applicationConfigService.getEndpointFor('api/account'));
   }

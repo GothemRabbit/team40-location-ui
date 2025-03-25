@@ -17,6 +17,7 @@ export default class SettingsComponent implements OnInit {
   success = signal(false);
 
   settingsForm = new FormGroup({
+    id: new FormControl(initialAccount.id, { nonNullable: true }),
     firstName: new FormControl(initialAccount.firstName, {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
@@ -52,10 +53,15 @@ export default class SettingsComponent implements OnInit {
     this.success.set(false);
 
     const account = this.settingsForm.getRawValue();
-    this.accountService.save(account).subscribe(() => {
+    const updatedAccount: Account = {
+      ...account,
+      id: account.id,
+    };
+
+    this.accountService.save(updatedAccount).subscribe(() => {
       this.success.set(true);
 
-      this.accountService.authenticate(account);
+      this.accountService.authenticate(updatedAccount);
     });
   }
 }
