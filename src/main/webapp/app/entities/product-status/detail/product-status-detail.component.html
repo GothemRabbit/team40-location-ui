@@ -90,14 +90,12 @@
       <h2>Review</h2>
       <div class="modal-body">
         <div class="form-group">
-          <label for="rating">Mark (1-5):</label>
-          <select id="rating" [(ngModel)]="rating" class="form-control">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+          <label>Mark (1-5):</label>
+          <div class="star-rating">
+            <span *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)" [class.filled]="rating !== null && star <= rating">
+              {{ rating !== null && star <= rating ? '★' : '☆' }}
+            </span>
+          </div>
         </div>
         <div class="form-group">
           <label for="comment">Comment:</label>
