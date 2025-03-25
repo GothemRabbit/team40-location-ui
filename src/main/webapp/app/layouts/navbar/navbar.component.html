@@ -92,10 +92,11 @@
                   <span>reviews</span>
                 </a>
               </li>
-              <li>
+              <li *ngIf="currentUserProfile !== null">
                 <a
                   class="dropdown-item"
-                  routerLink="/account/settings"
+                  [routerLink]="['/profile-details', currentUserProfile.id, 'edit']"
+                  [queryParams]="{ tab: 'account' }"
                   routerLinkActive="active"
                   (click)="collapseNavbar()"
                   data-cy="settings"

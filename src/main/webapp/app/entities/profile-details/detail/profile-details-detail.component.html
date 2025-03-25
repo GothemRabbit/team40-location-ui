@@ -37,7 +37,13 @@
 
           <a id="meet-up locations" [routerLink]="['/location']" class="location-link"> Location </a>
           <dd class="address-container">
-            <button *ngIf="isOwner" type="button" [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']" class="btn btn-primary">
+            <button
+              *ngIf="isOwner"
+              type="button"
+              [routerLink]="['/profile-details', profileDetailsRef.id, 'edit']"
+              [queryParams]="{ tab: 'profileDetails' }"
+              class="btn btn-primary"
+            >
               <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
             </button>
           </dd>
