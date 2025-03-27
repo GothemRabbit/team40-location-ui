@@ -16,7 +16,7 @@
             }
 
             <div class="mb-4">
-              <label class="form-label" for="field_retailer">Retailer</label>
+              <label class="form-label" for="field_retailer"></label>
               <select
                 class="num"
                 id="field_retailer"
@@ -25,7 +25,7 @@
                 formControlName="retailer"
                 [compareWith]="compareProfileDetails"
               >
-                <option [ngValue]="null"></option>
+                <option [ngValue]="null">select your seller!</option>
                 @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
                   <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.userName }}</option>
                 }
@@ -108,17 +108,11 @@
             </div>
 
             <div class="buttonClass">
-              <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+              <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn" (click)="previousState()">
                 <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
               </button>
 
-              <button
-                type="submit"
-                id="save-entity"
-                data-cy="entityCreateSaveButton"
-                [disabled]="editForm.invalid || isSaving"
-                class="btn btn-dark"
-              >
+              <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" [disabled]="editForm.invalid || isSaving" class="btn">
                 <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
               </button>
             </div>

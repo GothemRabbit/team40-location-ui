@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
 import ConversationResolve from './route/conversation-routing-resolve.service';
+import { ConversationMessagesComponent } from './conversation-messages.component';
 
 const conversationRoute: Routes = [
   {
@@ -36,6 +37,12 @@ const conversationRoute: Routes = [
       conversation: ConversationResolve,
     },
     canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/messages',
+    component: ConversationMessagesComponent,
+    canActivate: [UserRouteAccessService],
+    title: 'Conversation Messages',
   },
 ];
 

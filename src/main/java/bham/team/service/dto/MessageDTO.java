@@ -27,6 +27,8 @@ public class MessageDTO implements Serializable {
 
     private ProfileDetailsDTO profileDetails;
 
+    private String username;
+
     public Long getId() {
         return id;
     }
@@ -75,6 +77,14 @@ public class MessageDTO implements Serializable {
         this.profileDetails = profileDetails;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -106,6 +116,7 @@ public class MessageDTO implements Serializable {
             ", isRead='" + getIsRead() + "'" +
             ", conversation=" + getConversation() +
             ", profileDetails=" + getProfileDetails() +
+            ", username='" + getUsername() + "'" +
             "}";
     }
 }

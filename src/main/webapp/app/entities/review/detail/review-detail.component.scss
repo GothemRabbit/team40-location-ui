@@ -1,3 +1,6 @@
+//#5c6e58 dark green
+// #8aa899 light green
+// #f2d349 yellow
 .page {
   background-color: #f8dc75;
 }
@@ -6,23 +9,25 @@ h2 {
   font-weight: bold;
 }
 button {
-  background-color: #e1bf43;
-  color: white;
+  background-color: #dcd8a2;
+  color: black;
   display: inline-block;
-  border-radius: 14px;
+  border-radius: 20px;
+  border: 2px solid black;
   font-size: 13px;
-  height: 50px;
+  height: 30px;
   width: 150px;
   transition-duration: 0.5s;
 }
 
 button:hover {
   background-color: black;
-  color: #f8dc75;
+  color: #dcd8a2;
+  border: 2px solid #dcd8a2;
 }
 
 #stars {
-  color: gold;
+  color: #f2d349;
 }
 
 .formPage {
@@ -36,7 +41,7 @@ button:hover {
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 5px;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 #id {

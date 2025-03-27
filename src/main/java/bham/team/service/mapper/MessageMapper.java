@@ -15,6 +15,7 @@ import org.mapstruct.*;
 public interface MessageMapper extends EntityMapper<MessageDTO, Message> {
     @Mapping(target = "conversation", source = "conversation", qualifiedByName = "conversationId")
     @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "username", source = "profileDetails.userName")
     MessageDTO toDto(Message s);
 
     @Named("conversationId")

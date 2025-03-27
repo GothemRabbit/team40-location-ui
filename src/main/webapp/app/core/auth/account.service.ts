@@ -74,6 +74,15 @@ export class AccountService {
     return user?.username ?? 'user cannot be found'; // Return the profileId or -1 if not found
   }
 
+  getCurrentUserId(): number {
+    const user = this.userIdentity();
+    // return user?.id ?? -1; // Ensure this ID is valid
+    if (this.isValidUser(user)) {
+      return user.id;
+    }
+    return -1;
+  }
+
   private fetch(): Observable<Account> {
     return this.http.get<Account>(this.applicationConfigService.getEndpointFor('api/account'));
   }
@@ -86,5 +95,8 @@ export class AccountService {
       this.stateStorageService.clearUrl();
       this.router.navigateByUrl(previousUrl);
     }
+  }
+  private isValidUser(user: any): user is { id: number } {
+    return user !== null && typeof user === 'object' && typeof user.id === 'number';
   }
 }

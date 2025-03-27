@@ -34,6 +34,8 @@ export class ProductStatusDetailComponent {
 
   openReviewModal(): void {
     this.showModal = true;
+    this.rating = null;
+    this.comment = '';
   }
 
   closeReviewModal(event?: MouseEvent): void {
@@ -48,17 +50,33 @@ export class ProductStatusDetailComponent {
     event.stopPropagation();
   }
 
+  setRating(star: number): void {
+    this.rating = star;
+  }
+
   submitReview(): void {
+    if (this.rating === null) {
+      alert('Please select a rating before submitting.');
+      return;
+    }
+    const current = this.productStatus();
+    if (!current) {
+      alert('No product status available to review.');
+      return;
+    }
     this.closeReviewModal();
   }
+
   showConfirmDialog(action: 'confirm' | 'cancel'): void {
     this.confirmActionType = action;
     this.showConfirmModal = true;
   }
+
   closeConfirmDialog(): void {
     this.showConfirmModal = false;
     this.confirmActionType = null;
   }
+
   executeAction(): void {
     if (this.confirmActionType === 'confirm') {
       this.onConfirm();

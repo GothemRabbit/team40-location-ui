@@ -1,70 +1,74 @@
-<div class="container conversation-detail">
+<div class="container conversation-detail" *ngIf="conversation as conversationRef">
   <div class="row justify-content-center">
     <div class="col-8">
-      @if (conversation(); as conversationRef) {
-        <div class="chat-header d-flex justify-content-between align-items-center">
-          <h2 data-cy="conversationDetailsHeading">Conversation</h2>
-          <div>
-            <button type="button" [routerLink]="['/conversation', conversationRef.id, 'edit']" class="btn btn-primary me-2">
-              <fa-icon icon="pencil-alt"></fa-icon>
-              <span>Edit</span>
-            </button>
+      <div class="chat-header d-flex justify-content-between align-items-center">
+        <h2 data-cy="conversationDetailsHeading">Conversation</h2>
+        <div>
+          <button type="button" [routerLink]="['/conversation', conversationRef.id, 'edit']" class="btn btn-primary me-2">
+            <fa-icon icon="pencil-alt"></fa-icon>
+            <span>Edit</span>
+          </button>
 
-            <button type="button" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-              <fa-icon icon="arrow-left"></fa-icon>
-              <span>Back</span>
-            </button>
-          </div>
+          <button type="button" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+            <fa-icon icon="arrow-left"></fa-icon>
+            <span>Back</span>
+          </button>
         </div>
+      </div>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
-        <jhi-alert></jhi-alert>
+      <jhi-alert-error></jhi-alert-error>
+      <jhi-alert></jhi-alert>
 
-        <!-- Basic info row -->
-        <div class="chat-info mb-3">
-          <p><strong>ID:</strong> {{ conversationRef.id }}</p>
-          <p>
-            <strong>Date Created:</strong>
-            {{ conversationRef.dateCreated | formatMediumDatetime }}
-          </p>
-          <p>
-            <strong>Profile Details:</strong>
-            @for (profileDetails of conversationRef.profileDetails; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </p>
-          <p>
-            <strong>Participants:</strong>
-            @for (participants of conversationRef.participants; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/user-details', participants.id, 'view']">{{ participants?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </p>
+      <!-- Basic info row -->
+      <div class="chat-info mb-3">
+        <p><strong>ID:</strong> {{ conversationRef.id }}</p>
+        <p>
+          <strong>Date Created:</strong>
+          {{ conversationRef.dateCreated | formatMediumDatetime }}
+        </p>
+        <p>
+          <strong>Participant 1:</strong>
+          <span *ngFor="let profileDetails of conversationRef.profileDetails; let last = last">
+            <a [routerLink]="['/profile-details', profileDetails.id, 'view']">
+              {{ profileDetails?.id }}
+            </a>
+            {{ last ? '' : ', ' }}
+          </span>
+        </p>
+        <p>
+          <strong>Participant 2:</strong>
+          <span *ngFor="let profileDetails of conversationRef.profileDetails; let last = last">
+            <a [routerLink]="['/profile-details', profileDetails.id, 'view']">
+              {{ profileDetails?.id }}
+            </a>
+            {{ last ? '' : ', ' }}
+          </span>
+        </p>
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-messages border rounded p-3 mb-3" style="height: 300px; overflow-y: auto">
+        <div *ngFor="let msg of messages" class="chat-bubble" [ngClass]="{ user: msg.profileDetails?.id === currentUserId }">
+          <strong>{{ msg.username }}</strong>
+          <strong>{{ msg.content }}</strong>
+          <br />
+          <small>{{ msg.timestamp | date: 'short' }}</small>
         </div>
+      </div>
 
-        <!-- Placeholder for actual messages -->
-        <div class="chat-messages border rounded p-3 mb-3" style="height: 300px; overflow-y: auto">
-          <p>Messages would appear here in a chat-like layout...</p>
-          <!-- If you have a message array, you could loop them here in “bubble” form. -->
+      <!-- Message input area -->
+      <div class="chat-input">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Type a message..." [(ngModel)]="newMessageContent" />
+          <!-- Button to send the message -->
+          <button class="btn btn-primary" type="button" (click)="sendMessage()">
+            <fa-icon icon="paper-plane"></fa-icon>
+            <span>Send Message</span>
+          </button>
         </div>
-
-        <!-- Message input area -->
-        <div class="chat-input">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Type a message..." />
-            <button class="btn btn-primary" type="button">
-              <fa-icon icon="paper-plane"></fa-icon>
-            </button>
-          </div>
-        </div>
-      }
+      </div>
     </div>
   </div>
 </div>
