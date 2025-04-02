@@ -11,6 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { filter, tap } from 'rxjs';
 import { Account } from '../../../core/auth/account.model';
 import { AccountService } from '../../../core/auth/account.service';
+import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   standalone: true,
@@ -23,12 +24,29 @@ export class ReviewDetailComponent implements OnInit {
   review = input<IReview | null>(null);
   isOwner = false;
   account: Account | null = null;
+  sound: SpeechSynthesisUtterance;
 
   public readonly router = inject(Router);
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected accountService = inject(AccountService);
+  protected readonly faPlay = faPlay;
+  protected readonly faPause = faPause;
 
+  constructor() {
+    this.sound = new SpeechSynthesisUtterance();
+    this.sound.lang = 'en-US';
+  }
+
+  playSpeech(): void {
+    const rev = this.review();
+    this.sound.text = String(rev?.comments);
+    window.speechSynthesis.speak(this.sound);
+  }
+
+  stopSpeech(): void {
+    window.speechSynthesis.cancel();
+  }
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
       this.account = account;
