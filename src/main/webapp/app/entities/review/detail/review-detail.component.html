@@ -23,6 +23,8 @@
           <p id="date">
             {{ reviewRef.date | formatMediumDate }}
           </p>
+          <fa-icon (click)="playSpeech()" [icon]="faPlay"> </fa-icon>
+          <fa-icon (click)="stopSpeech()" [icon]="faPause"> </fa-icon>
         </div>
 
         <jhi-alert-error></jhi-alert-error>
