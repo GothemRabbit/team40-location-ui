@@ -9,4 +9,5 @@ public enum ProductState {
     RESERVED,
     COMPLETED,
     CANCELLED,
+    UNRESERVED,
 }

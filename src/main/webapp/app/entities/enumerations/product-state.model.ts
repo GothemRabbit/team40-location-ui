@@ -8,4 +8,6 @@ export enum ProductState {
   COMPLETED = 'COMPLETED',
 
   CANCELLED = 'CANCELLED',
+
+  UNRESERVED = 'UNRESERVED',
 }

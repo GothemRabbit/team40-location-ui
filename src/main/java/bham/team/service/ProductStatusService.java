@@ -25,8 +25,6 @@ public class ProductStatusService {
 
     private final ProductStatusRepository repo;
     private final ProductStatusMapper mapper;
-
-    // 依赖注入：用来获取当前用户Profile
     private final ProfileDetailsService profileDetailsService;
 
     public ProductStatusService(ProductStatusRepository repo, ProductStatusMapper mapper, ProfileDetailsService profileDetailsService) {
@@ -35,35 +33,46 @@ public class ProductStatusService {
         this.profileDetailsService = profileDetailsService;
     }
 
+    /**
+     * 获取当前登录用户的profileDetailsId
+     */
     private Long getCurrentProfileId() {
         return profileDetailsService
-            .getCurrentUserProfile() // 参考你队友的代码
+            .getCurrentUserProfile()
             .orElseThrow(() -> new RuntimeException("User not logged in or has no ProfileDetails"))
             .getId();
     }
 
+    /**
+     * 新增 ProductStatus
+     */
     public ProductStatusDTO save(ProductStatusDTO dto) {
         LOG.debug("Request to save ProductStatus : {}", dto);
+
+        // 忽略前端传进来的 profileDetailsId，全部覆盖为当前登录用户
         ProductStatus entity = mapper.toEntity(dto);
-        // 无论前端传什么profileDetailsId，我们都覆盖为当前用户的
         entity.setProfileDetails(new ProfileDetails());
         entity.getProfileDetails().setId(getCurrentProfileId());
 
+        // 保存数据库
         entity = repo.save(entity);
         return mapper.toDto(entity);
     }
 
+    /**
+     * 全量更新
+     */
     public ProductStatusDTO update(ProductStatusDTO dto) {
         LOG.debug("Request to update ProductStatus : {}", dto);
         Long currentProfileId = getCurrentProfileId();
 
-        // 检查数据库中是否确实是当前用户的记录
+        // 先检查是否确实属于当前用户
         repo
             .findByIdAndProfileDetailsId(dto.getId(), currentProfileId)
             .orElseThrow(() -> new EntityNotFoundException("ProductStatus not found or not owned by current user"));
 
+        // 映射并强制改为当前用户
         ProductStatus entity = mapper.toEntity(dto);
-        // 再次强制当前用户
         entity.setProfileDetails(new ProfileDetails());
         entity.getProfileDetails().setId(currentProfileId);
 
@@ -71,6 +80,9 @@ public class ProductStatusService {
         return mapper.toDto(entity);
     }
 
+    /**
+     * 局部更新
+     */
     public Optional<ProductStatusDTO> partialUpdate(ProductStatusDTO dto) {
         LOG.debug("Request to partially update ProductStatus : {}", dto);
         Long currentProfileId = getCurrentProfileId();
@@ -78,7 +90,6 @@ public class ProductStatusService {
         return repo
             .findByIdAndProfileDetailsId(dto.getId(), currentProfileId)
             .map(existingEntity -> {
-                // 使用MapStruct的partialUpdate(...)
                 mapper.partialUpdate(existingEntity, dto);
                 return existingEntity;
             })
@@ -86,19 +97,27 @@ public class ProductStatusService {
             .map(mapper::toDto);
     }
 
+    /**
+     * 分页查询：只查询当前用户ID下的订单
+     */
     @Transactional(readOnly = true)
     public Page<ProductStatusDTO> findAll(Pageable pageable) {
         LOG.debug("Request to get all ProductStatuses for current user");
-        Long currentProfileId = getCurrentProfileId();
-        return repo.findByProfileDetailsId(currentProfileId, pageable).map(mapper::toDto);
+        return repo.findByProfileDetailsId(getCurrentProfileId(), pageable).map(mapper::toDto);
     }
 
+    /**
+     * 查询单条记录：也只查当前用户ID
+     */
     @Transactional(readOnly = true)
     public Optional<ProductStatusDTO> findOne(Long id) {
         LOG.debug("Request to get ProductStatus : {}", id);
         return repo.findByIdAndProfileDetailsId(id, getCurrentProfileId()).map(mapper::toDto);
     }
 
+    /**
+     * 删除：也只删当前用户ID下的订单
+     */
     public void delete(Long id) {
         LOG.debug("Request to delete ProductStatus : {}", id);
         int deleted = repo.deleteByIdAndProfileDetailsId(id, getCurrentProfileId());

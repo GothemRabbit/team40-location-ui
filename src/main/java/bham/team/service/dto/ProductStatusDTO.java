@@ -139,5 +139,7 @@ public class ProductStatusDTO implements Serializable {
             ", profileDetails=" + getProfileDetails() +
             ", location=" + getLocation() +
             "}";
+
+
     }
 }
