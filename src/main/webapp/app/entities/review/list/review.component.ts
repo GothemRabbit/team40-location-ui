@@ -64,7 +64,6 @@ export class ReviewComponent implements OnInit {
     const average: number = this.reviews.reduce((total, r) => Number(r.rating) + total, 0);
     return Math.round(average / this.reviews.length);
   }
-
   filterBy(nameInput: HTMLSelectElement): void {
     if (Number(nameInput.value)) {
       this.reviews = this.reviews?.filter(p => Number(p.rating) === Number(nameInput.value));
