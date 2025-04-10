@@ -64,6 +64,56 @@
   transform: translateY(-5px);
   transition: all ease 0.3s;
 }
+.star1 {
+  font-size: 40px;
+}
+.newBox {
+  margin: auto;
+  width: 300px;
+  height: 400px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid black;
+  background-color: #dcd8a2;
+  gap: 5px;
+  padding: 10px;
+}
+
+.newBox h1 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 100px;
+}
+
+.newBox p {
+  margin: 0;
+  gap: normal;
+  font-size: 15px;
+}
+
+.newBox:hover {
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
+}
+
+.avRating2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  background-color: #dcd8a2;
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 300px;
+  height: 400px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+}
 .ratingBoxLeft {
   height: 500px;
   width: 500px;
@@ -76,11 +126,11 @@
 .ratingBoxLeft2 {
   height: 500px;
   width: 500px;
-  display: grid;
+  display: flex;
   align-items: center;
   justify-content: center;
   place-items: center;
-  margin-left: 33%;
+  position: relative;
 }
 h2 {
   font-weight: bold;

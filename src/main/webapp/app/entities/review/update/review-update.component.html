@@ -1,5 +1,5 @@
 <div class="page">
-  <div class="d-flex justify-content-center">
+  <div>
     <div class="col-8">
       <div class="formBorder">
         <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
@@ -9,10 +9,10 @@
             <jhi-alert-error></jhi-alert-error>
 
             @if (editForm.controls.id.value !== null) {
-              <div class="mb-3">
+              <!--  <div class="mb-3">
                 <label class="form-label" for="field_id">ID</label>
                 <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-              </div>
+              </div> -->
             }
 
             <div class="mb-4">
@@ -32,30 +32,29 @@
               </select>
             </div>
 
-            @let dateRef = editForm.get('date')!;
-            <div class="mb-4">
-              <label class="form-label" for="field_date"></label>
-              <div class="input-group">
-                <input
-                  id="field_date"
-                  data-cy="date"
-                  type="date"
-                  class="date"
-                  name="date"
-                  ngbDatepicker
-                  #dateDp="ngbDatepicker"
-                  formControlName="date"
-                />
-              </div>
-
-              @if (dateRef.invalid && (dateRef.dirty || dateRef.touched)) {
-                <div>
-                  @if (editForm.get('date')?.errors?.required) {
-                    <small class="form-text text-danger">This field is required.</small>
-                  }
+            @if (editForm.controls.date.value === null) {
+              @let dateRef = editForm.get('date')!;
+              <div class="mb-4">
+                <label class="form-label" for="field_date"></label>
+                <div class="input-group">
+                  <input
+                    id="field_date"
+                    data-cy="date"
+                    type="date"
+                    class="date"
+                    name="date"
+                    ngbDatepicker
+                    #dateDp="ngbDatepicker"
+                    formControlName="date"
+                  />
                 </div>
-              }
-            </div>
+
+                @if (dateRef.invalid && (dateRef.dirty || dateRef.touched)) {
+                  <div></div>
+                }
+              </div>
+            }
+
             <!--  <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button> -->
             <!--
               <input
