@@ -7,6 +7,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { IProfileDetails } from '../profile-details.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { ItemComponent } from '../../item/list/item.component';
 import reviewRoute from '../../review/review.routes';
 
 @Component({
@@ -14,7 +15,7 @@ import reviewRoute from '../../review/review.routes';
   selector: 'jhi-profile-details-detail',
   templateUrl: './profile-details-detail.component.html',
   styleUrl: './profile-details-detail.component.scss',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
+  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, ItemComponent],
 })
 export class ProfileDetailsDetailComponent implements OnInit {
   @Input() profileDetails: IProfileDetails | null = null;

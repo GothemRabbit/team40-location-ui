@@ -12,6 +12,7 @@ import { RegisterService } from './register.service';
   standalone: true,
   selector: 'jhi-register',
   imports: [SharedModule, RouterModule, FormsModule, ReactiveFormsModule, PasswordStrengthBarComponent],
+  styleUrl: './register.component.scss',
   templateUrl: './register.component.html',
 })
 export default class RegisterComponent implements AfterViewInit {

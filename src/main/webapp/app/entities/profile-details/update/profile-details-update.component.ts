@@ -1,12 +1,13 @@
-import { Component, ElementRef, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, inject, signal } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { filter, Observable, tap } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
@@ -23,13 +24,17 @@ import { ProfileDetailsFormGroup, ProfileDetailsFormService } from './profile-de
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { ProfileDetailsDeleteDialogComponent } from '../delete/profile-details-delete-dialog.component';
+import { ITEM_DELETED_EVENT } from '../../../config/navigation.constants';
+import { PasswordService } from '../../../account/password/password.service';
+import PasswordStrengthBarComponent from '../../../account/password/password-strength-bar/password-strength-bar.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-profile-details-update',
   templateUrl: './profile-details-update.component.html',
   styleUrl: './profile-details-update.component.scss',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, FaIconComponent],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, FaIconComponent, PasswordStrengthBarComponent],
 })
 export class ProfileDetailsUpdateComponent implements OnInit {
   activeTab = 'profileDetails';
@@ -37,6 +42,21 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   profileDetails: IProfileDetails | null = null;
   userEmail: string | undefined = undefined;
   account: Account | null = null;
+
+  doNotMatch = signal(false);
+  error = signal(false);
+  success = signal(false);
+  passwordForm = new FormGroup({
+    currentPassword: new FormControl('', { nonNullable: true, validators: Validators.required }),
+    newPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+    }),
+    confirmPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+    }),
+  });
 
   usersSharedCollection: IUser[] = [];
   locationsSharedCollection: ILocation[] = [];
@@ -53,6 +73,8 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   protected activatedRoute = inject(ActivatedRoute);
   protected accountService = inject(AccountService);
   protected router = inject(Router);
+  protected modalService = inject(NgbModal);
+  private readonly passwordService = inject(PasswordService);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProfileDetailsFormGroup = this.profileDetailsFormService.createProfileDetailsFormGroup();
@@ -116,6 +138,37 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     if (idInput && this.elementRef.nativeElement.querySelector(`#${idInput}`)) {
       this.elementRef.nativeElement.querySelector(`#${idInput}`).value = null;
     }
+  }
+
+  changePassword(): void {
+    this.error.set(false);
+    this.success.set(false);
+    this.doNotMatch.set(false);
+
+    const { newPassword, confirmPassword, currentPassword } = this.passwordForm.getRawValue();
+    if (newPassword !== confirmPassword) {
+      this.doNotMatch.set(true);
+    } else {
+      this.passwordService.save(newPassword, currentPassword).subscribe({
+        next: () => this.success.set(true),
+        error: () => this.error.set(true),
+      });
+    }
+  }
+
+  delete(profileDetails: IProfileDetails): void {
+    const modalRef = this.modalService.open(ProfileDetailsDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.profileDetails = profileDetails;
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === ITEM_DELETED_EVENT),
+        tap(() => {
+          // Redirect to logout or homepage
+          this.router.navigate(['']);
+        }),
+      )
+      .subscribe();
   }
 
   previousState(): void {

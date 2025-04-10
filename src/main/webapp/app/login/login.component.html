@@ -9,7 +9,7 @@
       }
       <form class="form" (ngSubmit)="login()" [formGroup]="loginForm">
         <div class="mb-3">
-          <label class="username-label" for="username">Username</label>
+          <label class="username-label form-label" for="username">Username</label>
           <input
             type="text"
             class="form-control"
@@ -23,7 +23,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="password">Password</label>
+          <label class="form-label" for="password">Password</label>
           <input
             type="password"
             class="form-control"
@@ -48,7 +48,7 @@
         <a class="alert-link" routerLink="/account/reset/request" data-cy="forgetYourPasswordSelector">Did you forget your password?</a>
       </div>
 
-      <div class="alert alert-warning">
+      <div class="alert alert-warning" style="background-color: #dcd8a2">
         <span>You don&apos;t have an account yet?</span>
         <a class="alert-link" routerLink="/account/register">Register a new account</a>
       </div>

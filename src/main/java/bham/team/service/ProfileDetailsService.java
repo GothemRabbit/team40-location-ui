@@ -7,6 +7,7 @@ import bham.team.repository.UserRepository;
 import bham.team.security.SecurityUtils;
 import bham.team.service.dto.ProfileDetailsDTO;
 import bham.team.service.mapper.ProfileDetailsMapper;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -33,11 +34,14 @@ public class ProfileDetailsService {
     private UserService userService;
     private final UserRepository userRepository;
 
+    //    private ItemService itemService;
+
     public ProfileDetailsService(
         ProfileDetailsRepository profileDetailsRepository,
         ProfileDetailsMapper profileDetailsMapper,
         UserService userService,
         UserRepository userRepository
+        //        ItemService itemService
     ) {
         this.profileDetailsRepository = profileDetailsRepository;
         this.profileDetailsMapper = profileDetailsMapper;
@@ -160,6 +164,7 @@ public class ProfileDetailsService {
         LOG.debug("Request to delete ProfileDetails : {}", id);
         ProfileDetails profileDetails = profileDetailsRepository.getReferenceById(id);
         User user = profileDetails.getUser();
+        //        new HashSet<>(profileDetails.getItems()).forEach(item -> itemService.delete(item.getId()));
         userService.deleteUser(user.getLogin());
         profileDetailsRepository.deleteById(id);
     }
