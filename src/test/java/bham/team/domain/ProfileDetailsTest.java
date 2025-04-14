@@ -139,24 +139,24 @@ class ProfileDetailsTest {
     }
 
     @Test
-    void reviewsRecievedTest() {
+    void reviewsReceivedTest() {
         ProfileDetails profileDetails = getProfileDetailsRandomSampleGenerator();
         Review reviewBack = getReviewRandomSampleGenerator();
 
-        profileDetails.addReviewsRecieved(reviewBack);
-        assertThat(profileDetails.getReviewsRecieveds()).containsOnly(reviewBack);
+        profileDetails.addReviewsReceived(reviewBack);
+        assertThat(profileDetails.getReviewsReceiveds()).containsOnly(reviewBack);
         assertThat(reviewBack.getRetailer()).isEqualTo(profileDetails);
 
-        profileDetails.removeReviewsRecieved(reviewBack);
-        assertThat(profileDetails.getReviewsRecieveds()).doesNotContain(reviewBack);
+        profileDetails.removeReviewsReceived(reviewBack);
+        assertThat(profileDetails.getReviewsReceiveds()).doesNotContain(reviewBack);
         assertThat(reviewBack.getRetailer()).isNull();
 
-        profileDetails.reviewsRecieveds(new HashSet<>(Set.of(reviewBack)));
-        assertThat(profileDetails.getReviewsRecieveds()).containsOnly(reviewBack);
+        profileDetails.reviewsReceiveds(new HashSet<>(Set.of(reviewBack)));
+        assertThat(profileDetails.getReviewsReceiveds()).containsOnly(reviewBack);
         assertThat(reviewBack.getRetailer()).isEqualTo(profileDetails);
 
-        profileDetails.setReviewsRecieveds(new HashSet<>());
-        assertThat(profileDetails.getReviewsRecieveds()).doesNotContain(reviewBack);
+        profileDetails.setReviewsReceiveds(new HashSet<>());
+        assertThat(profileDetails.getReviewsReceiveds()).doesNotContain(reviewBack);
         assertThat(reviewBack.getRetailer()).isNull();
     }
 

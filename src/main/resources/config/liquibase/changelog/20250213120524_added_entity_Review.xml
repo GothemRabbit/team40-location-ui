@@ -21,7 +21,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="date" type="date">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="consumer_id" type="bigint">
                 <constraints nullable="true" />

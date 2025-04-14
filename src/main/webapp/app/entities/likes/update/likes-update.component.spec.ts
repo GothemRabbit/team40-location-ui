@@ -75,10 +75,10 @@ describe('Likes Management Update Component', () => {
 
     it('Should call ProfileDetails query and add missing value', () => {
       const likes: ILikes = { id: 456 };
-      const profileDetails: IProfileDetails = { id: 2041 };
+      const profileDetails: IProfileDetails = { id: 5592 };
       likes.profileDetails = profileDetails;
 
-      const profileDetailsCollection: IProfileDetails[] = [{ id: 21881 }];
+      const profileDetailsCollection: IProfileDetails[] = [{ id: 14509 }];
       jest.spyOn(profileDetailsService, 'query').mockReturnValue(of(new HttpResponse({ body: profileDetailsCollection })));
       const additionalProfileDetails = [profileDetails];
       const expectedCollection: IProfileDetails[] = [...additionalProfileDetails, ...profileDetailsCollection];
@@ -99,7 +99,7 @@ describe('Likes Management Update Component', () => {
       const likes: ILikes = { id: 456 };
       const item: IItem = { id: 13248 };
       likes.item = item;
-      const profileDetails: IProfileDetails = { id: 5592 };
+      const profileDetails: IProfileDetails = { id: 7047 };
       likes.profileDetails = profileDetails;
 
       activatedRoute.data = of({ likes });

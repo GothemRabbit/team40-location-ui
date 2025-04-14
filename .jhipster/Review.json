@@ -19,8 +19,7 @@
     },
     {
       "fieldName": "date",
-      "fieldType": "LocalDate",
-      "fieldValidateRules": ["required"]
+      "fieldType": "LocalDate"
     }
   ],
   "name": "Review",
@@ -34,7 +33,7 @@
     },
     {
       "otherEntityName": "profileDetails",
-      "otherEntityRelationshipName": "reviewsRecieved",
+      "otherEntityRelationshipName": "reviewsReceived",
       "relationshipName": "retailer",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"

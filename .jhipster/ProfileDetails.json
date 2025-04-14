@@ -71,7 +71,7 @@
     {
       "otherEntityName": "review",
       "otherEntityRelationshipName": "retailer",
-      "relationshipName": "reviewsRecieved",
+      "relationshipName": "reviewsReceived",
       "relationshipSide": "right",
       "relationshipType": "one-to-many"
     },

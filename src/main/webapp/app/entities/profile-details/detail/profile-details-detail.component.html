@@ -63,6 +63,9 @@
         <li *ngIf="isOwner" class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'"> Purchase History</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'"> Reviews </a>
+        </li>
       </ul>
 
       <div class="tab-content mt-3">
@@ -87,6 +90,13 @@
         <div *ngIf="activeTab === 'history'">
           <h3>Purchase History</h3>
           <p>Show user's purchase history here ....</p>
+        </div>
+
+        <div *ngIf="activeTab === 'reviews'">
+          <div>
+            <jhi-review> </jhi-review>
+          </div>
+          <p>Show user's product listings here ....</p>
         </div>
       </div>
     </div>

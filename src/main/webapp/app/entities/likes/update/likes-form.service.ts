@@ -14,11 +14,10 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type LikesFormGroupInput = ILikes | PartialWithRequiredKeyOf<NewLikes>;
 
-type LikesFormDefaults = Pick<NewLikes, 'id' | 'liked'>;
+type LikesFormDefaults = Pick<NewLikes, 'id'>;
 
 type LikesFormGroupContent = {
   id: FormControl<ILikes['id'] | NewLikes['id']>;
-  liked: FormControl<ILikes['liked']>;
   item: FormControl<ILikes['item']>;
   profileDetails: FormControl<ILikes['profileDetails']>;
 };
@@ -40,7 +39,6 @@ export class LikesFormService {
           validators: [Validators.required],
         },
       ),
-      liked: new FormControl(likesRawValue.liked),
       item: new FormControl(likesRawValue.item),
       profileDetails: new FormControl(likesRawValue.profileDetails),
     });
@@ -63,7 +61,6 @@ export class LikesFormService {
   private getFormDefaults(): LikesFormDefaults {
     return {
       id: null,
-      liked: false,
     };
   }
 }

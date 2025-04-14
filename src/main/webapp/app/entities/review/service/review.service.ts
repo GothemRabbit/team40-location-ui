@@ -52,6 +52,7 @@ export class ReviewService {
       .patch<RestReview>(`${this.resourceUrl}/${this.getReviewIdentifier(review)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
+
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<RestReview>(`${this.resourceUrl}/${id}`, { observe: 'response' })

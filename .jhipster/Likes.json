@@ -4,12 +4,7 @@
   },
   "applications": "*",
   "dto": "mapstruct",
-  "fields": [
-    {
-      "fieldName": "liked",
-      "fieldType": "Boolean"
-    }
-  ],
+  "fields": [],
   "name": "Likes",
   "relationships": [
     {

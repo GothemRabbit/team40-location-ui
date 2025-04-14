@@ -35,8 +35,7 @@ public class Review implements Serializable {
     @Column(name = "comments", nullable = false)
     private String comments;
 
-    @NotNull
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,7 +47,7 @@ public class Review implements Serializable {
             "locations",
             "likes",
             "reviewsGivens",
-            "reviewsRecieveds",
+            "reviewsReceiveds",
             "messages",
             "productStatuses",
             "conversations",
@@ -66,7 +65,7 @@ public class Review implements Serializable {
             "locations",
             "likes",
             "reviewsGivens",
-            "reviewsRecieveds",
+            "reviewsReceiveds",
             "messages",
             "productStatuses",
             "conversations",

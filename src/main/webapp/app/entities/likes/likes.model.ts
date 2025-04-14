@@ -3,7 +3,6 @@ import { IProfileDetails } from 'app/entities/profile-details/profile-details.mo
 
 export interface ILikes {
   id: number;
-  liked?: boolean | null;
   item?: Pick<IItem, 'id'> | null;
   profileDetails?: Pick<IProfileDetails, 'id'> | null;
 }

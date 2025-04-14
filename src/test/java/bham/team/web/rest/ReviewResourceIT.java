@@ -164,23 +164,6 @@ class ReviewResourceIT {
 
     @Test
     @Transactional
-    void checkDateIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        review.setDate(null);
-
-        // Create the Review, which fails.
-        ReviewDTO reviewDTO = reviewMapper.toDto(review);
-
-        restReviewMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(reviewDTO)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllReviews() throws Exception {
         // Initialize the database
         insertedReview = reviewRepository.saveAndFlush(review);

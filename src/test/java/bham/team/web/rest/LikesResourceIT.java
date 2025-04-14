@@ -34,9 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class LikesResourceIT {
 
-    private static final Boolean DEFAULT_LIKED = false;
-    private static final Boolean UPDATED_LIKED = true;
-
     private static final String ENTITY_API_URL = "/api/likes";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -69,7 +66,7 @@ class LikesResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Likes createEntity() {
-        return new Likes().liked(DEFAULT_LIKED);
+        return new Likes();
     }
 
     /**
@@ -79,7 +76,7 @@ class LikesResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Likes createUpdatedEntity() {
-        return new Likes().liked(UPDATED_LIKED);
+        return new Likes();
     }
 
     @BeforeEach
@@ -148,8 +145,7 @@ class LikesResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(likes.getId().intValue())))
-            .andExpect(jsonPath("$.[*].liked").value(hasItem(DEFAULT_LIKED.booleanValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(likes.getId().intValue())));
     }
 
     @Test
@@ -163,8 +159,7 @@ class LikesResourceIT {
             .perform(get(ENTITY_API_URL_ID, likes.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(likes.getId().intValue()))
-            .andExpect(jsonPath("$.liked").value(DEFAULT_LIKED.booleanValue()));
+            .andExpect(jsonPath("$.id").value(likes.getId().intValue()));
     }
 
     @Test
@@ -186,7 +181,6 @@ class LikesResourceIT {
         Likes updatedLikes = likesRepository.findById(likes.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedLikes are not directly saved in db
         em.detach(updatedLikes);
-        updatedLikes.liked(UPDATED_LIKED);
         LikesDTO likesDTO = likesMapper.toDto(updatedLikes);
 
         restLikesMockMvc
@@ -272,8 +266,6 @@ class LikesResourceIT {
         Likes partialUpdatedLikes = new Likes();
         partialUpdatedLikes.setId(likes.getId());
 
-        partialUpdatedLikes.liked(UPDATED_LIKED);
-
         restLikesMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedLikes.getId())
@@ -299,8 +291,6 @@ class LikesResourceIT {
         // Update the likes using partial update
         Likes partialUpdatedLikes = new Likes();
         partialUpdatedLikes.setId(likes.getId());
-
-        partialUpdatedLikes.liked(UPDATED_LIKED);
 
         restLikesMockMvc
             .perform(
