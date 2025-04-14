@@ -23,16 +23,24 @@ public class Likes implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "liked")
-    private Boolean liked;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
+    @JsonIgnoreProperties(value = { "images", "wishlists", "productStatus", "profileDetails", "likes", "seller" }, allowSetters = true)
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        value = {
+            "user",
+            "items",
+            "wishlists",
+            "locations",
+            "likes",
+            "reviewsGivens",
+            "reviewsReceiveds",
+            "messages",
+            "productStatuses",
+            "conversations",
+        },
         allowSetters = true
     )
     private ProfileDetails profileDetails;
@@ -50,19 +58,6 @@ public class Likes implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean getLiked() {
-        return this.liked;
-    }
-
-    public Likes liked(Boolean liked) {
-        this.setLiked(liked);
-        return this;
-    }
-
-    public void setLiked(Boolean liked) {
-        this.liked = liked;
     }
 
     public Item getItem() {
@@ -115,7 +110,6 @@ public class Likes implements Serializable {
     public String toString() {
         return "Likes{" +
             "id=" + getId() +
-            ", liked='" + getLiked() + "'" +
             "}";
     }
 }

@@ -42,13 +42,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="liked">
-              <div class="d-flex">
-                <span>Liked</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="item.id">
               <div class="d-flex">
                 <span>Item</span>
@@ -70,7 +63,6 @@
               <td>
                 <a [routerLink]="['/likes', likes.id, 'view']">{{ likes.id }}</a>
               </td>
-              <td>{{ likes.liked }}</td>
               <td>
                 @if (likes.item) {
                   <div>

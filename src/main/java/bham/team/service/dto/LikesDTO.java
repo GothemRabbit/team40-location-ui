@@ -11,8 +11,6 @@ public class LikesDTO implements Serializable {
 
     private Long id;
 
-    private Boolean liked;
-
     private ItemDTO item;
 
     private ProfileDetailsDTO profileDetails;
@@ -23,14 +21,6 @@ public class LikesDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean getLiked() {
-        return liked;
-    }
-
-    public void setLiked(Boolean liked) {
-        this.liked = liked;
     }
 
     public ItemDTO getItem() {
@@ -75,7 +65,6 @@ public class LikesDTO implements Serializable {
     public String toString() {
         return "LikesDTO{" +
             "id=" + getId() +
-            ", liked='" + getLiked() + "'" +
             ", item=" + getItem() +
             ", profileDetails=" + getProfileDetails() +
             "}";

@@ -22,7 +22,6 @@ public class ReviewDTO implements Serializable {
     @Lob
     private String comments;
 
-    @NotNull
     private LocalDate date;
 
     private ProfileDetailsDTO consumer;

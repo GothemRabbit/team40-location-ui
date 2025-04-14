@@ -20,7 +20,6 @@ describe('Likes Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            liked: expect.any(Object),
             item: expect.any(Object),
             profileDetails: expect.any(Object),
           }),
@@ -33,7 +32,6 @@ describe('Likes Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            liked: expect.any(Object),
             item: expect.any(Object),
             profileDetails: expect.any(Object),
           }),

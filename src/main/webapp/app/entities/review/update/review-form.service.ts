@@ -50,9 +50,7 @@ export class ReviewFormService {
       comments: new FormControl(reviewRawValue.comments, {
         validators: [Validators.required],
       }),
-      date: new FormControl(reviewRawValue.date, {
-        validators: [Validators.required],
-      }),
+      date: new FormControl(reviewRawValue.date),
       consumer: new FormControl(reviewRawValue.consumer),
       retailer: new FormControl(reviewRawValue.retailer),
       buyer: new FormControl(reviewRawValue.buyer),

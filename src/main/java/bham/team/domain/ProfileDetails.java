@@ -79,7 +79,7 @@ public class ProfileDetails implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "retailer")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "consumer", "retailer", "buyer", "seller" }, allowSetters = true)
-    private Set<Review> reviewsRecieveds = new HashSet<>();
+    private Set<Review> reviewsReceiveds = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profileDetails")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -323,33 +323,33 @@ public class ProfileDetails implements Serializable {
         return this;
     }
 
-    public Set<Review> getReviewsRecieveds() {
-        return this.reviewsRecieveds;
+    public Set<Review> getReviewsReceiveds() {
+        return this.reviewsReceiveds;
     }
 
-    public void setReviewsRecieveds(Set<Review> reviews) {
-        if (this.reviewsRecieveds != null) {
-            this.reviewsRecieveds.forEach(i -> i.setRetailer(null));
+    public void setReviewsReceiveds(Set<Review> reviews) {
+        if (this.reviewsReceiveds != null) {
+            this.reviewsReceiveds.forEach(i -> i.setRetailer(null));
         }
         if (reviews != null) {
             reviews.forEach(i -> i.setRetailer(this));
         }
-        this.reviewsRecieveds = reviews;
+        this.reviewsReceiveds = reviews;
     }
 
-    public ProfileDetails reviewsRecieveds(Set<Review> reviews) {
-        this.setReviewsRecieveds(reviews);
+    public ProfileDetails reviewsReceiveds(Set<Review> reviews) {
+        this.setReviewsReceiveds(reviews);
         return this;
     }
 
-    public ProfileDetails addReviewsRecieved(Review review) {
-        this.reviewsRecieveds.add(review);
+    public ProfileDetails addReviewsReceived(Review review) {
+        this.reviewsReceiveds.add(review);
         review.setRetailer(this);
         return this;
     }
 
-    public ProfileDetails removeReviewsRecieved(Review review) {
-        this.reviewsRecieveds.remove(review);
+    public ProfileDetails removeReviewsReceived(Review review) {
+        this.reviewsReceiveds.remove(review);
         review.setRetailer(null);
         return this;
     }

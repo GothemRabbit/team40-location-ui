@@ -14,9 +14,6 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="liked" type="boolean">
-                <constraints nullable="true" />
-            </column>
             <column name="item_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -44,7 +41,6 @@
                   tableName="likes"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="liked" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

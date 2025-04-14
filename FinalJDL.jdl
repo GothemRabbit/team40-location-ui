@@ -27,7 +27,6 @@ entity Item {
 }
 
 entity Likes {
-  liked Boolean
 }
 
 enum Condition {
@@ -83,7 +82,7 @@ enum ProductState {
 entity Review {
   rating Integer required min(0) max(5),
   comments TextBlob required,
-  date LocalDate required
+  date LocalDate
 }
 
 entity Wishlist {
@@ -126,7 +125,7 @@ relationship ManyToOne {
 
 relationship ManyToOne  {
 Review{Consumer} to ProfileDetails{ReviewsGiven},
-Review{Retailer} to ProfileDetails{ReviewsRecieved}
+Review{Retailer} to ProfileDetails{ReviewsReceived}
 }
 
 //conversation relationship

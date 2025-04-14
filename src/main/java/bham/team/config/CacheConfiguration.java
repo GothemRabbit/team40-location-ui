@@ -93,6 +93,7 @@ public class CacheConfiguration {
             createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".conversations");
             createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".reviewsGivens");
             createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".reviewsRecieveds");
+            createCache(cm, bham.team.domain.ProfileDetails.class.getName() + ".reviewsReceiveds");
             // jhipster-needle-ehcache-add-entry
         };
     }

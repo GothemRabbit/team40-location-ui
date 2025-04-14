@@ -45,9 +45,8 @@ public class LikesAsserts {
      * @param actual the actual entity
      */
     public static void assertLikesUpdatableFieldsEquals(Likes expected, Likes actual) {
-        assertThat(expected)
-            .as("Verify Likes relevant properties")
-            .satisfies(e -> assertThat(e.getLiked()).as("check liked").isEqualTo(actual.getLiked()));
+        // empty method
+
     }
 
     /**
