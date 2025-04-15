@@ -114,7 +114,6 @@
             }
           </select>
         </div>
-
         <div class="mb-3">
           <label class="form-label" for="field_profileDetails">Profile Details</label>
           <select
@@ -123,6 +122,22 @@
             data-cy="profileDetails"
             name="profileDetails"
             formControlName="profileDetails"
+            [compareWith]="compareProfileDetails"
+          >
+            <option [ngValue]="null"></option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
+            }
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="field_profileDetails1">Profile Details1</label>
+          <select
+            class="form-control"
+            id="field_profileDetails1"
+            data-cy="profileDetails1"
+            name="profileDetails1"
+            formControlName="profileDetails1"
             [compareWith]="compareProfileDetails"
           >
             <option [ngValue]="null"></option>

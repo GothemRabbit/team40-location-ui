@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20250415-1-add-profile-details1-column" author="mohanpei">
+        <addColumn tableName="product_status">
+            <column name="profile_details1_id" type="BIGINT"/>
+        </addColumn>
+
+    
+        <addForeignKeyConstraint
+            baseColumnNames="profile_details1_id"
+            baseTableName="product_status"
+            referencedColumnNames="id"
+            referencedTableName="profile_details"
+            constraintName="fk_product_status_profile_details1"/>
+    </changeSet>
+
+</databaseChangeLog>

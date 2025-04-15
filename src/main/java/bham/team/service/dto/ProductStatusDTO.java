@@ -29,7 +29,7 @@ public class ProductStatusDTO implements Serializable {
     private ConversationDTO conversation;
 
     private ProfileDetailsDTO profileDetails;
-
+    private ProfileDetailsDTO profileDetails1;
     private LocationDTO location;
 
     public Long getId() {
@@ -96,6 +96,15 @@ public class ProductStatusDTO implements Serializable {
         this.profileDetails = profileDetails;
     }
 
+    // 新增 buyer 字段的 getter/setter
+    public ProfileDetailsDTO getProfileDetails1() {
+        return profileDetails1;
+    }
+
+    public void setProfileDetails1(ProfileDetailsDTO profileDetails1) {
+        this.profileDetails1 = profileDetails1;
+    }
+
     public LocationDTO getLocation() {
         return location;
     }
@@ -112,12 +121,11 @@ public class ProductStatusDTO implements Serializable {
         if (!(o instanceof ProductStatusDTO)) {
             return false;
         }
-
-        ProductStatusDTO productStatusDTO = (ProductStatusDTO) o;
+        ProductStatusDTO that = (ProductStatusDTO) o;
         if (this.id == null) {
             return false;
         }
-        return Objects.equals(this.id, productStatusDTO.id);
+        return Objects.equals(this.id, that.id);
     }
 
     @Override
@@ -125,21 +133,31 @@ public class ProductStatusDTO implements Serializable {
         return Objects.hash(this.id);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "ProductStatusDTO{" +
-            "id=" + getId() +
-            ", status='" + getStatus() + "'" +
-            ", meetingTime='" + getMeetingTime() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", item=" + getItem() +
-            ", conversation=" + getConversation() +
-            ", profileDetails=" + getProfileDetails() +
-            ", location=" + getLocation() +
-            "}";
-
-
+        return (
+            "ProductStatusDTO{" +
+            "id=" +
+            id +
+            ", status=" +
+            status +
+            ", meetingTime=" +
+            meetingTime +
+            ", updatedAt=" +
+            updatedAt +
+            ", createdAt=" +
+            createdAt +
+            ", item=" +
+            item +
+            ", conversation=" +
+            conversation +
+            ", profileDetails=" +
+            profileDetails +
+            ", profileDetails1=" +
+            profileDetails1 +
+            ", location=" +
+            location +
+            "}"
+        );
     }
 }

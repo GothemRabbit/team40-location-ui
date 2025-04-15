@@ -104,7 +104,10 @@ export class ProductStatusUpdateComponent implements OnInit {
   protected updateForm(productStatus: IProductStatus): void {
     this.productStatus = productStatus;
     this.productStatusFormService.resetForm(this.editForm, productStatus);
-
+    this.editForm.patchValue({
+      profileDetails: productStatus.profileDetails,
+      profileDetails1: productStatus.profileDetails1,
+    });
     this.itemsCollection = this.itemService.addItemToCollectionIfMissing<IItem>(this.itemsCollection, productStatus.item);
     this.conversationsCollection = this.conversationService.addConversationToCollectionIfMissing<IConversation>(
       this.conversationsCollection,

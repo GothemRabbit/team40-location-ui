@@ -14,6 +14,7 @@ export interface IProductStatus {
   item?: Pick<IItem, 'id'> | null;
   conversation?: Pick<IConversation, 'id'> | null;
   profileDetails?: Pick<IProfileDetails, 'id'> | null;
+  profileDetails1?: IProfileDetails;
   location?: Pick<ILocation, 'id'> | null;
 }
 

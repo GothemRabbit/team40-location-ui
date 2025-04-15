@@ -20,6 +20,7 @@ public interface ProductStatusMapper extends EntityMapper<ProductStatusDTO, Prod
     @Mapping(target = "item", source = "item", qualifiedByName = "itemId")
     @Mapping(target = "conversation", source = "conversation", qualifiedByName = "conversationId")
     @Mapping(target = "profileDetails", source = "profileDetails", qualifiedByName = "profileDetailsId")
+    @Mapping(target = "profileDetails1", source = "profileDetails1", qualifiedByName = "profileDetailsId")
     @Mapping(target = "location", source = "location", qualifiedByName = "locationId")
     ProductStatusDTO toDto(ProductStatus s);
 

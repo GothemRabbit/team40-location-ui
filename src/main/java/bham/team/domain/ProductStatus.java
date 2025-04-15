@@ -58,6 +58,14 @@ public class ProductStatus implements Serializable {
     )
     private ProfileDetails profileDetails;
 
+    // 新增的 买家 Profile
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
+        allowSetters = true
+    )
+    private ProfileDetails profileDetails1;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "productStatuses", "profileDetails", "users" }, allowSetters = true)
     private Location location;
@@ -167,6 +175,23 @@ public class ProductStatus implements Serializable {
         this.setProfileDetails(profileDetails);
         return this;
     }
+
+    // ========= 新增的 getter / setter / 链式方法 =========
+
+    public ProfileDetails getProfileDetails1() {
+        return this.profileDetails1;
+    }
+
+    public void setProfileDetails1(ProfileDetails profileDetails1) {
+        this.profileDetails1 = profileDetails1;
+    }
+
+    public ProductStatus profileDetails1(ProfileDetails profileDetails1) {
+        this.setProfileDetails1(profileDetails1);
+        return this;
+    }
+
+    // ================================================
 
     public Location getLocation() {
         return this.location;

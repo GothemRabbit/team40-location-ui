@@ -27,6 +27,7 @@ describe('ProductStatus Form Service', () => {
             item: expect.any(Object),
             conversation: expect.any(Object),
             profileDetails: expect.any(Object),
+            profileDetails1: expect.any(Object),
             location: expect.any(Object),
           }),
         );

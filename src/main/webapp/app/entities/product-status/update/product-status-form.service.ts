@@ -40,6 +40,7 @@ type ProductStatusFormGroupContent = {
   item: FormControl<ProductStatusFormRawValue['item']>;
   conversation: FormControl<ProductStatusFormRawValue['conversation']>;
   profileDetails: FormControl<ProductStatusFormRawValue['profileDetails']>;
+  profileDetails1: FormControl<ProductStatusFormRawValue['profileDetails']>;
   location: FormControl<ProductStatusFormRawValue['location']>;
 };
 
@@ -69,6 +70,7 @@ export class ProductStatusFormService {
       item: new FormControl(productStatusRawValue.item),
       conversation: new FormControl(productStatusRawValue.conversation),
       profileDetails: new FormControl(productStatusRawValue.profileDetails),
+      profileDetails1: new FormControl(productStatusRawValue.profileDetails1),
       location: new FormControl(productStatusRawValue.location),
     });
   }
@@ -83,6 +85,8 @@ export class ProductStatusFormService {
       {
         ...productStatusRawValue,
         id: { value: productStatusRawValue.id, disabled: true },
+        // ★ 同时重置 profileDetails1
+        profileDetails1: productStatusRawValue.profileDetails1,
       } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
     );
   }
