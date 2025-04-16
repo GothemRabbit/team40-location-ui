@@ -90,9 +90,33 @@ export class ItemUpdateComponent implements OnInit {
     if (!input.files) {
       return;
     }
-    for (const file of Array.from(input.files)) {
-      // Limit to 20 images if needed
-      if (this.newImages.length >= 20) break;
+    // Calculate the total number of images already associated with this item
+    const totalExisting = this.existingImages.length;
+    const totalNew = this.newImages.length;
+    const totalSoFar = totalExisting + totalNew;
+    const allowedRemaining = 10 - totalSoFar;
+
+    // If no more images are allowed, notify the user and exit.
+    if (allowedRemaining <= 0) {
+      this.eventManager.broadcast(
+        new EventWithContent<AlertError>('teamproject24App.error', {
+          message: 'You can only upload a maximum of 10 images per item.',
+        }),
+      );
+      return;
+    }
+    // If the number of files selected exceeds what is allowed, notify the user.
+    if (input.files.length > allowedRemaining) {
+      this.eventManager.broadcast(
+        new EventWithContent<AlertError>('teamproject24App.error', {
+          message: `Only a total of 10 images are allowed per item. The first ${allowedRemaining} image(s) have been selected.`,
+        }),
+      );
+    }
+
+    // Convert the FileList to an array and process only up to the allowed number
+    const files = Array.from(input.files).slice(0, allowedRemaining);
+    for (const file of files) {
       const reader = new FileReader();
       reader.onload = e => {
         const preview = e.target?.result as string;
@@ -284,16 +308,16 @@ export class ItemUpdateComponent implements OnInit {
     this.toBeDeleted = [];
   }
 
-  private processFiles(files: FileList): void {
-    for (const file of Array.from(files)) {
-      // Limit to 20 images if needed
-      if (this.newImages.length >= 20) break;
-      const reader = new FileReader();
-      reader.onload = e => {
-        const preview = e.target?.result as string;
-        this.newImages.push({ file, preview });
-      };
-      reader.readAsDataURL(file);
-    }
-  }
+  // private processFiles(files: FileList): void {
+  //   for (const file of Array.from(files)) {
+  //     // Limit to 10 images if needed
+  //     if (this.newImages.length >= 10) break;
+  //     const reader = new FileReader();
+  //     reader.onload = e => {
+  //       const preview = e.target?.result as string;
+  //       this.newImages.push({ file, preview });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
 }
