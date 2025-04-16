@@ -22,10 +22,7 @@
               *ngFor="let image of item()?.images; let i = index"
               [style.display]="currentSlideIndex === i ? 'block' : 'none'"
             >
-              <!-- Only the main image is clickable -->
-              <a [routerLink]="['/images', image.id, 'view']">
-                <img [src]="'data:' + (image.imagesContentType || 'image/png') + ';base64,' + (image.images || '')" alt="Item Image" />
-              </a>
+              <img [src]="'data:' + (image.imagesContentType || 'image/png') + ';base64,' + (image.images || '')" alt="Item Image" />
             </div>
             <!-- Navigation Buttons -->
             <a class="prev" (click)="prevSlide()">&#10094;</a>
