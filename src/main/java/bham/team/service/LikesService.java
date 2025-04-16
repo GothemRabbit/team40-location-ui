@@ -1,6 +1,8 @@
 package bham.team.service;
 
+import bham.team.domain.Item;
 import bham.team.domain.Likes;
+import bham.team.domain.ProfileDetails;
 import bham.team.repository.LikesRepository;
 import bham.team.service.dto.LikesDTO;
 import bham.team.service.mapper.LikesMapper;
@@ -108,5 +110,27 @@ public class LikesService {
     public void delete(Long id) {
         LOG.debug("Request to delete Likes : {}", id);
         likesRepository.deleteById(id);
+    }
+
+    public LikesDTO toggleLike(Long itemId, Long profileId) {
+        LOG.debug("Request to toggle like for item {} by profile {}", itemId, profileId);
+
+        Optional<Likes> existingLike = likesRepository.findByItemIdAndProfileId(itemId, profileId);
+
+        if (existingLike.isPresent()) {
+            likesRepository.delete(existingLike.get());
+            LikesDTO dto = new LikesDTO();
+            dto.setItemId(itemId);
+            dto.setProfileDetailsId(profileId);
+            return dto;
+        } else {
+            Likes newLike = new Likes();
+            newLike.setItem(new Item().id(itemId));
+            newLike.setProfileDetails(new ProfileDetails().id(profileId));
+
+            Likes savedLike = likesRepository.save(newLike);
+            LikesDTO dto = likesMapper.toDto(savedLike);
+            return dto;
+        }
     }
 }

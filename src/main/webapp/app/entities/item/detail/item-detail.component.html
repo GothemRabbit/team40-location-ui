@@ -143,9 +143,9 @@
             </button>
 
             <div class="like-section my-3 d-flex align-items-center gap-2">
-              <button class="btn" [ngClass]="item()?.isLikedByUser ? 'btn-danger' : 'btn-outline-danger'" (click)="toggleLike()">
-                {{ item()?.isLikedByUser ? 'Unlike' : 'Like' }}
-              </button>
+              <!--              <button class="btn" [ngClass]="item()?.isLikedByUser ? 'btn-danger' : 'btn-outline-danger'" (click)="toggleLike()">-->
+              <!--                {{ item()?.isLikedByUser ? 'Unlike' : 'Like' }}-->
+              <!--              </button>-->
 
               <span>{{ item()?.likesCount ?? 0 }} {{ (item()?.likesCount ?? 0) === 1 ? 'like' : 'likes' }}</span>
             </div>

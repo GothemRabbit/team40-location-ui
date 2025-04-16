@@ -37,7 +37,7 @@ public class ItemResource {
 
     private static final String ENTITY_NAME = "item";
 
-    @Value("jhipster.clientApp.name")
+    @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
     private final ItemService itemService;

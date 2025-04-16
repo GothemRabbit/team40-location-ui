@@ -26,4 +26,24 @@ public interface LikesMapper extends EntityMapper<LikesDTO, Likes> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     ProfileDetailsDTO toDtoProfileDetailsId(ProfileDetails profileDetails);
+
+    @Named("itemFromId")
+    default Item itemFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Item item = new Item();
+        item.setId(id);
+        return item;
+    }
+
+    @Named("profileDetailsFromId")
+    default ProfileDetails profileDetailsFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        ProfileDetails profileDetails = new ProfileDetails();
+        profileDetails.setId(id);
+        return profileDetails;
+    }
 }

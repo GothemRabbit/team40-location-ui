@@ -31,12 +31,28 @@ public class LikesDTO implements Serializable {
         this.item = item;
     }
 
+    public Long getItemId() {
+        return item.getId();
+    }
+
+    public void setItemId(Long itemId) {
+        this.item.setId(itemId);
+    }
+
     public ProfileDetailsDTO getProfileDetails() {
         return profileDetails;
     }
 
     public void setProfileDetails(ProfileDetailsDTO profileDetails) {
         this.profileDetails = profileDetails;
+    }
+
+    public Long getProfileDetailsId() {
+        return profileDetails.getId();
+    }
+
+    public void setProfileDetailsId(Long profileDetailsId) {
+        this.profileDetails.setId(profileDetailsId);
     }
 
     @Override
