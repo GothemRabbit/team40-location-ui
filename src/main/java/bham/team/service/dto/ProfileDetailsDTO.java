@@ -36,6 +36,10 @@ public class ProfileDetailsDTO implements Serializable {
 
     private Set<ItemDTO> items = new HashSet<>();
 
+    private Set<ReviewDTO> reviewGivens = new HashSet<>();
+
+    private Set<ReviewDTO> reviewReceiveds = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -106,6 +110,22 @@ public class ProfileDetailsDTO implements Serializable {
 
     public void setItems(Set<ItemDTO> items) {
         this.items = items;
+    }
+
+    public Set<ReviewDTO> getReviewGivens() {
+        return reviewGivens;
+    }
+
+    public void setReviewGivens(Set<ReviewDTO> reviewGivens) {
+        this.reviewGivens = reviewGivens;
+    }
+
+    public Set<ReviewDTO> getReviewReceiveds() {
+        return reviewReceiveds;
+    }
+
+    public void setReviewReceiveds(Set<ReviewDTO> reviewReceiveds) {
+        this.reviewReceiveds = reviewReceiveds;
     }
 
     @Override

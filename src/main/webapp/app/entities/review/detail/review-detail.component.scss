@@ -16,11 +16,29 @@ button {
   border: 2px solid black;
   font-size: 13px;
   height: 30px;
-  width: 150px;
+  width: 100px;
   transition-duration: 0.5s;
 }
 
 button:hover {
+  background-color: black;
+  color: #dcd8a2;
+  border: 2px solid #dcd8a2;
+}
+
+.soundButton {
+  background-color: #dcd8a2;
+  color: black;
+  display: inline-block;
+  border-radius: 100px;
+  border: 2px solid black;
+  font-size: 13px;
+  height: 30px;
+  width: 30px;
+  transition-duration: 0.5s;
+}
+
+.soundButton:hover {
   background-color: black;
   color: #dcd8a2;
   border: 2px solid #dcd8a2;
@@ -59,4 +77,12 @@ button:hover {
 #date {
   text-align: right;
   font-size: 13px;
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
 }

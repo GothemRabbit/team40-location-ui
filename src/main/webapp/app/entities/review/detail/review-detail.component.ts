@@ -25,6 +25,7 @@ export class ReviewDetailComponent implements OnInit {
   isOwner = false;
   account: Account | null = null;
   sound: SpeechSynthesisUtterance;
+  soundBool?: boolean = false;
 
   public readonly router = inject(Router);
   protected dataUtils = inject(DataUtils);
@@ -46,6 +47,14 @@ export class ReviewDetailComponent implements OnInit {
 
   stopSpeech(): void {
     window.speechSynthesis.cancel();
+  }
+  soundButton(): void {
+    if (!this.soundBool) {
+      this.playSpeech();
+    } else {
+      this.stopSpeech();
+    }
+    this.soundBool = !this.soundBool;
   }
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {

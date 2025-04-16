@@ -12,6 +12,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { IReview } from '../review.model';
 import { EntityArrayResponseType, ReviewService } from '../service/review.service';
 import { ReviewDeleteDialogComponent } from '../delete/review-delete-dialog.component';
+import { faFilter, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   standalone: true,
@@ -33,6 +34,7 @@ export class ReviewComponent implements OnInit {
   subscription: Subscription | null = null;
   reviews?: IReview[];
   isLoading = false;
+  sort?: boolean = false;
 
   sortState = sortStateSignal({});
 
@@ -43,6 +45,9 @@ export class ReviewComponent implements OnInit {
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
+  protected readonly faFilter = faFilter;
+  protected readonly faArrowUp = faArrowUp;
+  protected readonly faArrowDown = faArrowDown;
 
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
   ngOnInit(): void {
@@ -62,28 +67,46 @@ export class ReviewComponent implements OnInit {
       return 0;
     }
     const average: number = this.reviews.reduce((total, r) => Number(r.rating) + total, 0);
-    return Math.round(average / this.reviews.length);
+    return Number((average / this.reviews.length).toFixed(2));
   }
-  filterBy(nameInput: HTMLSelectElement): void {
-    if (Number(nameInput.value)) {
-      this.reviews = this.reviews?.filter(p => Number(p.rating) === Number(nameInput.value));
+  filterBy(Input: HTMLSelectElement): void {
+    if (Number(Input.value)) {
+      this.reviews = this.reviews?.filter(r => Number(r.rating) === Number(Input.value));
     } else {
       this.load();
     }
   }
 
-  filterByRetailer(nameInput: HTMLInputElement): void {
-    if (nameInput.value) {
-      this.reviews = this.reviews?.filter(p => p.retailer?.userName === nameInput.value);
+  filterByRetailer(Input: HTMLInputElement): void {
+    if (Input.value) {
+      this.reviews = this.reviews?.filter(r => r.retailer?.userName === Input.value);
     }
   }
 
+  public sortReviewASC(): void {
+    this.reviews = this.reviews?.sort((a, b) => new Date(a.date?.date() ?? 0).getTime() - new Date(a.date?.date() ?? 0).getTime());
+  }
+  public sortReviewDSC(): void {
+    this.reviews = this.reviews?.sort((a, b) => new Date(a.date?.date() ?? 0).getTime() - new Date(b.date?.date() ?? 0).getTime());
+  }
+  public sortButton(): void {
+    if (!this.sort) {
+      this.sortReviewDSC();
+    } else {
+      this.sortReviewASC();
+    }
+    this.sort = !this.sort;
+  }
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
 
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
+  }
+
+  likeButton(review: IReview): void {
+    review.liked = !review.liked;
   }
 
   delete(review: IReview): void {
@@ -107,6 +130,7 @@ export class ReviewComponent implements OnInit {
   }
 
   navigateToWithComponentValues(event: SortState): void {
+    this.reviews = [];
     this.handleNavigation(event);
   }
 

@@ -61,11 +61,12 @@
             <input id="filter1" type="text" #filterValue1 placeholder="look up any seller!" />
             <button class="filterButton" (click)="filterByRetailer(filterValue1)">Filter</button></span
           >
+          <button class="filterButton" (click)="sortButton()">
+            <span>date<fa-icon [icon]="sort ? faArrowDown : faArrowUp"></fa-icon></span>
+          </button>
           <label for="filter"></label>
           <select class="filterButton" id="filter" #filterValue (change)="filterBy(filterValue)">
-            ratings
-            <option value="">RATINGS</option>
-            <option value="0">0</option>
+            <option value="">ratings</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -74,6 +75,7 @@
           </select>
         </div>
         @for (review of reviews; track trackId(review)) {
+          <!-- [routerLink]="['/review', review.id, 'view']" -->
           <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
             <div style="display: flex; justify-content: space-between">
               <p id="userName">
@@ -95,9 +97,12 @@
             <p id="dialogue">
               {{ review.comments }}
             </p>
-            <p id="date">
-              {{ review.date | formatMediumDate }}
-            </p>
+            <div style="display: flex; justify-content: space-between">
+              <span id="heart" (click)="likeButton(review)" [innerHTML]="review.liked ? '&#9829;' : '&#9825;'"></span>
+              <p id="date">
+                {{ review.date | formatMediumDate }}
+              </p>
+            </div>
           </div>
         }
       </div>

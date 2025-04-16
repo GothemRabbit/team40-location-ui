@@ -11,6 +11,7 @@ export interface IReview {
   retailer?: IProfileDetails | null;
   buyer?: Pick<IUserDetails, 'id'> | null;
   seller?: Pick<IUserDetails, 'id'> | null;
+  liked?: boolean;
 }
 
 export type NewReview = Omit<IReview, 'id'> & { id: null };

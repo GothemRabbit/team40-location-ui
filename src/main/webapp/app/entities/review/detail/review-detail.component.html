@@ -3,13 +3,22 @@
     @if (review(); as reviewRef) {
       <div>
         <h2 data-cy="reviewDetailsHeading">
-          <span>{{ reviewRef.consumer?.userName }} review about {{ reviewRef.retailer?.userName }}</span>
+          <span>
+            <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']">{{ reviewRef.consumer?.userName }}</a> review about
+            <a [routerLink]="['/profile-details', review()!.retailer?.id, 'view']">{{ reviewRef.retailer?.userName }}</a></span
+          >
         </h2>
         <div class="commentBoxRight">
           <div style="display: flex; justify-content: space-between">
             <p id="userName">
-              <fa-icon icon="user" class="avatar"></fa-icon>
-              <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']"> {{ reviewRef.consumer?.userName }}></a>
+              @if (review()?.consumer?.bioImage) {
+                <img
+                  [src]="'data:' + review()?.consumer?.bioImageContentType + ';base64,' + review()?.consumer?.bioImage"
+                  alt="profileDetails"
+                  class="avatar"
+                />
+              }
+              <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']"> {{ reviewRef.consumer?.userName }}</a>
             </p>
             <p id="rates">
               <span id="stars" *ngFor="let index of [1, 2, 3, 4, 5]">
@@ -23,8 +32,9 @@
           <p id="date">
             {{ reviewRef.date | formatMediumDate }}
           </p>
-          <fa-icon (click)="playSpeech()" [icon]="faPlay"> </fa-icon>
-          <fa-icon (click)="stopSpeech()" [icon]="faPause"> </fa-icon>
+          <button class="soundButton" (click)="soundButton()">
+            <fa-icon [icon]="soundBool ? faPause : faPlay"></fa-icon>
+          </button>
         </div>
 
         <jhi-alert-error></jhi-alert-error>
