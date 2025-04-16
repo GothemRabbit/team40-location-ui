@@ -55,12 +55,6 @@ public interface ItemMapper extends EntityMapper<ItemDTO, Item> {
     @Mapping(target = "id", source = "id")
     UserDetailsDTO toDtoUserDetailsId(UserDetails userDetails);
 
-    //    @Named("profileDetailsUsername")
-    //    @BeanMapping(ignoreByDefault = true)
-    //    @Mapping(target = "id", source = "id")
-    ////    @Mapping(target = "userName", source = "userName")
-    //    ProfileDetailsDTO toDtoProfileDetailsUsername(ProfileDetails profileDetails);
-
     @Named("profileDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
