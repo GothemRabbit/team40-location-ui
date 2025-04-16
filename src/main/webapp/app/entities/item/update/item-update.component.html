@@ -7,11 +7,6 @@
       <hr style="border: 1px solid black; width: 100%" />
       <section class="listing-form">
         <div class="image-upload">
-          <!--          <label class="drop-area">-->
-          <!--            Click here to select photo-->
-          <!--            <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" style="display: none" />-->
-          <!--          </label>-->
-
           <!-- Existing Images Section -->
           <div class="existing-images" *ngIf="existingImages.length > 0">
             <h4>Existing Images</h4>
@@ -26,19 +21,30 @@
             </div>
           </div>
 
+          <label class="drop-area">
+            Click here to select photo
+            <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" style="display: none" />
+          </label>
+
           <!-- New Images Section -->
-          <div class="image-upload">
-            <label class="drop-area">
-              Click here to select photo
-              <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" style="display: none" />
-            </label>
-            <div class="thumbnail-gallery">
+          <!--            <div class="thumbnail-gallery" *ngIf="newImages.length > 0">-->
+          <!--              <h4>New Images</h4>-->
+          <!--              <div class="thumbnail" *ngFor="let img of newImages; let i = index">-->
+          <!--                <img [src]="img.preview" alt="Preview {{ i }}" />-->
+          <!--                <button class="btn btn-danger" (click)="removeImage(i)">X</button>-->
+          <!--              </div>-->
+          <!--            </div>-->
+
+          <div class="new-images" *ngIf="newImages.length > 0">
+            <h4>New Images</h4>
+            <div class="thumbnail-gallery two-per-row">
               <div class="thumbnail" *ngFor="let img of newImages; let i = index">
                 <img [src]="img.preview" alt="Preview {{ i }}" />
                 <button class="btn btn-danger" (click)="removeImage(i)">X</button>
               </div>
             </div>
           </div>
+
           <!--          <div class="thumbnail-gallery">-->
           <!--            <div class="thumbnail" *ngFor="let img of newImages; let i = index">-->
           <!--              <img [src]="img.preview" alt="Preview {{ i }}" />-->
