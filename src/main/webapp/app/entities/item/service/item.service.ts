@@ -77,6 +77,11 @@ export class ItemService {
     );
   }
 
+  // New method to fetch like count for an item
+  getLikesCount(itemId: number): Observable<number> {
+    return this.http.get<{ count: number }>(`${this.resourceUrl}/${itemId}/likes`).pipe(map(response => response.count));
+  }
+
   getImagesForItem(itemId: number): Observable<IImages[]> {
     return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
   }

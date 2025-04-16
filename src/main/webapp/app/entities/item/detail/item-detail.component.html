@@ -86,7 +86,6 @@
               <dt><span>Colour</span></dt>
               <dt><span>Category</span></dt>
               <dt><span>Meet-up Location</span></dt>
-              <dt><span>Views</span></dt>
               <dt><span>Interested</span></dt>
             </div>
             <div class="details-right">
@@ -120,21 +119,22 @@
                 }}
               </dt>
               <dt>Meet-up Location</dt>
-              <dt>No of views</dt>
-              <dt>No of likes</dt>
+              <!--              <dt>{{ likesCount }} {{ likesCount === 1 ? 'like' : 'likes' }}</dt>-->
             </div>
           </div>
           <hr style="border: 1px solid black; width: 100%" />
           <div class="description">
-            <dt><span>Description</span></dt>
             <dd>
-              <span>{{ itemRef.description }}</span>
+              <span>{{ itemRef.description ? itemRef.description : 'No description' }}</span>
             </dd>
           </div>
           <hr style="border: 1px solid black; width: 100%" />
           <div class="seller">
-            <p>By {{ item()?.profileDetails?.userName }}</p>
-            <p>⭐⭐⭐⭐☆</p>
+            <p>
+              By<a [routerLink]="['/profile-details', item()?.profileDetails?.id, 'view']" class="profile-link">
+                {{ item()?.profileDetails?.userName }}</a
+              >
+            </p>
           </div>
 
           <div class="buttons">
@@ -144,16 +144,21 @@
             <button class="btn" [routerLink]="'/conversation'">
               <span>Message Seller</span>
             </button>
-            <button (click)="toggleLike()" class="like-button">
-              <span [class.filled]="hasUserLiked()">❤</span> {{ item()?.likesCount || 0 }}
-            </button>
+
+            <div class="like-section my-3 d-flex align-items-center gap-2">
+              <button class="btn" [ngClass]="item()?.isLikedByUser ? 'btn-danger' : 'btn-outline-danger'" (click)="toggleLike()">
+                {{ item()?.isLikedByUser ? 'Unlike' : 'Like' }}
+              </button>
+
+              <span>{{ item()?.likesCount ?? 0 }} {{ (item()?.likesCount ?? 0) === 1 ? 'like' : 'likes' }}</span>
+            </div>
           </div>
         </div>
       </section>
 
       <dl class="row-md jh-entity-details"></dl>
 
-      <button type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
+      <button *ngIf="isOwner()" type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
       </button>
     </div>

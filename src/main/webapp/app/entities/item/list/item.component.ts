@@ -22,6 +22,7 @@ import { LikesService } from '../../likes/service/likes.service';
 import { ProfileDetailsService } from '../../profile-details/service/profile-details.service';
 import { AccountService } from '../../../core/auth/account.service';
 import { IImages } from '../../images/images.model';
+import { SearchService } from '../../../layouts/navbar/search.service';
 
 @Component({
   standalone: true,
@@ -53,6 +54,15 @@ export class ItemComponent implements OnInit {
   hasMorePage = computed(() => !!this.links().next);
   isFirstFetch = computed(() => Object.keys(this.links()).length === 0);
 
+  filteredItems = computed(() => {
+    const searchTerm = this.searchService.searchTerm().toLowerCase().trim();
+    if (!searchTerm) {
+      return this.items ?? [];
+    }
+    return (this.items ?? []).filter(item => item.title?.toLowerCase().includes(searchTerm));
+  });
+
+  public readonly searchService = inject(SearchService);
   public readonly router = inject(Router);
   protected readonly itemService = inject(ItemService);
   protected readonly activatedRoute = inject(ActivatedRoute);
@@ -62,7 +72,6 @@ export class ItemComponent implements OnInit {
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
   private readonly accountService = inject(AccountService);
-  private readonly profileDetailsService = inject(ProfileDetailsService);
   // private likeService : LikesService;
 
   trackId = (item: IItem): number => this.itemService.getItemIdentifier(item);
@@ -77,9 +86,21 @@ export class ItemComponent implements OnInit {
         tap(() => this.load()),
       )
       .subscribe();
+
+    this.activatedRoute.queryParamMap.subscribe(params => {
+      const searchTerm = params.get('search');
+      this.searchService.searchTerm.set(searchTerm ?? '');
+    });
   }
 
   loadAll(): void {
+    this.itemService.query().subscribe(response => {
+      this.items = response.body ?? [];
+      this.loadImagesForItems();
+    });
+  }
+
+  loadItems(): void {
     this.itemService.query().subscribe(response => {
       this.items = response.body ?? [];
       this.loadImagesForItems();
@@ -120,6 +141,13 @@ export class ItemComponent implements OnInit {
 
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
+  }
+
+  navigateToSearchResults(): void {
+    const searchTerm = this.searchService.searchTerm();
+    if (searchTerm) {
+      this.router.navigate(['/'], { queryParams: { search: searchTerm } });
+    }
   }
 
   // isLiked(item: IItem): boolean {
@@ -172,6 +200,16 @@ export class ItemComponent implements OnInit {
   //   const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
   //   this.items = dataFromBody;
   // }
+
+  protected onResponseSuccess(response: EntityArrayResponseType): void {
+    this.fillComponentAttributesFromResponseHeader(response.headers);
+    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+
+    this.items = dataFromBody.map(item => ({
+      ...item,
+      images: item.images ?? [],
+    }));
+  }
 
   protected fillComponentAttributesFromResponseBody(data: IItem[] | null): IItem[] {
     // If there is previous link, data is a infinite scroll pagination content.
@@ -226,15 +264,5 @@ export class ItemComponent implements OnInit {
         queryParams: queryParamsObj,
       });
     });
-  }
-
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    this.fillComponentAttributesFromResponseHeader(response.headers);
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-
-    this.items = dataFromBody.map(item => ({
-      ...item,
-      images: item.images ?? [],
-    }));
   }
 }

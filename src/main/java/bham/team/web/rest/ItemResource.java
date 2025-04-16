@@ -37,7 +37,7 @@ public class ItemResource {
 
     private static final String ENTITY_NAME = "item";
 
-    @Value("${jhipster.clientApp.name}")
+    @Value("jhipster.clientApp.name")
     private String applicationName;
 
     private final ItemService itemService;
@@ -211,4 +211,15 @@ public class ItemResource {
         List<ItemDTO> items = itemService.findAllItemsByProfile(profileId);
         return ResponseEntity.ok().body(items);
     }
+    //    @GetMapping("/{itemId}/likes")
+    //    public ResponseEntity<Integer> getLikesForItem(@PathVariable Long itemId) {
+    //        int likeCount = itemService.countLikesForItem(itemId);
+    //        return ResponseEntity.ok().body(likeCount);
+    //    }
+    //
+    //    @PostMapping("/{itemId}/likes")
+    //    public ResponseEntity<Void> likeItem(@PathVariable Long itemId, @RequestParam Long profileId) {
+    //        itemService.likeItem(itemId, profileId);
+    //        return ResponseEntity.ok().build();
+    //    }
 }

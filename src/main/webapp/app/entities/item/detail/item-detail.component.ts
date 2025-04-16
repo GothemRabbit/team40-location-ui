@@ -8,6 +8,10 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { IItem } from '../item.model';
 import { ImagesComponent } from '../../images/list/images.component';
 import { ItemService } from '../service/item.service';
+import { IProfileDetails } from '../../profile-details/profile-details.model';
+import { take } from 'rxjs';
+import { LoginService } from 'app/login/login.service';
+import { LikesService } from '../../likes/service/likes.service';
 
 @Component({
   standalone: true,
@@ -17,22 +21,21 @@ import { ItemService } from '../service/item.service';
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, ImagesComponent],
 })
 export class ItemDetailComponent implements OnInit {
-  // item = input<IItem | null>(null);
   item = signal<IItem | null>(null);
-  // isLikedByUser = computed(() => this.item()?.isLikedByUser ?? false);
   currentSlideIndex = 0;
+  likesCount = 0;
+  profileDetails: IProfileDetails | undefined;
+  profileLoaded = signal(false);
 
+  protected loginService = inject(LoginService);
   protected dataUtils = inject(DataUtils);
   private route = inject(ActivatedRoute);
   private itemService = inject(ItemService);
-
-  // constructor(
-  //   private route: ActivatedRoute,
-  //   private itemService: ItemService,
-  //   private dataUtils = inject(DataUtils)
-  // ) {}
+  private likesService = inject(LikesService);
 
   ngOnInit(): void {
+    // Fetch profile details first
+    this.fetchProfileDetails();
     this.route.params.subscribe(params => {
       const itemId = params['id'];
       if (itemId) {
@@ -65,42 +68,55 @@ export class ItemDetailComponent implements OnInit {
     window.history.back();
   }
 
-  toggleLike(): void {
-    const currentItem = this.item();
-    if (!currentItem) return;
-
-    // Ensure `likesCount` is a valid number
-    // const currentLikes = currentItem.likesCount ?? 0;
-    const currentLikes = Number(currentItem.likesCount) || 0;
-    const isLiked = !currentItem.isLikedByUser;
-    const updatedLikes = isLiked ? currentLikes + 1 : Math.max(0, currentLikes - 1); // Avoid negative values
-
-    // Optimistically update UI
-    this.item.update(() => ({
-      ...currentItem,
-      isLikedByUser: isLiked,
-      likesCount: updatedLikes,
-    }));
-
-    // Send API request
-    this.itemService.likeItem(currentItem.id).subscribe({
-      next: response => {
-        if (response.body) {
-          this.item.update(() => response.body as IItem);
-        }
+  // Fetch likes count for the item
+  loadLikesCount(itemId: number): void {
+    this.itemService.getLikesCount(itemId).subscribe({
+      next: count => {
+        this.likesCount = count; // Set the likes count
       },
-      error: err => {
-        console.error('Error toggling like:', err);
-        this.item.update(() => currentItem); // Revert UI if API call fails
-      },
+      error: err => console.error('Error fetching like count:', err),
     });
   }
 
-  // hasUserLiked(): boolean {
-  //   return this.item()?.isLikedByUser ?? false;
+  // Toggle like/unlike the item
+  // toggleLike(): void {
+  //   const itemId = this.item()?.id;
+  //   const profileId = this.profileDetails?.id;
+  //
+  //   if (!itemId || !profileId) {
+  //     console.error('Missing itemId or profileId');
+  //     return;
+  //   }
+  //
+  //   const currentItem = this.item()!;
+  //
+  //   // Optimistic UI update
+  //   const isLiked = !currentItem.isLikedByUser;
+  //   const updatedLikes = isLiked ? (currentItem.likesCount ?? 0) + 1 : Math.max(0, (currentItem.likesCount ?? 0) - 1);
+  //
+  //   this.item.update(() => ({
+  //     ...currentItem,
+  //     isLikedByUser: isLiked,
+  //     likesCount: updatedLikes,
+  //   }));
+  //
+  //   this.itemService.toggleLike(itemId, profileId).subscribe({
+  //     next: updatedLike => {
+  //       this.item.update(() => ({
+  //         ...currentItem,
+  //         isLikedByUser: updatedLike.liked,
+  //         likesCount: updatedLike.likesCount,
+  //       }));
+  //     },
+  //     error: err => {
+  //       console.error('Error toggling like:', err);
+  //       this.item.update(() => currentItem); // Rollback
+  //     },
+  //   });
   // }
-  hasUserLiked(): boolean {
-    return !!this.item()?.isLikedByUser;
+
+  isOwner(): boolean {
+    return this.profileDetails?.id === this.item()?.profileDetails?.id;
   }
 
   nextSlide(): void {
@@ -132,5 +148,26 @@ export class ItemDetailComponent implements OnInit {
     const diffDays = today.diff(listedDate, 'day');
 
     return diffDays === 0 ? 'Listed today' : `Listed ${diffDays} day(s) ago`;
+  }
+
+  // Fetch profile details from the LoginService
+  private fetchProfileDetails(): void {
+    this.loginService
+      .getProfileDetails()
+      .pipe(take(1))
+      .subscribe({
+        next: (profileDetails: IProfileDetails | undefined) => {
+          if (profileDetails) {
+            this.profileDetails = profileDetails;
+            this.profileLoaded.set(true);
+          } else {
+            console.error('No profile details found');
+            // Optionally redirect to login or show a message
+          }
+        },
+        error(err) {
+          console.error('Error fetching profile details:', err);
+        },
+      });
   }
 }

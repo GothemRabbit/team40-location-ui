@@ -45,4 +45,8 @@ public interface ItemRepository extends ItemRepositoryWithBagRelationships, JpaR
 
     @Query("SELECT i FROM Item i WHERE i.profileDetails.id = :profileId")
     List<Item> findAllItemsByProfileId(@Param("profileId") Long profileId);
+
+    // Add this method to count likes for a specific item
+    @Query("SELECT COUNT(l) FROM Likes l WHERE l.item.id = :itemId")
+    int countLikesByItemId(@Param("itemId") Long itemId);
 }
