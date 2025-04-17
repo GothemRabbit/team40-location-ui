@@ -9,8 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
 import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
-import { IUserDetails } from 'app/entities/user-details/user-details.model';
-import { UserDetailsService } from 'app/entities/user-details/service/user-details.service';
 import { ConversationService } from '../service/conversation.service';
 import { IConversation } from '../conversation.model';
 import { ConversationFormGroup, ConversationFormService } from './conversation-form.service';
@@ -26,12 +24,10 @@ export class ConversationUpdateComponent implements OnInit {
   conversation: IConversation | null = null;
 
   profileDetailsSharedCollection: IProfileDetails[] = [];
-  userDetailsSharedCollection: IUserDetails[] = [];
 
   protected conversationService = inject(ConversationService);
   protected conversationFormService = inject(ConversationFormService);
   protected profileDetailsService = inject(ProfileDetailsService);
-  protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -39,8 +35,6 @@ export class ConversationUpdateComponent implements OnInit {
 
   compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
     this.profileDetailsService.compareProfileDetails(o1, o2);
-
-  compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ conversation }) => {
@@ -87,15 +81,14 @@ export class ConversationUpdateComponent implements OnInit {
   }
 
   protected updateForm(conversation: IConversation): void {
-    this.conversation = conversation;
-    this.conversationFormService.resetForm(this.editForm, conversation);
+    this.editForm.patchValue({
+      id: conversation.id,
+      participants: conversation.participants,
+      // ... other fields ...
+    });
 
     this.profileDetailsSharedCollection = this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
       this.profileDetailsSharedCollection,
-      ...(conversation.profileDetails ?? []),
-    );
-    this.userDetailsSharedCollection = this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-      this.userDetailsSharedCollection,
       ...(conversation.participants ?? []),
     );
   }
@@ -108,23 +101,10 @@ export class ConversationUpdateComponent implements OnInit {
         map((profileDetails: IProfileDetails[]) =>
           this.profileDetailsService.addProfileDetailsToCollectionIfMissing<IProfileDetails>(
             profileDetails,
-            ...(this.conversation?.profileDetails ?? []),
+            ...(this.editForm.get('participants')!.value ?? []),
           ),
         ),
       )
       .subscribe((profileDetails: IProfileDetails[]) => (this.profileDetailsSharedCollection = profileDetails));
-
-    this.userDetailsService
-      .query()
-      .pipe(map((res: HttpResponse<IUserDetails[]>) => res.body ?? []))
-      .pipe(
-        map((userDetails: IUserDetails[]) =>
-          this.userDetailsService.addUserDetailsToCollectionIfMissing<IUserDetails>(
-            userDetails,
-            ...(this.conversation?.participants ?? []),
-          ),
-        ),
-      )
-      .subscribe((userDetails: IUserDetails[]) => (this.userDetailsSharedCollection = userDetails));
   }
 }

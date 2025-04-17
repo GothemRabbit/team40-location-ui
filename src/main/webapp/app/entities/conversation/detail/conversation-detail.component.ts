@@ -10,6 +10,7 @@ import { IConversation } from '../conversation.model';
 import { NewMessage } from 'app/entities/message/message.model';
 import { MessageService } from 'app/entities/message/service/message.service';
 import { AccountService } from 'app/core/auth/account.service';
+import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
 
 // Extend dayjs with the relativeTime plugin
 dayjs.extend(relativeTime);
@@ -35,6 +36,7 @@ export class ConversationDetailComponent implements OnInit {
   loading = false;
   currentUserId = 1;
   newMessageContent = '';
+  otherProfileDetails: IProfileDetails[] = [];
 
   constructor(
     private http: HttpClient,
@@ -47,6 +49,7 @@ export class ConversationDetailComponent implements OnInit {
       this.loadMessages(this.conversation.id);
     }
     this.setCurrentUserId();
+    this.setupUsers();
   }
 
   setCurrentUserId(): void {
@@ -89,5 +92,15 @@ export class ConversationDetailComponent implements OnInit {
       },
       error: err => console.error('Failed to send message:', err),
     });
+  }
+
+  setupUsers(): void {
+    if (this.conversation?.profileDetails) {
+      const [profileDetails1, profileDetails2] = this.conversation.profileDetails;
+
+      this.http.get<IProfileDetails[]>(`api/profile-details?id.in=${profileDetails1.id},${profileDetails2.id}`).subscribe(profiles => {
+        this.otherProfileDetails = profiles;
+      });
+    }
   }
 }
