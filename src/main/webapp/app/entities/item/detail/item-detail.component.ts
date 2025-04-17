@@ -67,6 +67,26 @@ export class ItemDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+  reserveItem(): void {
+    // 获取当前买家的 ProfileDetails ID
+    this.loginService
+      .getProfileDetails()
+      .pipe(take(1))
+      .subscribe((profileDetails: IProfileDetails | undefined) => {
+        if (profileDetails) {
+          const buyerProfileId = profileDetails.id;
+          const itemId = this.item()?.id;
+
+          if (!itemId) {
+            console.error('Item ID is missing');
+            return;
+          }
+
+          // 调用后端 API 更新现有的 ProductStatus 订单
+          this.itemService.reserveItemInProductStatus(itemId, buyerProfileId).subscribe();
+        }
+      });
+  }
 
   // Fetch likes count for the item
   loadLikesCount(itemId: number): void {

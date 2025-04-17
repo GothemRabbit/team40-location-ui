@@ -1,10 +1,15 @@
 package bham.team.service;
 
+import bham.team.domain.Item;
 import bham.team.domain.ProductStatus;
 import bham.team.domain.ProfileDetails;
+import bham.team.domain.enumeration.ProductState;
+import bham.team.repository.ItemRepository;
 import bham.team.repository.ProductStatusRepository;
+import bham.team.repository.ProfileDetailsRepository;
 import bham.team.service.dto.ProductStatusDTO;
 import bham.team.service.mapper.ProductStatusMapper;
+import bham.team.service.mapper.ProductStatusMapperImpl;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +33,27 @@ public class ProductStatusService {
     private final ProductStatusRepository repo;
     private final ProductStatusMapper mapper;
     private final ProfileDetailsService profileDetailsService;
+    private final ItemRepository itemRepository;
+    private final ProductStatusRepository productStatusRepository;
+    private final ProfileDetailsRepository profileDetailsRepository;
+    private final ProductStatusMapperImpl productStatusMapper;
 
-    public ProductStatusService(ProductStatusRepository repo, ProductStatusMapper mapper, ProfileDetailsService profileDetailsService) {
+    public ProductStatusService(
+        ProductStatusRepository repo,
+        ProductStatusMapper mapper,
+        ProfileDetailsService profileDetailsService,
+        ItemRepository itemRepository,
+        ProductStatusRepository productStatusRepository,
+        ProfileDetailsRepository profileDetailsRepository,
+        ProductStatusMapperImpl productStatusMapper
+    ) {
         this.repo = repo;
         this.mapper = mapper;
         this.profileDetailsService = profileDetailsService;
+        this.itemRepository = itemRepository;
+        this.productStatusRepository = productStatusRepository;
+        this.profileDetailsRepository = profileDetailsRepository;
+        this.productStatusMapper = productStatusMapper;
     }
 
     /**
@@ -153,6 +174,37 @@ public class ProductStatusService {
             })
             .findFirst()
             .map(mapper::toDto);
+    }
+
+    public ProductStatusDTO reserveItemInProductStatus(Long itemId, Long buyerProfileId) {
+        LOG.debug("Request to reserve ProductStatus for Item ID: {}", itemId);
+
+        // 获取已有的 ProductStatus 订单（pending）
+        Optional<ProductStatus> productStatusOpt = productStatusRepository.findByItemIdAndStatus(itemId, ProductState.PENDING);
+        if (!productStatusOpt.isPresent()) {
+            throw new EntityNotFoundException("ProductStatus not found for this item or the item is already reserved");
+        }
+        ProductStatus productStatus = productStatusOpt.get();
+
+        // 获取买家的 ProfileDetails
+        ProfileDetails buyerProfileDetails = profileDetailsRepository
+            .findById(buyerProfileId)
+            .orElseThrow(() -> new EntityNotFoundException("Buyer ProfileDetails not found"));
+
+        // 设置卖家的 profileDetails（keep）
+        ProfileDetails sellerProfileDetails = productStatus.getItem().getProfileDetails(); // Get seller from item
+        productStatus.setProfileDetails(sellerProfileDetails);
+
+        // 更新订单中的买家信息（profileDetails1）
+        productStatus.setProfileDetails1(buyerProfileDetails);
+
+        // 更新订单状态为 RESERVED
+        productStatus.setStatus(ProductState.RESERVED);
+
+        // 保存更新后的 ProductStatus
+        productStatus = productStatusRepository.save(productStatus);
+
+        return new ProductStatusDTO(); // 转换为 DTO 返回
     }
 
     /**

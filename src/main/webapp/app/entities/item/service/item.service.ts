@@ -124,7 +124,10 @@ export class ItemService {
     }
     return itemCollection;
   }
-
+  reserveItemInProductStatus(itemId: number, buyerProfileId: number): Observable<HttpResponse<any>> {
+    const url = `${this.applicationConfigService.getEndpointFor('api/product-statuses')}/${itemId}/reserve`;
+    return this.http.post<any>(url, { buyerProfileId }, { observe: 'response' });
+  }
   protected convertDateFromClient<T extends IItem | NewItem | PartialUpdateItem>(item: T): RestOf<T> {
     return {
       ...item,

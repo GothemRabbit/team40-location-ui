@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -128,5 +129,12 @@ public class ProductStatusResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/{itemId}/reserve")
+    public ResponseEntity<ProductStatusDTO> reserveItem(@PathVariable Long itemId, @RequestBody Map<String, Long> request) {
+        Long buyerProfileId = request.get("buyerProfileId");
+        ProductStatusDTO result = productStatusService.reserveItemInProductStatus(itemId, buyerProfileId);
+        return ResponseEntity.ok(result);
     }
 }
