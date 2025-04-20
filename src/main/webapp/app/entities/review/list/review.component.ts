@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { IReview } from '../review.model';
@@ -28,6 +28,7 @@ import { faFilter, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-ic
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    ReactiveFormsModule,
   ],
 })
 export class ReviewComponent implements OnInit {
@@ -84,7 +85,7 @@ export class ReviewComponent implements OnInit {
   }
 
   public sortReviewASC(): void {
-    this.reviews = this.reviews?.sort((a, b) => new Date(a.date?.date() ?? 0).getTime() - new Date(a.date?.date() ?? 0).getTime());
+    this.reviews = this.reviews?.sort((a, b) => new Date(b.date?.date() ?? 0).getTime() - new Date(a.date?.date() ?? 0).getTime());
   }
   public sortReviewDSC(): void {
     this.reviews = this.reviews?.sort((a, b) => new Date(a.date?.date() ?? 0).getTime() - new Date(b.date?.date() ?? 0).getTime());

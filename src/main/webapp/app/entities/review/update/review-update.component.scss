@@ -56,12 +56,11 @@ label {
 .formBorder {
   display: grid;
   width: 500px;
-  height: 675px;
   background-color: white;
   border-radius: 5px;
   border: 2px solid #dcd8a2;
   position: page;
-  margin: 0;
+  margin: auto;
 }
 
 .page {
@@ -74,17 +73,6 @@ label {
   box-shadow: 0 5px 5px oklch(0 0 0 / 0.4);
 }
 
-/*.formBorder {
-  margin-top: 3%;
-  margin-left: 25%;
-  width: 500px;
-  height: 530px;
-  background-color: white;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.4);
-  gap: 50px;
-}*/
 .buttonClass {
   margin: 23px;
   text-align: center;
@@ -139,3 +127,34 @@ ngb-rating {
 //#5c6e58 dark green
 // #8aa899 light green
 // #f2d349 yellow
+
+@media (width < 500) {
+  .formBorder {
+    display: grid;
+    width: 400px;
+    background-color: white;
+    border-radius: 5px;
+    border: 2px solid #dcd8a2;
+    position: page;
+    margin: auto;
+  }
+
+  button {
+    font-size: 10px;
+    height: 30px;
+    width: 100px;
+  }
+
+  .num {
+    margin-top: auto;
+    margin-left: 23px;
+    width: 90%;
+    height: 20px;
+  }
+
+  textarea {
+    width: 90%;
+    height: 100px;
+    margin-left: 20px;
+  }
+}
