@@ -1,37 +1,50 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
+import { FormatMediumDatetimePipe } from 'app/shared/date'; // ★ DurationPipe / FormatMediumDatePipe 移除
 import { IProductStatus } from '../product-status.model';
 import { ProductStatusService } from '../service/product-status.service';
+
+import { ItemService } from 'app/entities/item/service/item.service';
+import { IItem } from 'app/entities/item/item.model';
 
 @Component({
   standalone: true,
   selector: 'jhi-product-status-detail',
   templateUrl: './product-status-detail.component.html',
   styleUrls: ['../product-status.styles.css'],
-  imports: [SharedModule, RouterModule, CommonModule, FormsModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
+  imports: [SharedModule, RouterModule, CommonModule, FormsModule, FormatMediumDatetimePipe, NgOptimizedImage],
 })
-export class ProductStatusDetailComponent {
+export class ProductStatusDetailComponent implements OnInit {
   productStatus = input<IProductStatus | null>(null);
+  fullItem = signal<IItem | null>(null);
 
   showModal = false;
   rating: number | null = null;
   comment = '';
 
-  // 确认对话框相关属性
   showConfirmModal = false;
   confirmActionType: 'confirm' | 'cancel' | null = null;
 
-  constructor(private productStatusService: ProductStatusService) {}
+  constructor(
+    private productStatusService: ProductStatusService,
+    private itemService: ItemService,
+  ) {}
+  ngOnInit(): void {
+    const ps = this.productStatus();
+    if (ps?.item?.id) {
+      this.itemService.find(ps.item.id).subscribe(r => {
+        this.fullItem.set(r.body);
+      });
+    }
+  }
 
   previousState(): void {
     window.history.back();
   }
-
   openReviewModal(): void {
     this.showModal = true;
     this.rating = null;
@@ -76,6 +89,15 @@ export class ProductStatusDetailComponent {
     this.showConfirmModal = false;
     this.confirmActionType = null;
   }
+  getImageSrc(imageData: string | null | undefined): string {
+    if (!imageData) return 'assets/images/placeholder.png';
+    const base64Data = this.convertByteArrayToBase64(imageData);
+    return `data:image/png;base64,${base64Data}`;
+  }
+  convertByteArrayToBase64(byteArrayStr: string): string {
+    const byteArray = new TextEncoder().encode(byteArrayStr);
+    return btoa(String.fromCharCode(...byteArray));
+  }
 
   executeAction(): void {
     if (this.confirmActionType === 'confirm') {
@@ -89,39 +111,15 @@ export class ProductStatusDetailComponent {
 
   onConfirm(): void {
     const current = this.productStatus();
-    if (!current) {
-      return;
-    }
+    if (!current) return;
 
-    this.productStatusService.partialUpdate({ id: current.id, status: 'COMPLETED' }).subscribe({
-      next(response) {
-        if (response.body) {
-          // @ts-expect-error: 可调用111111111111
-          current.set(response.body);
-        }
-      },
-      error(error) {
-        console.error('Confirm wrong:', error);
-      },
-    });
+    this.productStatusService.partialUpdate({ id: current.id, status: 'COMPLETED' }).subscribe();
   }
 
   onCancel(): void {
     const current = this.productStatus();
-    if (!current) {
-      return;
-    }
+    if (!current) return;
 
-    this.productStatusService.partialUpdate({ id: current.id, status: 'CANCELLED' }).subscribe({
-      next(response) {
-        if (response.body) {
-          // @ts-expect-error: 可调用222222222222
-          current.set(response.body);
-        }
-      },
-      error(error) {
-        console.error('Cancel wrong:', error);
-      },
-    });
+    this.productStatusService.partialUpdate({ id: current.id, status: 'CANCELLED' }).subscribe();
   }
 }
