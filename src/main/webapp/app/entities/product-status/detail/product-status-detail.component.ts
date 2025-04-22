@@ -6,10 +6,12 @@ import { FormsModule } from '@angular/forms';
 import SharedModule from 'app/shared/shared.module';
 import { FormatMediumDatetimePipe } from 'app/shared/date'; // ★ DurationPipe / FormatMediumDatePipe 移除
 import { IProductStatus } from '../product-status.model';
-import { ProductStatusService } from '../service/product-status.service';
+import { EntityArrayResponseType, ProductStatusService } from '../service/product-status.service';
+import { ImagesService } from 'app/entities/images/service/images.service';
 
 import { ItemService } from 'app/entities/item/service/item.service';
 import { IItem } from 'app/entities/item/item.model';
+import { IImages } from '../../images/images.model';
 
 @Component({
   standalone: true,
@@ -21,6 +23,7 @@ import { IItem } from 'app/entities/item/item.model';
 export class ProductStatusDetailComponent implements OnInit {
   productStatus = input<IProductStatus | null>(null);
   fullItem = signal<IItem | null>(null);
+  itemImages: IImages[] = [];
 
   showModal = false;
   rating: number | null = null;
@@ -32,12 +35,14 @@ export class ProductStatusDetailComponent implements OnInit {
   constructor(
     private productStatusService: ProductStatusService,
     private itemService: ItemService,
+    private imagesService: ImagesService,
   ) {}
   ngOnInit(): void {
     const ps = this.productStatus();
     if (ps?.item?.id) {
-      this.itemService.find(ps.item.id).subscribe(r => {
-        this.fullItem.set(r.body);
+      // 使用 ImagesService 获取与商品关联的图片
+      this.imagesService.findAllByItemId(ps.item.id).subscribe(response => {
+        this.itemImages = response.body ?? []; // 确保从响应中提取数组部分
       });
     }
   }
@@ -95,8 +100,13 @@ export class ProductStatusDetailComponent implements OnInit {
     return `data:image/png;base64,${base64Data}`;
   }
   convertByteArrayToBase64(byteArrayStr: string): string {
-    const byteArray = new TextEncoder().encode(byteArrayStr);
-    return btoa(String.fromCharCode(...byteArray));
+    const byteArray = new TextEncoder().encode(byteArrayStr); // 转换为 Uint8Array
+    let binaryString = '';
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < byteArray.length; i++) {
+      binaryString += String.fromCharCode(byteArray[i]);
+    }
+    return btoa(binaryString);
   }
 
   executeAction(): void {
