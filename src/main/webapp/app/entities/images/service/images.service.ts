@@ -71,4 +71,7 @@ export class ImagesService {
     }
     return imagesCollection;
   }
+  findAllByItemId(itemId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IImages[]>(`${this.resourceUrl}/item/${itemId}`, { observe: 'response' });
+  }
 }

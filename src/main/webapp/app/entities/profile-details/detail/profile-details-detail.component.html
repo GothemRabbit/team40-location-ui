@@ -93,7 +93,70 @@
         </div>
 
         <div *ngIf="activeTab === 'reviews'">
-          <p>Show user's product listings here ....</p>
+          @if (reviewReceived && reviewReceived.length > 0) {
+            <div class="scrollbarBoxRight">
+              <div class="filterSpace">
+                <button class="filterButton" (click)="sortButton()">
+                  <span>date<fa-icon [icon]="sort ? faArrowDown : faArrowUp"></fa-icon></span>
+                </button>
+                <label for="filter"></label>
+                <select class="filterButton" id="filter" #filterValue (change)="filterBy(filterValue)">
+                  <option value="">ratings</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+              @for (review of reviewReceived; track trackId(review)) {
+                <div class="commentBoxRight">
+                  <div style="display: flex; justify-content: space-between">
+                    <p id="username">
+                      @if (review.consumer?.bioImage) {
+                        <img
+                          [src]="'data:' + review.consumer?.bioImageContentType + ';base64,' + review.consumer?.bioImage"
+                          alt="profileDetails"
+                          class="avatar"
+                        />
+                      }
+                      <a [routerLink]="['/review', review.id, 'view']">{{ review.consumer?.userName }}</a>
+                    </p>
+                    <p id="rates">
+                      <ngb-rating [rate]="review.rating ?? 0" [readonly]="true" [max]="5"></ngb-rating>
+                    </p>
+                  </div>
+                  <p id="dialogue">
+                    {{ review.comments }}
+                  </p>
+                  <div style="display: flex; justify-content: space-between">
+                    <span id="heart" (click)="likeButton(review)" [innerHTML]="review.liked ? '&#9829;' : '&#9825;'"></span>
+                    <p id="date">
+                      {{ review.date }}
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="filterSpace">
+              <button data-cy="entityCreateButton" class="filterButton" [routerLink]="['/review/new']">
+                <span>Write a Review!</span>
+              </button>
+              <button data-cy="entityCreateButton" class="filterButton" [routerLink]="['/review']">
+                <span>see all reviews</span>
+              </button>
+            </div>
+          }
+          @if (reviewReceived?.length === 0) {
+            <h3>Reviews</h3>
+            <p>User has received no reviews yet ....</p>
+            <button class="filterButton" [routerLink]="['/review/new']">
+              <span>Write a Review!</span>
+            </button>
+            <button class="filterButton" [routerLink]="['/review']">
+              <span>see all reviews</span>
+            </button>
+          }
         </div>
       </div>
     </div>

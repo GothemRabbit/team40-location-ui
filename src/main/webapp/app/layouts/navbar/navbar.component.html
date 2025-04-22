@@ -86,12 +86,6 @@
                   <span>Profile List</span>
                 </a>
               </li>
-              <li>
-                <a class="dropdown-item" routerLink="/review" routerLinkActive="active" (click)="collapseNavbar()" data-cy="settings">
-                  <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
-                  <span>reviews</span>
-                </a>
-              </li>
               <li *ngIf="currentUserProfile !== null">
                 <a
                   class="dropdown-item"

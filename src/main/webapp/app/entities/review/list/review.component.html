@@ -33,8 +33,15 @@
         <div class="avRating">
           <h2>reviews</h2>
           <h1>{{ getAverageRating() }}</h1>
-          <span class="star" *ngFor="let star of [1, 2, 3, 4, 5]">
-            <span [innerHTML]="star <= (getAverageRating() || 0) ? '&#9733;' : '&#9734;'"></span>
+          <span>
+            <ngb-rating [rate]="getAverageRating()" [readonly]="true" [max]="5">
+              <ng-template let-fill="fill">
+                <span class="star">
+                  <p class="filled" [style.width.%]="fill">&#9733;</p>
+                  <p>&#9734;</p>
+                </span>
+              </ng-template>
+            </ngb-rating>
           </span>
           <p>{{ reviews.length }} reviews</p>
           <p>give us your review we would love to hear your thought on our sellers</p>
@@ -76,7 +83,7 @@
         </div>
         @for (review of reviews; track trackId(review)) {
           <!-- [routerLink]="['/review', review.id, 'view']" -->
-          <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
+          <div class="commentBoxRight">
             <div style="display: flex; justify-content: space-between">
               <p id="userName">
                 @if (review.consumer?.bioImage) {
@@ -86,12 +93,11 @@
                     class="avatar"
                   />
                 }
-                <a [routerLink]="['/profile-details', review.consumer?.id, 'view']">{{ review.consumer?.userName }}</a>
+                <a [routerLink]="['/review', review.id, 'view']">{{ review.consumer?.userName }}</a>
+                <span id="aboutUser"> review about {{ review.retailer?.userName }}</span>
               </p>
               <p id="rates">
-                <span *ngFor="let star of [1, 2, 3, 4, 5]">
-                  <span [innerHTML]="star <= (review.rating || 0) ? '&#9733;' : '&#9734;'"></span>
-                </span>
+                <ngb-rating [rate]="review.rating ?? 0" [readonly]="true" [max]="5"></ngb-rating>
               </p>
             </div>
             <p id="dialogue">

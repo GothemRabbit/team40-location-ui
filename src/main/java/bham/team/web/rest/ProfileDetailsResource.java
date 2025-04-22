@@ -1,8 +1,11 @@
 package bham.team.web.rest;
 
+import bham.team.domain.Review;
 import bham.team.repository.ProfileDetailsRepository;
 import bham.team.service.ProfileDetailsService;
+import bham.team.service.ReviewService;
 import bham.team.service.dto.ProfileDetailsDTO;
+import bham.team.service.dto.ReviewDTO;
 import bham.team.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -32,6 +35,7 @@ public class ProfileDetailsResource {
     private static final Logger LOG = LoggerFactory.getLogger(ProfileDetailsResource.class);
 
     private static final String ENTITY_NAME = "profileDetails";
+    private final ReviewService reviewService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -40,9 +44,14 @@ public class ProfileDetailsResource {
 
     private final ProfileDetailsRepository profileDetailsRepository;
 
-    public ProfileDetailsResource(ProfileDetailsService profileDetailsService, ProfileDetailsRepository profileDetailsRepository) {
+    public ProfileDetailsResource(
+        ProfileDetailsService profileDetailsService,
+        ProfileDetailsRepository profileDetailsRepository,
+        ReviewService reviewService
+    ) {
         this.profileDetailsService = profileDetailsService;
         this.profileDetailsRepository = profileDetailsRepository;
+        this.reviewService = reviewService;
     }
 
     /**
@@ -211,5 +220,11 @@ public class ProfileDetailsResource {
     public ResponseEntity<ProfileDetailsDTO> getProfileWithItems(@PathVariable Long id) {
         Optional<ProfileDetailsDTO> profileDetails = profileDetailsService.findProfileWithItems(id);
         return profileDetails.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/review")
+    public List<ReviewDTO> getReview(@PathVariable Long id) {
+        LOG.debug("REST request to get Review : {}", id);
+        return reviewService.findReviewByRetailerID(id);
     }
 }

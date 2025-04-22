@@ -21,20 +21,20 @@
               <a [routerLink]="['/profile-details', review()!.consumer?.id, 'view']"> {{ reviewRef.consumer?.userName }}</a>
             </p>
             <p id="rates">
-              <span id="stars" *ngFor="let index of [1, 2, 3, 4, 5]">
-                {{ index >= (reviewRef.rating || 0) ? '&#9734;' : '&#9733;' }}
-              </span>
+              <ngb-rating [rate]="review()?.rating ?? 0" [readonly]="true" [max]="5"></ngb-rating>
             </p>
           </div>
           <p id="dialogue">
             {{ reviewRef.comments }}
           </p>
-          <p id="date">
-            {{ reviewRef.date | formatMediumDate }}
-          </p>
-          <button class="soundButton" (click)="soundButton()">
-            <fa-icon [icon]="soundBool ? faPause : faPlay"></fa-icon>
-          </button>
+          <div style="display: flex; justify-content: space-between">
+            <button class="soundButton" (click)="soundButton()">
+              <fa-icon [icon]="soundBool ? faPause : faPlay"></fa-icon>
+            </button>
+            <p id="date">
+              {{ reviewRef.date | formatMediumDate }}
+            </p>
+          </div>
         </div>
 
         <jhi-alert-error></jhi-alert-error>
@@ -50,8 +50,7 @@
             </button>
 
             <button *ngIf="isOwner" type="submit" (click)="delete(reviewRef)" data-cy="entityDeleteButton">
-              <fa-icon icon="times"></fa-icon>
-              <span class="d-none d-md-inline">Delete</span>
+              <fa-icon icon="times"></fa-icon>&nbsp;<span>Delete</span>
             </button>
           </span>
         </div>
