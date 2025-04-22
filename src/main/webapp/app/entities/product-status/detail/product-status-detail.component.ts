@@ -4,13 +4,13 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormatMediumDatetimePipe } from 'app/shared/date'; // ★ DurationPipe / FormatMediumDatePipe 移除
+import { FormatMediumDatetimePipe } from 'app/shared/date';
 import { IProductStatus } from '../product-status.model';
-import { EntityArrayResponseType, ProductStatusService } from '../service/product-status.service';
-import { ImagesService } from 'app/entities/images/service/images.service';
+import { ProductStatusService } from '../service/product-status.service';
 
 import { ItemService } from 'app/entities/item/service/item.service';
 import { IItem } from 'app/entities/item/item.model';
+import { ImagesService } from 'app/entities/images/service/images.service';
 import { IImages } from '../../images/images.model';
 
 @Component({
@@ -37,12 +37,17 @@ export class ProductStatusDetailComponent implements OnInit {
     private itemService: ItemService,
     private imagesService: ImagesService,
   ) {}
+
   ngOnInit(): void {
     const ps = this.productStatus();
     if (ps?.item?.id) {
-      // 使用 ImagesService 获取与商品关联的图片
+      this.itemService.find(ps.item.id).subscribe(r => {
+        this.fullItem.set(r.body);
+      });
+    }
+    if (ps?.item?.id) {
       this.imagesService.findAllByItemId(ps.item.id).subscribe(response => {
-        this.itemImages = response.body ?? []; // 确保从响应中提取数组部分
+        this.itemImages = response.body ?? [];
       });
     }
   }
@@ -95,10 +100,16 @@ export class ProductStatusDetailComponent implements OnInit {
     this.confirmActionType = null;
   }
   getImageSrc(imageData: string | null | undefined): string {
-    if (!imageData) return 'assets/images/placeholder.png';
+    if (!imageData) return 'assets/images/placeholder.png'; // 如果没有图片数据，返回占位符图片
+
+    // 将字节数组转换为 Base64 格式
     const base64Data = this.convertByteArrayToBase64(imageData);
+
+    // 返回 Base64 数据源
     return `data:image/png;base64,${base64Data}`;
   }
+
+  // 将字节数组（如 "[B@xxxxxx"）转换为 Base64 字符串
   convertByteArrayToBase64(byteArrayStr: string): string {
     const byteArray = new TextEncoder().encode(byteArrayStr); // 转换为 Uint8Array
     let binaryString = '';
@@ -106,7 +117,7 @@ export class ProductStatusDetailComponent implements OnInit {
     for (let i = 0; i < byteArray.length; i++) {
       binaryString += String.fromCharCode(byteArray[i]);
     }
-    return btoa(binaryString);
+    return btoa(binaryString); // 使用 btoa 转换为 Base64 字符串
   }
 
   executeAction(): void {
