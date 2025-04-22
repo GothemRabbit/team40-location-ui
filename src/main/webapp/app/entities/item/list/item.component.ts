@@ -17,9 +17,6 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.component';
 import { EntityArrayResponseType, ItemService } from '../service/item.service';
 import { IItem } from '../item.model';
-import { ILikes } from '../../likes/likes.model';
-import { LikesService } from '../../likes/service/likes.service';
-import { ProfileDetailsService } from '../../profile-details/service/profile-details.service';
 import { AccountService } from '../../../core/auth/account.service';
 import { IImages } from '../../images/images.model';
 import { SearchService } from '../../../layouts/navbar/search.service';
@@ -46,6 +43,8 @@ export class ItemComponent implements OnInit {
   subscription: Subscription | null = null;
   items?: IItem[];
   isLoading = false;
+  filteredItems?: IItem[]; // for displaying the filtered list
+  searchTerm = '';
 
   sortState = sortStateSignal({});
 
@@ -53,14 +52,6 @@ export class ItemComponent implements OnInit {
   links: WritableSignal<Record<string, undefined | Record<string, string | undefined>>> = signal({});
   hasMorePage = computed(() => !!this.links().next);
   isFirstFetch = computed(() => Object.keys(this.links()).length === 0);
-
-  filteredItems = computed(() => {
-    const searchTerm = this.searchService.searchTerm().toLowerCase().trim();
-    if (!searchTerm) {
-      return this.items ?? [];
-    }
-    return (this.items ?? []).filter(item => item.title?.toLowerCase().includes(searchTerm));
-  });
 
   public readonly searchService = inject(SearchService);
   public readonly router = inject(Router);
@@ -72,39 +63,49 @@ export class ItemComponent implements OnInit {
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
   private readonly accountService = inject(AccountService);
-  // private likeService : LikesService;
 
   trackId = (item: IItem): number => this.itemService.getItemIdentifier(item);
 
   ngOnInit(): void {
     this.username = this.accountService.getCurrentUserusername();
+    this.loadAll();
 
-    this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
-      .pipe(
-        tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => this.reset()),
-        tap(() => this.load()),
-      )
-      .subscribe();
-
-    this.activatedRoute.queryParamMap.subscribe(params => {
-      const searchTerm = params.get('search');
-      this.searchService.searchTerm.set(searchTerm ?? '');
+    // Listen to route query param changes
+    this.activatedRoute.queryParams.subscribe(params => {
+      const searchTerm = params['search'] || '';
+      this.searchTerm = searchTerm;
+      this.filterItems(searchTerm);
     });
   }
 
   loadAll(): void {
     this.itemService.query().subscribe(response => {
       this.items = response.body ?? [];
+      this.filteredItems = this.items; // initialize filteredItems
       this.loadImagesForItems();
+
+      if (this.searchTerm) {
+        this.filterItems(this.searchTerm);
+      }
     });
   }
 
-  loadItems(): void {
-    this.itemService.query().subscribe(response => {
-      this.items = response.body ?? [];
-      this.loadImagesForItems();
-    });
+  filterItems(term: string): void {
+    if (!this.items) {
+      this.filteredItems = []; // If items is undefined, set filteredItems to an empty array
+      return;
+    }
+
+    if (!term) {
+      this.filteredItems = this.items; // Show all items if search term is empty
+    } else {
+      const lowerTerm = term.toLowerCase();
+      this.filteredItems = this.items.filter(item => {
+        const title = (item.title ?? '').toLowerCase();
+        const description = (item.description ?? '').toLowerCase();
+        return title.includes(lowerTerm) || description.includes(lowerTerm);
+      });
+    }
   }
 
   loadImagesForItems(): void {
@@ -143,30 +144,6 @@ export class ItemComponent implements OnInit {
     return this.dataUtils.openFile(base64String, contentType);
   }
 
-  navigateToSearchResults(): void {
-    const searchTerm = this.searchService.searchTerm();
-    if (searchTerm) {
-      this.router.navigate(['/'], { queryParams: { search: searchTerm } });
-    }
-  }
-
-  // isLiked(item: IItem): boolean {
-  //   // Check if the current profile has liked the item
-  //   return item.likes?.some(like => like.profileDetails?.id == this.username) ?? false;
-  // }
-
-  toggleLike(item: IItem): void {
-    if (!this.username) {
-      console.error('Profile ID not loaded.');
-      return;
-    }
-  }
-
-  // // ⭐ Toggle Dropdown Visibility
-  // toggleDropdown(item: IItem): void {
-  //   item.dropDown = !item.dropDown;
-  // }
-
   delete(item: IItem): void {
     const modalRef = this.modalService.open(ItemDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.item = item;
@@ -194,12 +171,6 @@ export class ItemComponent implements OnInit {
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
-
-  // protected onResponseSuccess(response: EntityArrayResponseType): void {
-  //   this.fillComponentAttributesFromResponseHeader(response.headers);
-  //   const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-  //   this.items = dataFromBody;
-  // }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);

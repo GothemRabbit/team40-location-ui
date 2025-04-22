@@ -6,77 +6,74 @@
 
   <div class="item-container">
     <div class="item-list">
-      <!-- If search term is empty, show all items -->
-      @if (searchService.searchTerm().trim().length === 0) {
-        @if (items?.length === 0) {
-          <div class="warning" id="no-result">
-            <span>No Items found</span>
-          </div>
-        } @else {
-          @for (item of items; track trackId(item)) {
-            <div class="item-card">
-              <div class="card">
-                <div class="card-header"></div>
+      <!-- If no items at all -->
+      @if (items?.length === 0) {
+        <div class="warning" id="no-result">
+          <span>No Items found</span>
+        </div>
+      } @else if (filteredItems?.length === 0 && searchTerm.trim() !== '') {
+        <div class="warning">
+          <span>No "{{ searchTerm }}" found</span>
+        </div>
+      } @else if (filteredItems?.length === items?.length || searchTerm.trim() === '') {
+        @for (item of items; track trackId(item)) {
+          <div class="item-card">
+            <div class="card">
+              <div class="card-header"></div>
 
-                @if (item.images && item.images.length > 0) {
-                  <a [routerLink]="['/item', item.id, 'view']">
-                    <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
-                  </a>
-                } @else {
-                  <a [routerLink]="['/item', item.id, 'view']">
-                    <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
-                  </a>
-                }
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img
+                  class="card-img-top"
+                  [src]="
+                    item.images && item.images.length > 0 && item.images[0].images
+                      ? 'data:image/png;base64,' + item.images[0].images
+                      : 'assets/images/placeholder.png'
+                  "
+                  alt="Item Image"
+                />
+              </a>
 
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
-                  </h5>
-                  <div class="texts">
-                    <p class="card-text">{{ item?.sizeItem || 'No size' }}</p>
-                    <p class="card-text"><strong>£</strong> {{ item.price }}</p>
-                  </div>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
+                </h5>
+                <div class="texts">
+                  <p class="card-text">{{ item?.sizeItem || 'No size' }}</p>
+                  <p class="card-text"><strong>£</strong> {{ item.price }}</p>
                 </div>
               </div>
             </div>
-          }
+          </div>
         }
-      }
+      } @else {
+        @for (item of filteredItems; track trackId(item)) {
+          <div class="item-card">
+            <div class="card">
+              <div class="card-header"></div>
 
-      <!-- If there is a search term, show filtered items -->
-      @else {
-        @if (filteredItems().length === 0) {
-          <div class="warning" id="no-result">
-            <span>No "{{ searchService.searchTerm() }}" can be found</span>
-          </div>
-        } @else {
-          @for (item of filteredItems(); track trackId(item)) {
-            <div class="item-card">
-              <div class="card">
-                <div class="card-header"></div>
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img
+                  class="card-img-top"
+                  [src]="
+                    item.images && item.images.length > 0 && item.images[0].images
+                      ? 'data:image/png;base64,' + item.images[0].images
+                      : 'assets/images/placeholder.png'
+                  "
+                  alt="Item Image"
+                />
+              </a>
 
-                @if (item.images && item.images.length > 0) {
-                  <a [routerLink]="['/item', item.id, 'view']">
-                    <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
-                  </a>
-                } @else {
-                  <a [routerLink]="['/item', item.id, 'view']">
-                    <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
-                  </a>
-                }
-
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
-                  </h5>
-                  <div class="texts">
-                    <p class="card-text">{{ item?.sizeItem || 'No size' }}</p>
-                    <p class="card-text"><strong>£</strong> {{ item.price }}</p>
-                  </div>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
+                </h5>
+                <div class="texts">
+                  <p class="card-text">{{ item?.sizeItem || 'No size' }}</p>
+                  <p class="card-text"><strong>£</strong> {{ item.price }}</p>
                 </div>
               </div>
             </div>
-          }
+          </div>
         }
       }
     </div>

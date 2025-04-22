@@ -22,23 +22,11 @@
   color: #555;
   cursor: pointer;
   transition: background-color 0.5s ease;
-  margin-top: 10px;
 }
 
 .drop-area:hover {
   background-color: #f9f9f9;
   color: #3e8acc;
-}
-
-.new-images {
-  margin-top: 1.5rem;
-}
-
-.two-per-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  justify-items: center;
 }
 
 .thumbnail-gallery {
@@ -95,6 +83,11 @@
 }
 
 .form-control {
+  background-color: white;
+}
+
+input.form-control,
+textarea.form-control {
   background: transparent;
 }
 

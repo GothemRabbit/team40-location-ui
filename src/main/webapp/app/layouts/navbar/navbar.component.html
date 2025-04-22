@@ -22,7 +22,7 @@
         <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <div class="search me-3">
             <fa-icon icon="search"></fa-icon>
-            <input class="search-input" type="search" placeholder="Search" />
+            <input type="search" [(ngModel)]="searchText" (keydown)="onSearchKeydown($event)" placeholder="Search" />
           </div>
           <div class="nav-box">
             <a class="nav-link" routerLink="/item/new" (click)="collapseNavbar()">

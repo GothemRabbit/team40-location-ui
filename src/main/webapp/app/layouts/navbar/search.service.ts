@@ -1,23 +1,22 @@
-import { Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  searchTerm = signal<string>('');
+  currentSearchTerm: Observable<string>; // Declare the public member first
+  private searchTermSource = new BehaviorSubject<string>(''); // Then declare private member
 
-  constructor(private router: Router) {}
-
-  setSearchTerm(value: string): void {
-    this.searchTerm.set(value);
+  constructor() {
+    this.currentSearchTerm = this.searchTermSource.asObservable(); // Assign the observable after declaration
   }
 
-  // Navigate to the home page with the search term in the query params
-  navigateToSearchResults(): void {
-    const term = this.searchTerm();
-    if (term) {
-      this.router.navigate(['/'], { queryParams: { search: term } });
-    }
+  setSearchTerm(term: string): void {
+    this.searchTermSource.next(term);
+  }
+
+  getCurrentSearchTerm(): string {
+    return this.searchTermSource.getValue();
   }
 }
