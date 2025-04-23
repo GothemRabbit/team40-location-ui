@@ -47,7 +47,7 @@
 
       <div class="list-group">
         @for (productStatus of productStatuses; track trackId(productStatus)) {
-          @if (productStatus.status === 'PENDING' || productStatus.status === 'RESERVED') {
+          @if (productStatus.status === 'PENDING' || productStatus.status === 'RESERVED' || productStatus.status === 'UNRESERVED') {
             <a
               class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
               [routerLink]="['/product-status', productStatus.id, 'view']"

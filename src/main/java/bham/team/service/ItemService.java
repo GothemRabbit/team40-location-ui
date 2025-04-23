@@ -36,10 +36,8 @@ public class ItemService {
     private final LikesRepository likesRepository;
     private final ProfileDetailsRepository profileDetailsRepository;
 
-    // ① 新增依赖：需要在此处注入 ProductStatusService
     private final ProductStatusService productStatusService;
 
-    // ② 在构造函数中，增加 productStatusService
     public ItemService(
         ItemRepository itemRepository,
         ItemMapper itemMapper,
@@ -60,10 +58,8 @@ public class ItemService {
     public ItemDTO save(ItemDTO itemDTO) {
         LOG.debug("Request to save Item : {}", itemDTO);
 
-        // 1. 把前端传来的 ItemDTO 转为实体
         Item item = itemMapper.toEntity(itemDTO);
 
-        // 2. 如果 itemDTO 里带了 profileDetails.id，则去数据库查出完整的 ProfileDetails
         if (itemDTO.getProfileDetails() != null && itemDTO.getProfileDetails().getId() != null) {
             LOG.info("Fetching ProfileDetails with ID: {}", itemDTO.getProfileDetails().getId());
 
@@ -77,23 +73,20 @@ public class ItemService {
             LOG.warn("ProfileDetails is NULL in itemDTO! Item might be saved without a profile.");
         }
 
-        // 3. 先保存 item（即商品信息）
         item = itemRepository.save(item);
         LOG.info(
             "Item saved with ID: {}, ProfileDetails ID: {}",
             item.getId(),
             item.getProfileDetails() != null ? item.getProfileDetails().getId() : "NULL"
         );
-        // 在 item 保存成功后，创建一个仅包含 item 编号的 ItemDTO 对象
+
         ItemDTO newItemRef = new ItemDTO();
         newItemRef.setId(item.getId());
 
-        // 4. 自动在 ProductStatus 表里新增一条「UNRESERVED」订单
         ProductStatusDTO productStatusDTO = new ProductStatusDTO();
-        productStatusDTO.setStatus(ProductState.RESERVED);
-        productStatusDTO.setItem(newItemRef); // 将刚保存的 item 编号赋值给订单的 item 字段
+        productStatusDTO.setStatus(ProductState.UNRESERVED);
+        productStatusDTO.setItem(newItemRef);
         productStatusService.save(productStatusDTO);
-        // 5. 返回结果
         return itemMapper.toDto(item);
     }
 

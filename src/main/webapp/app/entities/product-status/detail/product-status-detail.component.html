@@ -25,7 +25,7 @@
                   PENDING: 'PENDING',
                   RESERVED: 'RESERVED',
                   COMPLETED: 'COMPLETED',
-                  CANCELLED: 'UNRESERVED',
+                  CANCELLED: 'CANCELLED',
                   UNRESERVED: 'UNRESERVED',
                 }[productStatusRef.status ?? 'null']
               }}
@@ -67,14 +67,11 @@
 
             <dt>Category</dt>
             <dd>{{ fullItem()?.category || $any(productStatusRef.item)?.category }}</dd>
-
-            <dt>Meet‑up Location</dt>
           </dl>
         </div>
 
         <!-- ---------- photo ---------- -->
-        <div class="thumbnail" style="max-width: 300px; max-height: 300px">
-          <!-- 图片展示 -->
+        <div class="thumbnail" style="width: 200px; max-height: 200px">
           <div *ngIf="itemImages?.length; else noImg">
             <img
               *ngFor="let image of itemImages"
@@ -83,13 +80,10 @@
               style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px"
             />
           </div>
-
           <ng-template #noImg>
             <span style="color: #888">No Image Available</span>
           </ng-template>
         </div>
-
-        <!-- ---------- photo---------- -->
       </div>
 
       <div class="status-actions">
@@ -102,26 +96,45 @@
             <fa-icon icon="pencil-alt"></fa-icon><span>Edit</span>
           </button>
 
-          @if (productStatusRef.status === 'RESERVED') {
-            <button type="button" (click)="showConfirmDialog('confirm')" class="btn btn-success">
-              <fa-icon icon="check"></fa-icon><span>Confirm</span>
+          <!-- PENDING -->
+
+          <div *ngIf="productStatusRef.status === 'PENDING'">
+            <button *ngIf="isSeller" type="button" (click)="showConfirmDialog('Cconfirm')" class="btn btn-warning">
+              <fa-icon icon="check"></fa-icon><span>CConfirm</span>
             </button>
-            <button type="button" (click)="showConfirmDialog('cancel')" class="btn btn-danger">
+            <button *ngIf="isSeller" type="button" (click)="showConfirmDialog('cancel')" class="btn btn-danger">
               <fa-icon icon="times"></fa-icon><span>Cancel</span>
             </button>
-          }
+            <button *ngIf="isBuyer" type="button" (click)="showConfirmDialog('cancel')" class="btn btn-danger">
+              <fa-icon icon="times"></fa-icon><span>Cancel</span>
+            </button>
+          </div>
 
-          @if (productStatusRef.status === 'COMPLETED') {
+          <!-- RESERVED -->
+          <div *ngIf="productStatusRef.status === 'RESERVED'">
+            <button *ngIf="isBuyer" type="button" (click)="showConfirmDialog('confirm')" class="btn btn-success">
+              <fa-icon icon="check"></fa-icon><span>Complete</span>
+            </button>
+            <button *ngIf="isBuyer" type="button" (click)="showConfirmDialog('cancel')" class="btn btn-danger">
+              <fa-icon icon="times"></fa-icon><span>Cancel</span>
+            </button>
+            <button *ngIf="isSeller" type="button" (click)="showConfirmDialog('cancel')" class="btn btn-danger">
+              <fa-icon icon="times"></fa-icon><span>Cancel</span>
+            </button>
+          </div>
+
+          <!-- COMPLETED -->
+          <div *ngIf="productStatusRef.status === 'COMPLETED'">
             <button type="button" (click)="openReviewModal()" class="btn btn-success" data-cy="reviewButton">
               <fa-icon icon="star"></fa-icon><span>Review</span>
             </button>
-          }
+          </div>
         </div>
       </div>
     </div>
   }
 
-  <!-- ===== 确认对话框 ===== -->
+  <!-- Confirm -->
   <div class="modal" [class.show]="showConfirmModal" (click)="closeConfirmDialog()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h2>Warning</h2>
@@ -136,25 +149,23 @@
     </div>
   </div>
 
-  <!-- Review 对话框 -->
+  <!-- Review -->
   <div class="modal" [class.show]="showModal" (click)="closeReviewModal($event)">
     <div class="modal-content" (click)="stopPropagation($event)">
       <h2>Review</h2>
       <div class="modal-body">
         <div class="form-group">
-          <label>Mark (1‑5):</label>
+          <label>Mark (1‑5):</label>
           <div class="star-rating">
             <span *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)" [class.filled]="rating !== null && star <= rating">
               {{ rating !== null && star <= rating ? '★' : '☆' }}
             </span>
           </div>
         </div>
-
         <div class="form-group">
           <label for="comment">Comment:</label>
           <textarea id="comment" [(ngModel)]="comment" class="form-control" rows="4" placeholder="Please enter your comment"></textarea>
         </div>
-
         <div class="modal-actions">
           <button type="button" (click)="submitReview()" class="btn btn-success">Submit</button>
           <button type="button" (click)="closeReviewModal()" class="btn btn-info">Cancel</button>
