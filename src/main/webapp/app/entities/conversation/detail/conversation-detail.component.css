@@ -82,7 +82,7 @@
 }
 
 .chat-input .input-group .btn-primary {
-  background-color: var(--text-on-accent);
+  background-color: var(--background-accent-2);
   border-color: var(--text-on-accent);
 }
 

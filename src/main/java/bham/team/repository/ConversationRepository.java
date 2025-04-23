@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,4 +29,7 @@ public interface ConversationRepository extends ConversationRepositoryWithBagRel
     default Page<Conversation> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    @Query("SELECT DISTINCT c FROM Conversation c JOIN c.profileDetails pd WHERE pd.id = :profileId")
+    List<Conversation> fetchConvosByProfile(@Param("profileId") Long profileId);
 }
