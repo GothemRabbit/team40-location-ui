@@ -1,57 +1,67 @@
 <div>
-  <h2 id="page-heading" data-cy="ItemHeading">
-    <span>Items List</span>
-  </h2>
+  <h2 id="page-heading" data-cy="ItemHeading"></h2>
 
   <jhi-alert-error></jhi-alert-error>
   <jhi-alert></jhi-alert>
 
-  <!--  <div class="button-container">-->
-  <!--    <button-->
-  <!--      id="jh-create-entity"-->
-  <!--      data-cy="entityCreateButton"-->
-  <!--      class="btn btn-primary jh-create-entity create-item"-->
-  <!--      [routerLink]="['/item/new']"-->
-  <!--    >-->
-  <!--      <fa-icon icon="plus"></fa-icon>-->
-  <!--      <span>Create a new Item</span>-->
-  <!--    </button>-->
-  <!--  </div>-->
-
   <div class="item-container">
     <div class="item-list">
+      <!-- If no items at all -->
       @if (items?.length === 0) {
-        <div class="alert alert-warning" id="no-result">
+        <div class="warning" id="no-result">
           <span>No Items found</span>
         </div>
-      }
-      @if (items && items.length > 0) {
+      } @else if (filteredItems?.length === 0 && searchTerm.trim() !== '') {
+        <div class="warning">
+          <span>No "{{ searchTerm }}" found</span>
+        </div>
+      } @else if (filteredItems?.length === items?.length || searchTerm.trim() === '') {
         @for (item of items; track trackId(item)) {
           <div class="item-card">
             <div class="card">
-              <div class="card-header">
-                <!--               <span class="heart-icon" (click)="toggleLike(item)">-->
-                <!--               <span *ngIf="isLiked(item)" style="color: red;">&#10084;</span> &lt;!&ndash; Filled heart for liked &ndash;&gt;-->
-                <!--               <span *ngIf="!isLiked(item)" style="color: grey;">&#9825;</span> &lt;!&ndash; Empty heart for not liked &ndash;&gt;-->
-                <!--             </span>-->
-                <!--              <div class="dropdown">-->
-                <!--                <span class="dots-icon" (click)="toggleDropdown(item)">&#8942;</span>-->
-                <!--                &lt;!&ndash;                <div class="dropdown-content" *ngIf="item.dropDown">&ndash;&gt;-->
-                <!--                &lt;!&ndash;                  <a href="#">Edit</a>&ndash;&gt;-->
-                <!--                &lt;!&ndash;                  <a href="#">Delete</a>&ndash;&gt;-->
-                <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
-                <!--              </div>-->
+              <div class="card-header"></div>
+
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img
+                  class="card-img-top"
+                  [src]="
+                    item.images && item.images.length > 0 && item.images[0].images
+                      ? 'data:image/png;base64,' + item.images[0].images
+                      : 'assets/images/placeholder.png'
+                  "
+                  alt="Item Image"
+                />
+              </a>
+
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
+                </h5>
+                <div class="texts">
+                  <p class="card-text">{{ item?.sizeItem || 'No size' }}</p>
+                  <p class="card-text"><strong>£</strong> {{ item.price }}</p>
+                </div>
               </div>
-              @if (item.images && item.images.length > 0) {
-                <a [routerLink]="['/item', item.id, 'view']">
-                  <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
-                </a>
-              } @else {
-                <!-- Default Placeholder Image -->
-                <a [routerLink]="['/item', item.id, 'view']">
-                  <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
-                </a>
-              }
+            </div>
+          </div>
+        }
+      } @else {
+        @for (item of filteredItems; track trackId(item)) {
+          <div class="item-card">
+            <div class="card">
+              <div class="card-header"></div>
+
+              <a [routerLink]="['/item', item.id, 'view']">
+                <img
+                  class="card-img-top"
+                  [src]="
+                    item.images && item.images.length > 0 && item.images[0].images
+                      ? 'data:image/png;base64,' + item.images[0].images
+                      : 'assets/images/placeholder.png'
+                  "
+                  alt="Item Image"
+                />
+              </a>
 
               <div class="card-body">
                 <h5 class="card-title">

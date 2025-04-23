@@ -83,6 +83,11 @@
 }
 
 .form-control {
+  background-color: white;
+}
+
+input.form-control,
+textarea.form-control {
   background: transparent;
 }
 

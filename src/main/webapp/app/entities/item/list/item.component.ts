@@ -17,11 +17,9 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.component';
 import { EntityArrayResponseType, ItemService } from '../service/item.service';
 import { IItem } from '../item.model';
-import { ILikes } from '../../likes/likes.model';
-import { LikesService } from '../../likes/service/likes.service';
-import { ProfileDetailsService } from '../../profile-details/service/profile-details.service';
 import { AccountService } from '../../../core/auth/account.service';
 import { IImages } from '../../images/images.model';
+import { SearchService } from '../../../layouts/navbar/search.service';
 
 @Component({
   standalone: true,
@@ -45,6 +43,8 @@ export class ItemComponent implements OnInit {
   subscription: Subscription | null = null;
   items?: IItem[];
   isLoading = false;
+  filteredItems?: IItem[]; // for displaying the filtered list
+  searchTerm = '';
 
   sortState = sortStateSignal({});
 
@@ -53,6 +53,7 @@ export class ItemComponent implements OnInit {
   hasMorePage = computed(() => !!this.links().next);
   isFirstFetch = computed(() => Object.keys(this.links()).length === 0);
 
+  public readonly searchService = inject(SearchService);
   public readonly router = inject(Router);
   protected readonly itemService = inject(ItemService);
   protected readonly activatedRoute = inject(ActivatedRoute);
@@ -62,28 +63,49 @@ export class ItemComponent implements OnInit {
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
   private readonly accountService = inject(AccountService);
-  private readonly profileDetailsService = inject(ProfileDetailsService);
-  // private likeService : LikesService;
 
   trackId = (item: IItem): number => this.itemService.getItemIdentifier(item);
 
   ngOnInit(): void {
     this.username = this.accountService.getCurrentUserusername();
+    this.loadAll();
 
-    this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
-      .pipe(
-        tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => this.reset()),
-        tap(() => this.load()),
-      )
-      .subscribe();
+    // Listen to route query param changes
+    this.activatedRoute.queryParams.subscribe(params => {
+      const searchTerm = params['search'] || '';
+      this.searchTerm = searchTerm;
+      this.filterItems(searchTerm);
+    });
   }
 
   loadAll(): void {
     this.itemService.query().subscribe(response => {
       this.items = response.body ?? [];
+      this.filteredItems = this.items; // initialize filteredItems
       this.loadImagesForItems();
+
+      if (this.searchTerm) {
+        this.filterItems(this.searchTerm);
+      }
     });
+  }
+
+  filterItems(term: string): void {
+    if (!this.items) {
+      this.filteredItems = []; // If items is undefined, set filteredItems to an empty array
+      return;
+    }
+
+    if (!term) {
+      this.filteredItems = this.items; // Show all items if search term is empty
+    } else {
+      const lowerTerm = term.toLowerCase();
+      this.filteredItems = this.items.filter(item => {
+        const title = (item.title ?? '').toLowerCase();
+        const description = (item.description ?? '').toLowerCase();
+        return title.includes(lowerTerm) || description.includes(lowerTerm);
+      });
+    }
   }
 
   loadImagesForItems(): void {
@@ -122,23 +144,6 @@ export class ItemComponent implements OnInit {
     return this.dataUtils.openFile(base64String, contentType);
   }
 
-  // isLiked(item: IItem): boolean {
-  //   // Check if the current profile has liked the item
-  //   return item.likes?.some(like => like.profileDetails?.id == this.username) ?? false;
-  // }
-
-  toggleLike(item: IItem): void {
-    if (!this.username) {
-      console.error('Profile ID not loaded.');
-      return;
-    }
-  }
-
-  // // ⭐ Toggle Dropdown Visibility
-  // toggleDropdown(item: IItem): void {
-  //   item.dropDown = !item.dropDown;
-  // }
-
   delete(item: IItem): void {
     const modalRef = this.modalService.open(ItemDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.item = item;
@@ -167,11 +172,15 @@ export class ItemComponent implements OnInit {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
-  // protected onResponseSuccess(response: EntityArrayResponseType): void {
-  //   this.fillComponentAttributesFromResponseHeader(response.headers);
-  //   const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-  //   this.items = dataFromBody;
-  // }
+  protected onResponseSuccess(response: EntityArrayResponseType): void {
+    this.fillComponentAttributesFromResponseHeader(response.headers);
+    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+
+    this.items = dataFromBody.map(item => ({
+      ...item,
+      images: item.images ?? [],
+    }));
+  }
 
   protected fillComponentAttributesFromResponseBody(data: IItem[] | null): IItem[] {
     // If there is previous link, data is a infinite scroll pagination content.
@@ -226,15 +235,5 @@ export class ItemComponent implements OnInit {
         queryParams: queryParamsObj,
       });
     });
-  }
-
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    this.fillComponentAttributesFromResponseHeader(response.headers);
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-
-    this.items = dataFromBody.map(item => ({
-      ...item,
-      images: item.images ?? [],
-    }));
   }
 }

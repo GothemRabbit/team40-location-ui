@@ -59,6 +59,10 @@ export class ReviewService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  getReviewsAboutUser(Id: number): Observable<IReview[]> {
+    return this.http.get<IReview[]>(`/api/profile-details/${Id}/review`);
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

@@ -11,6 +11,7 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import NavbarItem from './navbar-item.model';
 import { IProfileDetails } from '../../entities/profile-details/profile-details.model';
 import { Subscription } from 'rxjs';
+import { SearchService } from './search.service';
 
 @Component({
   standalone: true,
@@ -27,8 +28,10 @@ export default class NavbarComponent implements OnInit {
   account = inject(AccountService).trackCurrentAccount();
   entitiesNavbarItems: NavbarItem[] = [];
   currentUserProfile: IProfileDetails | null = null;
+  searchText = '';
 
   subscription: Subscription | undefined;
+  private readonly searchService = inject(SearchService);
   private readonly profileService = inject(ProfileService);
   private readonly router = inject(Router);
   private readonly loginService = inject(LoginService);
@@ -71,5 +74,13 @@ export default class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed);
+  }
+
+  onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.router.navigate(['/'], {
+        queryParams: { search: this.searchText },
+      });
+    }
   }
 }

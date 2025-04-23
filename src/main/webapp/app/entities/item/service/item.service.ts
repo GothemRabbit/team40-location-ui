@@ -77,6 +77,11 @@ export class ItemService {
     );
   }
 
+  // New method to fetch like count for an item
+  getLikesCount(itemId: number): Observable<number> {
+    return this.http.get<{ count: number }>(`${this.resourceUrl}/${itemId}/likes`).pipe(map(response => response.count));
+  }
+
   getImagesForItem(itemId: number): Observable<IImages[]> {
     return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
   }
@@ -119,7 +124,10 @@ export class ItemService {
     }
     return itemCollection;
   }
-
+  reserveItemInProductStatus(itemId: number, buyerProfileId: number): Observable<HttpResponse<any>> {
+    const url = `${this.applicationConfigService.getEndpointFor('api/product-statuses')}/${itemId}/reserve`;
+    return this.http.post<any>(url, { buyerProfileId }, { observe: 'response' });
+  }
   protected convertDateFromClient<T extends IItem | NewItem | PartialUpdateItem>(item: T): RestOf<T> {
     return {
       ...item,

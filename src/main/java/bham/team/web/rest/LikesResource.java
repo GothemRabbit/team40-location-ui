@@ -166,4 +166,11 @@ public class LikesResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @PutMapping("api/likes")
+    public ResponseEntity<LikesDTO> toggleLike(@RequestParam Long itemId, @RequestParam Long profileId) {
+        LOG.debug("REST request to toggle Like for item: {}, profile: {}", itemId, profileId);
+        LikesDTO updatedLike = likesService.toggleLike(itemId, profileId);
+        return ResponseEntity.ok(updatedLike);
+    }
 }

@@ -86,3 +86,11 @@ button:hover {
   border-radius: 50%;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
 }
+
+@media (width < 900) {
+  button {
+    font-size: 5px;
+    width: 15px;
+    height: 15px;
+  }
+}
