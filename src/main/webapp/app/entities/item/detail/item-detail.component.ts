@@ -27,6 +27,7 @@ export class ItemDetailComponent implements OnInit {
   profileLoaded = signal(false);
   likesCount = signal(0);
   isLiked = signal(false);
+  likeMessage = signal<string | null>(null);
 
   protected loginService = inject(LoginService);
   protected dataUtils = inject(DataUtils);
@@ -158,6 +159,8 @@ export class ItemDetailComponent implements OnInit {
             this.profileLoaded.set(true);
           } else {
             console.error('No profile details found');
+            this.profileLoaded.set(false);
+            this.likeMessage.set('Please sign in to like item');
           }
         },
         error(err) {

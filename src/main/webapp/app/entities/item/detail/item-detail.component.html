@@ -125,7 +125,6 @@
               >
             </p>
           </div>
-
           <div class="buttons">
             <button class="btn" (click)="reserveItem()">
               <span>Reserve Item</span>
@@ -133,11 +132,20 @@
             <button class="btn" [routerLink]="'/conversation'">
               <span>Message Seller</span>
             </button>
-
-            <div class="like-section my-3 d-flex align-items-center gap-2">
-              <button class="btn btn-light p-0 border-0" (click)="toggleLike()" style="font-size: 1.5rem; line-height: 1">
-                <fa-icon [icon]="'heart'" [ngClass]="isLiked() ? 'text-danger' : 'text-secondary'"></fa-icon>
-              </button>
+          </div>
+          <div class="like-section my-3 d-flex align-items-center gap-2">
+            <button class="btn btn-light p-0 border-0" (click)="toggleLike()" style="font-size: 1.5rem; line-height: 1">
+              <fa-icon
+                [icon]="'heart'"
+                [ngClass]="{
+                  'liked-icon': isLiked(),
+                  'unliked-icon': !isLiked(),
+                }"
+                size="lg"
+              ></fa-icon>
+            </button>
+            <div *ngIf="likeMessage()" class="text-warning mt-2">
+              {{ likeMessage() }}
             </div>
           </div>
         </div>

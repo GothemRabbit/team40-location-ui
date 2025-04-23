@@ -184,3 +184,12 @@
   padding-top: 20px;
   text-align: right;
 }
+
+.liked-icon {
+  color: black;
+}
+
+.unliked-icon {
+  color: #c5ccd1;
+  -webkit-text-stroke: 1px #6c757d; /* gray outline */
+}
