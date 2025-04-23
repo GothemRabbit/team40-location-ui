@@ -4,7 +4,7 @@ h2 {
   height: 50px;
   text-align: center;
   margin-bottom: 5px;
-  color: #5c6e58;
+  color: var(--text-color-secondary);
 }
 
 button {
@@ -15,7 +15,7 @@ button {
   margin-left: auto;
   padding: 15px 30px;
   border-radius: 30px;
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   color: black;
   border: 2px solid black;
   transition-duration: 0.5s;
@@ -23,7 +23,7 @@ button {
 
 button:hover {
   background-color: black;
-  color: #dcd8a2;
+  color: var(--background-accent-1);
 }
 
 #btn {
@@ -58,7 +58,7 @@ label {
   width: 500px;
   background-color: white;
   border-radius: 5px;
-  border: 2px solid #dcd8a2;
+  border: 2px solid var(--background-accent-1);
   position: page;
   margin: auto;
 }
@@ -79,7 +79,7 @@ label {
 }
 
 textarea {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   width: 90%;
   height: 130px;
   margin-left: 20px;
@@ -89,7 +89,7 @@ textarea {
 }
 
 .date {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   margin-left: 25px;
   width: 90%;
   height: 38px;
@@ -100,7 +100,7 @@ textarea {
 }
 
 .num {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   margin-top: auto;
   margin-left: 23px;
   width: 90%;
@@ -118,11 +118,11 @@ ngb-rating {
 
 .star {
   font-size: 60px;
-  color: #b0c4de;
+  color: var(--text-color-secondary);
 }
 
 .filled.bad {
-  color: #f2d349;
+  color: var(--background-accent-3);
 }
 //#5c6e58 dark green
 // #8aa899 light green
@@ -134,7 +134,7 @@ ngb-rating {
     width: 400px;
     background-color: white;
     border-radius: 5px;
-    border: 2px solid #dcd8a2;
+    border: 2px solid var(--background-accent-1);
     position: page;
     margin: auto;
   }

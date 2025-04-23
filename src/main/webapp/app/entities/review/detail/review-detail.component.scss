@@ -2,14 +2,14 @@
 // #8aa899 light green
 // #f2d349 yellow
 .page {
-  background-color: #f8dc75;
+  background-color: var(--background-accent-2);
 }
 
 h2 {
   font-weight: bold;
 }
 button {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   color: black;
   display: inline-block;
   border-radius: 20px;
@@ -22,12 +22,12 @@ button {
 
 button:hover {
   background-color: black;
-  color: #dcd8a2;
-  border: 2px solid #dcd8a2;
+  color: var(--background-accent-1);
+  border: 2px solid var(--background-accent-1);
 }
 
 .soundButton {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   color: black;
   display: inline-block;
   border-radius: 100px;
@@ -40,16 +40,16 @@ button:hover {
 
 .soundButton:hover {
   background-color: black;
-  color: #dcd8a2;
-  border: 2px solid #dcd8a2;
+  color: var(--background-accent-1);
+  border: 2px solid var(--background-accent-1);
 }
 
 #stars {
-  color: #f2d349;
+  color: var(--background-accent-3);
 }
 
 .formPage {
-  background-color: #f8dc75;
+  background-color: var(--background-accent-2);
 }
 
 .commentBoxRight {
@@ -72,7 +72,7 @@ button:hover {
 }
 #rates {
   text-align: right;
-  color: gold;
+  color: var(--background-accent-3);
 }
 #date {
   text-align: right;

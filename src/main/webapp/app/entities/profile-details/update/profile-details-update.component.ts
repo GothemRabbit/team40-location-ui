@@ -192,6 +192,14 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     }
   }
 
+  toggleDarkMode(isDarkMode: boolean): void {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }
+
   public onSliderChange(event: Event): void {
     const value = +(event.target as HTMLInputElement).value;
     this.textSize = value;

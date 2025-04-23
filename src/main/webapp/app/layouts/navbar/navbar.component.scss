@@ -18,14 +18,14 @@ Navbar
   align-items: center;
   padding: 6px;
   border-radius: 20px;
-  background: #ffffff;
+  background: var(--background-color-secondary);
   width: 300px;
 }
 
 .search-input {
   font-size: 16px;
   font-family: 'PT Sans', sans-serif;
-  color: #777373;
+  color: var(--text-color-secondary);
   margin-left: 12px;
   outline: none;
   border: none;
@@ -41,7 +41,7 @@ Navbar
   width: 1.5em;
 }
 nav {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   //background: rgb(34, 54, 62);
   //background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
 
@@ -79,15 +79,15 @@ nav {
 .navbar-title,
 .navbar-version,
 .nav-link {
-  color: black;
+  color: var(--text-on-accent);
 }
 
 .fa-icon {
-  color: #f2d349;
+  color: var(--icon-star);
 }
 
 .fa-icon:hover {
-  color: #dddddd;
+  color: var(--text-color-secondary);
 }
 
 .navbar-brand:hover,
@@ -95,7 +95,7 @@ nav {
 .navbar-version:hover,
 .nav-link:hover,
 .nav-box .nav-link:hover {
-  color: #5c6e58;
+  color: var(--text-color-secondary);
 }
 
 .navbar {
@@ -117,7 +117,7 @@ nav {
 .nav-box {
   display: inline-flex; /* Place items side by side in a row */
   align-items: center; /* Vertically center items */
-  border: 2px solid black; /* Outline the box with a light border */
+  border: 2px solid var(--text-on-accent); /* Outline the box with a light border */
   border-radius: 4px; /* Slightly rounded corners */
   background-color: transparent; /* White background (optional) */
   padding: 0.25rem 0.25rem; /* Spacing around the links */
@@ -127,7 +127,7 @@ nav {
   font-size: 1.05rem;
   margin: 0 0.15rem; /* Spacing on each side of the links */
   text-decoration: none; /* Remove underline from links */
-  color: #000; /* Text color (adjust as needed) */
+  color: var(--text-on-accent); /* Text color depends on theme */
 }
 
 .nav-box .nav-link:not(:first-child) {
@@ -145,7 +145,7 @@ nav {
   top: 25%; /* Start the divider partway down */
   bottom: 25%; /* End the divider partway up from the bottom */
   width: 0; /* Vertical line, so width = 0 */
-  border-left: 2px solid black;
+  border-left: 2px solid var(--text-on-accent);
 }
 
 /* ==========================================================================

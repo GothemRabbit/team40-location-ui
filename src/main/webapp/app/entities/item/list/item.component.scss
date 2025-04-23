@@ -58,8 +58,8 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
-  border: 1.5px solid black; /* Light yellow border */
-  background: white;
+  border: 1.5px solid var(--text-on-accent);
+  background: var(--background-color);
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
@@ -72,19 +72,19 @@
 }
 
 .jh-create-entity {
-  background: #5c6e58;
+  background: var(--background-accent-1);
   border-radius: 30px;
   width: 200px;
   display: block;
-  color: white;
+  color: var(--text-on-accent);
   font-weight: bold;
   padding: 10px 15px;
 }
 
 .jh-create-entity:hover {
   transform: translateY(-5px);
-  background: #284727;
-  color: #f6bfbf;
+  background: var(--background-accent-1);
+  color: var(--background-accent-3);
 }
 
 .card-header {
@@ -124,13 +124,13 @@
   font-size: 1.1rem;
   font-weight: 600;
   //color: #333;
-  color: #575555; // Bootstrap primary color
+  color: var(--text-color-secondary);
   transition: color 0.3s ease-in-out;
   text-transform: capitalize;
 }
 
 .item-title-link:hover {
-  color: black; // Darker blue on hover
+  color: var(--text-on-accent);
   text-decoration: underline;
 }
 
@@ -143,7 +143,7 @@
 }
 
 .heart-icon.active {
-  color: black;
+  color: var(--text-on-accent);
 }
 
 .dots-icon {
@@ -170,7 +170,7 @@
   display: block;
   padding: 5px 10px;
   text-decoration: none;
-  color: #575555;
+  color: var(--text-color-secondary);
 }
 
 .dropdown-content a:hover {
@@ -184,12 +184,12 @@
 
 .card-text {
   font-size: 0.9rem;
-  color: #575555;
+  color: var(--text-color-secondary);
   margin-bottom: 5px;
 }
 
 .texts {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Ensures vertical alignment */
+  align-items: center;
 }
