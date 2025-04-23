@@ -83,7 +83,6 @@ export class ReviewComponent implements OnInit {
       this.reviews = this.reviews?.filter(r => r.retailer?.userName === Input.value);
     }
   }
-
   public sortReviewASC(): void {
     this.reviews = this.reviews?.sort((a, b) => new Date(b.date?.date() ?? 0).getTime() - new Date(a.date?.date() ?? 0).getTime());
   }

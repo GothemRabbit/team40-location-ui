@@ -37,8 +37,8 @@
             <ngb-rating [rate]="getAverageRating()" [readonly]="true" [max]="5">
               <ng-template let-fill="fill">
                 <span class="star">
-                  <p class="filled" [style.width.%]="fill">&#9733;</p>
-                  <p>&#9734;</p>
+                  <span class="filled" [style.width.%]="fill">&#9733;</span>
+                  <span>&#9734;</span>
                 </span>
               </ng-template>
             </ngb-rating>
@@ -100,9 +100,11 @@
                 <ngb-rating [rate]="review.rating ?? 0" [readonly]="true" [max]="5"></ngb-rating>
               </p>
             </div>
-            <p id="dialogue">
-              {{ review.comments }}
-            </p>
+            <div id="textbox">
+              <p id="dialogue">
+                {{ review.comments }}
+              </p>
+            </div>
             <div style="display: flex; justify-content: space-between">
               <span id="heart" (click)="likeButton(review)" [innerHTML]="review.liked ? '&#9829;' : '&#9825;'"></span>
               <p id="date">

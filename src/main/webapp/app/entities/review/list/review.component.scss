@@ -64,8 +64,6 @@
 .star .filled {
   position: absolute;
   overflow: hidden;
-  top: 0;
-  left: 0;
 }
 .avRating:hover {
   transform: translateY(-5px);
@@ -73,6 +71,9 @@
 }
 .star1 {
   font-size: 40px;
+}
+#textbox {
+  overflow: hidden;
 }
 .newBox {
   margin: auto;

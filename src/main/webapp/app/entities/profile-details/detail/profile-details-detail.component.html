@@ -126,9 +126,11 @@
                       <ngb-rating [rate]="review.rating ?? 0" [readonly]="true" [max]="5"></ngb-rating>
                     </p>
                   </div>
-                  <p id="dialogue">
-                    {{ review.comments }}
-                  </p>
+                  <div id="textbox">
+                    <p id="dialogue">
+                      {{ review.comments }}
+                    </p>
+                  </div>
                   <div style="display: flex; justify-content: space-between">
                     <span id="heart" (click)="likeButton(review)" [innerHTML]="review.liked ? '&#9829;' : '&#9825;'"></span>
                     <p id="date">
