@@ -50,7 +50,7 @@ export class ConversationComponent implements OnInit {
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
         tap(() => {
           if (!this.conversations || this.conversations.length === 0) {
-            this.load();
+            this.loadVibes();
           }
         }),
       )
@@ -64,13 +64,13 @@ export class ConversationComponent implements OnInit {
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
-        tap(() => this.load()),
+        tap(() => this.loadVibes()),
       )
       .subscribe();
   }
 
-  load(): void {
-    this.queryBackend().subscribe({
+  loadVibes(): void {
+    this.grabVibesBackend().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
       },
@@ -99,13 +99,13 @@ export class ConversationComponent implements OnInit {
     return data ?? [];
   }
 
-  protected queryBackend(): Observable<EntityArrayResponseType> {
+  protected grabVibesBackend(): Observable<EntityArrayResponseType> {
     this.isLoading = true;
     const queryObject: any = {
       eagerload: true,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
-    return this.conversationService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    return this.conversationService.fetchMyVibes().pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(sortState: SortState): void {

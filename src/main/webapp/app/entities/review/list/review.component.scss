@@ -1,14 +1,14 @@
 #page {
 }
 .commentBoxRight {
-  background-color: white;
+  background-color: var(--background-color);
   border-radius: 15px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
   gap: 20px;
   width: 650px;
   height: 150px;
   overflow: hidden;
-  border: 2px solid #dcd8a2;
+  border: 2px solid var(--background-accent-1);
   display: grid;
   margin: auto auto 5px;
 }
@@ -29,7 +29,7 @@
   background-color: black;
 }
 .scrollbarBoxRight::-webkit-scrollbar-track {
-  background: #dcd8a2;
+  background: var(--background-accent-1);
 }
 
 #box {
@@ -45,7 +45,7 @@
   align-items: center;
   text-align: center;
   padding: 10px;
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   border: 2px solid black;
   border-radius: 5px;
   width: 300px;
@@ -64,8 +64,6 @@
 .star .filled {
   position: absolute;
   overflow: hidden;
-  top: 0;
-  left: 0;
 }
 .avRating:hover {
   transform: translateY(-5px);
@@ -73,6 +71,9 @@
 }
 .star1 {
   font-size: 40px;
+}
+#textbox {
+  overflow: hidden;
 }
 .newBox {
   margin: auto;
@@ -83,7 +84,7 @@
   text-align: center;
   border-radius: 10px;
   border: 2px solid black;
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   gap: 5px;
   padding: 10px;
 }
@@ -114,7 +115,7 @@
   align-items: center;
   text-align: center;
   padding: 10px;
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   border: 2px solid black;
   border-radius: 5px;
   width: 300px;
@@ -160,7 +161,7 @@ p {
 }
 #rates {
   text-align: right;
-  color: #f2d349;
+  color: var(--background-accent-3);
 }
 #date {
   text-align: right;
@@ -179,7 +180,7 @@ p {
 }
 
 button {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   border: 2px solid black;
   display: inline-block;
   border-radius: 14px;
@@ -192,8 +193,8 @@ button {
 
 button:hover {
   background-color: black;
-  color: #dcd8a2;
-  border: 2px solid #dcd8a2;
+  color: var(--background-accent-1);
+  border: 2px solid var(--background-accent-1);
 }
 
 #tD {
@@ -202,7 +203,7 @@ button:hover {
 }
 
 .filterButton {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   border: 2px solid black;
   display: inline-block;
   border-radius: 14px;
@@ -215,12 +216,12 @@ button:hover {
 .filterButton:hover {
   background-color: black;
   transition-duration: 0.5s;
-  color: #dcd8a2;
+  color: var(--background-accent-1);
 }
 
 #filter1 {
   border-radius: 15px;
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   border: 2px solid black;
   color: black;
 }

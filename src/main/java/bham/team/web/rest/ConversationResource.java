@@ -191,4 +191,10 @@ public class ConversationResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @GetMapping("/my")
+    public List<ConversationDTO> getMyVibes() {
+        LOG.debug("REST request to fetch current user's convos");
+        return conversationService.grabMyConvos();
+    }
 }

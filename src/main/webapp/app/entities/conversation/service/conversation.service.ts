@@ -30,6 +30,7 @@ export class ConversationService {
   protected readonly applicationConfigService = inject(ApplicationConfigService);
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/conversations');
+  protected resourceMyUrl = `${this.resourceUrl}/my`;
 
   create(conversation: NewConversation): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(conversation);
@@ -97,6 +98,12 @@ export class ConversationService {
       return [...conversationsToAdd, ...conversationCollection];
     }
     return conversationCollection;
+  }
+
+  fetchMyVibes(): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestConversation[]>(this.resourceMyUrl, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   protected convertDateFromClient<T extends IConversation | NewConversation | PartialUpdateConversation>(conversation: T): RestOf<T> {

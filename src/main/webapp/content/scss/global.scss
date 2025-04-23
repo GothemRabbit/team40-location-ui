@@ -24,6 +24,37 @@ a:hover {
   color: $dropdown-link-hover-color;
 }
 
+:root {
+  --font-size: 16px;
+  /* Base colors */
+  --background-color: #ffffff;
+  --background-color-secondary: #f5f5f5;
+  --background-accent-1: #dcd8a2;
+  --background-accent-2: #f8dc75;
+  --background-accent-3: #f2d349;
+
+  --text-color: #000000;
+  --text-color-secondary: #777373;
+  --text-on-accent: #000000;
+
+  --border-color: #cccccc;
+
+  --link-color: #007bff;
+
+  /* Icon colours */
+  --icon-star: #f2d349;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: var(--font-size);
+}
+
+a {
+  color: var(--link-color);
+}
+
 /* ==========================================================================
 Browser Upgrade Prompt
 ========================================================================== */
@@ -208,3 +239,26 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+/* Dark‑mode overrides */
+.dark-mode {
+  --background-color: #121212;
+  --background-color-secondary: #1e1e1e;
+  --background-accent-1: #3a3a26;
+  --background-accent-2: #806c30;
+  --background-accent-3: #bb8d00;
+
+  --text-color: #ffffff;
+  --text-color-secondary: #d0d0d0;
+  --text-on-accent: #ffffff;
+
+  --border-color: #444444;
+
+  --link-color: #bb86fc;
+
+  --icon-star: #ffca28;
+}
+
+html {
+  background: var(--background-accent-1);
+}

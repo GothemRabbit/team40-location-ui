@@ -65,10 +65,10 @@
             multiple
             name="participants"
             formControlName="participants"
-            [compareWith]="compareUserDetails"
+            [compareWith]="compareProfileDetails"
           >
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
+            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
+              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
             }
           </select>
         </div>

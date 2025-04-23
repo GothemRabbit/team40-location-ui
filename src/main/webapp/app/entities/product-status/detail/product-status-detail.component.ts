@@ -12,6 +12,7 @@ import { ItemService } from 'app/entities/item/service/item.service';
 import { IItem } from 'app/entities/item/item.model';
 import { ImagesService } from 'app/entities/images/service/images.service';
 import { IImages } from '../../images/images.model';
+import { ProfileDetailsService } from '../../profile-details/service/profile-details.service';
 
 @Component({
   standalone: true,
@@ -28,14 +29,16 @@ export class ProductStatusDetailComponent implements OnInit {
   showModal = false;
   rating: number | null = null;
   comment = '';
-
+  isSeller = false;
+  isBuyer = false;
   showConfirmModal = false;
-  confirmActionType: 'confirm' | 'cancel' | null = null;
+  confirmActionType: 'confirm' | 'cancel' | 'Cconfirm' | null = null;
 
   constructor(
     private productStatusService: ProductStatusService,
     private itemService: ItemService,
     private imagesService: ImagesService,
+    private profileDetailsService: ProfileDetailsService,
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +53,11 @@ export class ProductStatusDetailComponent implements OnInit {
         this.itemImages = response.body ?? [];
       });
     }
+    this.profileDetailsService.getCurrentUserProfile().subscribe(profileDetailsDTO => {
+      const currentProfileId = profileDetailsDTO.id;
+      this.isSeller = ps?.profileDetails?.id === currentProfileId;
+      this.isBuyer = ps?.profileDetails1?.id === currentProfileId;
+    });
   }
 
   previousState(): void {
@@ -90,7 +98,7 @@ export class ProductStatusDetailComponent implements OnInit {
     this.closeReviewModal();
   }
 
-  showConfirmDialog(action: 'confirm' | 'cancel'): void {
+  showConfirmDialog(action: 'confirm' | 'cancel' | 'Cconfirm'): void {
     this.confirmActionType = action;
     this.showConfirmModal = true;
   }
@@ -100,24 +108,18 @@ export class ProductStatusDetailComponent implements OnInit {
     this.confirmActionType = null;
   }
   getImageSrc(imageData: string | null | undefined): string {
-    if (!imageData) return 'assets/images/placeholder.png'; // 如果没有图片数据，返回占位符图片
-
-    // 将字节数组转换为 Base64 格式
+    if (!imageData) return 'assets/images/placeholder.png';
     const base64Data = this.convertByteArrayToBase64(imageData);
-
-    // 返回 Base64 数据源
     return `data:image/png;base64,${base64Data}`;
   }
-
-  // 将字节数组（如 "[B@xxxxxx"）转换为 Base64 字符串
   convertByteArrayToBase64(byteArrayStr: string): string {
-    const byteArray = new TextEncoder().encode(byteArrayStr); // 转换为 Uint8Array
+    const byteArray = new TextEncoder().encode(byteArrayStr);
     let binaryString = '';
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < byteArray.length; i++) {
       binaryString += String.fromCharCode(byteArray[i]);
     }
-    return btoa(binaryString); // 使用 btoa 转换为 Base64 字符串
+    return btoa(binaryString);
   }
 
   executeAction(): void {
@@ -125,6 +127,8 @@ export class ProductStatusDetailComponent implements OnInit {
       this.onConfirm();
     } else if (this.confirmActionType === 'cancel') {
       this.onCancel();
+    } else if (this.confirmActionType === 'Cconfirm') {
+      this.CConfirm();
     }
     this.closeConfirmDialog();
     this.previousState();
@@ -133,8 +137,12 @@ export class ProductStatusDetailComponent implements OnInit {
   onConfirm(): void {
     const current = this.productStatus();
     if (!current) return;
-
     this.productStatusService.partialUpdate({ id: current.id, status: 'COMPLETED' }).subscribe();
+  }
+  CConfirm(): void {
+    const current = this.productStatus();
+    if (!current) return;
+    this.productStatusService.partialUpdate({ id: current.id, status: 'RESERVED' }).subscribe();
   }
 
   onCancel(): void {

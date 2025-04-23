@@ -42,6 +42,7 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   profileDetails: IProfileDetails | null = null;
   userEmail: string | undefined = undefined;
   account: Account | null = null;
+  textSize = 16;
 
   doNotMatch = signal(false);
   error = signal(false);
@@ -104,6 +105,12 @@ export class ProfileDetailsUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+
+    const savedSize = localStorage.getItem('fontSize');
+    if (savedSize) {
+      this.textSize = +savedSize;
+      this.applyFontSize(this.textSize);
+    }
   }
 
   setActiveTab(tab: string): void {
@@ -185,6 +192,20 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     }
   }
 
+  toggleDarkMode(isDarkMode: boolean): void {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }
+
+  public onSliderChange(event: Event): void {
+    const value = +(event.target as HTMLInputElement).value;
+    this.textSize = value;
+    localStorage.setItem('fontSize', value.toString());
+    this.applyFontSize(value);
+  }
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProfileDetails>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -248,5 +269,9 @@ export class ProfileDetailsUpdateComponent implements OnInit {
         ),
       )
       .subscribe((conversations: IConversation[]) => (this.conversationsSharedCollection = conversations));
+  }
+
+  private applyFontSize(sizePx: number): void {
+    document.documentElement.style.setProperty('--font-size', `${sizePx}px`);
   }
 }

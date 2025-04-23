@@ -144,10 +144,6 @@ public class ProductStatusService {
 
         // 3) 把过滤后的实体转换为 DTO
         List<ProductStatusDTO> dtoList = filteredList.stream().map(mapper::toDto).toList();
-
-        // 4) 因为在内存过滤后，原先数据库分页失效了，只能自己封装为一个“无分页”或“本地分页”结果
-
-        // 如果你想直接返回一个 PageImpl：
         return new PageImpl<>(dtoList, pageable, dtoList.size());
     }
 
@@ -160,10 +156,7 @@ public class ProductStatusService {
         LOG.debug("Stealth approach to get single ProductStatus as buyer or seller");
         Long currentProfileId = getCurrentProfileId();
 
-        // 1) 把所有都查出来
         List<ProductStatus> all = repo.findAll();
-
-        // 2) 在内存中找出与 id 匹配、且卖家或买家是当前用户的
         return all
             .stream()
             .filter(ps -> ps.getId().equals(id))
@@ -179,29 +172,23 @@ public class ProductStatusService {
     public ProductStatusDTO reserveItemInProductStatus(Long itemId, Long buyerProfileId) {
         LOG.debug("Request to reserve ProductStatus for Item ID: {}", itemId);
 
-        // 获取已有的 ProductStatus 订单（pending）
-        Optional<ProductStatus> productStatusOpt = productStatusRepository.findByItemIdAndStatus(itemId, ProductState.PENDING);
+        Optional<ProductStatus> productStatusOpt = productStatusRepository.findByItemIdAndStatus(itemId, ProductState.UNRESERVED);
         if (!productStatusOpt.isPresent()) {
             throw new EntityNotFoundException("ProductStatus not found for this item or the item is already reserved");
         }
         ProductStatus productStatus = productStatusOpt.get();
 
-        // 获取买家的 ProfileDetails
         ProfileDetails buyerProfileDetails = profileDetailsRepository
             .findById(buyerProfileId)
             .orElseThrow(() -> new EntityNotFoundException("Buyer ProfileDetails not found"));
 
-        // 设置卖家的 profileDetails（keep）
         ProfileDetails sellerProfileDetails = productStatus.getItem().getProfileDetails(); // Get seller from item
         productStatus.setProfileDetails(sellerProfileDetails);
 
-        // 更新订单中的买家信息（profileDetails1）
         productStatus.setProfileDetails1(buyerProfileDetails);
 
-        // 更新订单状态为 RESERVED
-        productStatus.setStatus(ProductState.RESERVED);
+        productStatus.setStatus(ProductState.PENDING);
 
-        // 保存更新后的 ProductStatus
         productStatus = productStatusRepository.save(productStatus);
 
         return new ProductStatusDTO(); // 转换为 DTO 返回
@@ -215,10 +202,7 @@ public class ProductStatusService {
         LOG.debug("Stealth approach to delete ProductStatus as buyer or seller");
         Long currentProfileId = getCurrentProfileId();
 
-        // 1) 把所有查出来
         List<ProductStatus> all = repo.findAll();
-
-        // 2) 找到 id 匹配、且卖家或买家是当前用户的那一条
         Optional<ProductStatus> found = all
             .stream()
             .filter(ps -> ps.getId().equals(id))
@@ -233,7 +217,6 @@ public class ProductStatusService {
             throw new EntityNotFoundException("ProductStatus not found or not owned by current user");
         }
 
-        // 3) 真正执行删除
         repo.delete(found.get());
     }
 }

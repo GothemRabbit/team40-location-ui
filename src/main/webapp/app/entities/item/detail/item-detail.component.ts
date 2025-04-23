@@ -94,7 +94,6 @@ export class ItemDetailComponent implements OnInit {
     window.history.back();
   }
   reserveItem(): void {
-    // 获取当前买家的 ProfileDetails ID
     this.loginService
       .getProfileDetails()
       .pipe(take(1))
@@ -107,8 +106,6 @@ export class ItemDetailComponent implements OnInit {
             console.error('Item ID is missing');
             return;
           }
-
-          // 调用后端 API 更新现有的 ProductStatus 订单
           this.itemService.reserveItemInProductStatus(itemId, buyerProfileId).subscribe();
         }
       });

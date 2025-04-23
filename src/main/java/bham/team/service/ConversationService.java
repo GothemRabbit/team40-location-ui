@@ -2,8 +2,13 @@ package bham.team.service;
 
 import bham.team.domain.Conversation;
 import bham.team.domain.Message;
+import bham.team.domain.ProfileDetails;
+import bham.team.domain.User;
 import bham.team.repository.ConversationRepository;
 import bham.team.repository.MessageRepository;
+import bham.team.repository.ProfileDetailsRepository;
+import bham.team.repository.UserRepository;
+import bham.team.security.SecurityUtils;
 import bham.team.service.dto.ConversationDTO;
 import bham.team.service.dto.MessageDTO;
 import bham.team.service.mapper.ConversationMapper;
@@ -37,16 +42,24 @@ public class ConversationService {
 
     private final MessageMapper messageMapper;
 
+    private final ProfileDetailsRepository profileDetailsRepository;
+
+    private final UserRepository userRepository;
+
     public ConversationService(
         ConversationRepository conversationRepository,
         ConversationMapper conversationMapper,
         MessageRepository messageRepository,
-        MessageMapper messageMapper
+        MessageMapper messageMapper,
+        ProfileDetailsRepository profileDetailsRepository,
+        UserRepository userRepository
     ) {
         this.conversationRepository = conversationRepository;
         this.conversationMapper = conversationMapper;
         this.messageRepository = messageRepository;
         this.messageMapper = messageMapper;
+        this.profileDetailsRepository = profileDetailsRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -160,5 +173,16 @@ public class ConversationService {
 
         List<Message> messages = messageRepository.findAllByConversationIdOrderByTimestampAsc(conversationId);
         return messages.stream().map(messageMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ConversationDTO> grabMyConvos() {
+        String currentLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User is not logged in"));
+        User user = userRepository.findOneByLogin(currentLogin).orElseThrow(() -> new RuntimeException("User not found"));
+        ProfileDetails pd = profileDetailsRepository
+            .findProfileDetailsByUserId(user.getId())
+            .orElseThrow(() -> new RuntimeException("ProfileDetails not found"));
+
+        return conversationRepository.fetchConvosByProfile(pd.getId()).stream().map(conversationMapper::toDto).collect(Collectors.toList());
     }
 }
