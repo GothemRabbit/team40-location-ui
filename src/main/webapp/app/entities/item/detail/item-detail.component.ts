@@ -23,9 +23,10 @@ import { LikesService } from '../../likes/service/likes.service';
 export class ItemDetailComponent implements OnInit {
   item = signal<IItem | null>(null);
   currentSlideIndex = 0;
-  likesCount = 0;
   profileDetails: IProfileDetails | undefined;
   profileLoaded = signal(false);
+  likesCount = signal(0);
+  isLiked = signal(false);
 
   protected loginService = inject(LoginService);
   protected dataUtils = inject(DataUtils);
@@ -47,12 +48,37 @@ export class ItemDetailComponent implements OnInit {
   loadItem(itemId: number): void {
     this.itemService.find(itemId).subscribe({
       next: response => {
-        this.item.update(() => response.body); // Correctly updating InputSignal
+        this.item.update(() => response.body);
         if (this.item()?.images?.length) {
           this.currentSlideIndex = 0;
         }
+
+        // ✨ Load likes info after item and profileDetails are loaded
+        if (this.profileDetails) {
+          this.loadLikesData(itemId, this.profileDetails.id);
+        }
       },
       error: err => console.error('Error fetching item:', err),
+    });
+  }
+
+  toggleLike(): void {
+    const itemId = this.item()?.id;
+    const profileId = this.profileDetails?.id;
+    if (!itemId || !profileId) return;
+
+    // Optimistic update
+    const previouslyLiked = this.isLiked();
+    this.isLiked.set(!previouslyLiked);
+    this.likesCount.update(count => (previouslyLiked ? count - 1 : count + 1));
+
+    this.likesService.toggleLike(itemId, profileId).subscribe({
+      error: err => {
+        console.error('Toggle like failed:', err);
+        // Revert optimistic update
+        this.isLiked.set(previouslyLiked);
+        this.likesCount.update(count => (previouslyLiked ? count + 1 : count - 1));
+      },
     });
   }
 
@@ -87,53 +113,6 @@ export class ItemDetailComponent implements OnInit {
         }
       });
   }
-
-  // Fetch likes count for the item
-  loadLikesCount(itemId: number): void {
-    this.itemService.getLikesCount(itemId).subscribe({
-      next: count => {
-        this.likesCount = count; // Set the likes count
-      },
-      error: err => console.error('Error fetching like count:', err),
-    });
-  }
-
-  // Toggle like/unlike the item
-  // toggleLike(): void {
-  //   const itemId = this.item()?.id;
-  //   const profileId = this.profileDetails?.id;
-  //
-  //   if (!itemId || !profileId) {
-  //     console.error('Missing itemId or profileId');
-  //     return;
-  //   }
-  //
-  //   const currentItem = this.item()!;
-  //
-  //   // Optimistic UI update
-  //   const isLiked = !currentItem.isLikedByUser;
-  //   const updatedLikes = isLiked ? (currentItem.likesCount ?? 0) + 1 : Math.max(0, (currentItem.likesCount ?? 0) - 1);
-  //
-  //   this.item.update(() => ({
-  //     ...currentItem,
-  //     isLikedByUser: isLiked,
-  //     likesCount: updatedLikes,
-  //   }));
-  //
-  //   this.itemService.toggleLike(itemId, profileId).subscribe({
-  //     next: updatedLike => {
-  //       this.item.update(() => ({
-  //         ...currentItem,
-  //         isLikedByUser: updatedLike.liked,
-  //         likesCount: updatedLike.likesCount,
-  //       }));
-  //     },
-  //     error: err => {
-  //       console.error('Error toggling like:', err);
-  //       this.item.update(() => currentItem); // Rollback
-  //     },
-  //   });
-  // }
 
   isOwner(): boolean {
     return this.profileDetails?.id === this.item()?.profileDetails?.id;
@@ -182,12 +161,16 @@ export class ItemDetailComponent implements OnInit {
             this.profileLoaded.set(true);
           } else {
             console.error('No profile details found');
-            // Optionally redirect to login or show a message
           }
         },
         error(err) {
           console.error('Error fetching profile details:', err);
         },
       });
+  }
+
+  private loadLikesData(itemId: number, profileId: number): void {
+    this.likesService.getLikeCount(itemId).subscribe(count => this.likesCount.set(count));
+    this.likesService.checkIfLiked(itemId, profileId).subscribe(isLiked => this.isLiked.set(isLiked));
   }
 }

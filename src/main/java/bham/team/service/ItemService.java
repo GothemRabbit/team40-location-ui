@@ -139,18 +139,6 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<ItemDTO> findOneWithLikes(Long id, Long profileId) {
-        return itemRepository
-            .findById(id)
-            .map(item -> {
-                ItemDTO dto = itemMapper.toDto(item);
-                dto.setLikeCount(likesRepository.countLikesByItemId(id));
-                dto.setLikedByUser(likesRepository.existsByItemIdAndProfileId(id, profileId));
-                return dto;
-            });
-    }
-
-    @Transactional(readOnly = true)
     public Optional<ItemDTO> findOne(Long id) {
         LOG.debug("Request to get Item with images: {}", id);
         return itemRepository.findByIdWithImages(id).map(itemMapper::toDto);

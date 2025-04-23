@@ -71,4 +71,19 @@ export class LikesService {
     }
     return likesCollection;
   }
+
+  toggleLike(itemId: number, profileDetailsId: number): Observable<any> {
+    return this.http.post(`${this.resourceUrl}/toggle`, {
+      item: { id: itemId }, // ✅ must match LikesDTO.getItem().getId()
+      profileDetails: { id: profileDetailsId }, // ✅ must match LikesDTO.getProfileDetails().getId()
+    });
+  }
+
+  getLikeCount(itemId: number): Observable<number> {
+    return this.http.get<number>(`${this.resourceUrl}/count/${itemId}`);
+  }
+
+  checkIfLiked(itemId: number, profileDetailsId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.resourceUrl}/exists?itemId=${itemId}&profileId=${profileDetailsId}`);
+  }
 }

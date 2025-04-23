@@ -23,12 +23,14 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
 
     // Check if a user has liked a specific item
     @Query("SELECT COUNT(l) > 0 FROM Likes l WHERE l.item.id = :itemId AND l.profileDetails.id = :profileId")
-    boolean existsByItemIdAndProfileId(@Param("itemId") Long itemId, @Param("profileId") Long profileId);
+    boolean existsByItemIdAndProfileDetailsId(@Param("itemId") Long itemId, @Param("profileId") Long profileId);
 
+    // Find a like by item and profile
     @Query("SELECT l FROM Likes l WHERE l.item.id = :itemId AND l.profileDetails.id = :profileId")
-    Optional<Likes> findByItemIdAndProfileId(@Param("itemId") Long itemId, @Param("profileId") Long profileId);
+    Optional<Likes> findByItemIdAndProfileDetailsId(@Param("itemId") Long itemId, @Param("profileId") Long profileId);
 
-    Optional<Likes> findByItemIdAndProfileDetailsId(Long itemId, Long profileId);
-    int countByItemId(Long itemId);
-    void deleteByItemIdAndProfileDetailsId(Long itemId, Long profileId);
+    // Delete a like by item and profile
+    @Modifying
+    @Query("DELETE FROM Likes l WHERE l.item.id = :itemId AND l.profileDetails.id = :profileId")
+    void deleteByItemIdAndProfileDetailsId(@Param("itemId") Long itemId, @Param("profileId") Long profileId);
 }

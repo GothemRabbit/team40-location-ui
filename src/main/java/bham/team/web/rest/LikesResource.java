@@ -167,10 +167,42 @@ public class LikesResource {
             .build();
     }
 
-    @PutMapping("api/likes")
-    public ResponseEntity<LikesDTO> toggleLike(@RequestParam Long itemId, @RequestParam Long profileId) {
-        LOG.debug("REST request to toggle Like for item: {}, profile: {}", itemId, profileId);
-        LikesDTO updatedLike = likesService.toggleLike(itemId, profileId);
-        return ResponseEntity.ok(updatedLike);
+    /**
+     * POST /toggle : Toggle like/unlike for a given item and profile.
+     */
+    @PostMapping("/toggle")
+    public ResponseEntity<?> toggleLike(@RequestBody LikesDTO likesDTO) {
+        Long itemId = likesDTO.getItemId();
+        Long profileId = likesDTO.getProfileDetailsId();
+        LOG.debug("REST request to toggle like for item {} by profile {}", itemId, profileId);
+
+        boolean alreadyLiked = likesService.checkIfLiked(itemId, profileId);
+        if (alreadyLiked) {
+            likesService.unlikeItem(itemId, profileId);
+            return ResponseEntity.noContent().build();
+        } else {
+            LikesDTO created = likesService.likeItem(itemId, profileId);
+            return ResponseEntity.ok(created);
+        }
+    }
+
+    /**
+     * GET /count/{itemId} : Get total likes for an item.
+     */
+    @GetMapping("/count/{itemId}")
+    public ResponseEntity<Integer> getLikesCount(@PathVariable Long itemId) {
+        LOG.debug("REST request to get likes count for item {}", itemId);
+        int count = likesService.getLikesCount(itemId);
+        return ResponseEntity.ok(count);
+    }
+
+    /**
+     * GET /exists : Check if a profile has liked an item.
+     */
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> checkIfLiked(@RequestParam Long itemId, @RequestParam Long profileId) {
+        LOG.debug("REST request to check if profile {} liked item {}", profileId, itemId);
+        boolean liked = likesService.checkIfLiked(itemId, profileId);
+        return ResponseEntity.ok(liked);
     }
 }

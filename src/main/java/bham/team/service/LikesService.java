@@ -112,25 +112,61 @@ public class LikesService {
         likesRepository.deleteById(id);
     }
 
-    public LikesDTO toggleLike(Long itemId, Long profileId) {
-        LOG.debug("Request to toggle like for item {} by profile {}", itemId, profileId);
+    /**
+     * Like an item.
+     *
+     * @param itemId the id of the item.
+     * @param profileId the id of the profile.
+     * @return the persisted LikesDTO.
+     */
+    public LikesDTO likeItem(Long itemId, Long profileId) {
+        LOG.debug("Request to like item: {} by profile: {}", itemId, profileId);
+        Likes likes = new Likes();
+        Item item = new Item();
+        item.setId(itemId);
+        ProfileDetails profile = new ProfileDetails();
+        profile.setId(profileId);
 
-        Optional<Likes> existingLike = likesRepository.findByItemIdAndProfileId(itemId, profileId);
+        likes.setItem(item);
+        likes.setProfileDetails(profile);
 
-        if (existingLike.isPresent()) {
-            likesRepository.delete(existingLike.get());
-            LikesDTO dto = new LikesDTO();
-            dto.setItemId(itemId);
-            dto.setProfileDetailsId(profileId);
-            return dto;
-        } else {
-            Likes newLike = new Likes();
-            newLike.setItem(new Item().id(itemId));
-            newLike.setProfileDetails(new ProfileDetails().id(profileId));
+        Likes savedLike = likesRepository.save(likes);
+        return likesMapper.toDto(savedLike);
+    }
 
-            Likes savedLike = likesRepository.save(newLike);
-            LikesDTO dto = likesMapper.toDto(savedLike);
-            return dto;
-        }
+    /**
+     * Unlike an item.
+     *
+     * @param itemId the id of the item.
+     * @param profileId the id of the profile.
+     */
+    public void unlikeItem(Long itemId, Long profileId) {
+        LOG.debug("Request to unlike item: {} by profile: {}", itemId, profileId);
+        likesRepository.deleteByItemIdAndProfileDetailsId(itemId, profileId);
+    }
+
+    /**
+     * Get the number of likes for an item.
+     *
+     * @param itemId the id of the item.
+     * @return the number of likes.
+     */
+    @Transactional(readOnly = true)
+    public int getLikesCount(Long itemId) {
+        LOG.debug("Request to get likes count for item: {}", itemId);
+        return likesRepository.countLikesByItemId(itemId);
+    }
+
+    /**
+     * Check if a profile has liked an item.
+     *
+     * @param itemId the id of the item.
+     * @param profileId the id of the profile.
+     * @return true if liked, false otherwise.
+     */
+    @Transactional(readOnly = true)
+    public boolean checkIfLiked(Long itemId, Long profileId) {
+        LOG.debug("Request to check if profile: {} liked item: {}", profileId, itemId);
+        return likesRepository.existsByItemIdAndProfileDetailsId(itemId, profileId);
     }
 }

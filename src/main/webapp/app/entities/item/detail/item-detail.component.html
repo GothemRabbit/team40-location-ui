@@ -45,14 +45,6 @@
           <img src="assets/images/placeholder.png" alt="No Image Available" class="placeholder" />
         </ng-template>
 
-        <!--          <div class="itemLike">-->
-        <!--            <dt><span>Hearts</span></dt>-->
-        <!--            <dd>-->
-        <!--              <span>{{ itemRef.likes }}</span>-->
-        <!--            </dd>-->
-        <!--          </div>-->
-        <!--        </div>-->
-
         <div class="product-details">
           <div class="top">
             <div class="title-price">
@@ -116,7 +108,7 @@
                 }}
               </dt>
               <dt>Meet-up Location</dt>
-              <!--              <dt>{{ likesCount }} {{ likesCount === 1 ? 'like' : 'likes' }}</dt>-->
+              <dt>{{ likesCount() }} {{ likesCount() === 1 ? 'like' : 'likes' }}</dt>
             </div>
           </div>
           <hr style="border: 1px solid black; width: 100%" />
@@ -143,11 +135,9 @@
             </button>
 
             <div class="like-section my-3 d-flex align-items-center gap-2">
-              <!--              <button class="btn" [ngClass]="item()?.isLikedByUser ? 'btn-danger' : 'btn-outline-danger'" (click)="toggleLike()">-->
-              <!--                {{ item()?.isLikedByUser ? 'Unlike' : 'Like' }}-->
-              <!--              </button>-->
-
-              <span>{{ item()?.likesCount ?? 0 }} {{ (item()?.likesCount ?? 0) === 1 ? 'like' : 'likes' }}</span>
+              <button class="btn btn-light p-0 border-0" (click)="toggleLike()" style="font-size: 1.5rem; line-height: 1">
+                <fa-icon [icon]="'heart'" [ngClass]="isLiked() ? 'text-danger' : 'text-secondary'"></fa-icon>
+              </button>
             </div>
           </div>
         </div>
