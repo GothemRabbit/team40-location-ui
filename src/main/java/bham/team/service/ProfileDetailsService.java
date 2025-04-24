@@ -5,6 +5,8 @@ import bham.team.domain.User;
 import bham.team.repository.ProfileDetailsRepository;
 import bham.team.repository.UserRepository;
 import bham.team.security.SecurityUtils;
+import bham.team.service.ItemService;
+import bham.team.service.ProductStatusService;
 import bham.team.service.dto.ProfileDetailsDTO;
 import bham.team.service.mapper.ProfileDetailsMapper;
 import java.util.HashSet;
@@ -33,20 +35,23 @@ public class ProfileDetailsService {
     private final ProfileDetailsMapper profileDetailsMapper;
     private UserService userService;
     private final UserRepository userRepository;
-
-    //    private ItemService itemService;
+    private final ItemService itemService;
+    private final ProductStatusService productStatusService;
 
     public ProfileDetailsService(
         ProfileDetailsRepository profileDetailsRepository,
         ProfileDetailsMapper profileDetailsMapper,
         UserService userService,
-        UserRepository userRepository
-        //        ItemService itemService
+        UserRepository userRepository,
+        ItemService itemService,
+        ProductStatusService productStatusService
     ) {
         this.profileDetailsRepository = profileDetailsRepository;
         this.profileDetailsMapper = profileDetailsMapper;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.itemService = itemService;
+        this.productStatusService = productStatusService;
     }
 
     /**
@@ -160,11 +165,15 @@ public class ProfileDetailsService {
      *
      * @param id the id of the entity.
      */
+    @Transactional
     public void delete(Long id) {
         LOG.debug("Request to delete ProfileDetails : {}", id);
         ProfileDetails profileDetails = profileDetailsRepository.getReferenceById(id);
         User user = profileDetails.getUser();
-        //        new HashSet<>(profileDetails.getItems()).forEach(item -> itemService.delete(item.getId()));
+        new HashSet<>(profileDetails.getProductStatuses()).forEach(productStatus ->
+            productStatusService.deleteForProfile(productStatus.getId())
+        );
+        new HashSet<>(profileDetails.getItems()).forEach(item -> itemService.delete(item.getId()));
         userService.deleteUser(user.getLogin());
         profileDetailsRepository.deleteById(id);
     }

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class ProductStatusService {
     public ProductStatusService(
         ProductStatusRepository repo,
         ProductStatusMapper mapper,
-        ProfileDetailsService profileDetailsService,
+        @Lazy ProfileDetailsService profileDetailsService,
         ItemRepository itemRepository,
         ProductStatusRepository productStatusRepository,
         ProfileDetailsRepository profileDetailsRepository,
@@ -218,5 +219,9 @@ public class ProductStatusService {
         }
 
         repo.delete(found.get());
+    }
+
+    public void deleteForProfile(Long id) {
+        repo.deleteById(id);
     }
 }

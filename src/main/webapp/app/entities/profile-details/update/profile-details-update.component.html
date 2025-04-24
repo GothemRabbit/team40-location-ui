@@ -22,9 +22,6 @@
             <a href="javascript:void(0)" class="list-group-item" [class.active]="activeTab === 'display'" (click)="setActiveTab('display')"
               >Display</a
             >
-            <a href="javascript:void(0)" class="list-group-item" [class.active]="activeTab === 'drafts'" (click)="setActiveTab('drafts')"
-              >Drafts</a
-            >
           </div>
         </div>
 
@@ -36,31 +33,26 @@
             <div class="mb-3">
               <label class="form-label" for="field_bioImage">Profile Picture</label>
 
-              <div class="image-container">
+              <div>
                 <img
+                  class="profile-image"
                   [src]="'data:' + editForm.get('bioImageContentType')!.value + ';base64,' + editForm.get('bioImage')?.value"
-                  style="height: 200px; width: 200px"
                   alt="profileDetails"
                 />
 
-                <div class="form-text text-danger clearfix">
-                  <button
-                    type="button"
-                    (click)="clearInputImage('bioImage', 'bioImageContentType', 'file_bioImage')"
-                    class="btn btn-secondary btn-xs pull-end delete-button"
-                    style="width: 30px; height: 30px; color: red; border: none; background-color: transparent"
-                  >
-                    <span style="font-size: 25px">X</span>
+                <div class="buttons">
+                  <button type="button" (click)="clearInputImage('bioImage', 'bioImageContentType', 'file_bioImage')" class="delete-button">
+                    X
                   </button>
-                </div>
 
-                <input
-                  type="file"
-                  id="file_bioImage"
-                  data-cy="bioImage"
-                  (change)="setFileData($event, 'bioImage', true)"
-                  accept="image/*"
-                />
+                  <input
+                    type="file"
+                    id="file_bioImage"
+                    data-cy="bioImage"
+                    (change)="setFileData($event, 'bioImage', true)"
+                    accept="image/*"
+                  />
+                </div>
               </div>
 
               <input type="hidden" class="form-control" name="bioImage" id="field_bioImage" data-cy="bioImage" formControlName="bioImage" />
@@ -98,19 +90,6 @@
               <label class="form-label">Meetup Locations</label>
               <p>User can change meetup locations here. It will be store in the location entity</p>
             </div>
-
-            <!--            @let addressRef = editForm.get('address')!;-->
-            <!--            <div class="mb-3">-->
-            <!--              <label class="form-label" for="field_address">Meetup Locations</label>-->
-            <!--              <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />-->
-            <!--              @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {-->
-            <!--                <div>-->
-            <!--                  @if (editForm.get('address')?.errors?.required) {-->
-            <!--                    <small class="form-text text-danger">This field is required.</small>-->
-            <!--                  }-->
-            <!--                </div>-->
-            <!--              }-->
-            <!--            </div>-->
           </div>
 
           <div *ngIf="activeTab === 'account'">
@@ -248,7 +227,7 @@
             <div class="mb-3">
               <label class="form-label">Deleting Account</label>
               <p>Deleting your account will remove all of your information from our database. This action cannot be undone</p>
-              <button class="btn btn-danger" (click)="delete(profileDetails!)"><fa-icon icon="t-rex"></fa-icon> Delete Account</button>
+              <button class="btn btn-danger" (click)="delete(profileDetails!)">Delete Account</button>
             </div>
           </div>
 

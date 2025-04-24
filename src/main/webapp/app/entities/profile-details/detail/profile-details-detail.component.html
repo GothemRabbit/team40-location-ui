@@ -27,14 +27,6 @@
             <span class="username">{{ '@' + profileDetailsRef.userName }}</span>
           </dd>
 
-          <dt>
-            <a id="review" [routerLink]="['/review']" class="review-link"> Reviews </a>
-          </dt>
-          <dd>
-            <!--            <span>{{ profileDetailsRef.rating }}</span> supposed to take the average rating from database-->
-            <div class="star">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-          </dd>
-
           <a id="meet-up locations" [routerLink]="['/location']" class="location-link"> Location </a>
           <dd class="address-container">
             <button
@@ -54,14 +46,8 @@
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'listings'" (click)="activeTab = 'listings'"> Listings</a>
         </li>
-        <li *ngIf="isOwner" class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'favorites'" (click)="activeTab = 'favorites'"> Favorites</a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'wishlist'" (click)="activeTab = 'wishlist'"> Wishlist</a>
-        </li>
-        <li *ngIf="isOwner" class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'"> Purchase History</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'"> Reviews </a>
@@ -70,11 +56,41 @@
 
       <div class="tab-content mt-3">
         <div *ngIf="activeTab === 'listings'">
-          <h3>Listings</h3>
           <div>
-            <jhi-item></jhi-item>
+            <ul *ngIf="items.length > 0; else noItems">
+              <li class="item-profile" *ngFor="let item of items">
+                <div class="item-card">
+                  <div class="card">
+                    <div class="card-header"></div>
+
+                    @if (item.images && item.images.length > 0) {
+                      <a [routerLink]="['/item', item.id, 'view']">
+                        <img class="card-img-top" [src]="'data:image/png;base64,' + item.images[0].images" alt="Item Image" />
+                      </a>
+                    } @else {
+                      <a [routerLink]="['/item', item.id, 'view']">
+                        <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
+                      </a>
+                    }
+
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <a [routerLink]="['/item', item.id, 'view']" class="item-title-link">{{ item.title }}</a>
+                      </h5>
+                      <div class="texts">
+                        <p class="card-text">{{ item?.sizeItem || 'No size' }}</p>
+                        <p class="card-text"><strong>£</strong> {{ item.price }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <ng-template #noItems>
+              <p>No items yet.</p>
+            </ng-template>
           </div>
-          <p>Show user's product listings here ....</p>
         </div>
 
         <div *ngIf="activeTab === 'favorites'">

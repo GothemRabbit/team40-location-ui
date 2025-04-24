@@ -12,6 +12,8 @@ import { ReviewComponent } from '../../review/list/review.component';
 import { IReview } from '../../review/review.model';
 import { ReviewService } from '../../review/service/review.service';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { ItemService } from '../../item/service/item.service';
+import { IItem } from '../../item/item.model';
 
 @Component({
   standalone: true,
@@ -27,6 +29,7 @@ export class ProfileDetailsDetailComponent implements OnInit {
   account: Account | null = null;
   reviewReceived?: IReview[];
   sort?: boolean = false;
+  items: IItem[] = [];
 
   protected dataUtils = inject(DataUtils);
   protected accountService = inject(AccountService);
@@ -34,9 +37,11 @@ export class ProfileDetailsDetailComponent implements OnInit {
   protected readonly faArrowUp = faArrowUp;
   protected readonly faArrowDown = faArrowDown;
   private activatedRoute = inject(ActivatedRoute);
+  private itemService = inject(ItemService);
 
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
   ngOnInit(): void {
+    const profileId = this.profileDetails?.id;
     this.accountService.identity().subscribe(account => {
       this.account = account;
       this.checkOwnership();
@@ -47,6 +52,12 @@ export class ProfileDetailsDetailComponent implements OnInit {
         this.reviewReceived = reviews;
       });
     });
+
+    if (profileId) {
+      this.itemService.getItemsByProfile(profileId).subscribe(res => {
+        this.items = res.body ?? [];
+      });
+    }
   }
 
   checkOwnership(): void {

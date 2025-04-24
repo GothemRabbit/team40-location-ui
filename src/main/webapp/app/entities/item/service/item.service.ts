@@ -133,6 +133,9 @@ export class ItemService {
     const url = `${this.applicationConfigService.getEndpointFor('api/product-statuses')}/${itemId}/reserve`;
     return this.http.post<any>(url, { buyerProfileId }, { observe: 'response' });
   }
+  getItemsByProfile(profileId: number): Observable<HttpResponse<IItem[]>> {
+    return this.http.get<IItem[]>(` api/items/profile/${profileId}`, { observe: 'response' });
+  }
   protected convertDateFromClient<T extends IItem | NewItem | PartialUpdateItem>(item: T): RestOf<T> {
     return {
       ...item,

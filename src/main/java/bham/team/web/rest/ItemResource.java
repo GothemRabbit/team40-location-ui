@@ -229,7 +229,7 @@ public class ItemResource {
             .build();
     }
 
-    @GetMapping("/items/profile/{profileId}")
+    @GetMapping("/profile/{profileId}")
     public ResponseEntity<List<ItemDTO>> getItemsByProfile(@PathVariable Long profileId) {
         List<ItemDTO> items = itemService.findAllItemsByProfile(profileId);
         return ResponseEntity.ok().body(items);

@@ -1,26 +1,28 @@
 .container-fluid {
-  width: 80%;
-  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 1200px;
 }
 
 .header {
   font-weight: bold;
+  font-size: 40px;
 }
-
 .hr {
   display: none;
 }
 
 .profilePage-container {
   width: 100%;
-  display: block;
+  display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  margin: 0 auto;
 }
 .profile-image {
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 170px;
+  max-height: 170px;
   object-fit: cover;
 }
 
@@ -43,18 +45,16 @@
 }
 
 .topProfile-container {
-  width: 90%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-color: #1d1d1f;
-  border-width: 2px;
-  border-style: solid;
+  background-color: #f1f1f1;
   padding: 20px;
   border-radius: 8px;
   position: relative;
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .topProfile-container img {
@@ -68,7 +68,8 @@
   flex-direction: column;
   gap: 10px;
   flex-grow: 1;
-  padding-left: 50px;
+  padding-left: 30px;
+  padding-top: 20px;
 }
 
 .username {
@@ -81,8 +82,11 @@
 }
 .profile-details button {
   margin-left: auto;
-  background-color: #f8dc75;
-  color: white;
+  background-color: #dcd8a2;
+  color: black;
+}
+.profile-details button:hover {
+  transform: translateY(-5px);
 }
 
 .address-container {
@@ -99,11 +103,37 @@
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  font-size: 23px;
+  border-radius: 2px;
+}
+
+ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .nav-link {
-  width: auto;
-  padding: 10px 20px;
+  color: #1d1d1f;
+  background-color: #f1f1f1;
+  width: 230px;
+  text-align: center;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid #6c757d;
+  box-shadow: none;
+  color: black;
+}
+
+.nav-link:hover {
+  color: black;
+  border-bottom: 2px solid #6c757d;
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus:hover {
+  color: black;
+  font-weight: bold;
 }
 
 .tab-content {
@@ -273,4 +303,225 @@
     grid-auto-flow: column;
     justify-content: center;
   }
+  .container-fluid {
+    width: 100%;
+    padding: 0px;
+  }
+  .header {
+    font-size: 30px;
+  }
+  .profilePage-container .topProfile-container {
+    width: 80%;
+    gap: 0px;
+    margin-bottom: 5px;
+  }
+  .profile-image {
+    max-width: 90px;
+    max-height: 90px;
+    object-fit: cover;
+  }
+  .topProfile-container img {
+    max-width: 100px;
+    border-width: thin;
+    border-color: #1d1d1f;
+  }
+
+  .profile-details {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0px;
+    padding: 5px;
+  }
+
+  .username {
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .star {
+    font-size: 8px;
+  }
+  .profile-details button {
+    width: 60px;
+    height: 25px;
+    margin-left: auto;
+    background-color: #dcd8a2;
+    color: black;
+    font-size: 10px;
+    padding: 0px;
+  }
+  #meet-up\ locations {
+    font-size: 10px;
+  }
+  .nav-tabs {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 12px;
+    border-radius: 2px;
+  }
+
+  .nav-link {
+    color: #1d1d1f;
+    background-color: #f1f1f1;
+    width: fit-content;
+    text-align: center;
+    padding: 3px;
+  }
+  .item-profile .item-card {
+    width: 350px;
+    height: 150px;
+    flex-direction: row;
+  }
+  .card {
+    flex-direction: row;
+    width: 150px;
+  }
+  .img.card-img-top {
+    width: 150px;
+    margin: 0;
+    height: auto;
+  }
+  .card .card-img-top {
+    margin: 0;
+  }
+  .card-header {
+    width: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 3px;
+    outline: none;
+    display: flex;
+    justify-content: normal;
+    align-items: center; /* Ensures vertical alignment */
+  }
+  .item-profile {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  ul {
+    margin: 0;
+    gap: 0;
+  }
+  a {
+    width: 170px;
+  }
+  .card-body {
+    padding-left: 2px;
+    padding-top: 20px;
+    width: 70px;
+  }
+  .li.item-profile {
+    margin: 0;
+  }
+  .back-text {
+    font-size: 13px;
+  }
+}
+
+ul {
+  list-style-type: none; /* Removes bullet points */
+  padding-left: 0; /* Removes indentation */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.item-profile {
+  margin-right: 20px; /* Optional: Adds space between items horizontally */
+  margin-bottom: 20px; /* Optional: Adds space between items vertically */
+}
+
+.item-card {
+  // flex: 1 1 calc(25% - 20px); /* 4 items per row */
+  flex: 0 0 250px;
+  height: 300px;
+  width: 250px; /* Prevents excessive stretching */
+  background: transparent;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
+  position: relative;
+  border: 1.5px solid black; /* Light yellow border */
+  background: white;
+  transition:
+    transform 0.6s ease-in-out,
+    box-shadow 0.6s ease-in-out;
+
+  height: 90%;
+  width: auto;
+  a {
+    text-decoration: none;
+  }
+}
+
+.card-header {
+  margin-top: -10px;
+  margin-bottom: -20px;
+  display: flex;
+  justify-content: space-between; /* Pushes icons to opposite sides */
+  align-items: center; /* Ensures vertical alignment */
+  //bottom: px;
+  // position: relative;
+}
+
+.card-img-top {
+  width: 85%; // Makes the image fill the card width
+  object-fit: cover; // Ensures the image maintains aspect ratio without distortion
+  border-radius: 2px; // Rounded corners for the image
+  margin: 10px auto; // Center the image with some margin
+  margin-top: 50px;
+  display: block;
+  border: 1px solid transparent;
+  height: 130px;
+  //padding-top: 10px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
+}
+
+.card-body {
+  padding-bottom: 15px;
+  text-align: left;
+}
+
+.item-title-link {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  //color: #333;
+  color: #575555; // Bootstrap primary color
+  transition: color 0.3s ease-in-out;
+  text-transform: capitalize;
+}
+
+.item-title-link:hover {
+  color: black; // Darker blue on hover
+  text-decoration: underline;
+}
+
+.card-title {
+  margin-top: -15px;
+  text-transform: capitalize;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #575555;
+  margin-bottom: 5px;
+}
+
+.texts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
