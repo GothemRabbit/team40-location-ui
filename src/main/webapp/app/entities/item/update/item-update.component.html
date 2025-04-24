@@ -191,57 +191,6 @@
           </div>
         </div>
       </section>
-
-      <!--      <div class="mb-3">-->
-      <!--        <label for="field_wishlists">Wishlist</label>-->
-      <!--        <select-->
-      <!--          class="form-control"-->
-      <!--          id="field_wishlists"-->
-      <!--          data-cy="wishlist"-->
-      <!--          multiple-->
-      <!--          name="wishlists"-->
-      <!--          formControlName="wishlists"-->
-      <!--          [compareWith]="compareWishlist"-->
-      <!--        >-->
-      <!--          @for (wishlistOption of wishlistsSharedCollection; track $index) {-->
-      <!--            <option [ngValue]="wishlistOption">{{ wishlistOption.id }}</option>-->
-      <!--          }-->
-      <!--        </select>-->
-      <!--      </div>-->
-
-      <!--      <div class="mb-3">-->
-      <!--        <label class="form-label" for="field_profileDetails">Profile Details</label>-->
-      <!--        <select-->
-      <!--          class="form-control"-->
-      <!--          id="field_profileDetails"-->
-      <!--          data-cy="profileDetails"-->
-      <!--          name="profileDetails"-->
-      <!--          formControlName="profileDetails"-->
-      <!--          [compareWith]="compareProfileDetails"-->
-      <!--        >-->
-      <!--          <option [ngValue]="null"></option>-->
-      <!--          @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {-->
-      <!--            <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>-->
-      <!--          }-->
-      <!--        </select>-->
-      <!--      </div>-->
-
-      <!--      <div class="mb-3">-->
-      <!--        <label class="form-label" for="field_seller">Seller</label>-->
-      <!--        <select-->
-      <!--          class="form-control"-->
-      <!--          id="field_seller"-->
-      <!--          data-cy="seller"-->
-      <!--          name="seller"-->
-      <!--          formControlName="seller"-->
-      <!--          [compareWith]="compareUserDetails"-->
-      <!--        >-->
-      <!--          <option [ngValue]="null"></option>-->
-      <!--          @for (userDetailsOption of userDetailsSharedCollection; track $index) {-->
-      <!--            <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>-->
-      <!--          }-->
-      <!--        </select>-->
-      <!--      </div>-->
     </div>
 
     <div>
@@ -257,6 +206,11 @@
         class="btn btn-primary"
       >
         <fa-icon icon="upload"></fa-icon>&nbsp;<span>Upload</span>
+      </button>
+
+      <button type="submit" (click)="delete(item!)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+        <fa-icon icon="times"></fa-icon>
+        <span class="d-none d-md-inline">Delete</span>
       </button>
     </div>
   </form>

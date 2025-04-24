@@ -84,7 +84,7 @@ public class Item implements Serializable {
     private Set<Wishlist> wishlists = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "item", "conversation", "profileDetails", "location" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private ProductStatus productStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -95,7 +95,7 @@ public class Item implements Serializable {
     )
     private ProfileDetails profileDetails;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "item", "profileDetails" }, allowSetters = true)
     private Set<Likes> likes = new HashSet<>();

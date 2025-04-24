@@ -103,7 +103,8 @@ export class ItemComponent implements OnInit {
       this.filteredItems = this.items.filter(item => {
         const title = (item.title ?? '').toLowerCase();
         const description = (item.description ?? '').toLowerCase();
-        return title.includes(lowerTerm) || description.includes(lowerTerm);
+        const brand = (item.brand ?? '').toLowerCase();
+        return title.includes(lowerTerm) || description.includes(lowerTerm) || brand.includes(lowerTerm);
       });
     }
   }

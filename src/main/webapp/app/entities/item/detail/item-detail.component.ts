@@ -9,9 +9,11 @@ import { IItem } from '../item.model';
 import { ImagesComponent } from '../../images/list/images.component';
 import { ItemService } from '../service/item.service';
 import { IProfileDetails } from '../../profile-details/profile-details.model';
-import { take } from 'rxjs';
+import { filter, take, tap } from 'rxjs';
 import { LoginService } from 'app/login/login.service';
 import { LikesService } from '../../likes/service/likes.service';
+import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.component';
+import { ITEM_DELETED_EVENT } from '../../../config/navigation.constants';
 
 @Component({
   standalone: true,
