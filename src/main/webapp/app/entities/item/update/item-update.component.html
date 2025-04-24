@@ -12,10 +12,11 @@
             <h4>Existing Images</h4>
             <div class="thumbnail-gallery">
               <div class="thumbnail" *ngFor="let img of existingImages; let i = index">
-                <img
-                  [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"
-                  alt="Existing Image {{ i }}"
-                />
+                <!--                <img-->
+                <!--                  [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"-->
+                <!--                  alt="Existing Image {{ i }}"-->
+                <!--                />-->
+                <img [src]="existingImageUrls[i]" alt="Existing Image {{ i }}" />
                 <button class="btn btn-danger" (click)="removeExistingImage(i)">X</button>
               </div>
             </div>

@@ -82,8 +82,13 @@ export class ItemService {
     return this.http.get<{ count: number }>(`${this.resourceUrl}/${itemId}/likes`).pipe(map(response => response.count));
   }
 
-  getImagesForItem(itemId: number): Observable<IImages[]> {
-    return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
+  // getImagesForItem(itemId: number): Observable<IImages[]> {
+  //   return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
+  // }
+  getImagesForItem(itemId: number): Observable<Blob> {
+    return this.http.get(`http://localhost:8080/api/items/${itemId}/images`, {
+      responseType: 'blob',
+    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

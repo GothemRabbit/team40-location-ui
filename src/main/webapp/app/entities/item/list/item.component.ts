@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit, WritableSignal, computed, inject, signal } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { Observable, Subscription, combineLatest, filter, tap, forkJoin } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, tap, forkJoin, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
@@ -20,6 +20,7 @@ import { IItem } from '../item.model';
 import { AccountService } from '../../../core/auth/account.service';
 import { IImages } from '../../images/images.model';
 import { SearchService } from '../../../layouts/navbar/search.service';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -114,16 +115,17 @@ export class ItemComponent implements OnInit {
       return;
     }
 
-    const requests: Observable<IImages[]>[] = this.items.map(item => this.itemService.getImagesForItem(item.id));
+    // const requests: Observable<IImages[]>[] = this.items.map(item => this.itemService.getImagesForItem(item.id));
+    const requests = this.items.map(item => this.itemService.getImagesForItem(item.id).pipe(catchError(() => of<Blob | null>(null))));
 
-    forkJoin(requests).subscribe((imagesArray: IImages[][]) => {
-      if (!this.items) {
-        console.error('this.items is undefined inside subscribe');
-        return;
-      }
-
-      this.items.forEach((item: IItem, index: number) => {
-        item.images = imagesArray[index] ?? [];
+    forkJoin(requests).subscribe((blobs: (Blob | null)[]) => {
+      this.items!.forEach((item, idx) => {
+        const blob = blobs[idx];
+        if (blob) {
+          item.imageUrl = URL.createObjectURL(blob);
+        } else {
+          item.imageUrl = 'content/images/placeholder.png';
+        }
       });
     });
   }

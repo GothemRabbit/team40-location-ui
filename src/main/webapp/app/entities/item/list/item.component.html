@@ -22,15 +22,7 @@
               <div class="card-header"></div>
 
               <a [routerLink]="['/item', item.id, 'view']">
-                <img
-                  class="card-img-top"
-                  [src]="
-                    item.images && item.images.length > 0 && item.images[0].images
-                      ? 'data:image/png;base64,' + item.images[0].images
-                      : 'assets/images/placeholder.png'
-                  "
-                  alt="Item Image"
-                />
+                <img class="card-img-top" [src]="item.imageUrl || 'assets/images/placeholder.png'" alt="Item Image" />
               </a>
 
               <div class="card-body">
@@ -52,15 +44,7 @@
               <div class="card-header"></div>
 
               <a [routerLink]="['/item', item.id, 'view']">
-                <img
-                  class="card-img-top"
-                  [src]="
-                    item.images && item.images.length > 0 && item.images[0].images
-                      ? 'data:image/png;base64,' + item.images[0].images
-                      : 'assets/images/placeholder.png'
-                  "
-                  alt="Item Image"
-                />
+                <img class="card-img-top" [src]="item.imageUrl || 'assets/images/placeholder.png'" alt="Item Image" />
               </a>
 
               <div class="card-body">

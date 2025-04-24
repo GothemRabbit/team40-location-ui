@@ -22,6 +22,7 @@ import { LikesService } from '../../likes/service/likes.service';
 })
 export class ItemDetailComponent implements OnInit {
   item = signal<IItem | null>(null);
+  imageUrls: string[] = [];
   currentSlideIndex = 0;
   profileDetails: IProfileDetails | undefined;
   profileLoaded = signal(false);
@@ -49,10 +50,21 @@ export class ItemDetailComponent implements OnInit {
   loadItem(itemId: number): void {
     this.itemService.find(itemId).subscribe({
       next: response => {
-        this.item.update(() => response.body);
-        if (this.item()?.images?.length) {
-          this.currentSlideIndex = 0;
+        // this.item.update(() => response.body);
+        // if (this.item()?.images?.length) {
+        //   this.currentSlideIndex = 0;
+        // }
+        const body = response.body!;
+        this.item.set(body);
+
+        if (body.images?.length) {
+          // build an array of data-URLs for the slideshow
+          this.imageUrls = body.images.map(img => `data:${img.imagesContentType ?? 'image/png'};base64,${img.images ?? ''}`);
+        } else {
+          // no images on the DTO → show exactly one placeholder
+          this.imageUrls = ['content/images/placeholder.png'];
         }
+        this.currentSlideIndex = 0;
 
         // ✨ Load likes info after item and profileDetails are loaded
         if (this.profileDetails) {
@@ -117,22 +129,31 @@ export class ItemDetailComponent implements OnInit {
   }
 
   nextSlide(): void {
-    const images = this.item()?.images;
-    if (images && images.length > 0) {
-      this.currentSlideIndex = (this.currentSlideIndex + 1) % images.length;
+    // const images = this.item()?.images;
+    // if (images && images.length > 0) {
+    //   this.currentSlideIndex = (this.currentSlideIndex + 1) % images.length;
+    // }
+    if (this.imageUrls.length > 0) {
+      this.currentSlideIndex = (this.currentSlideIndex + 1) % this.imageUrls.length;
     }
   }
 
   prevSlide(): void {
-    const images = this.item()?.images;
-    if (images && images.length > 0) {
-      this.currentSlideIndex = (this.currentSlideIndex - 1 + images.length) % images.length;
+    // const images = this.item()?.images;
+    // if (images && images.length > 0) {
+    //   this.currentSlideIndex = (this.currentSlideIndex - 1 + images.length) % images.length;
+    // }
+    if (this.imageUrls.length > 0) {
+      this.currentSlideIndex = (this.currentSlideIndex - 1 + this.imageUrls.length) % this.imageUrls.length;
     }
   }
 
   goToSlide(index: number): void {
-    const images = this.item()?.images;
-    if (images && index >= 0 && index < images.length) {
+    // const images = this.item()?.images;
+    // if (images && index >= 0 && index < images.length) {
+    //   this.currentSlideIndex = index;
+    // }
+    if (index >= 0 && index < this.imageUrls.length) {
       this.currentSlideIndex = index;
     }
   }

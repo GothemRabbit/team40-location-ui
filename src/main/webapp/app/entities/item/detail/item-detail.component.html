@@ -14,15 +14,15 @@
       <jhi-alert></jhi-alert>
 
       <section class="product-container">
-        <div class="product-image" *ngIf="item()?.images?.length; else noImage">
+        <div class="product-image" *ngIf="imageUrls.length; else noImage">
           <!-- Slideshow Container -->
           <div class="slideshow-container">
             <div
               class="mySlides fade"
-              *ngFor="let image of item()?.images; let i = index"
+              *ngFor="let url of imageUrls; let i = index"
               [style.display]="currentSlideIndex === i ? 'block' : 'none'"
             >
-              <img [src]="'data:' + (image.imagesContentType || 'image/png') + ';base64,' + (image.images || '')" alt="Item Image" />
+              <img [src]="url" alt="Item Image" class="img-fluid" />
             </div>
             <!-- Navigation Buttons -->
             <a class="prev" (click)="prevSlide()">&#10094;</a>
@@ -32,17 +32,17 @@
           <!-- Thumbnail Container -->
           <div class="thumbnail-container">
             <img
-              *ngFor="let image of item()?.images; let i = index"
+              *ngFor="let url of imageUrls; let i = index"
               class="thumbnail"
               [class.active]="currentSlideIndex === i"
-              [src]="'data:' + (image.imagesContentType || 'image/png') + ';base64,' + (image.images || '')"
+              [src]="url"
               (click)="goToSlide(i)"
-              alt="Thumbnail {{ i + 1 }}"
+              alt="'Thumbnail ' + (i + 1)"
             />
           </div>
         </div>
         <ng-template #noImage>
-          <img src="assets/images/placeholder.png" alt="No Image Available" class="placeholder" />
+          <img src="assets/images/placeholder.png" alt="No Image Available" class="placeholder img-fluid" />
         </ng-template>
 
         <div class="product-details">
