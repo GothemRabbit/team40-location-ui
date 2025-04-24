@@ -101,7 +101,12 @@ export class ConversationComponent implements OnInit {
 
   protected grabVibesBackend(): Observable<EntityArrayResponseType> {
     this.isLoading = true;
-    const queryObject: any = {
+    // const queryObject: any = {
+    //   eagerload: true,
+    //   sort: this.sortService.buildSortParam(this.sortState()),
+    // };
+    // return this.conversationService.fetchMyVibes().pipe(tap(() => (this.isLoading = false)));
+    const queryObject: { eagerload: boolean; sort: string[] } = {
       eagerload: true,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
