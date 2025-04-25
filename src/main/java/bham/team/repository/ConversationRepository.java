@@ -30,6 +30,8 @@ public interface ConversationRepository extends ConversationRepositoryWithBagRel
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 
-    @Query("SELECT DISTINCT c FROM Conversation c JOIN c.profileDetails pd WHERE pd.id = :profileId")
+    @Query(
+        "SELECT DISTINCT c FROM Conversation c LEFT JOIN c.profileDetails pd LEFT JOIN c.participants par WHERE pd.id = :profileId OR par.id = :profileId"
+    )
     List<Conversation> fetchConvosByProfile(@Param("profileId") Long profileId);
 }

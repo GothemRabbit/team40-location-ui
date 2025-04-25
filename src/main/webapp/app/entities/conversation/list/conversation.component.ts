@@ -11,6 +11,7 @@ import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigati
 import { IConversation } from '../conversation.model';
 import { ConversationService, EntityArrayResponseType } from '../service/conversation.service';
 import { ConversationDeleteDialogComponent } from '../delete/conversation-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   standalone: true,
@@ -32,6 +33,7 @@ export class ConversationComponent implements OnInit {
   subscription: Subscription | null = null;
   conversations?: IConversation[];
   isLoading = false;
+  isAdmin = false;
 
   sortState = sortStateSignal({});
 
@@ -41,6 +43,7 @@ export class ConversationComponent implements OnInit {
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
+  protected accountService = inject(AccountService);
 
   trackId = (item: IConversation): number => this.conversationService.getConversationIdentifier(item);
 
@@ -49,9 +52,18 @@ export class ConversationComponent implements OnInit {
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
         tap(() => {
-          if (!this.conversations || this.conversations.length === 0) {
-            this.loadVibes();
-          }
+          this.accountService.identity().subscribe(acc => {
+            const roles = acc?.authorities ?? [];
+            this.isAdmin = roles.includes('ROLE_ADMIN');
+
+            if (!this.conversations || this.conversations.length === 0) {
+              if (this.isAdmin) {
+                this.loadAll();
+              } else {
+                this.loadVibes();
+              }
+            }
+          });
         }),
       )
       .subscribe();
@@ -60,11 +72,16 @@ export class ConversationComponent implements OnInit {
   delete(conversation: IConversation): void {
     const modalRef = this.modalService.open(ConversationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.conversation = conversation;
-    // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
-        tap(() => this.loadVibes()),
+        tap(() => {
+          if (this.isAdmin) {
+            this.loadAll();
+          } else {
+            this.loadVibes();
+          }
+        }),
       )
       .subscribe();
   }
@@ -74,6 +91,12 @@ export class ConversationComponent implements OnInit {
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
       },
+    });
+  }
+
+  loadAll(): void {
+    this.queryBackend().subscribe({
+      next: res => this.onResponseSuccess(res),
     });
   }
 
@@ -101,16 +124,14 @@ export class ConversationComponent implements OnInit {
 
   protected grabVibesBackend(): Observable<EntityArrayResponseType> {
     this.isLoading = true;
-    // const queryObject: any = {
-    //   eagerload: true,
-    //   sort: this.sortService.buildSortParam(this.sortState()),
-    // };
-    // return this.conversationService.fetchMyVibes().pipe(tap(() => (this.isLoading = false)));
-    const queryObject: { eagerload: boolean; sort: string[] } = {
-      eagerload: true,
-      sort: this.sortService.buildSortParam(this.sortState()),
-    };
     return this.conversationService.fetchMyVibes().pipe(tap(() => (this.isLoading = false)));
+  }
+
+  protected queryBackend(): Observable<EntityArrayResponseType> {
+    this.isLoading = true;
+    return this.conversationService
+      .query({ eagerload: true, sort: this.sortService.buildSortParam(this.sortState()) })
+      .pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(sortState: SortState): void {

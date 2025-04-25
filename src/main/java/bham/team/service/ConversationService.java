@@ -4,10 +4,7 @@ import bham.team.domain.Conversation;
 import bham.team.domain.Message;
 import bham.team.domain.ProfileDetails;
 import bham.team.domain.User;
-import bham.team.repository.ConversationRepository;
-import bham.team.repository.MessageRepository;
-import bham.team.repository.ProfileDetailsRepository;
-import bham.team.repository.UserRepository;
+import bham.team.repository.*;
 import bham.team.security.SecurityUtils;
 import bham.team.service.dto.ConversationDTO;
 import bham.team.service.dto.MessageDTO;
@@ -42,9 +39,9 @@ public class ConversationService {
 
     private final MessageMapper messageMapper;
 
-    private final ProfileDetailsRepository profileDetailsRepository;
+    private final ProfileDetailsRepository profileRepo;
 
-    private final UserRepository userRepository;
+    private final UserRepository userRepo;
 
     public ConversationService(
         ConversationRepository conversationRepository,
@@ -58,8 +55,8 @@ public class ConversationService {
         this.conversationMapper = conversationMapper;
         this.messageRepository = messageRepository;
         this.messageMapper = messageMapper;
-        this.profileDetailsRepository = profileDetailsRepository;
-        this.userRepository = userRepository;
+        this.profileRepo = profileDetailsRepository;
+        this.userRepo = userRepository;
     }
 
     /**
@@ -177,12 +174,16 @@ public class ConversationService {
 
     @Transactional(readOnly = true)
     public List<ConversationDTO> grabMyConvos() {
-        String currentLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User is not logged in"));
-        User user = userRepository.findOneByLogin(currentLogin).orElseThrow(() -> new RuntimeException("User not found"));
-        ProfileDetails pd = profileDetailsRepository
+        String me = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not logged in"));
+        User user = userRepo.findOneByLogin(me).orElseThrow(() -> new RuntimeException("User not found"));
+        ProfileDetails vibePd = profileRepo
             .findProfileDetailsByUserId(user.getId())
-            .orElseThrow(() -> new RuntimeException("ProfileDetails not found"));
+            .orElseThrow(() -> new RuntimeException("ProfileDetails missing"));
 
-        return conversationRepository.fetchConvosByProfile(pd.getId()).stream().map(conversationMapper::toDto).collect(Collectors.toList());
+        return conversationRepository
+            .fetchConvosByProfile(vibePd.getId())
+            .stream()
+            .map(conversationMapper::toDto)
+            .collect(Collectors.toList());
     }
 }

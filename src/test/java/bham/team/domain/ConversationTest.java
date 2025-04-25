@@ -4,7 +4,6 @@ import static bham.team.domain.ConversationTestSamples.*;
 import static bham.team.domain.MessageTestSamples.*;
 import static bham.team.domain.ProductStatusTestSamples.*;
 import static bham.team.domain.ProfileDetailsTestSamples.*;
-import static bham.team.domain.UserDetailsTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bham.team.web.rest.TestUtil;
@@ -85,18 +84,18 @@ class ConversationTest {
     @Test
     void participantsTest() {
         Conversation conversation = getConversationRandomSampleGenerator();
-        UserDetails userDetailsBack = getUserDetailsRandomSampleGenerator();
+        ProfileDetails profileDetailsBack = getProfileDetailsRandomSampleGenerator();
 
-        conversation.addParticipants(userDetailsBack);
-        assertThat(conversation.getParticipants()).containsOnly(userDetailsBack);
+        conversation.addParticipants(profileDetailsBack);
+        assertThat(conversation.getParticipants()).containsOnly(profileDetailsBack);
 
-        conversation.removeParticipants(userDetailsBack);
-        assertThat(conversation.getParticipants()).doesNotContain(userDetailsBack);
+        conversation.removeParticipants(profileDetailsBack);
+        assertThat(conversation.getParticipants()).doesNotContain(profileDetailsBack);
 
-        conversation.participants(new HashSet<>(Set.of(userDetailsBack)));
-        assertThat(conversation.getParticipants()).containsOnly(userDetailsBack);
+        conversation.participants(new HashSet<>(Set.of(profileDetailsBack)));
+        assertThat(conversation.getParticipants()).containsOnly(profileDetailsBack);
 
         conversation.setParticipants(new HashSet<>());
-        assertThat(conversation.getParticipants()).doesNotContain(userDetailsBack);
+        assertThat(conversation.getParticipants()).doesNotContain(profileDetailsBack);
     }
 }

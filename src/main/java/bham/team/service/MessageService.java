@@ -48,13 +48,16 @@ public class MessageService {
         LOG.debug("Request to save Message : {}", messageDTO);
         Message message = messageMapper.toEntity(messageDTO);
 
-        if (message.getProfileDetails() == null || message.getProfileDetails().getId() == null) {
-            String currentLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User is not logged in"));
-            User user = userRepository.findOneByLogin(currentLogin).orElseThrow(() -> new RuntimeException("User not found"));
-            ProfileDetails pd = profileDetailsRepository
-                .findProfileDetailsByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("ProfileDetails not found for user"));
-            message.setProfileDetails(pd);
+        String currentLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User is not logged in"));
+        User user = userRepository.findOneByLogin(currentLogin).orElseThrow(() -> new RuntimeException("User not found"));
+        ProfileDetails pd = profileDetailsRepository
+            .findProfileDetailsByUserId(user.getId())
+            .orElseThrow(() -> new RuntimeException("ProfileDetails not found for user"));
+        message.setProfileDetails(pd);
+
+        // Ensure timestamp is set
+        if (message.getTimestamp() == null) {
+            message.setTimestamp(java.time.Instant.now());
         }
 
         if (message.getIsRead() == null) {

@@ -76,9 +76,14 @@ public class UserDetails implements Serializable {
     @JsonIgnoreProperties(value = { "buyer", "seller" }, allowSetters = true)
     private Set<Review> reviewsOfSellers = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "participants")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_user_details__chats",
+        joinColumns = @JoinColumn(name = "user_details_id"),
+        inverseJoinColumns = @JoinColumn(name = "conversation_id")
+    )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "participants", "productStatus", "messages" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "productStatus", "messages" }, allowSetters = true)
     private Set<Conversation> chats = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -313,12 +318,6 @@ public class UserDetails implements Serializable {
     }
 
     public void setChats(Set<Conversation> conversations) {
-        if (this.chats != null) {
-            this.chats.forEach(i -> i.removeParticipants(this));
-        }
-        if (conversations != null) {
-            conversations.forEach(i -> i.addParticipants(this));
-        }
         this.chats = conversations;
     }
 
@@ -329,13 +328,11 @@ public class UserDetails implements Serializable {
 
     public UserDetails addChats(Conversation conversation) {
         this.chats.add(conversation);
-        conversation.getParticipants().add(this);
         return this;
     }
 
     public UserDetails removeChats(Conversation conversation) {
         this.chats.remove(conversation);
-        conversation.getParticipants().remove(this);
         return this;
     }
 

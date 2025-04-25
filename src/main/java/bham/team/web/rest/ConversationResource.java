@@ -194,7 +194,7 @@ public class ConversationResource {
 
     @GetMapping("/my")
     public List<ConversationDTO> getMyVibes() {
-        LOG.debug("REST request to fetch current user's convos");
+        LOG.debug("REST » grab the user's own convos");
         return conversationService.grabMyConvos();
     }
 }

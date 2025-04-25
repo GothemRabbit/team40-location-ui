@@ -24,7 +24,6 @@ public interface UserDetailsMapper extends EntityMapper<UserDetailsDTO, UserDeta
 
     @Mapping(target = "removeMeetupLocations", ignore = true)
     @Mapping(target = "chats", ignore = true)
-    @Mapping(target = "removeChats", ignore = true)
     UserDetails toEntity(UserDetailsDTO userDetailsDTO);
 
     @Named("userId")

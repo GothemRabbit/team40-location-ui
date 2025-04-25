@@ -20,7 +20,7 @@ public class ConversationDTO implements Serializable {
 
     private Set<ProfileDetailsDTO> profileDetails = new HashSet<>();
 
-    private Set<UserDetailsDTO> participants = new HashSet<>();
+    private Set<ProfileDetailsDTO> participants = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -46,11 +46,11 @@ public class ConversationDTO implements Serializable {
         this.profileDetails = profileDetails;
     }
 
-    public Set<UserDetailsDTO> getParticipants() {
+    public Set<ProfileDetailsDTO> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(Set<UserDetailsDTO> participants) {
+    public void setParticipants(Set<ProfileDetailsDTO> participants) {
         this.participants = participants;
     }
 

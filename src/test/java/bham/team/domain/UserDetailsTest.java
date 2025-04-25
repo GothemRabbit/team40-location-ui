@@ -141,19 +141,15 @@ class UserDetailsTest {
         Conversation conversationBack = getConversationRandomSampleGenerator();
 
         userDetails.addChats(conversationBack);
-        assertThat(userDetails.getChats()).containsOnly(conversationBack);
-        assertThat(conversationBack.getParticipants()).containsOnly(userDetails);
+        assertThat(userDetails.getChats().contains(conversationBack)).isTrue();
 
         userDetails.removeChats(conversationBack);
-        assertThat(userDetails.getChats()).doesNotContain(conversationBack);
-        assertThat(conversationBack.getParticipants()).doesNotContain(userDetails);
+        assertThat(userDetails.getChats().contains(conversationBack)).isFalse();
 
         userDetails.chats(new HashSet<>(Set.of(conversationBack)));
-        assertThat(userDetails.getChats()).containsOnly(conversationBack);
-        assertThat(conversationBack.getParticipants()).containsOnly(userDetails);
+        assertThat(userDetails.getChats().contains(conversationBack)).isTrue();
 
         userDetails.setChats(new HashSet<>());
-        assertThat(userDetails.getChats()).doesNotContain(conversationBack);
-        assertThat(conversationBack.getParticipants()).doesNotContain(userDetails);
+        assertThat(userDetails.getChats().isEmpty()).isTrue();
     }
 }

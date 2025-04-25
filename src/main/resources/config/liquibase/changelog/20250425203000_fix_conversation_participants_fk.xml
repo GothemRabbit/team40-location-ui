@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20250425203000-1" author="team40">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="fk_rel_conversation__participants__participants_id"/>
+        </preConditions>
+        <dropForeignKeyConstraint
+            baseTableName="rel_conversation__participants"
+            constraintName="fk_rel_conversation__participants__participants_id"/>
+
+        <addForeignKeyConstraint
+            baseColumnNames="participants_id"
+            baseTableName="rel_conversation__participants"
+            constraintName="fk_rel_conversation__participants__participants_id"
+            referencedColumnNames="id"
+            referencedTableName="profile_details"/>
+    </changeSet>
+</databaseChangeLog> 

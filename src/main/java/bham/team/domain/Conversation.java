@@ -61,10 +61,10 @@ public class Conversation implements Serializable {
     )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(
-        value = { "user", "itemsOnSales", "wishlists", "meetupLocations", "buyersReviews", "reviewsOfSellers", "chats" },
+        value = { "user", "items", "wishlists", "locations", "likes", "reviews", "messages", "productStatuses", "conversations" },
         allowSetters = true
     )
-    private Set<UserDetails> participants = new HashSet<>();
+    private Set<ProfileDetails> participants = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -167,26 +167,26 @@ public class Conversation implements Serializable {
         return this;
     }
 
-    public Set<UserDetails> getParticipants() {
+    public Set<ProfileDetails> getParticipants() {
         return this.participants;
     }
 
-    public void setParticipants(Set<UserDetails> userDetails) {
-        this.participants = userDetails;
+    public void setParticipants(Set<ProfileDetails> profileDetails) {
+        this.participants = profileDetails;
     }
 
-    public Conversation participants(Set<UserDetails> userDetails) {
-        this.setParticipants(userDetails);
+    public Conversation participants(Set<ProfileDetails> profileDetails) {
+        this.setParticipants(profileDetails);
         return this;
     }
 
-    public Conversation addParticipants(UserDetails userDetails) {
-        this.participants.add(userDetails);
+    public Conversation addParticipants(ProfileDetails profileDetails) {
+        this.participants.add(profileDetails);
         return this;
     }
 
-    public Conversation removeParticipants(UserDetails userDetails) {
-        this.participants.remove(userDetails);
+    public Conversation removeParticipants(ProfileDetails profileDetails) {
+        this.participants.remove(profileDetails);
         return this;
     }
 
