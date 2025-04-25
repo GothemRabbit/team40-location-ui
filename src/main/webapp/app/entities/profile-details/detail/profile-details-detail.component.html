@@ -27,6 +27,23 @@
             <span class="username">{{ '@' + profileDetailsRef.userName }}</span>
           </dd>
 
+          <<<<<<< Updated upstream =======
+          <dt>
+            <a id="review" [routerLink]="['/review']" class="review-link"> Reviews </a>
+          </dt>
+          <dd>
+            <!--            <span>{{ profileDetailsRef.rating }}</span> supposed to take the average rating from database-->
+            <ngb-rating [rate]="getAverageRating()" [readonly]="true" [max]="5">
+              <ng-template let-fill="fill">
+                <span class="star">
+                  <span class="filled" [style.width.%]="fill">&#9733;</span>
+                  <span>&#9734;</span>
+                </span>
+              </ng-template>
+            </ngb-rating>
+          </dd>
+
+          >>>>>>> Stashed changes
           <a id="meet-up locations" [routerLink]="['/location']" class="location-link"> Location </a>
           <dd class="address-container">
             <button

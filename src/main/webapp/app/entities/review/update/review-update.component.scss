@@ -117,10 +117,10 @@ ngb-rating {
 }
 
 .star {
-  font-size: 60px;
+  font-size: 70px;
   color: var(--text-color-secondary);
+  margin: 0;
 }
-
 .filled.bad {
   color: var(--background-accent-3);
 }

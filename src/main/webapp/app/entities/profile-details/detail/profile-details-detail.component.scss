@@ -78,7 +78,12 @@
 }
 
 .star {
-  font-size: 18px;
+  position: relative;
+  display: inline-block;
+}
+.star .filled {
+  position: absolute;
+  overflow: hidden;
 }
 .profile-details button {
   margin-left: auto;
