@@ -26,9 +26,6 @@
           <dd>
             <span class="username">{{ '@' + profileDetailsRef.userName }}</span>
           </dd>
-          <dt>
-            <a id="review" [routerLink]="['/review']" class="review-link"> Reviews </a>
-          </dt>
           <dd>
             <!--            <span>{{ profileDetailsRef.rating }}</span> supposed to take the average rating from database-->
             <ngb-rating [rate]="getAverageRating()" [readonly]="true" [max]="5">
@@ -39,6 +36,9 @@
                 </span>
               </ng-template>
             </ngb-rating>
+            <div>
+              <span>{{ reviewReceived?.length }} reviews</span>
+            </div>
           </dd>
           <a id="meet-up locations" [routerLink]="['/location']" class="location-link"> Location </a>
           <dd class="address-container">
@@ -160,16 +160,13 @@
                       {{ review.comments }}
                     </p>
                   </div>
-                  <div style="display: flex; justify-content: space-between">
-                    <span id="heart" (click)="likeButton(review)" [innerHTML]="review.liked ? '&#9829;' : '&#9825;'"></span>
-                    <p id="date">
-                      {{ review.date }}
-                    </p>
-                  </div>
+                  <p id="date">
+                    {{ review.date }}
+                  </p>
                 </div>
               }
             </div>
-            <div class="filterSpace">
+            <div class="Space">
               <button data-cy="entityCreateButton" class="filterButton" [routerLink]="['/review/new']">
                 <span>Write a Review!</span>
               </button>

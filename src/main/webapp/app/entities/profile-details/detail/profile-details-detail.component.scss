@@ -222,16 +222,15 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   border: 2px solid black;
   display: inline-block;
   border-radius: 14px;
-  font-size: 13px;
-  height: 30px;
+  height: 40px;
   width: 150px;
+  font-size: 10px;
   color: black;
 }
 
 .filterButton:hover {
-  background-color: black;
-  transition-duration: 0.5s;
-  color: #dcd8a2;
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
 }
 
 .filterSpace {
@@ -239,6 +238,10 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   grid-auto-flow: column;
   justify-content: end;
   column-gap: 3px;
+}
+
+.Space {
+  justify-content: left;
 }
 
 #heart {
@@ -262,6 +265,10 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   .filterButton {
     width: 150px;
     font-size: 15px;
+  }
+
+  .Space {
+    justify-content: center;
   }
 }
 
@@ -300,7 +307,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 
   .filterButton {
     width: 100px;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   .filterSpace {

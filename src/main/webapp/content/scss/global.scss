@@ -13,6 +13,7 @@ h2,
 h3,
 h4 {
   font-weight: 300;
+  color: var(--text-color);
 }
 
 a:hover {
@@ -36,6 +37,7 @@ a:hover {
   --text-color: #000000;
   --text-color-secondary: #777373;
   --text-on-accent: #000000;
+  --placeholder-color: #dad3d3;
 
   --border-color: #cccccc;
 
@@ -242,15 +244,16 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 
 /* Dark‑mode overrides */
 .dark-mode {
-  --background-color: #121212;
-  --background-color-secondary: #1e1e1e;
-  --background-accent-1: #3a3a26;
+  --background-color: rgba(25, 24, 24, 1);
+  --background-color-secondary: rgba(28, 27, 27, 1);
+  --background-accent-1: #5a5626;
   --background-accent-2: #806c30;
   --background-accent-3: #bb8d00;
 
-  --text-color: #ffffff;
+  --text-color: #f1eded;
   --text-color-secondary: #d0d0d0;
-  --text-on-accent: #ffffff;
+  --text-on-accent: #f1eded;
+  --placeholder-color: white;
 
   --border-color: #444444;
 
