@@ -7,13 +7,14 @@ import SharedModule from 'app/shared/shared.module';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { ItemComponent } from '../entities/item/list/item.component';
+import { SlideshowComponent } from '../slideshow/slideshow.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  imports: [SharedModule, RouterModule, ItemComponent],
+  imports: [SharedModule, RouterModule, ItemComponent, SlideshowComponent],
 })
 export default class HomeComponent implements OnInit, OnDestroy {
   account = signal<Account | null>(null);

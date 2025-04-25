@@ -1,13 +1,13 @@
+<div class="col-md-3">
+  <span class="hipster img-fluid rounded"></span>
+</div>
+<h1 class="display-4"><span>Buy2Use!</span></h1>
+<p class="lead">Where you can find everything you ever need</p>
+
+<jhi-slideshow></jhi-slideshow>
+
 <div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
-  </div>
-
   <div class="col-md-12">
-    <!--    <h1 class="display-4"><span>Buy2Use!</span></h1>-->
-
-    <!--    <p class="lead">Where you can find everything you ever need</p>-->
-
     <div>
       @if (account() !== null) {
         <div class="alert alert-success">
@@ -15,9 +15,7 @@
             <span id="home-logged-message">You are logged in as user &quot;{{ accountRef.login }}&quot;.</span>
           }
         </div>
-        <div class="center-container">
-          <jhi-item></jhi-item>
-        </div>
+        <jhi-item></jhi-item>
       } @else {
         <jhi-item></jhi-item>
       }

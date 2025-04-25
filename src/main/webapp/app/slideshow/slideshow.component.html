@@ -1,0 +1,9 @@
+<div class="slideshow-container">
+  <div class="slideshow">
+    <img [src]="images[currentIndex]" alt="Slideshow Image" />
+  </div>
+
+  <!-- Navigation buttons -->
+  <button (click)="previousImage()" class="nav-button prev-button">&#10094;</button>
+  <button (click)="nextImage()" class="nav-button next-button">&#10095;</button>
+</div>
