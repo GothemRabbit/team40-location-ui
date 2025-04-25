@@ -2,7 +2,7 @@ import { Component, input, signal, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import dayjs from 'dayjs/esm';
 import SharedModule from 'app/shared/shared.module';
 import { FormatMediumDatetimePipe } from 'app/shared/date';
 import { IProductStatus } from '../product-status.model';
@@ -25,6 +25,8 @@ export class ProductStatusDetailComponent implements OnInit {
   productStatus = input<IProductStatus | null>(null);
   fullItem = signal<IItem | null>(null);
   itemImages: IImages[] = [];
+  editingTime = false;
+  newMeetingTime: string | null = null;
 
   showModal = false;
   rating: number | null = null;
@@ -58,6 +60,38 @@ export class ProductStatusDetailComponent implements OnInit {
       this.isSeller = ps?.profileDetails?.id === currentProfileId;
       this.isBuyer = ps?.profileDetails1?.id === currentProfileId;
     });
+  }
+  startEditTime(): void {
+    const current = this.productStatus();
+    if (!current) return;
+    this.newMeetingTime = current.meetingTime ? current.meetingTime.format('YYYY-MM-DDTHH:mm') : null;
+    this.editingTime = true;
+  }
+
+  cancelEditTime(): void {
+    this.editingTime = false;
+    this.newMeetingTime = null;
+  }
+
+  saveEditTime(): void {
+    const current = this.productStatus();
+    if (!current || !this.newMeetingTime) {
+      this.cancelEditTime();
+      return;
+    }
+
+    this.productStatusService
+      .partialUpdate({
+        id: current.id,
+        meetingTime: dayjs(this.newMeetingTime),
+      })
+      .subscribe({
+        next: () => {
+          current.meetingTime = dayjs(this.newMeetingTime);
+          this.cancelEditTime();
+        },
+        error: () => alert('Update failed, please try again.'),
+      });
   }
 
   previousState(): void {

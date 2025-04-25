@@ -1,5 +1,7 @@
 package bham.team.web.rest;
 
+import bham.team.domain.Images;
+import bham.team.domain.Item;
 import bham.team.repository.ItemRepository;
 import bham.team.service.ItemQueryService;
 import bham.team.service.ItemService;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -192,6 +195,26 @@ public class ItemResource {
     //    }
 
     /**
+     * {@code GET  /items/:id/images} : get all images for the "id" item.
+     *
+     * @param id the id of the item.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with the image bytes,
+     *         or {@code 404 (Not Found)} if no image is available.
+     */
+    @GetMapping("/{id}/images")
+    public ResponseEntity<byte[]> getItemImages(@PathVariable Long id) {
+        LOG.debug("REST request to get Item images for id: {}", id);
+        Optional<Item> maybeItem = itemService.getItemWithImages(id);
+        if (maybeItem.isEmpty() || maybeItem.get().getImages().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Images img = maybeItem.get().getImages().iterator().next();
+        byte[] data = img.getImages(); // your field name for the blob
+        MediaType mt = MediaType.parseMediaType(img.getImagesContentType());
+        return ResponseEntity.ok().contentType(mt).body(data);
+    }
+
+    /**
      * {@code DELETE  /items/:id} : delete the "id" item.
      *
      * @param id the id of the itemDTO to delete.
@@ -206,7 +229,7 @@ public class ItemResource {
             .build();
     }
 
-    @GetMapping("/items/profile/{profileId}")
+    @GetMapping("/profile/{profileId}")
     public ResponseEntity<List<ItemDTO>> getItemsByProfile(@PathVariable Long profileId) {
         List<ItemDTO> items = itemService.findAllItemsByProfile(profileId);
         return ResponseEntity.ok().body(items);

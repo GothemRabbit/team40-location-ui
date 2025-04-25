@@ -48,6 +48,7 @@ export class ItemUpdateComponent implements OnInit {
   userDetailsSharedCollection: IUserDetails[] = [];
   newImages: { file: File; preview: string }[] = [];
   existingImages: IImages[] = [];
+  existingImageUrls: string[] = [];
   toBeDeleted: IImages[] = [];
 
   protected dataUtils = inject(DataUtils);
@@ -135,10 +136,15 @@ export class ItemUpdateComponent implements OnInit {
   }
 
   removeExistingImage(index: number): void {
+    // 1) Grab the image object and queue it for deletion
     const imgToRemove = this.existingImages[index];
-    this.existingImages.splice(index, 1);
-    // Defer actual delete
     this.toBeDeleted.push(imgToRemove);
+
+    // 2) Immediately remove it from the displayed arrays
+    this.existingImages.splice(index, 1);
+
+    // 3) Rebuild the base64 URLs so your template updates
+    this.rebuildExistingPreviews();
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
@@ -233,6 +239,7 @@ export class ItemUpdateComponent implements OnInit {
     if (item.images) {
       this.existingImages = [...item.images];
     }
+    this.rebuildExistingPreviews();
   }
 
   protected loadRelationshipsOptions(): void {
@@ -308,6 +315,10 @@ export class ItemUpdateComponent implements OnInit {
     }
     // Clear out the array
     this.toBeDeleted = [];
+  }
+
+  private rebuildExistingPreviews(): void {
+    this.existingImageUrls = this.existingImages.map(img => `data:${img.imagesContentType ?? 'image/png'};base64,${img.images}`);
   }
 
   // private processFiles(files: FileList): void {

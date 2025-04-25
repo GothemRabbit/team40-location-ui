@@ -111,16 +111,14 @@ textarea {
 }
 
 ngb-rating {
-  font-size: 50px;
   gap: 2px;
-  margin-left: 17%;
+  margin-left: 14%;
 }
 
 .star {
-  font-size: 60px;
+  font-size: 70px;
   color: var(--text-color-secondary);
 }
-
 .filled.bad {
   color: var(--background-accent-3);
 }

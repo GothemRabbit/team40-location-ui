@@ -160,6 +160,7 @@ public class ProfileDetailsDTO implements Serializable {
             ", user=" + getUser() +
             ", locations=" + getLocations() +
             ", conversations=" + getConversations() +
+            ", items=" + getItems() +
             "}";
     }
 }

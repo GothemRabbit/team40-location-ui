@@ -28,6 +28,7 @@ import { ProfileDetailsDeleteDialogComponent } from '../delete/profile-details-d
 import { ITEM_DELETED_EVENT } from '../../../config/navigation.constants';
 import { PasswordService } from '../../../account/password/password.service';
 import PasswordStrengthBarComponent from '../../../account/password/password-strength-bar/password-strength-bar.component';
+import { LoginService } from '../../../login/login.service';
 
 @Component({
   standalone: true,
@@ -76,6 +77,7 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   protected router = inject(Router);
   protected modalService = inject(NgbModal);
   private readonly passwordService = inject(PasswordService);
+  private readonly loginService = inject(LoginService);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProfileDetailsFormGroup = this.profileDetailsFormService.createProfileDetailsFormGroup();
@@ -172,6 +174,7 @@ export class ProfileDetailsUpdateComponent implements OnInit {
         filter(reason => reason === ITEM_DELETED_EVENT),
         tap(() => {
           // Redirect to logout or homepage
+          this.loginService.logout();
           this.router.navigate(['']);
         }),
       )

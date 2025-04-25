@@ -82,8 +82,13 @@ export class ItemService {
     return this.http.get<{ count: number }>(`${this.resourceUrl}/${itemId}/likes`).pipe(map(response => response.count));
   }
 
-  getImagesForItem(itemId: number): Observable<IImages[]> {
-    return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
+  // getImagesForItem(itemId: number): Observable<IImages[]> {
+  //   return this.http.get<IImages[]>(`http://localhost:8080/api/items/${itemId}/images`);
+  // }
+  getImagesForItem(itemId: number): Observable<Blob> {
+    return this.http.get(`http://localhost:8080/api/items/${itemId}/images`, {
+      responseType: 'blob',
+    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
@@ -127,6 +132,9 @@ export class ItemService {
   reserveItemInProductStatus(itemId: number, buyerProfileId: number): Observable<HttpResponse<any>> {
     const url = `${this.applicationConfigService.getEndpointFor('api/product-statuses')}/${itemId}/reserve`;
     return this.http.post<any>(url, { buyerProfileId }, { observe: 'response' });
+  }
+  getItemsByProfile(profileId: number): Observable<HttpResponse<IItem[]>> {
+    return this.http.get<IItem[]>(` api/items/profile/${profileId}`, { observe: 'response' });
   }
   protected convertDateFromClient<T extends IItem | NewItem | PartialUpdateItem>(item: T): RestOf<T> {
     return {

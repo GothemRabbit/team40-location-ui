@@ -183,14 +183,14 @@
               }
 
               <li>
-                <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout">
+                <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout" href="javascript:void(0)" tabindex="0">
                   <fa-icon icon="sign-out-alt" [fixedWidth]="true"></fa-icon>
                   <span>Sign out</span>
                 </a>
               </li>
             } @else {
               <li>
-                <a class="dropdown-item" (click)="login()" id="login" data-cy="login">
+                <a class="dropdown-item" (click)="login()" id="login" data-cy="login" href="javascript:void(0)" tabindex="0">
                   <fa-icon icon="sign-in-alt" [fixedWidth]="true"></fa-icon>
                   <span>Sign in</span>
                 </a>
@@ -202,6 +202,7 @@
                   routerLinkActive="active"
                   (click)="collapseNavbar()"
                   data-cy="register"
+                  tabindex="0"
                 >
                   <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
                   <span>Register</span>

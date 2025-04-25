@@ -5,6 +5,14 @@
   background-color: var(--background-accent-2);
 }
 
+p,
+div,
+span,
+label,
+fa-icon {
+  color: var(--text-color);
+}
+
 h2 {
   font-weight: bold;
 }
@@ -21,9 +29,8 @@ button {
 }
 
 button:hover {
-  background-color: black;
-  color: var(--background-accent-1);
-  border: 2px solid var(--background-accent-1);
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
 }
 
 .soundButton {
@@ -39,9 +46,8 @@ button:hover {
 }
 
 .soundButton:hover {
-  background-color: black;
-  color: var(--background-accent-1);
-  border: 2px solid var(--background-accent-1);
+  transform: translateY(-5px);
+  transition: all ease 0.3s;
 }
 
 #stars {
@@ -53,13 +59,13 @@ button:hover {
 }
 
 .commentBoxRight {
-  background-color: white;
-  border: none;
+  background-color: var(--background-color);
   outline: none;
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 5px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--background-accent-1);
 }
 
 #id {

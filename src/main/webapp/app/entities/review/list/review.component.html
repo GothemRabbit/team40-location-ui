@@ -66,7 +66,7 @@
           <span>
             <label for="filter1"></label>
             <input id="filter1" type="text" #filterValue1 placeholder="look up any seller!" />
-            <button class="filterButton" (click)="filterByRetailer(filterValue1)">Filter</button></span
+            <button class="filterButton" (click)="filterByRetailer(filterValue1)"><span>Filter</span></button></span
           >
           <button class="filterButton" (click)="sortButton()">
             <span>date<fa-icon [icon]="sort ? faArrowDown : faArrowUp"></fa-icon></span>
@@ -82,8 +82,7 @@
           </select>
         </div>
         @for (review of reviews; track trackId(review)) {
-          <!-- [routerLink]="['/review', review.id, 'view']" -->
-          <div class="commentBoxRight">
+          <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
             <div style="display: flex; justify-content: space-between">
               <p id="userName">
                 @if (review.consumer?.bioImage) {
@@ -105,12 +104,9 @@
                 {{ review.comments }}
               </p>
             </div>
-            <div style="display: flex; justify-content: space-between">
-              <span id="heart" (click)="likeButton(review)" [innerHTML]="review.liked ? '&#9829;' : '&#9825;'"></span>
-              <p id="date">
-                {{ review.date | formatMediumDate }}
-              </p>
-            </div>
+            <p id="date">
+              {{ review.date | formatMediumDate }}
+            </p>
           </div>
         }
       </div>

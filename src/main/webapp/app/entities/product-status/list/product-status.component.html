@@ -6,7 +6,7 @@
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         Refresh
       </button>
-      <button
+      <!-- <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-product-status"
@@ -14,7 +14,7 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span>Create a new Product Status</span>
-      </button>
+      </button> -->
     </div>
   </div>
 
@@ -49,28 +49,25 @@
         @for (productStatus of productStatuses; track trackId(productStatus)) {
           @if (productStatus.status === 'PENDING' || productStatus.status === 'RESERVED' || productStatus.status === 'UNRESERVED') {
             <a
-              class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
+              class="list-group-item list-group-item-action d-flex justify-content-between"
               [routerLink]="['/product-status', productStatus.id, 'view']"
             >
               <div class="me-3">
-                <h5 class="mb-1">Item Title (ID: {{ productStatus.id }})</h5>
-                <p class="mb-1">Location: {{ productStatus.location }}</p>
+                <h5 class="mb-1">
+                  <h5 class="mb-1">ID: {{ productStatus.id }}</h5>
+                  {{ $any(productStatus.item)?.title || 'Item #' + $any(productStatus.item)?.id }}
+                </h5>
                 <p class="mb-1">Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
-                <a
-                  [href]="productStatus.conversation"
-                  target="_blank"
-                  class="btn btn-sm btn-info"
-                  style="text-decoration: none"
-                  (click)="$event.stopPropagation()"
+                <a [href]="productStatus.conversation" target="_blank" class="btn btn-sm btn-info" (click)="$event.stopPropagation()"
+                  >Chat</a
                 >
-                  Chat
-                </a>
               </div>
-              <div class="text-end">
-                <span class="badge bg-secondary me-2">{{ productStatus.status }}</span>
-                <p class="mb-1">Created: {{ productStatus.createdAt | formatMediumDatetime }}</p>
-                <p class="mb-1">Updated: {{ productStatus.updatedAt | formatMediumDatetime }}</p>
-                <button class="btn btn-sm btn-danger" (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)">
+              <div class="d-flex flex-column text-end">
+                <span class="badge bg-secondary mb-2">{{ productStatus.status }}</span>
+                <button
+                  class="btn btn-sm btn-danger align-self-end mt-auto"
+                  (click)="$event.preventDefault(); $event.stopPropagation(); delete(productStatus)"
+                >
                   Delete
                 </button>
               </div>

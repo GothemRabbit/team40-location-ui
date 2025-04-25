@@ -1,3 +1,13 @@
+p,
+div,
+span,
+label {
+  color: var(--text-color);
+}
+
+input::placeholder {
+  color: var(--placeholder-color);
+}
 .listing-form {
   display: flex;
   padding-top: 20px;

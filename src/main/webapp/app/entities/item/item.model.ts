@@ -23,6 +23,7 @@ export interface IItem {
   profileDetails?: IProfileDetails | null;
   seller?: Pick<IUserDetails, 'id'> | null;
   images?: IImages[];
+  imageUrl?: string;
   likes?: ILikes[];
   likesCount?: number;
   isLikedByUser?: boolean;

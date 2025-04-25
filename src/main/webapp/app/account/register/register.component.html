@@ -4,7 +4,7 @@
       <h1 data-cy="registerTitle">Registration</h1>
 
       @if (success()) {
-        <div class="alert alert-success"><strong>Registration saved!</strong> Please check your email for confirmation.</div>
+        <div class="alert alert-success"><strong>Registration saved!</strong> Sign in now to start using your account.</div>
       }
 
       @if (error()) {
@@ -12,7 +12,7 @@
       }
 
       @if (errorUserExists()) {
-        <div class="alert alert-danger"><strong>Login name already registered!</strong> Please choose another one.</div>
+        <div class="alert alert-danger"><strong>Username already registered!</strong> Please choose another one.</div>
       }
 
       @if (errorEmailExists()) {
@@ -40,6 +40,7 @@
               formControlName="login"
               data-cy="username"
               #login
+              title="Usernames must contain only letters, numbers, and underscores; no spaces or special characters allowed."
             />
 
             @let loginRef = registerForm.get('login')!;
@@ -84,8 +85,8 @@
                   <small class="form-text text-danger">Your email is required.</small>
                 }
 
-                @if (emailRef?.errors?.invalid) {
-                  <small class="form-text text-danger">Your email is invalid.</small>
+                @if (emailRef?.errors?.pattern) {
+                  <small class="form-text text-danger">Your email is invalid. Please use your student email</small>
                 }
 
                 @if (emailRef?.errors?.minlength) {
@@ -128,7 +129,7 @@
               </div>
             }
 
-            <jhi-password-strength-bar [passwordToCheck]="passwordRef.value"></jhi-password-strength-bar>
+            <!--            <jhi-password-strength-bar [passwordToCheck]="passwordRef.value"></jhi-password-strength-bar>-->
           </div>
 
           <div class="mb-3">
@@ -164,15 +165,6 @@
           <button type="submit" class="btn btn-primary" data-cy="submit">Register</button>
         </form>
       }
-
-      <!--      <div class="mt-3 alert alert-warning">-->
-      <!--        <span>If you want to </span>-->
-      <!--        <a class="alert-link" routerLink="/login">sign in</a-->
-      <!--        ><span-->
-      <!--          >, you can try the default accounts:<br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;) <br />- User-->
-      <!--          (login=&quot;user&quot; and password=&quot;user&quot;).</span-->
-      <!--        >-->
-      <!--      </div>-->
     </div>
   </div>
 </div>
