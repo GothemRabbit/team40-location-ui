@@ -262,3 +262,8 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 html {
   background: var(--background-accent-1);
 }
+
+:focus {
+  outline: 2px solid #66afe9;
+  outline-offset: 2px;
+}
