@@ -31,20 +31,39 @@
               }}
             </dd>
 
+            <!-- Meeting Time -->
             <dt>Meeting Time</dt>
-            <dd>{{ productStatusRef.meetingTime | formatMediumDatetime }}</dd>
+            <dd>
+              <span *ngIf="!editingTime">{{ productStatusRef.meetingTime | formatMediumDatetime }}</span>
 
-            <dt>Meeting Location</dt>
-            <dd>{{ productStatusRef.location }}</dd>
+              <input
+                *ngIf="editingTime"
+                type="datetime-local"
+                class="form-control form-control-sm d-inline w-auto"
+                [(ngModel)]="newMeetingTime"
+              />
+              <button *ngIf="!editingTime && (isSeller || isBuyer)" class="btn btn-sm btn-outline-primary ms-2" (click)="startEditTime()">
+                <fa-icon icon="clock"></fa-icon> Change
+              </button>
 
-            <dt>Chat Link</dt>
-            <dd>{{ productStatusRef.conversation }}</dd>
+              <button *ngIf="editingTime" class="btn btn-sm btn-success ms-2" (click)="saveEditTime()">
+                <fa-icon icon="save"></fa-icon> Save
+              </button>
 
-            <dt>Created At</dt>
-            <dd>{{ productStatusRef.createdAt | formatMediumDatetime }}</dd>
+              <button *ngIf="editingTime" class="btn btn-sm btn-secondary ms-1" (click)="cancelEditTime()">Cancel</button>
+            </dd>
 
-            <dt>Updated At</dt>
-            <dd>{{ productStatusRef.updatedAt | formatMediumDatetime }}</dd>
+            <!-- <dt>Meeting Location</dt>
+             <dd>{{ productStatusRef.location }}</dd>
+
+             <dt>Chat Link</dt>
+             <dd>{{ productStatusRef.conversation }}</dd>
+
+             <dt>Created At</dt>
+             <dd>{{ productStatusRef.createdAt | formatMediumDatetime }}</dd>
+
+             <dt>Updated At</dt>
+             <dd>{{ productStatusRef.updatedAt | formatMediumDatetime }}</dd>-->
 
             <!-- ========== Item  ========== -->
             <dt class="mt-3"><strong>Item Title</strong></dt>
@@ -97,7 +116,7 @@
           </button>
 
           <!-- PENDING -->
-
+          <!-- PENDING 状态下的按钮 -->
           <div *ngIf="productStatusRef.status === 'PENDING'">
             <button *ngIf="isSeller" type="button" (click)="showConfirmDialog('Cconfirm')" class="btn btn-warning">
               <fa-icon icon="check"></fa-icon><span>CConfirm</span>
@@ -110,7 +129,7 @@
             </button>
           </div>
 
-          <!-- RESERVED -->
+          <!-- RESERVED 状态下的按钮 -->
           <div *ngIf="productStatusRef.status === 'RESERVED'">
             <button *ngIf="isBuyer" type="button" (click)="showConfirmDialog('confirm')" class="btn btn-success">
               <fa-icon icon="check"></fa-icon><span>Complete</span>
@@ -139,8 +158,9 @@
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h2>Warning</h2>
       <p>
-        Are you sure you want to {{ confirmActionType === 'confirm' ? 'confirm' : 'cancel' }} this product status? This operation cannot be
-        canceled after confirmation.
+        Are you sure you want to
+        {{ confirmActionType === 'Cconfirm' ? 'confirm' : confirmActionType === 'confirm' ? 'complete' : 'cancel' }} this product status?
+        This operation cannot be canceled after confirmation.
       </p>
       <div class="modal-actions">
         <button type="button" (click)="executeAction()" class="btn btn-success">Confirm</button>

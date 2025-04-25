@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
+.conversation-list.container {
+  background-color: var(--background-color-secondary);
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  font-family: 'Prompt', sans-serif;
+  border: 3px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.list-group-item.list-group-item-action.mb-2 {
+  border: 1px solid var(--border-color);
+  transition:
+    transform 0.2s ease-in-out,
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+
+  color: var(--text-color);
+  border-radius: 25px;
+  background: var(--background-accent-1);
+}
+
+.list-group-item.list-group-item-action.mb-2:hover {
+  background-color: var(--background-accent-2);
+  border-color: var(--border-color);
+  cursor: pointer;
+  transform: translate(-5px, -5px);
+}
+
+#jh-create-entity:hover,
+#refresh:hover {
+  background: var(--background-accent-3);
+  transform: translateY(-5px);
+}

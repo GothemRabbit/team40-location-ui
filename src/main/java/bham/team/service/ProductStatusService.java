@@ -89,16 +89,16 @@ public class ProductStatusService {
     public ProductStatusDTO update(ProductStatusDTO dto) {
         LOG.debug("Request to update ProductStatus : {}", dto);
         Long currentProfileId = getCurrentProfileId();
-
-        // 先检查是否确实属于当前用户
-        repo
-            .findByIdAndProfileDetailsId(dto.getId(), currentProfileId)
-            .orElseThrow(() -> new EntityNotFoundException("ProductStatus not found or not owned by current user"));
-
-        // 映射并强制改为当前用户
+        ProductStatus existingEntity = repo.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("ProductStatus not found"));
+        if (
+            !existingEntity.getProfileDetails().getId().equals(currentProfileId) &&
+            !existingEntity.getProfileDetails1().getId().equals(currentProfileId)
+        ) {
+            throw new EntityNotFoundException("ProductStatus not owned by current user");
+        }
         ProductStatus entity = mapper.toEntity(dto);
-        entity.setProfileDetails(new ProfileDetails());
-        entity.getProfileDetails().setId(currentProfileId);
+        entity.setProfileDetails(existingEntity.getProfileDetails());
+        entity.setProfileDetails1(existingEntity.getProfileDetails1());
 
         entity = repo.save(entity);
         return mapper.toDto(entity);
@@ -110,12 +110,18 @@ public class ProductStatusService {
     public Optional<ProductStatusDTO> partialUpdate(ProductStatusDTO dto) {
         LOG.debug("Request to partially update ProductStatus : {}", dto);
         Long currentProfileId = getCurrentProfileId();
-
         return repo
-            .findByIdAndProfileDetailsId(dto.getId(), currentProfileId)
+            .findById(dto.getId())
             .map(existingEntity -> {
-                mapper.partialUpdate(existingEntity, dto);
-                return existingEntity;
+                Long sellerId = existingEntity.getProfileDetails() != null ? existingEntity.getProfileDetails().getId() : null;
+                Long buyerId = existingEntity.getProfileDetails1() != null ? existingEntity.getProfileDetails1().getId() : null;
+
+                if (currentProfileId.equals(sellerId) || currentProfileId.equals(buyerId)) {
+                    mapper.partialUpdate(existingEntity, dto);
+                    return existingEntity;
+                } else {
+                    throw new EntityNotFoundException("ProductStatus not owned by current user");
+                }
             })
             .map(repo::save)
             .map(mapper::toDto);

@@ -3,6 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ItemService } from 'app/entities/item/service/item.service';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
@@ -53,7 +54,7 @@ export class ProductStatusComponent implements OnInit {
   protected parseLinks = inject(ParseLinks);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
+  protected readonly itemService = inject(ItemService);
   trackId = (item: IProductStatus): number => this.productStatusService.getProductStatusIdentifier(item);
 
   ngOnInit(): void {
@@ -106,6 +107,14 @@ export class ProductStatusComponent implements OnInit {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.productStatuses = dataFromBody;
+    this.productStatuses.forEach(ps => {
+      const itemId = ps.item?.id;
+      if (itemId != null) {
+        this.itemService.find(itemId).subscribe(itemRes => {
+          ps.item = itemRes.body!;
+        });
+      }
+    });
   }
 
   protected fillComponentAttributesFromResponseBody(data: IProductStatus[] | null): IProductStatus[] {
