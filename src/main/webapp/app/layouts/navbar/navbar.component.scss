@@ -52,37 +52,10 @@ Navbar
 nav {
   background-color: var(--background-accent-1);
   width: 100vw;
-  //background: rgb(34, 54, 62);
-  //background: linear-gradient(90deg, rgba(34, 54, 62, 1) 0%, rgba(15, 100, 224, 1) 50%, rgba(15, 54, 224, 1) 100%);
-
   font-family: 'PT Sans', sans-serif;
-  font-weight: 520;
+  font-weight: 550;
   font-style: normal;
-  font-size: 20px;
-}
-
-.pt-sans-regular {
-  font-family: 'PT Sans', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.pt-sans-bold {
-  font-family: 'PT Sans', sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.pt-sans-regular-italic {
-  font-family: 'PT Sans', sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.pt-sans-bold-italic {
-  font-family: 'PT Sans', sans-serif;
-  font-weight: 700;
-  font-style: italic;
+  font-size: 23px;
 }
 
 .navbar-brand,
@@ -133,11 +106,12 @@ nav {
 .nav-box {
   display: inline-flex; /* Place items side by side in a row */
   align-items: center; /* Vertically center items */
-  border: 2px solid var(--text-on-accent);
+  //border: 2px solid var(--text-on-accent);
   background-color: transparent;
   padding: 0.25rem 0.25rem; /* Spacing around the links */
   flex-wrap: wrap;
   gap: 0.5rem;
+  flex-direction: row;
 }
 
 .nav-box .nav-link {
@@ -155,15 +129,15 @@ nav {
   position: relative; /* Needed to position the pseudo-element */
 }
 
-.nav-box .nav-link:not(:first-child)::before {
-  content: '';
-  position: absolute;
-  left: 0; /* Aligns the divider on the left edge */
-  top: 25%; /* Start the divider partway down */
-  bottom: 25%; /* End the divider partway up from the bottom */
-  width: 0; /* Vertical line, so width = 0 */
-  border-left: 2px solid var(--text-on-accent);
-}
+//.nav-box .nav-link:not(:first-child)::before {
+//  content: '';
+//  position: absolute;
+//  left: 0; /* Aligns the divider on the left edge */
+//  top: 25%; /* Start the divider partway down */
+//  bottom: 25%; /* End the divider partway up from the bottom */
+//  width: 0; /* Vertical line, so width = 0 */
+//  border-left: 2px solid var(--text-on-accent);
+//}
 
 .nav-box-dropdown button {
   border-radius: 20px;
@@ -176,7 +150,19 @@ nav {
   }
 
   .nav-box {
-    flex-direction: column;
+    flex-direction: row; /* This is fine to keep */
+    align-items: stretch; /* Make links stretch full width if you want */
+    border: none; /* No box border on small screens */
+    background-color: transparent;
+  }
+
+  .nav-box .nav-link {
+    margin: 0.25rem 0; /* Give links some top-bottom space */
+    font-size: 1.1rem; /* Optional: slightly bigger text for touch */
+  }
+
+  .nav-box .nav-link:not(:first-child)::before {
+    display: none; /* REMOVE the vertical dividers */
   }
 
   .search {

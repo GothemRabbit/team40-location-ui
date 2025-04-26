@@ -22,6 +22,31 @@ jhi-item {
   border: none;
 }
 
+.listing {
+  font-family: 'PT Sans', sans-serif;
+  align-content: center;
+  padding-top: 15px;
+  padding-left: 20px;
+  font-size: xx-large;
+  font-weight: 400;
+  justify-content: center;
+}
+
+.header {
+  font-family: 'PT Sans', sans-serif;
+  padding-left: 15px;
+  padding-top: 10px;
+}
+
+.lead {
+  font-family: 'PT Sans', sans-serif;
+}
+
+.display-4 {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 520;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (-moz-min-device-pixel-ratio: 2),

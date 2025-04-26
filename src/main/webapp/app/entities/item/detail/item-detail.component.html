@@ -1,7 +1,7 @@
 <div class="container">
   @if (item(); as itemRef) {
     <div class="breadcrumb">
-      <a class="home-page" href="#"> Home</a> > <a class="category" href="#"> Clothes</a> >
+      <a class="home-page" href="#"> Home</a> >
       <span class="item-title">{{ itemRef.title }}</span>
     </div>
 
@@ -126,10 +126,10 @@
             </p>
           </div>
           <div class="buttons">
-            <button class="btn" (click)="reserveItem()">
+            <button class="custom-btn reserve-btn" (click)="reserveItem()">
               <span>Reserve Item</span>
             </button>
-            <button class="btn" [routerLink]="'/conversation'">
+            <button class="custom-btn message-btn" [routerLink]="'/conversation'">
               <span>Message Seller</span>
             </button>
           </div>
@@ -144,7 +144,7 @@
                 size="lg"
               ></fa-icon>
             </button>
-            <div *ngIf="likeMessage()" class="text-warning mt-2">
+            <div *ngIf="likeMessage()" class="custom-like-message">
               {{ likeMessage() }}
             </div>
           </div>
@@ -153,8 +153,8 @@
 
       <dl class="row-md jh-entity-details"></dl>
 
-      <button *ngIf="isOwner()" type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      <button *ngIf="isOwner()" type="button" [routerLink]="['/item', itemRef.id, 'edit']" class="edit-button">
+        <span>Edit</span>
       </button>
     </div>
   }

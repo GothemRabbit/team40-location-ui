@@ -145,3 +145,86 @@ textarea.form-control {
 .mb-3 {
   font-size: 16px;
 }
+
+.header {
+  margin: 10px;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 10px;
+}
+
+.custom-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  fa-icon {
+    font-size: 1.2rem;
+  }
+}
+
+.cancel-btn {
+  background-color: #f0f0f0;
+  color: #444;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.upload-btn {
+  background-color: #dcd8a2;
+  color: black;
+
+  &:hover {
+    background-color: #5f775f;
+  }
+
+  &:disabled {
+    background-color: #bec0c3;
+    cursor: not-allowed;
+  }
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: whitesmoke;
+
+  &:hover {
+    background-color: #b02a37;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .listing-form {
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .image-upload,
+  .itemDetails {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .title-des,
+  .cat,
+  .condition-price {
+    height: auto; /* Allow these to grow naturally on small screens */
+  }
+}

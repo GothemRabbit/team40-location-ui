@@ -2,8 +2,9 @@
   <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
     <div>
       <jhi-alert-error></jhi-alert-error>
-
-      <h2>List an Item</h2>
+      <div class="header">
+        <h2>List an Item</h2>
+      </div>
       <hr style="border: 1px solid black; width: 100%" />
       <section class="listing-form">
         <div class="image-upload">
@@ -12,10 +13,6 @@
             <h4>Existing Images</h4>
             <div class="thumbnail-gallery">
               <div class="thumbnail" *ngFor="let img of existingImages; let i = index">
-                <!--                <img-->
-                <!--                  [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"-->
-                <!--                  alt="Existing Image {{ i }}"-->
-                <!--                />-->
                 <img [src]="existingImageUrls[i]" alt="Existing Image {{ i }}" />
                 <button class="btn btn-danger" (click)="removeExistingImage(i)">X</button>
               </div>
@@ -26,15 +23,6 @@
             Click here to select photo
             <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" style="display: none" />
           </label>
-
-          <!-- New Images Section -->
-          <!--            <div class="thumbnail-gallery" *ngIf="newImages.length > 0">-->
-          <!--              <h4>New Images</h4>-->
-          <!--              <div class="thumbnail" *ngFor="let img of newImages; let i = index">-->
-          <!--                <img [src]="img.preview" alt="Preview {{ i }}" />-->
-          <!--                <button class="btn btn-danger" (click)="removeImage(i)">X</button>-->
-          <!--              </div>-->
-          <!--            </div>-->
 
           <div class="new-images" *ngIf="newImages.length > 0">
             <h4>New Images</h4>
@@ -194,24 +182,15 @@
       </section>
     </div>
 
-    <div>
-      <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-        <fa-icon icon="ban"></fa-icon>&nbsp;Cancel
-      </button>
+    <div class="button-group">
+      <button type="button" (click)="previousState()" class="custom-btn cancel-btn"><fa-icon icon="ban"></fa-icon>&nbsp;Cancel</button>
 
-      <button
-        type="submit"
-        id="save-entity"
-        data-cy="entityCreateSaveButton"
-        [disabled]="editForm.invalid || isSaving"
-        class="btn btn-primary"
-      >
+      <button type="submit" [disabled]="editForm.invalid || isSaving" class="custom-btn upload-btn">
         <fa-icon icon="upload"></fa-icon>&nbsp;<span>Upload</span>
       </button>
 
-      <button type="submit" (click)="delete(item!)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-        <fa-icon icon="times"></fa-icon>
-        <span class="d-none d-md-inline">Delete</span>
+      <button type="button" (click)="delete(item!)" class="custom-btn delete-btn">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span>Delete</span>
       </button>
     </div>
   </form>

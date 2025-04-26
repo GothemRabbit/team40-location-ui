@@ -6,8 +6,9 @@ label {
 }
 
 .breadcrumb {
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 8px;
+  margin-top: 10px;
 }
 
 .home-page {
@@ -187,16 +188,125 @@ label {
   align-items: center;
 }
 
+.buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.custom-btn {
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Blue - Reserve */
+.reserve-btn {
+  background-color: #dcd8a2;
+  color: black;
+}
+.reserve-btn:hover {
+  background-color: #f3f3a5;
+}
+
+/* Green - Message Seller */
+.message-btn {
+  background-color: #5f775f;
+  color: whitesmoke;
+}
+.message-btn:hover {
+  background-color: #9acca5;
+}
+
+.custom-like-message {
+  color: #a93226;
+  margin-top: 0.5rem;
+}
+
 .itemLike {
   padding-top: 20px;
   text-align: right;
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  font-size: 2.5rem; /* Bigger icon */
 }
 
 .liked-icon {
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  font-size: 2.5rem; /* Bigger icon */
   color: black;
 }
 
 .unliked-icon {
   color: #c5ccd1;
   -webkit-text-stroke: 1px #6c757d; /* gray outline */
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  font-size: 2.5rem; /* Bigger icon */
+}
+
+.edit-button {
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background-color: #dcd8a2;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.edit-button:hover {
+  background-color: #5f775f;
+}
+
+@media (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+    padding-right: 0;
+    gap: 20px; /* Reduce gap for smaller screens */
+  }
+
+  .product-image,
+  .product-details {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .title-price {
+    flex-direction: row;
+    align-items: flex-start;
+    font-size: 20px;
+  }
+
+  .details {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .timeListed {
+    justify-content: flex-start;
+  }
 }

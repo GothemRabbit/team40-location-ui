@@ -18,6 +18,7 @@ import { SlideshowComponent } from '../slideshow/slideshow.component';
 })
 export default class HomeComponent implements OnInit, OnDestroy {
   account = signal<Account | null>(null);
+  showLoggedInMessage = false;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -28,7 +29,15 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(account => this.account.set(account));
+      .subscribe(account => {
+        this.account.set(account);
+        if (account) {
+          this.showLoggedInMessage = true;
+          setTimeout(() => {
+            this.showLoggedInMessage = false;
+          }, 3000); // visible for 3 seconds
+        }
+      });
   }
 
   login(): void {
