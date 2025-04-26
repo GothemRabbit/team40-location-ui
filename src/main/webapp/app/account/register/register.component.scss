@@ -1,14 +1,18 @@
 @import '../../../content/scss/functions';
+
+.titles {
+  margin-top: 15px;
+}
+
 .form-label {
   padding-top: 10px;
   padding-bottom: 10px;
   font-weight: bold;
-  color: var(--text-color);
   font-size: px-to-rem(20);
 }
 
 .mb-3 {
-  background-color: var(--background-accent-1);
+  background-color: var(--background-color-secondary);
   border-radius: 10px;
   padding-left: 20px;
   padding-bottom: 20px;
@@ -16,14 +20,13 @@
 }
 
 .form-control {
-  background-color: var(--background-accent-1);
-  color: var(--text-color);
+  background-color: var(--background-color-secondary);
   width: 80%;
 }
 
 .btn-primary {
-  background-color: var(--background-accent-2);
-  color: var(--text-on-accent);
+  background-color: #dcd8a2;
+  color: #1d1d1f;
 }
 
 .tooltip {
@@ -50,4 +53,24 @@
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+input.form-control {
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+input.form-control:focus {
+  background-color: transparent;
+}
+
+input::placeholder {
+  color: var(--text-color); /* light grey color for placeholder text */
+  opacity: 1; /* fix Firefox default lower opacity */
+  background-color: transparent;
+}
+
+.sub-btn {
+  margin-top: 10px;
+  margin-bottom: 15px;
 }

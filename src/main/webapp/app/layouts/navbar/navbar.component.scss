@@ -42,7 +42,7 @@ Navbar
 }
 
 .search-input::placeholder {
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--text-color-secondary);
   font-size: px-to-rem(16);
 }
 

@@ -99,6 +99,8 @@ a:hover {
 
   /* Icon colours */
   --icon-star: #f2d349;
+
+  --like-color: black;
 }
 
 body {
@@ -318,6 +320,8 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --link-color: #4da3ff;
 
   --icon-star: #ffca28;
+
+  --like-color: red;
 }
 
 html {
@@ -333,4 +337,17 @@ html {
 app-footer,
 footer {
   margin-top: auto;
+}
+
+h1 {
+  color: var(--main-color);
+}
+
+button {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.wwar {
+  margin-top: 15px;
 }
