@@ -23,6 +23,9 @@
             "customWebpackConfig": {
               "path": "./webpack/webpack.custom.js"
             },
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/main/webapp/content/scss"]
+            },
             "outputPath": "target/classes/static/",
             "index": "src/main/webapp/index.html",
             "main": "src/main/webapp/main.ts",

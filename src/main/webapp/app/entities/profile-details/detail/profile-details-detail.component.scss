@@ -1,3 +1,4 @@
+@import '../../../../content/scss/functions';
 .container-fluid {
   display: flex;
   justify-content: center;
@@ -6,7 +7,7 @@
 
 .header {
   font-weight: bold;
-  font-size: 40px;
+  font-size: px-to-rem(40);
 }
 .hr {
   display: none;
@@ -33,7 +34,7 @@
   display: inline-flex;
   align-items: center;
   margin-right: auto;
-  font-size: 20px;
+  font-size: px-to-rem(20);
 }
 
 .back-text fa-icon {
@@ -74,7 +75,7 @@
 
 .username {
   font-weight: bold;
-  font-size: 25px;
+  font-size: px-to-rem(25);
 }
 
 .star {
@@ -108,7 +109,7 @@
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  font-size: 23px;
+  font-size: px-to-rem(23);
   border-radius: 2px;
 }
 
@@ -188,7 +189,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 }
 #date {
   text-align: right;
-  font-size: 13px;
+  font-size: px-to-rem(13);
 }
 #textbox {
   overflow: hidden;
@@ -224,7 +225,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   border-radius: 14px;
   height: 40px;
   width: 150px;
-  font-size: 10px;
+  font-size: px-to-rem(10);
   color: black;
 }
 
@@ -260,11 +261,11 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   }
   #filter1 {
     width: 150px;
-    font-size: 15px;
+    font-size: px-to-rem(15);
   }
   .filterButton {
     width: 150px;
-    font-size: 15px;
+    font-size: px-to-rem(15);
   }
 
   .Space {
@@ -284,7 +285,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   }
   .filterButton {
     width: 100px;
-    font-size: 10px;
+    font-size: px-to-rem(10);
     place-items: center;
   }
   .filterSpace {
@@ -307,7 +308,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 
   .filterButton {
     width: 100px;
-    font-size: 8px;
+    font-size: px-to-rem(8);
   }
 
   .filterSpace {
@@ -320,7 +321,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
     padding: 0px;
   }
   .header {
-    font-size: 30px;
+    font-size: px-to-rem(30);
   }
   .profilePage-container .topProfile-container {
     width: 80%;
@@ -347,11 +348,11 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 
   .username {
     font-weight: bold;
-    font-size: 18px;
+    font-size: px-to-rem(18);
   }
 
   .star {
-    font-size: 8px;
+    font-size: px-to-rem(8);
   }
   .profile-details button {
     width: 60px;
@@ -359,17 +360,17 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
     margin-left: auto;
     background-color: #dcd8a2;
     color: black;
-    font-size: 10px;
+    font-size: px-to-rem(10);
     padding: 0px;
   }
   #meet-up\ locations {
-    font-size: 10px;
+    font-size: px-to-rem(10);
   }
   .nav-tabs {
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    font-size: 12px;
+    font-size: px-to-rem(12);
     border-radius: 2px;
   }
 
@@ -427,7 +428,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
     margin: 0;
   }
   .back-text {
-    font-size: 13px;
+    font-size: px-to-rem(13);
   }
 }
 

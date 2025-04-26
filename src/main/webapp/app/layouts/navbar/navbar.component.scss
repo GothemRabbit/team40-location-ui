@@ -2,6 +2,7 @@
 @import 'bootswatch/dist/materia/variables';
 @import 'bootstrap/scss/variables';
 @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@700&display=swap');
+@import '../../../content/scss/functions';
 
 /* ==========================================================================
 Navbar
@@ -31,7 +32,7 @@ Navbar
 }
 
 .search-input {
-  font-size: 16px;
+  font-size: px-to-rem(16);
   font-family: 'PT Sans', sans-serif;
   color: var(--text-color-secondary);
   margin-left: 12px;
@@ -42,7 +43,7 @@ Navbar
 
 .search-input::placeholder {
   color: rgba(0, 0, 0, 0.5);
-  font-size: 16px;
+  font-size: px-to-rem(16);
 }
 
 .profile-image {
@@ -55,7 +56,7 @@ nav {
   font-family: 'PT Sans', sans-serif;
   font-weight: 550;
   font-style: normal;
-  font-size: 23px;
+  font-size: px-to-rem(23);
 }
 
 .navbar-brand,

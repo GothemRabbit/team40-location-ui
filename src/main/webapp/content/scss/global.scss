@@ -7,6 +7,25 @@
 Bootstrap tweaks
 ===============================================================*/
 
+@function px-to-rem($px, $base: 16) {
+  @return ($px / $base) * 1rem;
+}
+
+html {
+  font-size: var(--font-size) !important;
+}
+body,
+p,
+span,
+label,
+button,
+input,
+select,
+textarea {
+  font-size: inherit;
+  line-height: 1.2;
+}
+
 body,
 h1,
 h2,
@@ -51,7 +70,6 @@ a:hover {
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  font-size: var(--font-size);
 }
 
 a {
