@@ -18,24 +18,26 @@
       <fa-icon icon="bars"></fa-icon>
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed()">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <div class="search me-3">
+      <ul class="navbar-nav ms-auto d-flex align-items-center">
+        <!-- Search Bar -->
+        <li class="nav-item me-3">
+          <div class="search">
             <fa-icon icon="search"></fa-icon>
-            <input type="search" [(ngModel)]="searchText" (keydown)="onSearchKeydown($event)" placeholder="Search" />
+            <input class="search-input" type="search" [(ngModel)]="searchText" (keydown)="onSearchKeydown($event)" placeholder="Search" />
           </div>
+        </li>
+
+        <!-- Links -->
+        <li class="nav-item d-flex align-items-center">
           <div class="nav-box">
-            <a class="nav-link" routerLink="/item/new" (click)="collapseNavbar()">
-              <span>Sell</span>
-            </a>
+            <a class="nav-link" routerLink="/item/new" (click)="collapseNavbar()">Sell</a>
             <a class="nav-link" routerLink="/conversation" (click)="collapseNavbar()">
               <fa-icon icon="message"></fa-icon>
-              <span>Chat</span>
+              Chat
             </a>
             <a class="nav-link" routerLink="/product-status" (click)="collapseNavbar()">
               <fa-icon icon="book"></fa-icon>
-              <span>Product</span>
-              <span>Status</span>
+              Product Status
             </a>
           </div>
         </li>

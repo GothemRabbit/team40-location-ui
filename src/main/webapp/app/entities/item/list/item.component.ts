@@ -103,15 +103,16 @@ export class ItemComponent implements OnInit {
       const lowerTerm = term.toLowerCase();
       this.filteredItems = this.items.filter(item => {
         const title = (item.title ?? '').toLowerCase();
-        const description = (item.description ?? '').toLowerCase();
-        return title.includes(lowerTerm) || description.includes(lowerTerm);
+        const brand = (item.brand ?? '').toLowerCase();
+        const size = (item.sizeItem ?? '').toLowerCase();
+        return title.includes(lowerTerm) || brand.includes(lowerTerm) || size.includes(lowerTerm);
       });
     }
   }
 
   loadImagesForItems(): void {
     if (!this.items || this.items.length === 0) {
-      console.error('No items found to load images for.');
+      // console.error('No items found to load images for.');
       return;
     }
 

@@ -3,6 +3,10 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable, take } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.component';
+import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
+import { filter, tap } from 'rxjs/operators'; // Already imported in some places
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +27,6 @@ import { IItem } from '../item.model';
 import { ItemFormGroup, ItemFormService } from './item-form.service';
 import { ImagesService } from 'app/entities/images/service/images.service';
 import { IImages } from 'app/entities/images/images.model';
-import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 
 @Component({
@@ -58,6 +61,7 @@ export class ItemUpdateComponent implements OnInit {
   protected activatedRoute = inject(ActivatedRoute);
   protected imagesService = inject(ImagesService);
   protected loginService = inject(LoginService);
+  protected modalService = inject(NgbModal);
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ItemFormGroup = this.itemFormService.createItemFormGroup();
 
@@ -127,19 +131,6 @@ export class ItemUpdateComponent implements OnInit {
     }
   }
 
-  // onDragOver(event: DragEvent): void {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  // }
-  //
-  // onDrop(event: DragEvent): void {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  //   if (event.dataTransfer?.files) {
-  //     this.processFiles(event.dataTransfer.files);
-  //   }
-  // }
-
   removeImage(index: number): void {
     this.newImages.splice(index, 1);
   }
@@ -161,6 +152,17 @@ export class ItemUpdateComponent implements OnInit {
       error: (err: FileLoadError) =>
         this.eventManager.broadcast(new EventWithContent<AlertError>('teamproject24App.error', { message: err.message })),
     });
+  }
+
+  delete(item: IItem): void {
+    const modalRef = this.modalService.open(ItemDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.item = item;
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === ITEM_DELETED_EVENT),
+        tap(() => this.previousState()),
+      )
+      .subscribe();
   }
 
   previousState(): void {

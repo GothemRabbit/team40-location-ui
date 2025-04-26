@@ -4,6 +4,12 @@
   <jhi-alert-error></jhi-alert-error>
   <jhi-alert></jhi-alert>
 
+  @if (searchTerm && searchTerm.trim() !== '' && filteredItems && filteredItems.length > 0) {
+    <div class="found">
+      <span>Results for "{{ searchTerm }}"</span>
+    </div>
+  }
+
   <div class="item-container">
     <div class="item-list">
       <!-- If no items at all -->

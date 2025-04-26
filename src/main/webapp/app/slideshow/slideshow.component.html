@@ -1,0 +1,18 @@
+<div class="slideshow-container">
+  <div class="slideshow">
+    <img [src]="images[currentIndex]" alt="Slideshow Image" />
+
+    <!-- Button overlay on slides -->
+    <div class="custom-buttons" *ngIf="currentIndex === 1">
+      <button (click)="onSpecialAction()" class="button-login">Login</button>
+    </div>
+
+    <div class="custom-buttons" *ngIf="currentIndex === 3">
+      <button (click)="onAnotherAction()" class="button-sell">Sell</button>
+    </div>
+  </div>
+
+  <!-- Navigation arrows -->
+  <button (click)="previousImage()" class="nav-button prev-button">&#10094;</button>
+  <button (click)="nextImage()" class="nav-button next-button">&#10095;</button>
+</div>

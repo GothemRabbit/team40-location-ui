@@ -1,23 +1,26 @@
+<div class="col-md-3">
+  <span class="hipster img-fluid rounded"></span>
+</div>
+<div class="header">
+  <h1 class="display-4"><span>Buy2Use!</span></h1>
+  <p class="lead">Where you can find everything you ever need</p>
+</div>
+<jhi-slideshow></jhi-slideshow>
+
 <div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
-  </div>
-
   <div class="col-md-12">
-    <!--    <h1 class="display-4"><span>Buy2Use!</span></h1>-->
-
-    <!--    <p class="lead">Where you can find everything you ever need</p>-->
-
-    <div>
+    <div class="middle">
       @if (account() !== null) {
-        <div class="alert alert-success">
+        <div class="success" *ngIf="showLoggedInMessage">
           @if (account(); as accountRef) {
-            <span id="home-logged-message">You are logged in as user &quot;{{ accountRef.login }}&quot;.</span>
+            <span id="home-logged-message"> You are logged in as user &quot;{{ accountRef.login }}&quot;. </span>
           }
         </div>
-        <div class="center-container">
-          <jhi-item></jhi-item>
+
+        <div class="listing">
+          <span id="foru">For you</span>
         </div>
+        <jhi-item></jhi-item>
       } @else {
         <jhi-item></jhi-item>
       }

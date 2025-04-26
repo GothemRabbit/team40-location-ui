@@ -78,7 +78,9 @@ export default class NavbarComponent implements OnInit {
 
   onSearchKeydown(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
-      this.router.navigate(['/'], {
+      event.preventDefault();
+      event.stopPropagation();
+      this.router.navigate(['/item'], {
         queryParams: { search: this.searchText },
       });
     }

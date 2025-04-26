@@ -2,8 +2,9 @@
   <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
     <div>
       <jhi-alert-error></jhi-alert-error>
-
-      <h2>List an Item</h2>
+      <div class="header">
+        <h2>List an Item</h2>
+      </div>
       <hr style="border: 1px solid black; width: 100%" />
       <section class="listing-form">
         <div class="image-upload">
@@ -12,10 +13,6 @@
             <h4>Existing Images</h4>
             <div class="thumbnail-gallery">
               <div class="thumbnail" *ngFor="let img of existingImages; let i = index">
-                <!--                <img-->
-                <!--                  [src]="'data:' + (img.imagesContentType || 'image/png') + ';base64,' + (img.images || '')"-->
-                <!--                  alt="Existing Image {{ i }}"-->
-                <!--                />-->
                 <img [src]="existingImageUrls[i]" alt="Existing Image {{ i }}" />
                 <button class="btn btn-danger" (click)="removeExistingImage(i)">X</button>
               </div>
@@ -26,15 +23,6 @@
             Click here to select photo
             <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" style="display: none" />
           </label>
-
-          <!-- New Images Section -->
-          <!--            <div class="thumbnail-gallery" *ngIf="newImages.length > 0">-->
-          <!--              <h4>New Images</h4>-->
-          <!--              <div class="thumbnail" *ngFor="let img of newImages; let i = index">-->
-          <!--                <img [src]="img.preview" alt="Preview {{ i }}" />-->
-          <!--                <button class="btn btn-danger" (click)="removeImage(i)">X</button>-->
-          <!--              </div>-->
-          <!--            </div>-->
 
           <div class="new-images" *ngIf="newImages.length > 0">
             <h4>New Images</h4>
@@ -192,72 +180,17 @@
           </div>
         </div>
       </section>
-
-      <!--      <div class="mb-3">-->
-      <!--        <label for="field_wishlists">Wishlist</label>-->
-      <!--        <select-->
-      <!--          class="form-control"-->
-      <!--          id="field_wishlists"-->
-      <!--          data-cy="wishlist"-->
-      <!--          multiple-->
-      <!--          name="wishlists"-->
-      <!--          formControlName="wishlists"-->
-      <!--          [compareWith]="compareWishlist"-->
-      <!--        >-->
-      <!--          @for (wishlistOption of wishlistsSharedCollection; track $index) {-->
-      <!--            <option [ngValue]="wishlistOption">{{ wishlistOption.id }}</option>-->
-      <!--          }-->
-      <!--        </select>-->
-      <!--      </div>-->
-
-      <!--      <div class="mb-3">-->
-      <!--        <label class="form-label" for="field_profileDetails">Profile Details</label>-->
-      <!--        <select-->
-      <!--          class="form-control"-->
-      <!--          id="field_profileDetails"-->
-      <!--          data-cy="profileDetails"-->
-      <!--          name="profileDetails"-->
-      <!--          formControlName="profileDetails"-->
-      <!--          [compareWith]="compareProfileDetails"-->
-      <!--        >-->
-      <!--          <option [ngValue]="null"></option>-->
-      <!--          @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {-->
-      <!--            <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>-->
-      <!--          }-->
-      <!--        </select>-->
-      <!--      </div>-->
-
-      <!--      <div class="mb-3">-->
-      <!--        <label class="form-label" for="field_seller">Seller</label>-->
-      <!--        <select-->
-      <!--          class="form-control"-->
-      <!--          id="field_seller"-->
-      <!--          data-cy="seller"-->
-      <!--          name="seller"-->
-      <!--          formControlName="seller"-->
-      <!--          [compareWith]="compareUserDetails"-->
-      <!--        >-->
-      <!--          <option [ngValue]="null"></option>-->
-      <!--          @for (userDetailsOption of userDetailsSharedCollection; track $index) {-->
-      <!--            <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>-->
-      <!--          }-->
-      <!--        </select>-->
-      <!--      </div>-->
     </div>
 
-    <div>
-      <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-        <fa-icon icon="ban"></fa-icon>&nbsp;Cancel
+    <div class="button-group">
+      <button type="button" (click)="previousState()" class="custom-btn cancel-btn"><fa-icon icon="ban"></fa-icon>&nbsp;Cancel</button>
+
+      <button type="submit" [disabled]="editForm.invalid || isSaving" class="custom-btn upload-btn">
+        <fa-icon icon="upload"></fa-icon>&nbsp;<span>Upload</span>
       </button>
 
-      <button
-        type="submit"
-        id="save-entity"
-        data-cy="entityCreateSaveButton"
-        [disabled]="editForm.invalid || isSaving"
-        class="btn btn-primary"
-      >
-        <fa-icon icon="upload"></fa-icon>&nbsp;<span>Upload</span>
+      <button type="button" (click)="delete(item!)" class="custom-btn delete-btn">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span>Delete</span>
       </button>
     </div>
   </form>
