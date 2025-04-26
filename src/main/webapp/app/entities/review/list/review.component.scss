@@ -168,7 +168,7 @@ p {
 }
 #rates {
   text-align: right;
-  color: var(--background-accent-3);
+  color: var(--icon-star);
 }
 #date {
   text-align: right;
@@ -218,7 +218,7 @@ button:hover {
   font-size: px-to-rem(13);
   height: 30px;
   width: 150px;
-  color: black;
+  color: var(--text-color);
 }
 
 #filter1 {

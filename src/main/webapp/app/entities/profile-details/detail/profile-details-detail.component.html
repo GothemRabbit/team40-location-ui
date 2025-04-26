@@ -163,7 +163,7 @@
                 </select>
               </div>
               @for (review of reviewReceived; track trackId(review)) {
-                <div class="commentBoxRight">
+                <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
                   <div style="display: flex; justify-content: space-between">
                     <p id="username">
                       @if (review.consumer?.bioImage) {

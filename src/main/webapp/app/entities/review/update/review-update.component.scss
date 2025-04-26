@@ -16,7 +16,7 @@ button {
   margin-left: auto;
   padding: 15px 30px;
   border-radius: 30px;
-  background-color: var(--background-accent-1);
+  background-color: var(--textarea-color);
   color: black;
   border: 2px solid black;
   transition-duration: 0.5s;
@@ -24,7 +24,7 @@ button {
 
 button:hover {
   background-color: black;
-  color: var(--background-accent-1);
+  color: var(--textarea-color);
 }
 
 #btn {
@@ -80,7 +80,7 @@ label {
 }
 
 textarea {
-  background-color: var(--background-accent-1);
+  background-color: var(--textarea-color);
   width: 90%;
   height: 130px;
   margin-left: 20px;
@@ -90,7 +90,6 @@ textarea {
 }
 
 .date {
-  background-color: var(--background-accent-1);
   margin-left: 25px;
   width: 90%;
   height: 38px;
@@ -98,10 +97,10 @@ textarea {
   border: none;
   padding-left: 25px;
   margin-bottom: 2px;
+  background-color: var(--textarea-color);
 }
 
 .num {
-  background-color: var(--background-accent-1);
   margin-top: auto;
   margin-left: 23px;
   width: 90%;
@@ -109,6 +108,7 @@ textarea {
   border-radius: 10px;
   border: none;
   padding-left: 25px;
+  background-color: var(--textarea-color);
 }
 
 ngb-rating {
@@ -121,7 +121,7 @@ ngb-rating {
   color: var(--text-color-secondary);
 }
 .filled.bad {
-  color: var(--background-accent-3);
+  color: var(--icon-star);
 }
 //#5c6e58 dark green
 // #8aa899 light green
