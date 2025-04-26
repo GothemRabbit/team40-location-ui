@@ -159,4 +159,58 @@ h2 {
   background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  z-index: 1050;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  z-index: 1051;
+}
+
+.modal .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 500;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.modal-actions button.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-actions button.btn-info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.modal-actions button:hover {
+  opacity: 0.9;
 }

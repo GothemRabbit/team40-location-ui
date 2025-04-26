@@ -33,7 +33,7 @@ export class ItemDetailComponent implements OnInit {
   likesCount = signal(0);
   isLiked = signal(false);
   likeMessage = signal<string | null>(null);
-
+  showModal = false;
   protected loginService = inject(LoginService);
   protected dataUtils = inject(DataUtils);
   private route = inject(ActivatedRoute);
@@ -112,7 +112,17 @@ export class ItemDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+  // Method to show the modal
   reserveItem(): void {
+    this.showModal = true;
+  }
+
+  // Method to close the modal (cancel)
+  closeModal(): void {
+    this.showModal = false;
+  }
+  confirmReservation(): void {
+    this.showModal = false; // Close the modal
     this.loginService
       .getProfileDetails()
       .pipe(take(1))
@@ -125,7 +135,14 @@ export class ItemDetailComponent implements OnInit {
             console.error('Item ID is missing');
             return;
           }
-          this.itemService.reserveItemInProductStatus(itemId, buyerProfileId).subscribe();
+          this.itemService.reserveItemInProductStatus(itemId, buyerProfileId).subscribe({
+            next() {
+              // Optionally
+            },
+            error(err) {
+              console.error('Error reserving item:', err);
+            },
+          });
         }
       });
   }
