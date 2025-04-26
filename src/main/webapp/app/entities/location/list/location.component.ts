@@ -1,65 +1,109 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
+import { Component, NgZone, OnInit, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Subscription, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { inject } from '@angular/core';
 
 import SharedModule from 'app/shared/shared.module';
-import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { FormsModule } from '@angular/forms';
-import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
+import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 import { ILocation } from '../location.model';
-import { EntityArrayResponseType, LocationService } from '../service/location.service';
+import { LocationService } from '../service/location.service';
 import { LocationDeleteDialogComponent } from '../delete/location-delete-dialog.component';
+
+declare const google: any;
 
 @Component({
   standalone: true,
   selector: 'jhi-location',
   templateUrl: './location.component.html',
-  imports: [
-    RouterModule,
-    FormsModule,
-    SharedModule,
-    SortDirective,
-    SortByDirective,
-    DurationPipe,
-    FormatMediumDatetimePipe,
-    FormatMediumDatePipe,
-  ],
+  imports: [RouterModule, FormsModule, SharedModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class LocationComponent implements OnInit {
-  subscription: Subscription | null = null;
-  locations?: ILocation[];
+export class LocationComponent implements OnInit, AfterViewInit {
+  // public readonly instance fields
+  public readonly router = inject(Router);
+
+  // public instance fields
+  showOverviewMap = false;
+  visibleCount = 0;
+  hiddenMaps: Record<number, boolean> = {};
+  markers: { position: { lat: number; lng: number }; title: string }[] = [];
+  overviewOptions = {
+    center: { lat: 31.2304, lng: 121.4737 },
+    zoom: 10,
+  };
   isLoading = false;
 
-  sortState = sortStateSignal({});
-
-  public readonly router = inject(Router);
+  // protected instance fields
   protected readonly locationService = inject(LocationService);
   protected readonly activatedRoute = inject(ActivatedRoute);
-  protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
-  trackId = (item: ILocation): number => this.locationService.getLocationIdentifier(item);
+  // private instance fields
+  private _filterText = '';
+  private subscription: Subscription | null = null;
+  private locations: ILocation[] = [];
+
+  get filterText(): string {
+    return this._filterText;
+  }
+
+  set filterText(value: string) {
+    this._filterText = value;
+    this.visibleCount = Math.min(this.filteredLocations.length, Math.max(4, this.visibleCount));
+  }
+
+  get filteredLocations(): ILocation[] {
+    const search = this._filterText.toLowerCase().trim();
+    if (!search) return this.locations;
+    return this.locations.filter(location => {
+      return (
+        (location.address?.toLowerCase().includes(search) ?? false) ||
+        (location.postcode?.toLowerCase().includes(search) ?? false) ||
+        (location.users?.some((user: { id: number }) => user.id.toString().toLowerCase().includes(search)) ?? false) ||
+        `location #${location.id}`.toLowerCase().includes(search)
+      );
+    });
+  }
+
+  get visibleLocations(): ILocation[] {
+    return this.filteredLocations.slice(0, this.visibleCount);
+  }
 
   ngOnInit(): void {
-    this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
-      .pipe(
-        tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => {
-          if (!this.locations || this.locations.length === 0) {
-            this.load();
+    this.load();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.visibleLocations.forEach(location => {
+        if (this.isValidCoordinate(location.latitude) && this.isValidCoordinate(location.longitude)) {
+          const mapElement = document.getElementById(`map-${location.id}`);
+          if (mapElement) {
+            const map = new google.maps.Map(mapElement, {
+              center: { lat: Number(location.latitude), lng: Number(location.longitude) },
+              zoom: 12,
+            });
+
+            const marker = new google.maps.Marker({
+              position: { lat: Number(location.latitude), lng: Number(location.longitude) },
+              map,
+              title: location.address ?? '',
+            });
           }
-        }),
-      )
-      .subscribe();
+        }
+      });
+    }, 100);
   }
 
   delete(location: ILocation): void {
-    const modalRef = this.modalService.open(LocationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    const modalRef = this.modalService.open(LocationDeleteDialogComponent, {
+      size: 'lg',
+      backdrop: 'static',
+    });
     modalRef.componentInstance.location = location;
-    // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
@@ -69,53 +113,35 @@ export class LocationComponent implements OnInit {
   }
 
   load(): void {
-    this.queryBackend().subscribe({
-      next: (res: EntityArrayResponseType) => {
-        this.onResponseSuccess(res);
-      },
-    });
-  }
-
-  navigateToWithComponentValues(event: SortState): void {
-    this.handleNavigation(event);
-  }
-
-  protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
-    this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
-  }
-
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.locations = this.refineData(dataFromBody);
-  }
-
-  protected refineData(data: ILocation[]): ILocation[] {
-    const { predicate, order } = this.sortState();
-    return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
-  }
-
-  protected fillComponentAttributesFromResponseBody(data: ILocation[] | null): ILocation[] {
-    return data ?? [];
-  }
-
-  protected queryBackend(): Observable<EntityArrayResponseType> {
     this.isLoading = true;
-    const queryObject: any = {
-      sort: this.sortService.buildSortParam(this.sortState()),
-    };
-    return this.locationService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    this.locationService
+      .query()
+      .pipe(tap(() => (this.isLoading = false)))
+      .subscribe(res => {
+        this.locations = res.body ?? [];
+        this.visibleCount = Math.min(4, this.filteredLocations.length);
+        this.markers = this.filteredLocations
+          .filter(loc => this.isValidCoordinate(loc.latitude) && this.isValidCoordinate(loc.longitude))
+          .map(loc => ({
+            position: { lat: Number(loc.latitude!), lng: Number(loc.longitude!) },
+            title: loc.address ?? '',
+          }));
+      });
   }
 
-  protected handleNavigation(sortState: SortState): void {
-    const queryParamsObj = {
-      sort: this.sortService.buildSortParam(sortState),
-    };
+  loadMore(): void {
+    this.visibleCount = Math.min(this.visibleCount + 1, this.filteredLocations.length);
+  }
 
-    this.ngZone.run(() => {
-      this.router.navigate(['./'], {
-        relativeTo: this.activatedRoute,
-        queryParams: queryParamsObj,
-      });
-    });
+  toggleOverviewMap(): void {
+    this.showOverviewMap = !this.showOverviewMap;
+  }
+
+  toggleCardMap(id: number): void {
+    this.hiddenMaps[id] = !this.hiddenMaps[id];
+  }
+
+  private isValidCoordinate(value: number | null | undefined): value is number {
+    return value !== null && value !== undefined;
   }
 }
