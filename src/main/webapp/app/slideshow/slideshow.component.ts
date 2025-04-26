@@ -30,10 +30,10 @@ export class SlideshowComponent implements OnInit {
   }
 
   onSpecialAction(): void {
-    this.router.navigate(['/item/new']);
+    this.router.navigate(['/login']);
   }
 
   onAnotherAction(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/item/new']);
   }
 }
