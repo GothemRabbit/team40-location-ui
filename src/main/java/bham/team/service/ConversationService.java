@@ -67,6 +67,20 @@ public class ConversationService {
      */
     public ConversationDTO save(ConversationDTO conversationDTO) {
         LOG.debug("Request to save Conversation : {}", conversationDTO);
+
+        if (conversationDTO.getProfileDetails() != null && conversationDTO.getParticipants() != null) {
+            Long first = conversationDTO.getProfileDetails().stream().findFirst().orElseThrow().getId();
+            Long second = conversationDTO.getParticipants().stream().findFirst().orElseThrow().getId();
+
+            conversationRepository
+                .findByTwoUsers(first, second)
+                .ifPresent(existing -> {
+                    throw new IllegalStateException(
+                        "Conversation already exists between users " + first + " and " + second + " (id=" + existing.getId() + ')'
+                    );
+                });
+        }
+
         Conversation conversation = conversationMapper.toEntity(conversationDTO);
         conversation = conversationRepository.save(conversation);
         return conversationMapper.toDto(conversation);

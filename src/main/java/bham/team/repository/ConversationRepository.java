@@ -34,4 +34,16 @@ public interface ConversationRepository extends ConversationRepositoryWithBagRel
         "SELECT DISTINCT c FROM Conversation c LEFT JOIN c.profileDetails pd LEFT JOIN c.participants par WHERE pd.id = :profileId OR par.id = :profileId"
     )
     List<Conversation> fetchConvosByProfile(@Param("profileId") Long profileId);
+
+    @Query(
+        """
+        SELECT c
+        FROM Conversation c
+        JOIN c.profileDetails pd1
+        JOIN c.participants  pd2
+        WHERE (pd1.id = :u1 AND pd2.id = :u2)
+           OR (pd1.id = :u2 AND pd2.id = :u1)
+        """
+    )
+    Optional<Conversation> findByTwoUsers(@Param("u1") Long u1, @Param("u2") Long u2);
 }
