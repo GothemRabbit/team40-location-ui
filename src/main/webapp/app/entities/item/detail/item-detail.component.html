@@ -129,7 +129,7 @@
             <button class="custom-btn reserve-btn" (click)="reserveItem()">
               <span>Reserve Item</span>
             </button>
-            <button class="custom-btn message-btn" [routerLink]="'/conversation'">
+            <button class="custom-btn message-btn" (click)="messageSeller()">
               <span>Message Seller</span>
             </button>
           </div>
@@ -150,6 +150,26 @@
           </div>
         </div>
       </section>
+      <!-- Modal for confirmation -->
+      <div class="modal" tabindex="-1" role="dialog" [ngClass]="{ show: showModal }" [ngStyle]="{ display: showModal ? 'block' : 'none' }">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirm Reservation</h5>
+              <button type="button" class="close" (click)="closeModal()">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to reserve this item?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="confirmReservation()">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <dl class="row-md jh-entity-details"></dl>
 

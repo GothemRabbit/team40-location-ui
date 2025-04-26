@@ -94,12 +94,13 @@ input::placeholder {
 }
 
 .form-control {
-  background-color: white;
+  background-color: var(--background-accent-2);
+  color: var(--text-color);
 }
 
 input.form-control,
 textarea.form-control {
-  background: transparent;
+  background: var(--background-accent-2);
 }
 
 .title-des {

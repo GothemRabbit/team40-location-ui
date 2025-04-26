@@ -76,7 +76,7 @@
                   <span>Profile</span>
                 </a>
               </li>
-              <li>
+              <li *ngIf="accountRef?.authorities?.includes('ROLE_ADMIN')">
                 <a
                   class="dropdown-item"
                   [routerLink]="['/profile-details']"
@@ -126,18 +126,6 @@
                   <a class="dropdown-item" routerLink="/admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
                     <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
                     <span>User management</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    [routerLink]="['/profile-details']"
-                    routerLinkActive="active"
-                    (click)="collapseNavbar()"
-                    data-cy="settings"
-                  >
-                    <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
-                    <span>Profile List</span>
                   </a>
                 </li>
                 <li>

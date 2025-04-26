@@ -143,11 +143,7 @@
           </div>
 
           <!-- COMPLETED -->
-          <div *ngIf="productStatusRef.status === 'COMPLETED'">
-            <button type="button" (click)="openReviewModal()" class="btn btn-success" data-cy="reviewButton">
-              <fa-icon icon="star"></fa-icon><span>Review</span>
-            </button>
-          </div>
+          <div *ngIf="productStatusRef.status === 'COMPLETED'"></div>
         </div>
       </div>
     </div>
