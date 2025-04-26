@@ -63,8 +63,10 @@ export default class AppComponent implements AfterViewInit {
       const isButton = activeEl instanceof HTMLButtonElement;
       const isLink = activeEl instanceof HTMLAnchorElement && activeEl.hasAttribute('href');
       const isCheckbox = activeEl instanceof HTMLInputElement && activeEl.type === 'checkbox';
+      const isRadio = activeEl instanceof HTMLInputElement && activeEl.type === 'radio';
+      const isLabel = activeEl instanceof HTMLLabelElement && activeEl.classList.contains('drop-area');
 
-      if (isButton || isLink || isCheckbox) {
+      if (isButton || isLink || isCheckbox || isRadio || isLabel) {
         event.preventDefault();
         activeEl.click();
       }

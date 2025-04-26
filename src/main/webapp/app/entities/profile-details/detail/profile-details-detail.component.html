@@ -57,13 +57,37 @@
 
       <ul class="nav nav-tabs mt-3">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'listings'" (click)="activeTab = 'listings'"> Listings</a>
+          <a
+            class="nav-link"
+            href="#"
+            tabindex="0"
+            [class.active]="activeTab === 'listings'"
+            (click)="activeTab = 'listings'; $event.preventDefault()"
+          >
+            Listings</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'wishlist'" (click)="activeTab = 'wishlist'"> Wishlist</a>
+          <a
+            class="nav-link"
+            href="#"
+            tabindex="0"
+            [class.active]="activeTab === 'wishlist'"
+            (click)="activeTab = 'wishlist'; $event.preventDefault()"
+          >
+            Wishlist</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'"> Reviews </a>
+          <a
+            class="nav-link"
+            href="#"
+            tabindex="0"
+            [class.active]="activeTab === 'reviews'"
+            (click)="activeTab = 'reviews'; $event.preventDefault()"
+          >
+            Reviews
+          </a>
         </li>
       </ul>
 
