@@ -1,4 +1,4 @@
-import { Component, inject, AfterViewInit, HostListener } from '@angular/core';
+import { Component, inject, AfterViewInit, HostListener, OnInit } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import dayjs from 'dayjs/esm';
@@ -20,7 +20,7 @@ import MainComponent from './layouts/main/main.component';
     // jhipster-needle-angular-add-module JHipster will add new module here
   ],
 })
-export default class AppComponent implements AfterViewInit {
+export default class AppComponent implements AfterViewInit, OnInit {
   // --- Accessibility: Keyboard navigation state ---
   htmlElements: HTMLElement[] = [];
   currentIndex = 0;

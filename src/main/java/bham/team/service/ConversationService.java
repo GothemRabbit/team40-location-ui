@@ -72,6 +72,10 @@ public class ConversationService {
             Long first = conversationDTO.getProfileDetails().stream().findFirst().orElseThrow().getId();
             Long second = conversationDTO.getParticipants().stream().findFirst().orElseThrow().getId();
 
+            if (first.equals(second)) {
+                throw new IllegalStateException("Cannot create a conversation with yourself");
+            }
+
             conversationRepository
                 .findByTwoUsers(first, second)
                 .ifPresent(existing -> {

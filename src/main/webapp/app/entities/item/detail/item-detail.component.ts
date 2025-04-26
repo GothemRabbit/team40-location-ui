@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import dayjs from 'dayjs';
 
 import SharedModule from 'app/shared/shared.module';
@@ -14,6 +14,8 @@ import { LoginService } from 'app/login/login.service';
 import { LikesService } from '../../likes/service/likes.service';
 import { ItemDeleteDialogComponent } from '../delete/item-delete-dialog.component';
 import { ITEM_DELETED_EVENT } from '../../../config/navigation.constants';
+import { ConversationService } from '../../conversation/service/conversation.service';
+import { type NewConversation } from '../../conversation/conversation.model';
 
 @Component({
   standalone: true,
@@ -31,12 +33,14 @@ export class ItemDetailComponent implements OnInit {
   likesCount = signal(0);
   isLiked = signal(false);
   likeMessage = signal<string | null>(null);
-
+  showModal = false;
   protected loginService = inject(LoginService);
   protected dataUtils = inject(DataUtils);
   private route = inject(ActivatedRoute);
   private itemService = inject(ItemService);
   private likesService = inject(LikesService);
+  private convoService = inject(ConversationService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     // Fetch profile details first
@@ -108,7 +112,17 @@ export class ItemDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+  // Method to show the modal
   reserveItem(): void {
+    this.showModal = true;
+  }
+
+  // Method to close the modal (cancel)
+  closeModal(): void {
+    this.showModal = false;
+  }
+  confirmReservation(): void {
+    this.showModal = false; // Close the modal
     this.loginService
       .getProfileDetails()
       .pipe(take(1))
@@ -121,7 +135,14 @@ export class ItemDetailComponent implements OnInit {
             console.error('Item ID is missing');
             return;
           }
-          this.itemService.reserveItemInProductStatus(itemId, buyerProfileId).subscribe();
+          this.itemService.reserveItemInProductStatus(itemId, buyerProfileId).subscribe({
+            next() {
+              // Optionally
+            },
+            error(err) {
+              console.error('Error reserving item:', err);
+            },
+          });
         }
       });
   }
@@ -168,6 +189,56 @@ export class ItemDetailComponent implements OnInit {
     const diffDays = today.diff(listedDate, 'day');
 
     return diffDays === 0 ? 'Listed today' : `Listed ${diffDays} day(s) ago`;
+  }
+
+  messageSeller(): void {
+    const sellerProfileId = this.item()?.profileDetails?.id;
+    if (!sellerProfileId) {
+      console.error('Seller ID missing');
+      return;
+    }
+
+    this.loginService
+      .getProfileDetails()
+      .pipe(take(1))
+      .subscribe(myPd => {
+        if (!myPd) {
+          console.error('User must be logged in to message');
+          return;
+        }
+
+        const conv: NewConversation = {
+          id: null,
+          dateCreated: dayjs(),
+          profileDetails: [{ id: sellerProfileId }],
+          participants: [{ id: myPd.id }],
+        } as NewConversation;
+
+        this.convoService.create(conv).subscribe({
+          next: res => {
+            const newId = res.body?.id;
+            if (newId) {
+              this.router.navigate(['/conversation', newId, 'view']);
+            } else {
+              this.router.navigate(['/conversation']);
+            }
+          },
+          error: err => {
+            this.convoService.fetchMyVibes().subscribe(listRes => {
+              const convId = listRes.body?.find(c => {
+                const hasSeller = c.profileDetails?.some(pd => pd.id === sellerProfileId);
+                const hasMe = c.participants?.some(pd => pd.id === myPd.id);
+                return hasSeller && hasMe;
+              })?.id;
+              if (convId) {
+                this.router.navigate(['/conversation', convId, 'view']);
+              } else {
+                this.router.navigate(['/conversation']);
+              }
+            });
+          },
+        });
+      });
   }
 
   // Fetch profile details from the LoginService

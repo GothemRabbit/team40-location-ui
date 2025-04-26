@@ -19,7 +19,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin-top: 15px;
+  margin: 0 auto;
 }
 .profile-image {
   max-width: 170px;
@@ -34,7 +34,7 @@
   display: inline-flex;
   align-items: center;
   margin-right: auto;
-  font-size: px-to-rem(16);
+  font-size: px-to-rem(20);
 }
 
 .back-text fa-icon {
@@ -50,18 +50,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--background-color-secondary);
+  background-color: var(--background-accent-2);
   padding: 20px;
   border-radius: 8px;
   position: relative;
   gap: 15px;
   margin-bottom: 20px;
-  outline: white;
+  color: var(--text-color);
 }
 
 .topProfile-container img {
   max-width: 150px;
   border-width: thin;
+  border-color: var(--border-color);
 }
 
 .profile-details {
@@ -71,7 +72,6 @@
   flex-grow: 1;
   padding-left: 30px;
   padding-top: 20px;
-  color: var(--text-color);
 }
 
 .username {
@@ -120,8 +120,8 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 }
 
 .nav-link {
-  color: #1d1d1f;
-  background-color: #f1f1f1;
+  color: var(--text-color);
+  background-color: var(--background-accent-2);
   width: 230px;
   text-align: center;
 }
@@ -129,12 +129,18 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 .nav-link.active {
   border-bottom: 2px solid #6c757d;
   box-shadow: none;
-  color: black;
+  color: var(--text-color);
+  background-color: var(--background-accent-2);
+}
+
+.nav-link.active:hover {
+  border-bottom: 2px solid #6c757d;
+  background-color: var(--background-accent-3);
 }
 
 .nav-link:hover {
-  color: black;
   border-bottom: 2px solid #6c757d;
+  background-color: var(--background-accent-3);
 }
 
 .nav-tabs .nav-link:hover,
@@ -146,8 +152,6 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 .tab-content {
   width: 100%;
   padding: 20px;
-  outline: 1.5px solid grey;
-  margin-bottom: 10px;
 }
 
 .tab-content.mt-3 {
@@ -361,7 +365,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
     width: 60px;
     height: 25px;
     margin-left: auto;
-    background-color: #dcd8a2;
+    background-color: var(--background-accent-2);
     color: black;
     font-size: px-to-rem(10);
     padding: 0px;
@@ -452,13 +456,12 @@ ul {
   flex: 0 0 250px;
   height: 300px;
   width: 250px; /* Prevents excessive stretching */
+  background: transparent;
   padding: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1.5px var(--text-on-accent);
-  background: var(--background-color);
 }
 
 .card {
@@ -466,8 +469,8 @@ ul {
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
-  border: 1.5px solid var(--text-on-accent);
-  background: var(--background-color);
+  border: 1.5px solid black; /* Light yellow border */
+  background: white;
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
@@ -485,6 +488,8 @@ ul {
   display: flex;
   justify-content: space-between; /* Pushes icons to opposite sides */
   align-items: center; /* Ensures vertical alignment */
+  //bottom: px;
+  // position: relative;
 }
 
 .card-img-top {
@@ -507,7 +512,6 @@ ul {
 .card-body {
   padding-bottom: 15px;
   text-align: left;
-  color: var(--text-color);
 }
 
 .item-title-link {
@@ -515,7 +519,7 @@ ul {
   font-size: 1.1rem;
   font-weight: 600;
   //color: #333;
-  color: var(--text-color);
+  color: #575555; // Bootstrap primary color
   transition: color 0.3s ease-in-out;
   text-transform: capitalize;
 }
@@ -528,12 +532,11 @@ ul {
 .card-title {
   margin-top: -15px;
   text-transform: capitalize;
-  color: var(--text-color);
 }
 
 .card-text {
   font-size: 0.9rem;
-  color: var(--text-color);
+  color: #575555;
   margin-bottom: 5px;
 }
 

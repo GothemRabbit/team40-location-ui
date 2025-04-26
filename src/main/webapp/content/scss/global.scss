@@ -1,3 +1,29 @@
+// ====================== OpenDyslexic Font-Face ======================
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/content/fonts/OpenDyslexic-Regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/content/fonts/OpenDyslexic-Bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: italic;
+  font-weight: 700;
+  src: url('/content/fonts/OpenDyslexic-BoldItalic.woff') format('woff');
+}
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: italic;
+  font-weight: 400;
+  src: url('/content/fonts/OpenDyslexic-Italic.woff') format('woff');
+}
+// =====================================================================
 @import 'bootstrap-variables';
 @import 'bootstrap/scss/functions';
 @import 'bootswatch/dist/materia/variables';
@@ -14,6 +40,13 @@ Bootstrap tweaks
 html {
   font-size: var(--font-size) !important;
 }
+
+html,
+body,
+* {
+  font-family: var(--font-family) !important;
+}
+
 body,
 p,
 span,
@@ -46,11 +79,12 @@ a:hover {
 
 :root {
   --font-size: 16px;
+  --font-family: Prompt, sans-serif;
   /* Base colors */
-  --background-color: #ffffff;
+  --background-color: #dad5d5;
   --background-color-secondary: #f5f5f5;
   --background-accent-1: #dcd8a2;
-  --background-accent-2: #f8dc75;
+  --background-accent-2: #dad5d5;
   --background-accent-3: #f2d349;
   --background-accent-4: #59b7cc;
 
@@ -65,13 +99,15 @@ a:hover {
 
   /* Icon colours */
   --icon-star: #f2d349;
-
-  --like-color: black;
 }
 
 body {
   background-color: var(--background-color);
   color: var(--text-color);
+  font-size: var(--font-size);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -265,11 +301,11 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 
 /* Dark‑mode overrides */
 .dark-mode {
-  --background-color: rgb(0, 0, 0);
+  --background-color: rgba(25, 24, 24, 1);
   --background-color-secondary: rgba(28, 27, 27, 1);
-  --background-accent-1: #5a5626;
-  --background-accent-2: #99864c;
-  --background-accent-3: #bb8d00;
+  --background-accent-1: #000000;
+  --background-accent-2: #000000;
+  --background-accent-3: #222222;
   --background-accent-4: #446ebb;
 
   --text-color: #f1eded;
@@ -279,15 +315,14 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 
   --border-color: #444444;
 
-  --link-color: #bb86fc;
+  --link-color: #4da3ff;
 
   --icon-star: #ffca28;
-
-  --like-color: red;
 }
 
 html {
   background: var(--background-accent-1);
+  height: 100%;
 }
 
 :focus {
@@ -295,11 +330,7 @@ html {
   outline-offset: 2px;
 }
 
-h1 {
-  color: var(--main-color);
-}
-
-button {
-  background-color: var(--main-color);
-  color: white;
+app-footer,
+footer {
+  margin-top: auto;
 }

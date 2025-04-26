@@ -56,9 +56,7 @@ public class MessageResource {
             throw new BadRequestAlertException("A new message cannot already have an ID", ENTITY_NAME, "idexists");
         }
         messageDTO = messageService.save(messageDTO);
-        return ResponseEntity.created(new URI("/api/messages/" + messageDTO.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, messageDTO.getId().toString()))
-            .body(messageDTO);
+        return ResponseEntity.created(new URI("/api/messages/" + messageDTO.getId())).body(messageDTO);
     }
 
     /**
