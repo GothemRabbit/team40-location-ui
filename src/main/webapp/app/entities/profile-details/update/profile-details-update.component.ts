@@ -125,16 +125,11 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     }
 
     const savedFamily = localStorage.getItem('fontFamily');
-    if (savedFamily) {
+    if (savedFamily !== null) {
+      // User has explicitly chosen something (possibly the empty‐string for Prompt)
       this.fontFamily = savedFamily;
       this.fontFamilyLabel = this.fontFamilyOptions.find(o => o.value === savedFamily)?.label ?? 'Default';
       this.applyFontFamily(savedFamily);
-    } else {
-      const dys = this.fontFamilyOptions.find(o => o.label === 'Open Dyslexic')!.value;
-      this.fontFamily = dys;
-      this.fontFamilyLabel = 'Open Dyslexic';
-      this.applyFontFamily(dys);
-      localStorage.setItem('fontFamily', dys);
     }
     // if (savedFamily !== null) {
     //   this.fontFamily = savedFamily;
