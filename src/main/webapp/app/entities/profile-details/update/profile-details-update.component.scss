@@ -1,3 +1,4 @@
+@import '../../../../content/scss/functions';
 input::placeholder {
   color: var(--placeholder-color);
 }
@@ -189,7 +190,7 @@ input:checked + .slider:before {
 }
 
 .display-label {
-  font-size: 18px;
+  font-size: px-to-rem(18);
 }
 
 .slide-container {
@@ -237,12 +238,12 @@ input:checked + .slider:before {
 }
 
 .text-label-small {
-  font-size: 15px;
+  font-size: px-to-rem(15);
   font-weight: bold;
 }
 
 .text-label-big {
-  font-size: 30px;
+  font-size: px-to-rem(30);
   font-weight: bold;
 }
 
@@ -303,7 +304,7 @@ input:checked + .slider:before {
     width: 80%;
   }
   input#file_bioImage {
-    font-size: 8px;
+    font-size: px-to-rem(8);
   }
   .delete-button {
     width: 15px;
@@ -418,7 +419,7 @@ input:checked + .slider:before {
   }
 
   .display-label {
-    font-size: 10px;
+    font-size: px-to-rem(10);
   }
 
   .slide-container {
@@ -466,12 +467,12 @@ input:checked + .slider:before {
   }
 
   .text-label-small {
-    font-size: 10px;
+    font-size: px-to-rem(10);
     font-weight: bold;
   }
 
   .text-label-big {
-    font-size: 18px;
+    font-size: px-to-rem(18);
     font-weight: bold;
   }
 }

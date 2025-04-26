@@ -1,3 +1,4 @@
+@import '../../../../content/scss/functions';
 //#5c6e58 dark green
 // #8aa899 light green
 // #f2d349 yellow
@@ -22,7 +23,7 @@ button {
   display: inline-block;
   border-radius: 20px;
   border: 2px solid black;
-  font-size: 13px;
+  font-size: px-to-rem(13);
   height: 30px;
   width: 100px;
   transition-duration: 0.5s;
@@ -39,7 +40,7 @@ button:hover {
   display: inline-block;
   border-radius: 100px;
   border: 2px solid black;
-  font-size: 13px;
+  font-size: px-to-rem(13);
   height: 30px;
   width: 30px;
   transition-duration: 0.5s;
@@ -82,7 +83,7 @@ button:hover {
 }
 #date {
   text-align: right;
-  font-size: 13px;
+  font-size: px-to-rem(13);
 }
 
 .avatar {
@@ -95,7 +96,7 @@ button:hover {
 
 @media (width < 900) {
   button {
-    font-size: 5px;
+    font-size: px-to-rem(5);
     width: 15px;
     height: 15px;
   }

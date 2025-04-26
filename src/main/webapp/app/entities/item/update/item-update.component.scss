@@ -1,3 +1,4 @@
+@import '../../../../content/scss/functions';
 p,
 div,
 span,
@@ -28,7 +29,7 @@ input::placeholder {
   border-radius: 15px;
   padding: 20px;
   text-align: center;
-  font-size: 16px;
+  font-size: px-to-rem(16);
   color: #555;
   cursor: pointer;
   transition: background-color 0.5s ease;
@@ -75,7 +76,7 @@ input::placeholder {
   border-radius: 50%;
   width: 20px;
   height: 20px;
-  font-size: 12px;
+  font-size: px-to-rem(12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,7 +109,7 @@ textarea.form-control {
   padding-right: 30px;
   width: 100%; /* Full width */
   height: 320px; /* Height */
-  font-size: 16px; /* Text size */
+  font-size: px-to-rem(16); /* Text size */
   display: inline-block;
 }
 
@@ -129,7 +130,7 @@ textarea.form-control {
   padding-right: 10px;
   width: 100%; /* Full width */
   height: 100px; /* Height */
-  font-size: 16px; /* Text size */
+  font-size: px-to-rem(16); /* Text size */
   margin-top: 20px;
 }
 
@@ -139,12 +140,12 @@ textarea.form-control {
   padding-right: 10px;
   width: 100%; /* Full width */
   height: 210px; /* Height */
-  font-size: 16px; /* Text size */
+  font-size: px-to-rem(16); /* Text size */
   margin-top: 20px;
 }
 
 .mb-3 {
-  font-size: 16px;
+  font-size: px-to-rem(16);
 }
 
 .header {

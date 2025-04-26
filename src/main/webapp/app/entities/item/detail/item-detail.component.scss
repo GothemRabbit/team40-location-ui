@@ -1,3 +1,4 @@
+@import '../../../../content/scss/functions';
 p,
 div,
 span,
@@ -6,7 +7,7 @@ label {
 }
 
 .breadcrumb {
-  font-size: 16px;
+  font-size: px-to-rem(16);
   margin-bottom: 8px;
   margin-top: 10px;
 }
@@ -70,7 +71,7 @@ label {
   padding: 16px;
   margin-top: -22px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: px-to-rem(18);
   transition: 0.6s ease;
   user-select: none;
   background-color: rgba(0, 0, 0, 0.5);
@@ -136,7 +137,7 @@ label {
   justify-content: space-between; /* Pushes icons to opposite sides */
   align-items: center;
   text-transform: capitalize;
-  font-size: 25px;
+  font-size: px-to-rem(25);
 }
 
 .brand-size {
@@ -169,7 +170,7 @@ label {
 .details-left dt,
 .details-right dt {
   padding: 5px 0;
-  font-size: 16px;
+  font-size: px-to-rem(16);
 }
 
 .details-left {
@@ -199,7 +200,7 @@ label {
   border: none;
   border-radius: 20px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: px-to-rem(16);
   font-weight: 500;
   cursor: pointer;
   transition:
@@ -266,7 +267,7 @@ label {
   border: none;
   border-radius: 20px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: px-to-rem(16);
   font-weight: 500;
   cursor: pointer;
   transition:
@@ -298,7 +299,7 @@ label {
   .title-price {
     flex-direction: row;
     align-items: flex-start;
-    font-size: 20px;
+    font-size: px-to-rem(20);
   }
 
   .details {

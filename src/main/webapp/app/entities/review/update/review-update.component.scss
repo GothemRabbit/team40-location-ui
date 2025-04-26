@@ -1,3 +1,4 @@
+@import '../../../../content/scss/functions';
 h2 {
   margin-top: 5px;
   font-weight: 600;
@@ -9,7 +10,7 @@ h2 {
 
 button {
   display: inline-block;
-  font-size: 16px;
+  font-size: px-to-rem(16);
   height: 50px;
   width: 200px;
   margin-left: auto;
@@ -116,7 +117,7 @@ ngb-rating {
 }
 
 .star {
-  font-size: 70px;
+  font-size: px-to-rem(70);
   color: var(--text-color-secondary);
 }
 .filled.bad {
@@ -138,7 +139,7 @@ ngb-rating {
   }
 
   button {
-    font-size: 10px;
+    font-size: px-to-rem(10);
     height: 30px;
     width: 100px;
   }
