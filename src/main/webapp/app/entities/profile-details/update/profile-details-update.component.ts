@@ -48,8 +48,8 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   fontFamily = '';
   fontFamilyLabel = 'Default';
   fontFamilyOptions = [
-    { label: 'Default', value: '' },
     { label: 'Open Dyslexic', value: 'OpenDyslexic, sans-serif' },
+    { label: 'Prompt', value: '' },
     // { label: 'Arial', value: 'Arial, sans-serif' },
     // { label: 'Georgia', value: 'Georgia, serif' },
     // { label: 'Sans-serif', value: 'system-ui, sans-serif' },
@@ -126,11 +126,17 @@ export class ProfileDetailsUpdateComponent implements OnInit {
 
     const savedFamily = localStorage.getItem('fontFamily');
     if (savedFamily !== null) {
+      // User has explicitly chosen something (possibly the empty‐string for Prompt)
       this.fontFamily = savedFamily;
-      const opt = this.fontFamilyOptions.find(o => o.value === savedFamily);
-      this.fontFamilyLabel = opt?.label ?? 'Default';
+      this.fontFamilyLabel = this.fontFamilyOptions.find(o => o.value === savedFamily)?.label ?? 'Default';
       this.applyFontFamily(savedFamily);
     }
+    // if (savedFamily !== null) {
+    //   this.fontFamily = savedFamily;
+    //   const opt = this.fontFamilyOptions.find(o => o.value === savedFamily);
+    //   this.fontFamilyLabel = opt?.label ?? 'Default';
+    //   this.applyFontFamily(savedFamily);
+    // }
   }
 
   setActiveTab(tab: string): void {
