@@ -195,12 +195,13 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     }
   }
 
-  toggleDarkMode(isDarkMode: boolean): void {
-    if (isDarkMode) {
+  toggleDarkMode(isDark: boolean): void {
+    if (isDark) {
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
+    localStorage.setItem('darkMode', String(isDark));
   }
 
   public onSliderChange(event: Event): void {

@@ -52,6 +52,13 @@ export default class AppComponent implements AfterViewInit {
     this.htmlElements[0]?.focus();
   }
 
+  ngOnInit(): void {
+    const dark = localStorage.getItem('darkMode') === 'true';
+    if (dark) {
+      document.body.classList.add('dark-mode');
+    }
+  }
+
   /**
    * Listen for arrow key events and move focus accordingly.
    */

@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './gdpr-policy.component.html',
-  styleUrl: './gdpr-policy.component.scss',
+  styleUrls: ['./gdpr-policy.component.scss'],
 })
 export default class GdprPolicyComponent {}
