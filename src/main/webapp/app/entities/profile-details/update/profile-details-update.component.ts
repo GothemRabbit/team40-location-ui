@@ -45,6 +45,16 @@ export class ProfileDetailsUpdateComponent implements OnInit {
   account: Account | null = null;
   textSize = 16;
 
+  fontFamily = '';
+  fontFamilyLabel = 'Default';
+  fontFamilyOptions = [
+    { label: 'Default', value: '' },
+    { label: 'Open Dyslexic', value: 'OpenDyslexic, sans-serif' },
+    // { label: 'Arial', value: 'Arial, sans-serif' },
+    // { label: 'Georgia', value: 'Georgia, serif' },
+    // { label: 'Sans-serif', value: 'system-ui, sans-serif' },
+  ];
+
   doNotMatch = signal(false);
   error = signal(false);
   success = signal(false);
@@ -112,6 +122,14 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     if (savedSize) {
       this.textSize = +savedSize;
       this.applyFontSize(this.textSize);
+    }
+
+    const savedFamily = localStorage.getItem('fontFamily');
+    if (savedFamily !== null) {
+      this.fontFamily = savedFamily;
+      const opt = this.fontFamilyOptions.find(o => o.value === savedFamily);
+      this.fontFamilyLabel = opt?.label ?? 'Default';
+      this.applyFontFamily(savedFamily);
     }
   }
 
@@ -210,6 +228,18 @@ export class ProfileDetailsUpdateComponent implements OnInit {
     localStorage.setItem('fontSize', value.toString());
     this.applyFontSize(value);
   }
+
+  onFontFamilyChange(event: Event): void {
+    // eslint-disable-next-line no-console
+    console.log('Font family picked:', (event.target as HTMLSelectElement).value);
+    const sel = event.target as HTMLSelectElement;
+    const val = sel.value;
+    this.fontFamily = val;
+    this.fontFamilyLabel = this.fontFamilyOptions.find(o => o.value === val)?.label ?? 'Default';
+    localStorage.setItem('fontFamily', val);
+    this.applyFontFamily(val);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProfileDetails>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -277,5 +307,15 @@ export class ProfileDetailsUpdateComponent implements OnInit {
 
   private applyFontSize(sizePx: number): void {
     document.documentElement.style.setProperty('--font-size', `${sizePx}px`);
+  }
+  private applyFontFamily(family: string): void {
+    //   const cssVal = family || 'system-ui, sans-serif';
+    //   document.documentElement.style.setProperty('--font-family', cssVal);
+    // }
+    if (!family) {
+      document.documentElement.style.removeProperty('--font-family');
+    } else {
+      document.documentElement.style.setProperty('--font-family', family);
+    }
   }
 }
