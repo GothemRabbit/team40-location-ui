@@ -1,7 +1,8 @@
 import { Component, NgZone, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, tap, map } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient } from '@angular/common/http';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
@@ -13,6 +14,11 @@ import { ConversationService, EntityArrayResponseType } from '../service/convers
 import { ConversationDeleteDialogComponent } from '../delete/conversation-delete-dialog.component';
 import { AccountService } from 'app/core/auth/account.service';
 import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
+
+interface ChatSnippet {
+  content?: string;
+  profileDetails?: { id: number };
+}
 
 @Component({
   standalone: true,
@@ -48,8 +54,10 @@ export class ConversationComponent implements OnInit {
   protected ngZone = inject(NgZone);
   protected accountService = inject(AccountService);
   protected profileService = inject(ProfileDetailsService);
+  protected http = inject(HttpClient);
 
-  private nameCache = new Map<number, string>();
+  private tagBank = new Map<number, string>();
+  private buzzCache = new Map<number, string>();
 
   trackId = (item: IConversation): number => this.conversationService.getConversationIdentifier(item);
 
@@ -78,6 +86,7 @@ export class ConversationComponent implements OnInit {
       this.viewerProfileId = profile.id;
       if (this.conversations) {
         this.conversations = [...this.conversations];
+        this.fetchBuzz();
       }
     });
   }
@@ -117,7 +126,7 @@ export class ConversationComponent implements OnInit {
     this.handleNavigation(event);
   }
 
-  getConversationTitle(conv: IConversation): string {
+  getConvoHeadline(conv: IConversation): string {
     const profiles = [...(conv.profileDetails ?? []), ...(conv.participants ?? [])];
 
     if (profiles.length === 0) {
@@ -125,16 +134,20 @@ export class ConversationComponent implements OnInit {
     }
 
     if (this.isAdmin) {
-      return this.getParticipantsNames(profiles).join(' & ');
+      return this.getCrewTags(profiles).join(' & ');
     }
 
     const other = profiles.find(p => p.id !== this.viewerProfileId);
-    return other ? this.formatName(other.id) : `Conversation #${conv.id}`;
+    return other ? this.vibeTag(other.id) : `Conversation #${conv.id}`;
   }
 
-  getAdminSubtitle(conv: IConversation): string {
+  getAdminSubtext(conv: IConversation): string {
     const profiles = [...(conv.profileDetails ?? []), ...(conv.participants ?? [])];
-    return this.getParticipantsNames(profiles).join(' & ');
+    return this.getCrewTags(profiles).join(' & ');
+  }
+
+  getBuzzPreview(conv: IConversation): string | null {
+    return this.buzzCache.get(conv.id) ?? null;
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
@@ -147,8 +160,10 @@ export class ConversationComponent implements OnInit {
 
     this.conversations.forEach(conv => {
       const ids = new Set<number>([...(conv.profileDetails?.map(p => p.id) ?? []), ...(conv.participants?.map(p => p.id) ?? [])]);
-      ids.forEach(id => this.ensureNameCached(id));
+      ids.forEach(id => this.ensureTagCached(id));
     });
+
+    this.fetchBuzz();
   }
 
   protected refineData(data: IConversation[]): IConversation[] {
@@ -185,24 +200,49 @@ export class ConversationComponent implements OnInit {
     });
   }
 
-  private getParticipantsNames(arr: { id: number }[] | null | undefined): string[] {
-    return arr ? arr.map(p => this.formatName(p.id)) : [];
+  private getCrewTags(arr: { id: number }[] | null | undefined): string[] {
+    return arr ? arr.map(p => this.vibeTag(p.id)) : [];
   }
 
-  private formatName(profileId: number): string {
-    return this.nameCache.get(profileId) ?? `User ${profileId}`;
+  private vibeTag(profileId: number): string {
+    return this.tagBank.get(profileId) ?? `User ${profileId}`;
   }
 
-  private ensureNameCached(id: number): void {
-    if (this.nameCache.has(id)) return;
+  private ensureTagCached(id: number): void {
+    if (this.tagBank.has(id)) return;
 
     this.profileService.find(id).subscribe(res => {
       const pd = res.body;
       const computedName = pd?.userName ?? pd?.user?.login ?? `User ${id}`;
-      this.nameCache.set(id, computedName);
+      this.tagBank.set(id, computedName);
 
       if (this.conversations) {
         this.conversations = [...this.conversations];
+      }
+    });
+  }
+
+  private fetchBuzz(): void {
+    if (!this.conversations) return;
+
+    this.conversations.forEach(conv => {
+      if (!this.buzzCache.has(conv.id)) {
+        this.http
+          .get<ChatSnippet[]>(`api/conversations/${conv.id}/messages`)
+          .pipe(
+            map((list: ChatSnippet[]) => {
+              return list.length > 0 ? list[list.length - 1] : null;
+            }),
+          )
+          .subscribe(msg => {
+            let preview = 'New Conversation';
+            if (msg) {
+              const prefix = msg.profileDetails?.id === this.viewerProfileId ? 'You: ' : `${this.vibeTag(msg.profileDetails?.id ?? 0)}: `;
+              preview = prefix + (msg.content ?? '');
+            }
+            this.buzzCache.set(conv.id, preview);
+            this.conversations = [...this.conversations!];
+          });
       }
     });
   }

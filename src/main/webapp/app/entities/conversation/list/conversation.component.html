@@ -35,14 +35,19 @@
           [routerLink]="['/conversation', conversation.id, 'view']"
         >
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ getConversationTitle(conversation) }}</h5>
+            <h5 class="mb-1">{{ getConvoHeadline(conversation) }}</h5>
             <small>{{ conversation.dateCreated | formatMediumDatetime }}</small>
           </div>
+
+          <!-- Last message preview -->
+          <p class="mb-1">
+            <small>{{ getBuzzPreview(conversation) }}</small>
+          </p>
 
           <!-- Admin sees both users; regular user sees nothing else -->
           @if (isAdmin) {
             <p class="mb-1 text-muted">
-              <small>{{ getAdminSubtitle(conversation) }}</small>
+              <small>{{ getAdminSubtext(conversation) }}</small>
             </p>
           }
         </a>

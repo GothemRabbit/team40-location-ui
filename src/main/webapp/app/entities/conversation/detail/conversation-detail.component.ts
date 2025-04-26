@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import dayjs from 'dayjs/esm';
@@ -12,6 +12,7 @@ import { NewMessage } from 'app/entities/message/message.model';
 import { MessageService } from 'app/entities/message/service/message.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { IProfileDetails } from 'app/entities/profile-details/profile-details.model';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 
 // Extend dayjs with the relativeTime plugin
 dayjs.extend(relativeTime);
@@ -29,9 +30,9 @@ interface MessageDTO {
   selector: 'jhi-conversation-detail',
   templateUrl: './conversation-detail.component.html',
   styleUrls: ['./conversation-detail.component.css'],
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
+  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe, HasAnyAuthorityDirective],
 })
-export class ConversationDetailComponent implements OnInit {
+export class ConversationDetailComponent implements OnInit, AfterViewInit {
   @Input() conversation: IConversation | null = null;
   messages: MessageDTO[] = [];
   loading = false;
@@ -42,6 +43,8 @@ export class ConversationDetailComponent implements OnInit {
   mainStageHomies: IProfileDetails[] = [];
   currentProfileId: number | null = null;
   currentUsername = '';
+
+  @ViewChild('messagesContainer') private messagesRef!: ElementRef<HTMLDivElement>;
 
   constructor(
     private http: HttpClient,
@@ -58,6 +61,10 @@ export class ConversationDetailComponent implements OnInit {
     this.setupUsers();
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => this.scrollToBottom(), 0);
+  }
+
   setCurrentUserId(): void {
     this.currentUserId = this.accountService.getCurrentUserId();
   }
@@ -65,15 +72,15 @@ export class ConversationDetailComponent implements OnInit {
   loadMessages(conversationId: number): void {
     this.loading = true;
     this.http.get<MessageDTO[]>(`api/conversations/${conversationId}/messages`).subscribe({
-      next: data => (this.messages = this.finesseMessages(data)),
+      next: data => {
+        this.messages = this.finesseMessages(data);
+        setTimeout(() => this.scrollToBottom());
+      },
       error: err => console.error('Failed to load messages:', err),
       complete: () => (this.loading = false),
     });
   }
 
-  /**
-   * Title displayed on the chat header – if we have participant names, show them.
-   */
   getChatTitle(): string {
     if (this.mainStageHomies.length) {
       return this.mainStageHomies.map(p => p.userName ?? `User #${p.id}`).join(' & ');
@@ -90,7 +97,6 @@ export class ConversationDetailComponent implements OnInit {
       return;
     }
 
-    // Use the profileId for the message, fallback to first profile connected to convo
     const profileIdForSend = this.currentProfileId ?? this.conversation.profileDetails?.[0]?.id ?? this.currentUserId;
 
     const newMessage: NewMessage = {
@@ -126,14 +132,12 @@ export class ConversationDetailComponent implements OnInit {
     }
   }
 
-  /* eslint-disable @typescript-eslint/member-ordering */
   isCurrentUser(msg: MessageDTO): boolean {
     if (this.currentProfileId !== null && msg.profileDetails?.id !== undefined) {
       return msg.profileDetails.id === this.currentProfileId;
     }
     return msg.username === this.currentUsername;
   }
-  /* eslint-enable @typescript-eslint/member-ordering */
 
   private handleProfilesLoaded(profiles: IProfileDetails[]): void {
     this.hypeFellas = profiles;
@@ -148,7 +152,6 @@ export class ConversationDetailComponent implements OnInit {
 
     this.currentProfileId = myProfile ? myProfile.id : null;
 
-    // Determine display participants: current chatter + the first other
     if (myProfile) {
       const others = profiles.filter(p => p.id !== myProfile.id);
       this.mainStageHomies = [myProfile, ...(others.length ? [others[0]] : [])];
@@ -156,7 +159,6 @@ export class ConversationDetailComponent implements OnInit {
       this.mainStageHomies = profiles.slice(0, 2);
     }
 
-    // Refresh usernames now that we have the intel
     this.messages = this.finesseMessages(this.messages);
   }
 
@@ -172,5 +174,13 @@ export class ConversationDetailComponent implements OnInit {
       }
       return m;
     });
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messagesRef.nativeElement.scrollTop = this.messagesRef.nativeElement.scrollHeight;
+    } catch {
+      // slaijfhasd;i
+    }
   }
 }

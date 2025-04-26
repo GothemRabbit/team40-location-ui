@@ -33,11 +33,12 @@ a:hover {
   --background-accent-1: #dcd8a2;
   --background-accent-2: #f8dc75;
   --background-accent-3: #f2d349;
+  --background-accent-4: #59b7cc;
 
   --text-color: #000000;
   --text-color-secondary: #777373;
   --text-on-accent: #000000;
-  --placeholder-color: #dad3d3;
+  --placeholder-color: #000000;
 
   --border-color: #cccccc;
 
@@ -247,8 +248,9 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --background-color: rgba(25, 24, 24, 1);
   --background-color-secondary: rgba(28, 27, 27, 1);
   --background-accent-1: #5a5626;
-  --background-accent-2: #806c30;
+  --background-accent-2: #99864c;
   --background-accent-3: #bb8d00;
+  --background-accent-4: #446ebb;
 
   --text-color: #f1eded;
   --text-color-secondary: #d0d0d0;

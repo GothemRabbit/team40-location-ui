@@ -4,7 +4,12 @@
       <div class="chat-header d-flex justify-content-between align-items-center">
         <h2 data-cy="conversationDetailsHeading">{{ getChatTitle() }}</h2>
         <div>
-          <button type="button" [routerLink]="['/conversation', conversationRef.id, 'edit']" class="btn btn-primary me-2">
+          <button
+            type="button"
+            [routerLink]="['/conversation', conversationRef.id, 'edit']"
+            class="btn btn-primary me-2"
+            *jhiHasAnyAuthority="'ROLE_ADMIN'"
+          >
             <fa-icon icon="pencil-alt"></fa-icon>
             <span>Edit</span>
           </button>
@@ -19,7 +24,6 @@
       <jhi-alert-error></jhi-alert-error>
       <jhi-alert></jhi-alert>
 
-      <!-- Basic info row -->
       <div class="chat-info mb-3">
         <p>
           <strong>Date Created:</strong>
@@ -27,8 +31,7 @@
         </p>
       </div>
 
-      <!-- Messages -->
-      <div class="chat-messages border rounded p-3 mb-3" style="height: 300px; overflow-y: auto">
+      <div #messagesContainer class="chat-messages border rounded p-3 mb-3" style="height: 300px; overflow-y: auto">
         <div *ngFor="let msg of messages" class="chat-bubble" [ngClass]="{ user: isCurrentUser(msg) }">
           <strong class="chat-author">{{ msg.username }}</strong>
           <span class="chat-text">{{ msg.content }}</span>
