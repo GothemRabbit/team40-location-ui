@@ -183,7 +183,8 @@ public class ConversationService {
         return conversationRepository
             .fetchConvosByProfile(vibePd.getId())
             .stream()
+            .peek(conv -> conv.setMessages(null))
             .map(conversationMapper::toDto)
-            .collect(Collectors.toList());
+            .toList();
     }
 }

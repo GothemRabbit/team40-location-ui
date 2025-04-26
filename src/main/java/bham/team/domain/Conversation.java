@@ -31,7 +31,7 @@ public class Conversation implements Serializable {
     @Column(name = "date_created", nullable = false)
     private Instant dateCreated;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_conversation__profile_details",
         joinColumns = @JoinColumn(name = "conversation_id"),

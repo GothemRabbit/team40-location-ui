@@ -12,6 +12,7 @@ import { IConversation } from '../conversation.model';
 import { ConversationService, EntityArrayResponseType } from '../service/conversation.service';
 import { ConversationDeleteDialogComponent } from '../delete/conversation-delete-dialog.component';
 import { AccountService } from 'app/core/auth/account.service';
+import { ProfileDetailsService } from 'app/entities/profile-details/service/profile-details.service';
 
 @Component({
   standalone: true,
@@ -37,6 +38,8 @@ export class ConversationComponent implements OnInit {
 
   sortState = sortStateSignal({});
 
+  viewerProfileId: number | null = null;
+
   public readonly router = inject(Router);
   protected readonly conversationService = inject(ConversationService);
   protected readonly activatedRoute = inject(ActivatedRoute);
@@ -44,6 +47,9 @@ export class ConversationComponent implements OnInit {
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
   protected accountService = inject(AccountService);
+  protected profileService = inject(ProfileDetailsService);
+
+  private nameCache = new Map<number, string>();
 
   trackId = (item: IConversation): number => this.conversationService.getConversationIdentifier(item);
 
@@ -67,6 +73,13 @@ export class ConversationComponent implements OnInit {
         }),
       )
       .subscribe();
+
+    this.profileService.getCurrentUserProfile().subscribe(profile => {
+      this.viewerProfileId = profile.id;
+      if (this.conversations) {
+        this.conversations = [...this.conversations];
+      }
+    });
   }
 
   delete(conversation: IConversation): void {
@@ -104,6 +117,26 @@ export class ConversationComponent implements OnInit {
     this.handleNavigation(event);
   }
 
+  getConversationTitle(conv: IConversation): string {
+    const profiles = [...(conv.profileDetails ?? []), ...(conv.participants ?? [])];
+
+    if (profiles.length === 0) {
+      return `Conversation #${conv.id}`;
+    }
+
+    if (this.isAdmin) {
+      return this.getParticipantsNames(profiles).join(' & ');
+    }
+
+    const other = profiles.find(p => p.id !== this.viewerProfileId);
+    return other ? this.formatName(other.id) : `Conversation #${conv.id}`;
+  }
+
+  getAdminSubtitle(conv: IConversation): string {
+    const profiles = [...(conv.profileDetails ?? []), ...(conv.participants ?? [])];
+    return this.getParticipantsNames(profiles).join(' & ');
+  }
+
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
@@ -111,6 +144,11 @@ export class ConversationComponent implements OnInit {
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.conversations = this.refineData(dataFromBody);
+
+    this.conversations.forEach(conv => {
+      const ids = new Set<number>([...(conv.profileDetails?.map(p => p.id) ?? []), ...(conv.participants?.map(p => p.id) ?? [])]);
+      ids.forEach(id => this.ensureNameCached(id));
+    });
   }
 
   protected refineData(data: IConversation[]): IConversation[] {
@@ -144,6 +182,28 @@ export class ConversationComponent implements OnInit {
         relativeTo: this.activatedRoute,
         queryParams: queryParamsObj,
       });
+    });
+  }
+
+  private getParticipantsNames(arr: { id: number }[] | null | undefined): string[] {
+    return arr ? arr.map(p => this.formatName(p.id)) : [];
+  }
+
+  private formatName(profileId: number): string {
+    return this.nameCache.get(profileId) ?? `User ${profileId}`;
+  }
+
+  private ensureNameCached(id: number): void {
+    if (this.nameCache.has(id)) return;
+
+    this.profileService.find(id).subscribe(res => {
+      const pd = res.body;
+      const computedName = pd?.userName ?? pd?.user?.login ?? `User ${id}`;
+      this.nameCache.set(id, computedName);
+
+      if (this.conversations) {
+        this.conversations = [...this.conversations];
+      }
     });
   }
 }

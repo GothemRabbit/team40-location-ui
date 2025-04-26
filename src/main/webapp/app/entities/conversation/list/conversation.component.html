@@ -35,24 +35,16 @@
           [routerLink]="['/conversation', conversation.id, 'view']"
         >
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Conversation #{{ conversation.id }}</h5>
+            <h5 class="mb-1">{{ getConversationTitle(conversation) }}</h5>
             <small>{{ conversation.dateCreated | formatMediumDatetime }}</small>
           </div>
 
-          <!-- Display optional details -->
-          <p class="mb-1">
-            <strong>Profile Details:</strong>
-            @for (profileDetails of conversation.profileDetails; track $index; let last = $last) {
-              <span> {{ profileDetails.id }}{{ last ? '' : ', ' }} </span>
-            }
-          </p>
-
-          <p class="mb-1">
-            <strong>Participants:</strong>
-            @for (participants of conversation.participants; track $index; let last = $last) {
-              <span> {{ participants.id }}{{ last ? '' : ', ' }} </span>
-            }
-          </p>
+          <!-- Admin sees both users; regular user sees nothing else -->
+          @if (isAdmin) {
+            <p class="mb-1 text-muted">
+              <small>{{ getAdminSubtitle(conversation) }}</small>
+            </p>
+          }
         </a>
       }
     </div>
