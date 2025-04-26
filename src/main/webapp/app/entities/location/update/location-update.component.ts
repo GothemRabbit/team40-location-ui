@@ -22,8 +22,12 @@ import { LocationFormGroup, LocationFormService } from './location-form.service'
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class LocationUpdateComponent implements OnInit {
+  // ✅ 修改类名为 LocationUpdateComponent
+  editForm!: LocationFormGroup; // ✅ 用 `!` 表示稍后一定会赋值
+
   isSaving = false;
   location: ILocation | null = null;
+  showMap = false;
 
   profileDetailsSharedCollection: IProfileDetails[] = [];
   userDetailsSharedCollection: IUserDetails[] = [];
@@ -34,21 +38,19 @@ export class LocationUpdateComponent implements OnInit {
   protected userDetailsService = inject(UserDetailsService);
   protected activatedRoute = inject(ActivatedRoute);
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  editForm: LocationFormGroup = this.locationFormService.createLocationFormGroup();
-
   compareProfileDetails = (o1: IProfileDetails | null, o2: IProfileDetails | null): boolean =>
     this.profileDetailsService.compareProfileDetails(o1, o2);
 
   compareUserDetails = (o1: IUserDetails | null, o2: IUserDetails | null): boolean => this.userDetailsService.compareUserDetails(o1, o2);
 
   ngOnInit(): void {
+    this.editForm = this.locationFormService.createLocationFormGroup(); // ✅ 延迟初始化
+
     this.activatedRoute.data.subscribe(({ location }) => {
       this.location = location;
       if (location) {
         this.updateForm(location);
       }
-
       this.loadRelationshipsOptions();
     });
   }

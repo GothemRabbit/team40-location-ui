@@ -3,110 +3,88 @@
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-location-heading" data-cy="LocationCreateUpdateHeading">Create or edit a Location</h2>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
+      <!-- ID -->
+      <div class="mb-3" *ngIf="editForm.get('id')?.value !== null">
+        <label class="form-label" for="field_id">ID</label>
+        <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" readonly />
+      </div>
 
-        @let addressRef = editForm.get('address')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_address">Address</label>
-          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
-          @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {
-            <div>
-              @if (editForm.get('address')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        @let latitudeRef = editForm.get('latitude')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_latitude">Latitude</label>
-          <input type="number" class="form-control" name="latitude" id="field_latitude" data-cy="latitude" formControlName="latitude" />
-          @if (latitudeRef.invalid && (latitudeRef.dirty || latitudeRef.touched)) {
-            <div>
-              @if (editForm.get('latitude')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('latitude')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let longitudeRef = editForm.get('longitude')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_longitude">Longitude</label>
-          <input type="number" class="form-control" name="longitude" id="field_longitude" data-cy="longitude" formControlName="longitude" />
-          @if (longitudeRef.invalid && (longitudeRef.dirty || longitudeRef.touched)) {
-            <div>
-              @if (editForm.get('longitude')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('longitude')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        @let postcodeRef = editForm.get('postcode')!;
-        <div class="mb-3">
-          <label class="form-label" for="field_postcode">Postcode</label>
-          <input type="text" class="form-control" name="postcode" id="field_postcode" data-cy="postcode" formControlName="postcode" />
-          @if (postcodeRef.invalid && (postcodeRef.dirty || postcodeRef.touched)) {
-            <div>
-              @if (editForm.get('postcode')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label for="field_profileDetails">Profile Details</label>
-          <select
-            class="form-control"
-            id="field_profileDetails"
-            data-cy="profileDetails"
-            multiple
-            name="profileDetails"
-            formControlName="profileDetails"
-            [compareWith]="compareProfileDetails"
-          >
-            @for (profileDetailsOption of profileDetailsSharedCollection; track $index) {
-              <option [ngValue]="profileDetailsOption">{{ profileDetailsOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label for="field_users">Users</label>
-          <select
-            class="form-control"
-            id="field_users"
-            data-cy="users"
-            multiple
-            name="users"
-            formControlName="users"
-            [compareWith]="compareUserDetails"
-          >
-            @for (userDetailsOption of userDetailsSharedCollection; track $index) {
-              <option [ngValue]="userDetailsOption">{{ userDetailsOption.id }}</option>
-            }
-          </select>
+      <!-- Address -->
+      <div class="mb-3">
+        <label class="form-label" for="field_address">Address</label>
+        <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+        <div *ngIf="editForm.get('address')?.invalid && (editForm.get('address')?.dirty || editForm.get('address')?.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('address')?.errors?.['required']"> This field is required. </small>
         </div>
       </div>
 
-      <div>
+      <!-- Latitude -->
+      <div class="mb-3">
+        <label class="form-label" for="field_latitude">Latitude</label>
+        <input type="number" class="form-control" name="latitude" id="field_latitude" data-cy="latitude" formControlName="latitude" />
+        <div *ngIf="editForm.get('latitude')?.invalid && (editForm.get('latitude')?.dirty || editForm.get('latitude')?.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('latitude')?.errors?.['required']"> This field is required. </small>
+        </div>
+      </div>
+
+      <!-- Longitude -->
+      <div class="mb-3">
+        <label class="form-label" for="field_longitude">Longitude</label>
+        <input type="number" class="form-control" name="longitude" id="field_longitude" data-cy="longitude" formControlName="longitude" />
+        <div *ngIf="editForm.get('longitude')?.invalid && (editForm.get('longitude')?.dirty || editForm.get('longitude')?.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('longitude')?.errors?.['required']"> This field is required. </small>
+        </div>
+      </div>
+
+      <!-- Postcode -->
+      <div class="mb-3">
+        <label class="form-label" for="field_postcode">Postcode</label>
+        <input type="text" class="form-control" name="postcode" id="field_postcode" data-cy="postcode" formControlName="postcode" />
+        <div *ngIf="editForm.get('postcode')?.invalid && (editForm.get('postcode')?.dirty || editForm.get('postcode')?.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('postcode')?.errors?.['required']"> This field is required. </small>
+        </div>
+      </div>
+
+      <!-- Profile Details -->
+      <div class="mb-3">
+        <label for="field_profileDetails">Profile Details</label>
+        <select
+          class="form-control"
+          id="field_profileDetails"
+          data-cy="profileDetails"
+          multiple
+          name="profileDetails"
+          formControlName="profileDetails"
+          [compareWith]="compareProfileDetails"
+        >
+          <option *ngFor="let option of profileDetailsSharedCollection" [ngValue]="option">
+            {{ option.id }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Users -->
+      <div class="mb-3">
+        <label for="field_users">Users</label>
+        <select
+          class="form-control"
+          id="field_users"
+          data-cy="users"
+          multiple
+          name="users"
+          formControlName="users"
+          [compareWith]="compareUserDetails"
+        >
+          <option *ngFor="let option of userDetailsSharedCollection" [ngValue]="option">
+            {{ option.id }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Buttons -->
+      <div class="mt-4 d-flex justify-content-between">
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
@@ -124,3 +102,37 @@
     </form>
   </div>
 </div>
+
+<h2>Create or edit a Location</h2>
+
+<form [formGroup]="editForm" (ngSubmit)="save()">
+  <div *ngIf="editForm.get('id')?.value !== null">
+    <label for="field_id">ID</label>
+    <input id="field_id" type="text" class="form-control" formControlName="id" readonly />
+  </div>
+
+  <div class="form-group">
+    <label for="field_address">Address</label>
+    <input id="field_address" type="text" class="form-control" formControlName="address" />
+  </div>
+
+  <div class="form-group">
+    <label for="field_latitude">Latitude</label>
+    <input id="field_latitude" type="number" class="form-control" formControlName="latitude" />
+  </div>
+
+  <div class="form-group">
+    <label for="field_longitude">Longitude</label>
+    <input id="field_longitude" type="number" class="form-control" formControlName="longitude" />
+  </div>
+
+  <div class="form-group">
+    <label for="field_postcode">Postcode</label>
+    <input id="field_postcode" type="text" class="form-control" formControlName="postcode" />
+  </div>
+
+  <div class="mt-3">
+    <button type="button" class="btn btn-secondary" (click)="previousState()">Cancel</button>
+    <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Save</button>
+  </div>
+</form>

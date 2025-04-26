@@ -1,138 +1,90 @@
 <div>
   <h2 id="page-heading" data-cy="LocationHeading">
     <span>Locations</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span>Refresh list</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-location"
-        [routerLink]="['/location/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Location</span>
-      </button>
-    </div>
   </h2>
 
-  <jhi-alert-error></jhi-alert-error>
+  <!-- 搜索栏 -->
+  <div class="input-group mt-3 mb-2">
+    <input type="text" class="form-control mb-3" placeholder="Search by address, postcode, or user ID" [(ngModel)]="filterText" />
+  </div>
 
-  <jhi-alert></jhi-alert>
-
-  @if (locations?.length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span>No Locations found</span>
+  <!-- 地图总览按钮和加载更多 -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="card mt-2">
+      <div class="card-body p-2">
+        <button class="btn btn-outline-primary btn-sm" (click)="toggleOverviewMap()">Toggle Overview Map</button>
+      </div>
     </div>
-  }
-
-  @if (locations && locations.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span>ID</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="address">
-              <div class="d-flex">
-                <span>Address</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="latitude">
-              <div class="d-flex">
-                <span>Latitude</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="longitude">
-              <div class="d-flex">
-                <span>Longitude</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="postcode">
-              <div class="d-flex">
-                <span>Postcode</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="profileDetails.id">
-              <div class="d-flex">
-                <span>Profile Details</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="users.id">
-              <div class="d-flex">
-                <span>Users</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (location of locations; track trackId(location)) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/location', location.id, 'view']">{{ location.id }}</a>
-              </td>
-              <td>{{ location.address }}</td>
-              <td>{{ location.latitude }}</td>
-              <td>{{ location.longitude }}</td>
-              <td>{{ location.postcode }}</td>
-              <td>
-                @for (profileDetails of location.profileDetails; track $index; let last = $last) {
-                  <span>
-                    <a class="form-control-static" [routerLink]="['/profile-details', profileDetails.id, 'view']">{{ profileDetails.id }}</a
-                    >{{ last ? '' : ', ' }}
-                  </span>
-                }
-              </td>
-              <td>
-                @for (users of location.users; track $index; let last = $last) {
-                  <span>
-                    <a class="form-control-static" [routerLink]="['/user-details', users.id, 'view']">{{ users.id }}</a
-                    >{{ last ? '' : ', ' }}
-                  </span>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/location', location.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
-                  </a>
-
-                  <a [routerLink]="['/location', location.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(location)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    <div>
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        (click)="loadMore()"
+        [disabled]="isLoading || visibleLocations.length >= filteredLocations.length"
+      >
+        Load More
+      </button>
     </div>
-  }
+  </div>
+
+  <!-- 地图总览 -->
+  <div *ngIf="showOverviewMap" class="mb-4">
+    <div style="height: 400px; width: 100%; border-radius: 8px; border: 1px solid #ccc; position: relative">
+      <button (click)="loadMore()" class="btn btn-secondary btn-sm" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000">
+        Load More
+      </button>
+    </div>
+  </div>
+
+  <!-- 卡片展示 -->
+  <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 g-4 mt-2">
+    <div class="col" *ngFor="let location of visibleLocations">
+      <div class="card h-100 shadow-sm border-0" style="transition: box-shadow 0.3s ease; font-size: 0.875rem">
+        <div class="card-body card-hover" style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)">
+          <div class="d-flex flex-column flex-md-row">
+            <div class="flex-grow-1 pe-md-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Location #{{ location.id }}</h5>
+                <button (click)="toggleCardMap(location.id)" class="btn btn-outline-secondary btn-sm">
+                  {{ hiddenMaps[location.id] ? 'Show Map' : 'Hide Map' }}
+                </button>
+              </div>
+              <p><strong>Address:</strong> {{ location.address || 'N/A' }}</p>
+              <p><strong>Latitude:</strong> {{ location.latitude ?? 'N/A' }}</p>
+              <p><strong>Longitude:</strong> {{ location.longitude ?? 'N/A' }}</p>
+              <p><strong>Postcode:</strong> {{ location.postcode || 'N/A' }}</p>
+              <p>
+                <strong>Profile Details:</strong>
+                <ng-container *ngFor="let profile of location.profileDetails; let last = last">
+                  <a [routerLink]="['/profile-details', profile.id, 'view']">{{ profile.id }}</a
+                  >{{ last ? '' : ', ' }}
+                </ng-container>
+              </p>
+              <p>
+                <strong>Users:</strong>
+                <ng-container *ngFor="let user of location.users; let last = last">
+                  <a [routerLink]="['/user-details', user.id, 'view']">{{ user.id }}</a
+                  >{{ last ? '' : ', ' }}
+                </ng-container>
+              </p>
+              <div class="d-flex gap-2 mt-3">
+                <a [routerLink]="['/location', location.id, 'view']" class="btn btn-info btn-sm">View</a>
+                <a [routerLink]="['/location', location.id, 'edit']" class="btn btn-primary btn-sm">Edit</a>
+                <button (click)="delete(location)" class="btn btn-danger btn-sm">Delete</button>
+              </div>
+            </div>
+            <div
+              class="flex-shrink-0 d-flex align-items-center justify-content-center mt-3 mt-md-0"
+              *ngIf="!hiddenMaps[location.id]"
+              style="width: 550px"
+            >
+              <div
+                id="map-{{ location.id }}"
+                style="height: 250px; width: 100%; min-height: 250px; border: 1px solid #ccc; border-radius: 8px"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

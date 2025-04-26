@@ -1,3 +1,4 @@
+import { LocationUpdateComponent } from './update/location-update.component';
 import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
@@ -23,7 +24,8 @@ const locationRoute: Routes = [
   },
   {
     path: 'new',
-    loadComponent: () => import('./update/location-update.component').then(m => m.LocationUpdateComponent),
+    loadComponent: (): Promise<typeof LocationUpdateComponent> =>
+      import('./update/location-update.component').then(m => m.LocationUpdateComponent),
     resolve: {
       location: LocationResolve,
     },
@@ -31,7 +33,8 @@ const locationRoute: Routes = [
   },
   {
     path: ':id/edit',
-    loadComponent: () => import('./update/location-update.component').then(m => m.LocationUpdateComponent),
+    loadComponent: (): Promise<typeof LocationUpdateComponent> =>
+      import('./update/location-update.component').then(m => m.LocationUpdateComponent),
     resolve: {
       location: LocationResolve,
     },
