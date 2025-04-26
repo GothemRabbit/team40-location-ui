@@ -43,17 +43,22 @@ export default class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // 1. restore cached profile
+    const cached = localStorage.getItem('cachedProfile');
+    if (cached) {
+      this.currentUserProfile = JSON.parse(cached) as IProfileDetails;
+    }
+
     this.entitiesNavbarItems = EntityNavbarItems;
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
       this.openAPIEnabled = profileInfo.openAPIEnabled;
     });
 
+    // 2. keep listening for fresh values (but ignore undefined)
     this.subscription = this.loginService.getProfileDetails().subscribe(profile => {
-      this.currentUserProfile = profile ?? null;
-      if (!profile) {
-        // eslint-disable-next-line no-console
-        console.log('Profile not found. Consider logging in or retrying...');
+      if (profile) {
+        this.currentUserProfile = profile;
       }
     });
   }

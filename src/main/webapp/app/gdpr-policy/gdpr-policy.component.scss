@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
+.container {
+  background-color: var(--background-color-secondary);
+  color: var(--text-color);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 3px solid var(--border-color);
+  font-family: 'Prompt', sans-serif;
+}
+
+h1,
+h2 {
+  color: var(--text-color);
+}
+
+p,
+li {
+  color: var(--text-color-secondary);
+}
+
+a {
+  color: var(--link-color);
+}

@@ -9,6 +9,8 @@ import { ProfileDetailsService } from '../entities/profile-details/service/profi
 import { IProfileDetails } from '../entities/profile-details/profile-details.model';
 import { catchError } from 'rxjs/operators';
 
+const LS_KEY_PROFILE = 'cachedProfile';
+
 @Injectable({ providedIn: 'root' })
 export class LoginService {
   private readonly accountService = inject(AccountService);
@@ -27,6 +29,7 @@ export class LoginService {
           return this.profileDetailsService.getCurrentUserProfile().pipe(
             tap((profile: IProfileDetails) => {
               this.profileDetails.next(profile);
+              localStorage.setItem(LS_KEY_PROFILE, JSON.stringify(profile));
             }),
             map(() => account),
             catchError((err): Observable<Account | null> => {
@@ -43,6 +46,7 @@ export class LoginService {
       complete: () => {
         this.accountService.authenticate(null);
         this.profileDetails.next(undefined);
+        localStorage.removeItem(LS_KEY_PROFILE);
       },
     });
   }
