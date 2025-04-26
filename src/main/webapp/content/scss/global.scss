@@ -65,6 +65,8 @@ a:hover {
 
   /* Icon colours */
   --icon-star: #f2d349;
+
+  --like-color: black;
 }
 
 body {
@@ -263,7 +265,7 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 
 /* Dark‑mode overrides */
 .dark-mode {
-  --background-color: rgba(25, 24, 24, 1);
+  --background-color: rgb(0, 0, 0);
   --background-color-secondary: rgba(28, 27, 27, 1);
   --background-accent-1: #5a5626;
   --background-accent-2: #99864c;
@@ -280,6 +282,8 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --link-color: #bb86fc;
 
   --icon-star: #ffca28;
+
+  --like-color: red;
 }
 
 html {
@@ -289,4 +293,13 @@ html {
 :focus {
   outline: 2px solid #66afe9;
   outline-offset: 2px;
+}
+
+h1 {
+  color: var(--main-color);
+}
+
+button {
+  background-color: var(--main-color);
+  color: white;
 }

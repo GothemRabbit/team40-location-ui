@@ -94,7 +94,15 @@ input::placeholder {
 }
 
 .form-control {
-  background-color: white;
+  background-color: transparent;
+}
+
+.form-label {
+  background-color: transparent;
+}
+
+input[name='price'] {
+  background-color: transparent;
 }
 
 input.form-control,

@@ -1,7 +1,9 @@
 <div>
   <div class="d-flex justify-content-center">
     <div class="col-md-8">
-      <h1 data-cy="registerTitle">Registration</h1>
+      <div class="titles">
+        <h1 data-cy="registerTitle">Registration</h1>
+      </div>
 
       @if (success()) {
         <div class="alert alert-success"><strong>Registration saved!</strong> Sign in now to start using your account.</div>
@@ -162,7 +164,9 @@
             }
           </div>
 
-          <button type="submit" class="btn btn-primary" data-cy="submit">Register</button>
+          <div class="sub-btn">
+            <button type="submit" class="btn btn-primary" data-cy="submit">Register</button>
+          </div>
         </form>
       }
     </div>

@@ -19,7 +19,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin: 0 auto;
+  margin-top: 15px;
 }
 .profile-image {
   max-width: 170px;
@@ -34,7 +34,7 @@
   display: inline-flex;
   align-items: center;
   margin-right: auto;
-  font-size: px-to-rem(20);
+  font-size: px-to-rem(16);
 }
 
 .back-text fa-icon {
@@ -50,18 +50,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f1f1f1;
+  background-color: var(--background-color-secondary);
   padding: 20px;
   border-radius: 8px;
   position: relative;
   gap: 15px;
   margin-bottom: 20px;
+  outline: white;
 }
 
 .topProfile-container img {
   max-width: 150px;
   border-width: thin;
-  border-color: #1d1d1f;
 }
 
 .profile-details {
@@ -71,6 +71,7 @@
   flex-grow: 1;
   padding-left: 30px;
   padding-top: 20px;
+  color: var(--text-color);
 }
 
 .username {
@@ -145,6 +146,8 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 .tab-content {
   width: 100%;
   padding: 20px;
+  outline: 1.5px solid grey;
+  margin-bottom: 10px;
 }
 
 .tab-content.mt-3 {
@@ -449,12 +452,13 @@ ul {
   flex: 0 0 250px;
   height: 300px;
   width: 250px; /* Prevents excessive stretching */
-  background: transparent;
   padding: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 1.5px var(--text-on-accent);
+  background: var(--background-color);
 }
 
 .card {
@@ -462,8 +466,8 @@ ul {
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(99, 96, 96, 0.2);
   position: relative;
-  border: 1.5px solid black; /* Light yellow border */
-  background: white;
+  border: 1.5px solid var(--text-on-accent);
+  background: var(--background-color);
   transition:
     transform 0.6s ease-in-out,
     box-shadow 0.6s ease-in-out;
@@ -481,8 +485,6 @@ ul {
   display: flex;
   justify-content: space-between; /* Pushes icons to opposite sides */
   align-items: center; /* Ensures vertical alignment */
-  //bottom: px;
-  // position: relative;
 }
 
 .card-img-top {
@@ -505,6 +507,7 @@ ul {
 .card-body {
   padding-bottom: 15px;
   text-align: left;
+  color: var(--text-color);
 }
 
 .item-title-link {
@@ -512,7 +515,7 @@ ul {
   font-size: 1.1rem;
   font-weight: 600;
   //color: #333;
-  color: #575555; // Bootstrap primary color
+  color: var(--text-color);
   transition: color 0.3s ease-in-out;
   text-transform: capitalize;
 }
@@ -525,11 +528,12 @@ ul {
 .card-title {
   margin-top: -15px;
   text-transform: capitalize;
+  color: var(--text-color);
 }
 
 .card-text {
   font-size: 0.9rem;
-  color: #575555;
+  color: var(--text-color);
   margin-bottom: 5px;
 }
 

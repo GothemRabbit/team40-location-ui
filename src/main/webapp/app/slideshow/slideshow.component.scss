@@ -72,8 +72,8 @@
 }
 
 .button-sell {
-  top: 200px;
-  right: 410px;
+  top: 210px;
+  right: 330px;
   background-color: black;
   color: whitesmoke;
 }
@@ -83,7 +83,7 @@
   transform: scale(1.05);
 }
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1250px) {
   .custom-buttons button {
     display: none;
   }
