@@ -11,6 +11,7 @@
       data-cy="entityCreateButton"
       class="btn btn-primary jh-create-entity create-conversation"
       [routerLink]="['/conversation/new']"
+      *ngIf="isAdmin"
     >
       <fa-icon icon="plus"></fa-icon>
       <span>New Conversation</span>
@@ -39,12 +40,9 @@
             <small>{{ conversation.dateCreated | formatMediumDatetime }}</small>
           </div>
 
-          <!-- Last message preview -->
           <p class="mb-1">
             <small>{{ getBuzzPreview(conversation) }}</small>
           </p>
-
-          <!-- Admin sees both users; regular user sees nothing else -->
           @if (isAdmin) {
             <p class="mb-1 text-muted">
               <small>{{ getAdminSubtext(conversation) }}</small>

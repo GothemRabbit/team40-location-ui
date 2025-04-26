@@ -28,10 +28,10 @@ a:hover {
 :root {
   --font-size: 16px;
   /* Base colors */
-  --background-color: #ffffff;
+  --background-color: #dad5d5;
   --background-color-secondary: #f5f5f5;
   --background-accent-1: #dcd8a2;
-  --background-accent-2: #f8dc75;
+  --background-accent-2: #dad5d5;
   --background-accent-3: #f2d349;
   --background-accent-4: #59b7cc;
 
@@ -52,6 +52,9 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   font-size: var(--font-size);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -247,9 +250,9 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 .dark-mode {
   --background-color: rgba(25, 24, 24, 1);
   --background-color-secondary: rgba(28, 27, 27, 1);
-  --background-accent-1: #5a5626;
-  --background-accent-2: #99864c;
-  --background-accent-3: #bb8d00;
+  --background-accent-1: #000000;
+  --background-accent-2: #000000;
+  --background-accent-3: #222222;
   --background-accent-4: #446ebb;
 
   --text-color: #f1eded;
@@ -259,16 +262,22 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 
   --border-color: #444444;
 
-  --link-color: #bb86fc;
+  --link-color: #4da3ff;
 
   --icon-star: #ffca28;
 }
 
 html {
   background: var(--background-accent-1);
+  height: 100%;
 }
 
 :focus {
   outline: 2px solid #66afe9;
   outline-offset: 2px;
+}
+
+app-footer,
+footer {
+  margin-top: auto;
 }

@@ -49,18 +49,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f1f1f1;
+  background-color: var(--background-accent-2);
   padding: 20px;
   border-radius: 8px;
   position: relative;
   gap: 15px;
   margin-bottom: 20px;
+  color: var(--text-color);
 }
 
 .topProfile-container img {
   max-width: 150px;
   border-width: thin;
-  border-color: #1d1d1f;
+  border-color: var(--border-color);
 }
 
 .profile-details {
@@ -118,8 +119,8 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 }
 
 .nav-link {
-  color: #1d1d1f;
-  background-color: #f1f1f1;
+  color: var(--text-color);
+  background-color: var(--background-accent-2);
   width: 230px;
   text-align: center;
 }
@@ -127,12 +128,18 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 .nav-link.active {
   border-bottom: 2px solid #6c757d;
   box-shadow: none;
-  color: black;
+  color: var(--text-color);
+  background-color: var(--background-accent-2);
+}
+
+.nav-link.active:hover {
+  border-bottom: 2px solid #6c757d;
+  background-color: var(--background-accent-3);
 }
 
 .nav-link:hover {
-  color: black;
   border-bottom: 2px solid #6c757d;
+  background-color: var(--background-accent-3);
 }
 
 .nav-tabs .nav-link:hover,
@@ -357,7 +364,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
     width: 60px;
     height: 25px;
     margin-left: auto;
-    background-color: #dcd8a2;
+    background-color: var(--background-accent-2);
     color: black;
     font-size: 10px;
     padding: 0px;
