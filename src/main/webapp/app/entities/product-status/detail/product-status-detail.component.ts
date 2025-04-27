@@ -142,7 +142,7 @@ export class ProductStatusDetailComponent implements OnInit {
     this.confirmActionType = null;
   }
   getImageSrc(imageData: string | null | undefined): string {
-    if (!imageData) return 'assets/images/placeholder.png';
+    if (!imageData) return 'content/images/placeholder.png';
     const base64Data = this.convertByteArrayToBase64(imageData);
     return `data:image/png;base64,${base64Data}`;
   }
