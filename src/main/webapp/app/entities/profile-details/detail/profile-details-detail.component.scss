@@ -171,14 +171,14 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 }
 
 .commentBoxRight {
-  background-color: var(--background-color);
+  background-color: var(--background-color-secondary);
   border-radius: 15px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
   gap: 20px;
   width: 700px;
   height: 125px;
   overflow: hidden;
-  border: 2px solid #dcd8a2;
+  border: 2px solid var(--background-accent-1);
   margin-bottom: 10px;
 }
 .commentBoxRight:hover {
@@ -305,7 +305,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 @media (width < 400px) {
   .commentBoxRight {
     width: 250px;
-    height: 200px;
+    height: 105px;
     margin-bottom: 5px;
   }
 
