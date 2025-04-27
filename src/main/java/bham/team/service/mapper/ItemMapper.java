@@ -21,9 +21,8 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring", uses = { ImagesMapper.class })
 public interface ItemMapper extends EntityMapper<ItemDTO, Item> {
     @Mapping(target = "wishlists", source = "wishlists", qualifiedByName = "wishlistIdSet")
-    @Mapping(source = "profileDetails.id", target = "profileDetails")
-    @Mapping(source = "profileDetails.userName", target = "profileDetails.userName")
-    @Mapping(target = "seller", source = "seller", qualifiedByName = "userDetailsId")
+    @Mapping(source = "profileDetails", target = "profileDetails", qualifiedByName = "profileDetailsId")
+    @Mapping(source = "seller", target = "seller", qualifiedByName = "userDetailsId")
     @Mapping(target = "images", source = "images")
     ItemDTO toDto(Item s);
 
