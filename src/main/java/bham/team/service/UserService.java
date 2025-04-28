@@ -146,19 +146,9 @@ public class UserService {
         ProfileDetails profileDetails = new ProfileDetails();
         profileDetails.setUser(newUser);
         profileDetails.setUserName(userDTO.getLogin());
-        profileDetails.setBioImage(getDefaultProfilePicture());
         profileDetailsRepository.save(profileDetails);
 
         return newUser;
-    }
-
-    private byte[] getDefaultProfilePicture() {
-        try {
-            return Files.readAllBytes(Paths.get("src/main/webapp/content/images/Default_profile_picture.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // Return null if image read fails
-        }
     }
 
     private boolean removeNonActivatedUser(User existingUser) {
