@@ -325,10 +325,13 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   }
   .container-fluid {
     width: 100%;
-    padding: 0px;
   }
   .header {
     font-size: px-to-rem(30);
+  }
+
+  .profilePage-container {
+    padding: 5px;
   }
   .profilePage-container .topProfile-container {
     width: 80%;
