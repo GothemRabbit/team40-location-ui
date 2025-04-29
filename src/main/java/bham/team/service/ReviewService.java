@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,14 +47,15 @@ public class ReviewService {
      * @return the persisted entity.
      */
     public ReviewDTO save(ReviewDTO reviewDTO) {
-        Long reviewId = reviewDTO.getId();
         Optional<String> user = SecurityUtils.getCurrentUserLogin();
-        String retailerUserName, currentUserName = "";
-        Optional<ProfileDetails> profileDetails = null;
+        String retailerUserName, currentUserName;
+        Optional<ProfileDetails> profileDetails = Optional.empty();
         if (user.isPresent()) {
             profileDetails = profileDetailsRepository.findByUserName(user.get());
         }
-        if (profileDetails != null || profileDetails.isPresent()) {
+        if (profileDetails.isEmpty()) {
+            throw new NullPointerException("user not found, ex500");
+        } else {
             currentUserName = profileDetails.get().getUserName();
         }
         retailerUserName = reviewDTO.getRetailer().getUserName();
@@ -90,7 +90,7 @@ public class ReviewService {
         }
         // now profile id on the review
         Optional<Review> review = reviewRepository.findById(reviewId);
-        Long id2 = 0L;
+        Long id2;
         Review review1 = new Review();
         if (review.isPresent()) {
             review1 = review.get();
@@ -130,7 +130,7 @@ public class ReviewService {
         }
         // now profile id on the review
         Optional<Review> review = reviewRepository.findById(reviewId);
-        Long id2 = 0L;
+        Long id2;
         Review review1 = new Review();
         if (review.isPresent()) {
             review1 = review.get();
@@ -203,7 +203,7 @@ public class ReviewService {
             id1 = profileDetails.get().getId();
         }
         Optional<Review> review = reviewRepository.findById(id);
-        Long id2 = 0L;
+        Long id2;
         Review review1 = new Review();
         if (review.isPresent()) {
             review1 = review.get();
