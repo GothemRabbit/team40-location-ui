@@ -110,11 +110,11 @@
           <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
             <fa-icon icon="arrow-left"></fa-icon><span>Back</span>
           </button>
-
+          <!--
           <button type="button" [routerLink]="['/product-status', productStatusRef.id, 'edit']" class="btn btn-primary">
             <fa-icon icon="pencil-alt"></fa-icon><span>Edit</span>
           </button>
-
+          -->
           <!-- PENDING -->
           <!-- PENDING 状态下的按钮 -->
           <div *ngIf="productStatusRef.status === 'PENDING'">

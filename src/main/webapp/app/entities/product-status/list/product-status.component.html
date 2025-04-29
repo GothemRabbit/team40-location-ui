@@ -57,10 +57,6 @@
                   <h5 class="mb-1">ID: {{ productStatus.id }}</h5>
                   {{ $any(productStatus.item)?.title || 'Item #' + $any(productStatus.item)?.id }}
                 </h5>
-                <p class="mb-1">Meeting Time: {{ productStatus.meetingTime | formatMediumDatetime }}</p>
-                <a [href]="productStatus.conversation" target="_blank" class="btn btn-sm btn-info" (click)="$event.stopPropagation()"
-                  >Chat</a
-                >
               </div>
               <div class="d-flex flex-column text-end">
                 <span class="badge bg-secondary mb-2">{{ productStatus.status }}</span>
