@@ -41,34 +41,32 @@ export class ProfileDetailsDetailComponent implements OnInit {
 
   trackId = (item: IReview): number => this.reviewService.getReviewIdentifier(item);
   ngOnInit(): void {
-    const profileId = this.profileDetails?.id;
-    this.accountService.identity().subscribe(account => {
-      this.account = account;
-      this.checkOwnership();
-    });
     this.activatedRoute.data.subscribe(({ profileDetails }) => {
       this.profileDetails = profileDetails;
       this.reviewService.getReviewsAboutUser(profileDetails.id).subscribe(reviews => {
         this.reviewReceived = reviews;
       });
-    });
-
-    if (profileId) {
-      this.itemService.getItemsByProfile(profileId).subscribe(res => {
-        this.items = res.body ?? [];
+      if (profileDetails.id) {
+        this.itemService.getItemsByProfile(profileDetails.id).subscribe(res => {
+          this.items = res.body ?? [];
+        });
+      }
+      this.accountService.identity().subscribe(account => {
+        this.account = account;
+        this.checkOwnership();
       });
-    }
+    });
   }
 
   checkOwnership(): void {
     const profile = this.profileDetails;
     // eslint-disable-next-line no-console
-    console.log(profile?.userName);
+    console.log('profile ' + String(profile?.userName));
     // eslint-disable-next-line no-console
-    console.log(this.account?.login);
+    console.log('login: ' + String(this.account?.login));
     this.isOwner = this.account?.login === profile?.userName;
     // eslint-disable-next-line no-console
-    console.log(this.isOwner);
+    console.log('isOwner: ' + String(this.isOwner));
   }
 
   getAverageRating(): number {

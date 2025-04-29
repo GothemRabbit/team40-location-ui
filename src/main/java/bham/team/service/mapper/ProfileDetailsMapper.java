@@ -8,6 +8,7 @@ import bham.team.service.dto.ConversationDTO;
 import bham.team.service.dto.LocationDTO;
 import bham.team.service.dto.ProfileDetailsDTO;
 import bham.team.service.dto.UserDTO;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.mapstruct.*;
@@ -39,6 +40,7 @@ public interface ProfileDetailsMapper extends EntityMapper<ProfileDetailsDTO, Pr
 
     @Named("locationIdSet")
     default Set<LocationDTO> toDtoLocationIdSet(Set<Location> location) {
+        if (location == null) return new HashSet<>();
         return location.stream().map(this::toDtoLocationId).collect(Collectors.toSet());
     }
 
@@ -49,6 +51,7 @@ public interface ProfileDetailsMapper extends EntityMapper<ProfileDetailsDTO, Pr
 
     @Named("conversationIdSet")
     default Set<ConversationDTO> toDtoConversationIdSet(Set<Conversation> conversation) {
+        if (conversation == null) return new HashSet<>();
         return conversation.stream().map(this::toDtoConversationId).collect(Collectors.toSet());
     }
 }
