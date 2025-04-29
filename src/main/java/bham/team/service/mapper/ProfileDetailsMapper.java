@@ -8,7 +8,6 @@ import bham.team.service.dto.ConversationDTO;
 import bham.team.service.dto.LocationDTO;
 import bham.team.service.dto.ProfileDetailsDTO;
 import bham.team.service.dto.UserDTO;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.mapstruct.*;
@@ -31,27 +30,38 @@ public interface ProfileDetailsMapper extends EntityMapper<ProfileDetailsDTO, Pr
     @Named("userId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    UserDTO toDtoUserId(User user);
+    default UserDTO toDtoUserId(User user) {
+        if (user == null) return null;
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        return dto;
+    }
 
     @Named("locationId")
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    LocationDTO toDtoLocationId(Location location);
+    default LocationDTO toDtoLocationId(Location location) {
+        if (location == null) return null;
+        LocationDTO dto = new LocationDTO();
+        dto.setId(location.getId());
+        return dto;
+    }
 
     @Named("locationIdSet")
     default Set<LocationDTO> toDtoLocationIdSet(Set<Location> location) {
-        if (location == null) return new HashSet<>();
-        return location.stream().map(this::toDtoLocationId).collect(Collectors.toSet());
+        return location == null ? null : location.stream().map(this::toDtoLocationId).collect(Collectors.toSet());
     }
 
     @Named("conversationId")
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ConversationDTO toDtoConversationId(Conversation conversation);
+    default ConversationDTO toDtoConversationId(Conversation conversation) {
+        if (conversation == null) return null;
+        ConversationDTO dto = new ConversationDTO();
+        dto.setId(conversation.getId());
+        return dto;
+    }
 
     @Named("conversationIdSet")
     default Set<ConversationDTO> toDtoConversationIdSet(Set<Conversation> conversation) {
-        if (conversation == null) return new HashSet<>();
-        return conversation.stream().map(this::toDtoConversationId).collect(Collectors.toSet());
+        return conversation == null ? null : conversation.stream().map(this::toDtoConversationId).collect(Collectors.toSet());
     }
 }
