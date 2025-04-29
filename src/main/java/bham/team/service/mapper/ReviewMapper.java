@@ -20,7 +20,7 @@ public interface ReviewMapper extends EntityMapper<ReviewDTO, Review> {
     ReviewDTO toDto(Review s);
 
     @Named("profileDetailsId")
-    @BeanMapping(ignoreByDefault = true)
+    @BeanMapping(ignoreByDefault = true, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "userName", source = "userName")
     @Mapping(target = "bioImage", source = "bioImage")
