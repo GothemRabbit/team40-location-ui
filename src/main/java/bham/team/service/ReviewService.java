@@ -51,12 +51,12 @@ public class ReviewService {
         String retailerUserName, currentUserName;
         Optional<ProfileDetails> profileDetails = Optional.empty();
         if (user.isPresent()) {
-            profileDetails = profileDetailsRepository.findByUserName(user.get());
+            profileDetails = profileDetailsRepository.findByUserName(user.orElseThrow());
         }
         if (profileDetails.isEmpty()) {
             throw new NullPointerException("user not found, ex500");
         } else {
-            currentUserName = profileDetails.get().getUserName();
+            currentUserName = profileDetails.orElseThrow().getUserName();
         }
         retailerUserName = reviewDTO.getRetailer().getUserName();
         if (retailerUserName.equals(currentUserName)) {
@@ -64,7 +64,7 @@ public class ReviewService {
         }
         LOG.debug("Request to save Review : {}", reviewDTO);
         Review review = reviewMapper.toEntity(reviewDTO);
-        review.setConsumer(profileDetails.get().userName(currentUserName));
+        review.setConsumer(profileDetails.orElseThrow().userName(currentUserName));
         review.setDate(LocalDate.now());
         review = reviewRepository.save(review);
         return reviewMapper.toDto(review);
@@ -81,19 +81,19 @@ public class ReviewService {
         Optional<String> user = SecurityUtils.getCurrentUserLogin();
         Optional<ProfileDetails> profileDetails = Optional.empty();
         if (user.isPresent()) {
-            profileDetails = profileDetailsRepository.findByUserName(user.get());
+            profileDetails = profileDetailsRepository.findByUserName(user.orElseThrow());
         }
 
         Long id1 = 0L;
         if (profileDetails.isPresent()) {
-            id1 = profileDetails.get().getId(); //this is current users profile id.
+            id1 = profileDetails.orElseThrow().getId(); //this is current users profile id.
         }
         // now profile id on the review
         Optional<Review> review = reviewRepository.findById(reviewId);
         Long id2;
         Review review1 = new Review();
         if (review.isPresent()) {
-            review1 = review.get();
+            review1 = review.orElseThrow(() -> new IllegalArgumentException("review not found"));
         }
         id2 = review1.getConsumer().getId();
         if (review1.getConsumer() == null || !Objects.equals(id1, id2)) {
@@ -121,19 +121,19 @@ public class ReviewService {
         Optional<String> user = SecurityUtils.getCurrentUserLogin();
         Optional<ProfileDetails> profileDetails = Optional.empty();
         if (user.isPresent()) {
-            profileDetails = profileDetailsRepository.findByUserName(user.get());
+            profileDetails = profileDetailsRepository.findByUserName(user.orElseThrow());
         }
 
         Long id1 = 0L;
         if (profileDetails.isPresent()) {
-            id1 = profileDetails.get().getId(); //this is current users profile id.
+            id1 = profileDetails.orElseThrow().getId(); //this is current users profile id.
         }
         // now profile id on the review
         Optional<Review> review = reviewRepository.findById(reviewId);
         Long id2;
         Review review1 = new Review();
         if (review.isPresent()) {
-            review1 = review.get();
+            review1 = review.orElseThrow(() -> new IllegalArgumentException("review not found"));
         }
         id2 = review1.getConsumer().getId();
         if (review1.getConsumer() == null || !Objects.equals(id1, id2)) {
@@ -196,17 +196,19 @@ public class ReviewService {
         Optional<String> user = SecurityUtils.getCurrentUserLogin();
         Optional<ProfileDetails> profileDetails = Optional.empty();
         if (user.isPresent()) {
-            profileDetails = profileDetailsRepository.findByUserName(user.get());
+            profileDetails = profileDetailsRepository.findByUserName(
+                user.orElseThrow(() -> new IllegalArgumentException("user not found, ex500"))
+            );
         }
         Long id1 = 0L;
         if (profileDetails.isPresent()) {
-            id1 = profileDetails.get().getId();
+            id1 = profileDetails.orElseThrow().getId();
         }
         Optional<Review> review = reviewRepository.findById(id);
         Long id2;
         Review review1 = new Review();
         if (review.isPresent()) {
-            review1 = review.get();
+            review1 = review.orElseThrow(() -> new IllegalArgumentException("review not found"));
         }
         id2 = review1.getConsumer().getId();
         if (review1.getConsumer() == null || !Objects.equals(id2, id1)) {
