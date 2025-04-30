@@ -183,7 +183,7 @@ public class ProductStatusService {
         if (!productStatusOpt.isPresent()) {
             throw new EntityNotFoundException("ProductStatus not found for this item or the item is already reserved");
         }
-        ProductStatus productStatus = productStatusOpt.get();
+        ProductStatus productStatus = productStatusOpt.orElseThrow(() -> new EntityNotFoundException("ProductStatus not found"));
 
         ProfileDetails buyerProfileDetails = profileDetailsRepository
             .findById(buyerProfileId)
@@ -224,7 +224,7 @@ public class ProductStatusService {
             throw new EntityNotFoundException("ProductStatus not found or not owned by current user");
         }
 
-        repo.delete(found.get());
+        repo.delete(found.orElseThrow(() -> new EntityNotFoundException("ProductStatus not found")));
     }
 
     public void deleteForProfile(Long id) {

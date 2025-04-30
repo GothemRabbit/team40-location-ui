@@ -178,20 +178,13 @@ public class ProfileDetailsResource {
             return ResponseEntity.notFound().build();
         }
 
-        ProfileDetailsDTO profile = profileOpt.get();
+        ProfileDetailsDTO profile = profileOpt.orElseThrow();
 
         // Get the currently logged-in user's login name
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentLogin = (authentication != null) ? authentication.getName() : null;
 
         boolean isOwner = currentLogin != null && profile.getUser() != null && currentLogin.equals(profile.getUser().getLogin());
-
-        //        if (!isOwner) {
-        //            profile.setLocation(null);
-        //            profile.setEmail(null);
-        //            // hide other private fields here
-        //        }
-
         return ResponseEntity.ok(profile);
     }
 

@@ -171,14 +171,14 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 }
 
 .commentBoxRight {
-  background-color: white;
+  background-color: var(--background-color-secondary);
   border-radius: 15px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
   gap: 20px;
   width: 700px;
   height: 125px;
   overflow: hidden;
-  border: 2px solid #dcd8a2;
+  border: 2px solid var(--background-accent-1);
   margin-bottom: 10px;
 }
 .commentBoxRight:hover {
@@ -192,7 +192,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 }
 #rates {
   text-align: right;
-  color: #f2d349;
+  color: var(--icon-star);
 }
 #date {
   text-align: right;
@@ -226,14 +226,14 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 }
 
 .filterButton {
-  background-color: #dcd8a2;
+  background-color: var(--background-accent-1);
   border: 2px solid black;
   display: inline-block;
   border-radius: 14px;
   height: 40px;
   width: 150px;
   font-size: px-to-rem(10);
-  color: black;
+  color: var(--text-color);
 }
 
 .filterButton:hover {
@@ -305,7 +305,7 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
 @media (width < 400px) {
   .commentBoxRight {
     width: 250px;
-    height: 200px;
+    height: 105px;
     margin-bottom: 5px;
   }
 
@@ -325,10 +325,13 @@ ul.nav.nav-tabs.mt-3 li.nav-item a:focus {
   }
   .container-fluid {
     width: 100%;
-    padding: 0px;
   }
   .header {
     font-size: px-to-rem(30);
+  }
+
+  .profilePage-container {
+    padding: 5px;
   }
   .profilePage-container .topProfile-container {
     width: 80%;

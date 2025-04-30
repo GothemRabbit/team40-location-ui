@@ -148,18 +148,6 @@ public class ProfileDetailsService {
         return profileDetailsRepository.findOneWithEagerRelationships(id).map(profileDetailsMapper::toDto);
     }
 
-    //    @Transactional(readOnly = true)
-    //    public Optional<ProfileDetailsDTO> findOne(Long id) {
-    //        return profileDetailsRepository.findByIdWithUser(id)
-    //            .map(profileDetails -> {
-    //                ProfileDetailsDTO dto = profileDetailsMapper.toDto(profileDetails); // Map all fields
-    //                if (profileDetails.getUser() != null) {
-    //                    dto.setUserName(profileDetails.getUser().getLogin()); // Manually set username
-    //                }
-    //                return dto;
-    //            });
-    //    }
-
     /**
      * Delete the profileDetails by id.
      *
@@ -177,14 +165,6 @@ public class ProfileDetailsService {
         userService.deleteUser(user.getLogin());
         profileDetailsRepository.deleteById(id);
     }
-
-    //    @Transactional(readOnly = true)
-    //    public List<ItemDTO> findAllItemsByProfile(Long profileId) {
-    //        LOG.debug("Request to get all Items for ProfileDetails: {}", profileId);
-    //        return profileDetailsRepository.findProfileWithItems(profileId)
-    //            .map(profile -> itemMapper.toDto(profile.getItems()))  // Convert items to DTO
-    //            .orElse(Collections.emptyList());  // Return empty list if profile not found
-    //    }
 
     @Transactional(readOnly = true)
     public Optional<ProfileDetailsDTO> findProfileWithItems(Long profileId) {

@@ -42,7 +42,7 @@
           </div>
         </div>
         <ng-template #noImage>
-          <img src="assets/images/placeholder.png" alt="No Image Available" class="placeholder img-fluid" />
+          <img src="content/images/placeholder.png" alt="No Image Available" class="placeholder img-fluid" />
         </ng-template>
 
         <div class="product-details">
@@ -65,7 +65,7 @@
                 <span>{{ getDaysSinceListed(itemRef.timeListed) }}</span>
               </dd>
             </div>
-            <hr style="border: 1px solid black; width: 100%" />
+            <hr style="border: 1px solid var(--text-color-secondary); width: 100%" />
           </div>
           <div class="details">
             <div class="details-left">
@@ -74,7 +74,7 @@
               <dt><span>Condition</span></dt>
               <dt><span>Colour</span></dt>
               <dt><span>Category</span></dt>
-              <dt><span>Meet-up Location</span></dt>
+              <!--              <dt><span>Meet-up Location</span></dt>-->
               <dt><span>Interested</span></dt>
             </div>
             <div class="details-right">
@@ -107,7 +107,7 @@
                   }[itemRef.category ?? 'null']
                 }}
               </dt>
-              <dt>Meet-up Location</dt>
+              <!--              <dt>Meet-up Location</dt>-->
               <dt>{{ likesCount() }} {{ likesCount() === 1 ? 'like' : 'likes' }}</dt>
             </div>
           </div>
@@ -117,7 +117,7 @@
               <span>{{ itemRef.description ? itemRef.description : 'No description' }}</span>
             </dd>
           </div>
-          <hr style="border: 1px solid black; width: 100%" />
+          <hr style="border: 1px solid var(--text-color-secondary); width: 100%" />
           <div class="seller">
             <p>
               By &#64;<a [routerLink]="['/profile-details', item()?.profileDetails?.id, 'view']" class="profile-link">

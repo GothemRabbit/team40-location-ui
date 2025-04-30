@@ -24,6 +24,10 @@ export default class AppComponent implements AfterViewInit, OnInit {
   // --- Accessibility: Keyboard navigation state ---
   htmlElements: HTMLElement[] = [];
   currentIndex = 0;
+  fontFamilyOptions = [
+    { label: 'Open Dyslexic', value: 'OpenDyslexic, sans-serif' },
+    { label: 'Prompt', value: '' },
+  ];
 
   private readonly applicationConfigService = inject(ApplicationConfigService);
   private readonly iconLibrary = inject(FaIconLibrary);
@@ -56,6 +60,14 @@ export default class AppComponent implements AfterViewInit, OnInit {
     const dark = localStorage.getItem('darkMode') === 'true';
     if (dark) {
       document.body.classList.add('dark-mode');
+    }
+    const savedFamily = localStorage.getItem('fontFamily');
+    if (savedFamily !== null) {
+      this.applyFontFamily(savedFamily);
+    } else {
+      const dys = this.fontFamilyOptions.find(o => o.label === 'Open Dyslexic')!.value;
+      this.applyFontFamily(dys);
+      localStorage.setItem('fontFamily', dys);
     }
   }
 
@@ -179,5 +191,12 @@ export default class AppComponent implements AfterViewInit, OnInit {
    */
   private refreshFocusable(): void {
     this.htmlElements = this.getFocusableElements(document.body);
+  }
+  private applyFontFamily(family: string): void {
+    if (!family) {
+      document.documentElement.style.removeProperty('--font-family');
+    } else {
+      document.documentElement.style.setProperty('--font-family', family);
+    }
   }
 }

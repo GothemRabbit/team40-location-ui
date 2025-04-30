@@ -205,10 +205,10 @@ public class ItemResource {
     public ResponseEntity<byte[]> getItemImages(@PathVariable Long id) {
         LOG.debug("REST request to get Item images for id: {}", id);
         Optional<Item> maybeItem = itemService.getItemWithImages(id);
-        if (maybeItem.isEmpty() || maybeItem.get().getImages().isEmpty()) {
+        if (maybeItem.isEmpty() || maybeItem.orElseThrow().getImages().isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        Images img = maybeItem.get().getImages().iterator().next();
+        Images img = maybeItem.orElseThrow().getImages().iterator().next();
         byte[] data = img.getImages(); // your field name for the blob
         MediaType mt = MediaType.parseMediaType(img.getImagesContentType());
         return ResponseEntity.ok().contentType(mt).body(data);

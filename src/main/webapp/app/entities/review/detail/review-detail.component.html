@@ -42,15 +42,15 @@
         <jhi-alert></jhi-alert>
         <div style="display: flex; justify-content: space-between">
           <button type="submit" (click)="previousState()" data-cy="entityDetailsBackButton">
-            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            <fa-icon icon="arrow-left"></fa-icon><span> back</span>
           </button>
-          <span>
+          <span class="edit-button">
             <button *ngIf="isOwner" type="button" [routerLink]="['/review', reviewRef.id, 'edit']">
-              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+              <fa-icon icon="pencil-alt"></fa-icon><span> edit</span>
             </button>
 
             <button *ngIf="isOwner" type="submit" (click)="delete(reviewRef)" data-cy="entityDeleteButton">
-              <fa-icon icon="times"></fa-icon>&nbsp;<span>Delete</span>
+              <fa-icon icon="times"></fa-icon><span> delete</span>
             </button>
           </span>
         </div>

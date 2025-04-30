@@ -79,7 +79,7 @@ a:hover {
 
 :root {
   --font-size: 16px;
-  --font-family: Prompt, sans-serif;
+  --font-family: 'Prompt', sans-serif;
   /* Base colors */
   --background-color: #dad5d5;
   --background-color-secondary: #f5f5f5;
@@ -92,6 +92,7 @@ a:hover {
   --text-color-secondary: #777373;
   --text-on-accent: #000000;
   --placeholder-color: #000000;
+  --textarea-color: #dcd8a2;
 
   --border-color: #cccccc;
 
@@ -99,6 +100,8 @@ a:hover {
 
   /* Icon colours */
   --icon-star: #f2d349;
+
+  --like-color: black;
 }
 
 body {
@@ -312,12 +315,15 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --text-color-secondary: #d0d0d0;
   --text-on-accent: #f1eded;
   --placeholder-color: white;
+  --textarea-color: #5a5626;
 
   --border-color: #444444;
 
   --link-color: #4da3ff;
 
   --icon-star: #ffca28;
+
+  --like-color: red;
 }
 
 html {
@@ -333,4 +339,17 @@ html {
 app-footer,
 footer {
   margin-top: auto;
+}
+
+h1 {
+  color: var(--main-color);
+}
+
+button {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.wwar {
+  margin-top: 15px;
 }

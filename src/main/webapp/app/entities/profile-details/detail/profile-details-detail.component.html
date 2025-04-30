@@ -106,7 +106,7 @@
                       </a>
                     } @else {
                       <a [routerLink]="['/item', item.id, 'view']">
-                        <img class="card-img-top" src="assets/images/placeholder.png" alt="No Image Available" />
+                        <img class="card-img-top" src="content/images/placeholder.png" alt="No Image Available" />
                       </a>
                     }
 
@@ -130,10 +130,10 @@
           </div>
         </div>
 
-        <div *ngIf="activeTab === 'favorites'">
-          <h3>Favorites</h3>
-          <p>Show user's favorites products here ....</p>
-        </div>
+        <!--        <div *ngIf="activeTab === 'favorites'">-->
+        <!--          <h3>Favorites</h3>-->
+        <!--          <p>Show user's favorites products here ....</p>-->
+        <!--        </div>-->
 
         <div *ngIf="activeTab === 'wishlist'">
           <h3>Wishlists</h3>
@@ -163,7 +163,7 @@
                 </select>
               </div>
               @for (review of reviewReceived; track trackId(review)) {
-                <div class="commentBoxRight">
+                <div [routerLink]="['/review', review.id, 'view']" class="commentBoxRight">
                   <div style="display: flex; justify-content: space-between">
                     <p id="username">
                       @if (review.consumer?.bioImage) {
