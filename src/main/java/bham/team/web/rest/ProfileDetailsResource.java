@@ -178,7 +178,7 @@ public class ProfileDetailsResource {
             return ResponseEntity.notFound().build();
         }
 
-        ProfileDetailsDTO profile = profileOpt.get();
+        ProfileDetailsDTO profile = profileOpt.orElseThrow();
 
         // Get the currently logged-in user's login name
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

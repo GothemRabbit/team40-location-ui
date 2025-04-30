@@ -33,6 +33,9 @@ public interface ProfileDetailsRepository extends ProfileDetailsRepositoryWithBa
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 
+    @Query("SELECT pd FROM ProfileDetails pd LEFT JOIN FETCH pd.user")
+    List<ProfileDetails> findAllWithUsers();
+
     Optional<ProfileDetails> findByUserName(String userName);
 
     @Query("SELECT p FROM ProfileDetails p LEFT JOIN FETCH p.items WHERE p.id = :profileId")
