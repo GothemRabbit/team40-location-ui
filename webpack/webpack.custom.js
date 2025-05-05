@@ -11,7 +11,7 @@ const environment = require('./environment');
 const proxyConfig = require('./proxy.conf');
 
 module.exports = async (config, options, targetOptions) => {
-  // PLUGINS
+  // 添加 ESLint 和通知插件
   if (config.mode === 'development') {
     config.plugins.push(
       new ESLintPlugin({
@@ -25,12 +25,31 @@ module.exports = async (config, options, targetOptions) => {
     );
   }
 
-  // configuring proxy for back end service
+  // ✅ 正确插入 CSP 头部
+  if (!config.devServer) {
+    config.devServer = {};
+  }
+  config.devServer.headers = {
+    ...(config.devServer.headers || {}),
+    'Content-Security-Policy': `
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com https://storage.googleapis.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com;
+      frame-src 'self' https://storage.googleapis.com;
+    `
+      .replace(/\n/g, '')
+      .trim(),
+  };
+
+  // 代理配置
   const tls = config.devServer?.server?.type === 'https';
   if (config.devServer) {
     config.devServer.proxy = proxyConfig({ tls });
   }
 
+  // 浏览器同步
   if (targetOptions.target === 'serve' || config.watch) {
     config.plugins.push(
       new BrowserSyncPlugin(
@@ -42,11 +61,10 @@ module.exports = async (config, options, targetOptions) => {
             target: `http${tls ? 's' : ''}://localhost:${targetOptions.target === 'serve' ? '4200' : '8080'}`,
             ws: true,
             proxyOptions: {
-              changeOrigin: false, //pass the Host header to the backend unchanged  https://github.com/Browsersync/browser-sync/issues/430
+              changeOrigin: false,
             },
             proxyReq: [
               function (proxyReq) {
-                // URI that will be retrieved by the ForwardedHeaderFilter on the server side
                 proxyReq.setHeader('X-Forwarded-Host', 'localhost:9000');
                 proxyReq.setHeader('X-Forwarded-Proto', 'https');
               },
@@ -57,36 +75,28 @@ module.exports = async (config, options, targetOptions) => {
               heartbeatTimeout: 60000,
             },
           },
-          /*
-          ghostMode: { // uncomment this part to disable BrowserSync ghostMode; https://github.com/jhipster/generator-jhipster/issues/11116
-            clicks: false,
-            location: false,
-            forms: false,
-            scroll: false,
-          },
-          */
         },
         {
-          reload: targetOptions.target === 'build', // enabled for build --watch
+          reload: targetOptions.target === 'build',
         },
       ),
     );
   }
 
+  // 生产模式分析器
   if (config.mode === 'production') {
     config.plugins.push(
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         openAnalyzer: false,
-        // Webpack statistics in temporary folder
         reportFilename: '../../stats.html',
       }),
     );
   }
 
+  // 静态资源复制
   const patterns = [
     {
-      // https://github.com/swagger-api/swagger-ui/blob/v4.6.1/swagger-ui-dist-package/README.md
       context: require('swagger-ui-dist').getAbsoluteFSPath(),
       from: '*.{js,css,html,png}',
       to: 'swagger-ui/',
@@ -97,7 +107,6 @@ module.exports = async (config, options, targetOptions) => {
       to: 'swagger-ui/',
     },
     { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },
-    // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
   ];
 
   if (patterns.length > 0) {
@@ -106,13 +115,8 @@ module.exports = async (config, options, targetOptions) => {
 
   config.plugins.push(
     new webpack.DefinePlugin({
-      // APP_VERSION is passed as an environment variable from the Gradle / Maven build tasks.
       __VERSION__: JSON.stringify(environment.__VERSION__),
       __DEBUG_INFO_ENABLED__: environment.__DEBUG_INFO_ENABLED__ || config.mode === 'development',
-      // The root URL for API calls, ending with a '/' - for example: `"https://www.jhipster.tech:8081/myservice/"`.
-      // If this URL is left empty (""), then it will be relative to the current context.
-      // If you use an API server, in `prod` mode, you will need to enable CORS
-      // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
       SERVER_API_URL: JSON.stringify(environment.SERVER_API_URL),
     }),
   );

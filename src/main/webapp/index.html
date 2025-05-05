@@ -1,6 +1,17 @@
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr">
   <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com https://storage.googleapis.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com;
+  frame-src 'self' https://storage.googleapis.com;
+"
+    />
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>teamproject24</title>
@@ -17,6 +28,7 @@
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
+
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
   </head>
   <body>
@@ -41,6 +53,16 @@
           </div>
         </div>
       </div>
+
+      <!-- Google Maps JavaScript API -->
+      <script
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?
+      key=AIzaSyD0OlzWI59c3tpTmxkwebZj5FxT3GD6hOA
+      &libraries=places"
+      ></script>
+
       <div class="app-loading">
         <div id="jhipster-error" style="display: none">
           <!-- This content is for troubleshooting purpose and will be removed when app renders -->

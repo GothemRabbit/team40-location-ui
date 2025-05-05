@@ -85,7 +85,16 @@ public class LocationService {
     @Transactional(readOnly = true)
     public List<LocationDTO> findAll() {
         LOG.debug("Request to get all Locations");
-        return locationRepository.findAll().stream().map(locationMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return locationRepository
+            .findAll()
+            .stream()
+            .filter(loc -> isValidCoordinate(loc.getLatitude(), -90, 90) && isValidCoordinate(loc.getLongitude(), -180, 180))
+            .map(locationMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    private boolean isValidCoordinate(Double value, double min, double max) {
+        return value != null && value >= min && value <= max;
     }
 
     /**

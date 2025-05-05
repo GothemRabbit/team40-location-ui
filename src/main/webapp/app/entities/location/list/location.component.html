@@ -26,13 +26,16 @@
     </div>
   </div>
 
+  <!--  *ngIf="showOverviewMap" 区块 -->
   <!-- 地图总览 -->
   <div *ngIf="showOverviewMap" class="mb-4">
-    <div style="height: 400px; width: 100%; border-radius: 8px; border: 1px solid #ccc; position: relative">
-      <button (click)="loadMore()" class="btn btn-secondary btn-sm" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000">
-        Load More
-      </button>
-    </div>
+    <iframe
+      src="https://storage.googleapis.com/maps-solutions-r5mog36q1w/address-selection/l7mi/address-selection.html"
+      width="650"
+      height="500"
+      style="border: 0; border-radius: 8px"
+    >
+    </iframe>
   </div>
 
   <!-- 卡片展示 -->
@@ -77,10 +80,16 @@
               *ngIf="!hiddenMaps[location.id]"
               style="width: 550px"
             >
-              <div
-                id="map-{{ location.id }}"
-                style="height: 250px; width: 100%; min-height: 250px; border: 1px solid #ccc; border-radius: 8px"
-              ></div>
+              <div class="flex-shrink-0 d-flex align-items-center justify-content-center mt-3 mt-md-0" style="width: 550px">
+                <iframe
+                  src="https://storage.googleapis.com/maps-solutions-r5mog36q1w/address-selection/l7mi/address-selection.html"
+                  width="100%"
+                  height="250"
+                  style="border: 0; border-radius: 8px"
+                  loading="lazy"
+                >
+                </iframe>
+              </div>
             </div>
           </div>
         </div>

@@ -21,10 +21,8 @@ declare const google: any;
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LocationComponent implements OnInit, AfterViewInit {
-  // public readonly instance fields
   public readonly router = inject(Router);
 
-  // public instance fields
   showOverviewMap = false;
   visibleCount = 0;
   hiddenMaps: Record<number, boolean> = {};
@@ -35,13 +33,11 @@ export class LocationComponent implements OnInit, AfterViewInit {
   };
   isLoading = false;
 
-  // protected instance fields
   protected readonly locationService = inject(LocationService);
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
-  // private instance fields
   private _filterText = '';
   private subscription: Subscription | null = null;
   private locations: ILocation[] = [];
@@ -77,25 +73,46 @@ export class LocationComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.visibleLocations.forEach(location => {
-        if (this.isValidCoordinate(location.latitude) && this.isValidCoordinate(location.longitude)) {
-          const mapElement = document.getElementById(`map-${location.id}`);
-          if (mapElement) {
-            const map = new google.maps.Map(mapElement, {
-              center: { lat: Number(location.latitude), lng: Number(location.longitude) },
-              zoom: 12,
-            });
+    const waitForGoogle = (): void => {
+      if ((window as any).googleMapsReady && typeof google !== 'undefined' && google.maps) {
+        this.initMaps();
+      } else {
+        setTimeout(waitForGoogle, 100);
+      }
+    };
+    waitForGoogle();
+  }
 
-            const marker = new google.maps.Marker({
-              position: { lat: Number(location.latitude), lng: Number(location.longitude) },
-              map,
-              title: location.address ?? '',
-            });
-          }
-        }
+  load(): void {
+    this.isLoading = true;
+    this.locationService
+      .query()
+      .pipe(tap(() => (this.isLoading = false)))
+      .subscribe(res => {
+        this.locations = res.body ?? [];
+        this.visibleCount = Math.min(4, this.locations.length); // 修正为不依赖 filteredLocations
+        this.markers = this.locations
+          .filter(loc => this.isValidCoordinate(loc.latitude) && this.isValidCoordinate(loc.longitude))
+          .map(loc => ({
+            position: { lat: Number(loc.latitude!), lng: Number(loc.longitude!) },
+            title: loc.address ?? '',
+          }));
       });
-    }, 100);
+  }
+
+  loadMore(): void {
+    this.visibleCount = Math.min(this.visibleCount + 1, this.filteredLocations.length);
+  }
+
+  toggleOverviewMap(): void {
+    this.showOverviewMap = !this.showOverviewMap;
+    if (this.showOverviewMap) {
+      setTimeout(() => this.initOverviewMap(), 100);
+    }
+  }
+
+  toggleCardMap(id: number): void {
+    this.hiddenMaps[id] = !this.hiddenMaps[id];
   }
 
   delete(location: ILocation): void {
@@ -112,36 +129,43 @@ export class LocationComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  load(): void {
-    this.isLoading = true;
-    this.locationService
-      .query()
-      .pipe(tap(() => (this.isLoading = false)))
-      .subscribe(res => {
-        this.locations = res.body ?? [];
-        this.visibleCount = Math.min(4, this.filteredLocations.length);
-        this.markers = this.filteredLocations
-          .filter(loc => this.isValidCoordinate(loc.latitude) && this.isValidCoordinate(loc.longitude))
-          .map(loc => ({
-            position: { lat: Number(loc.latitude!), lng: Number(loc.longitude!) },
-            title: loc.address ?? '',
-          }));
+  private initMaps(): void {
+    this.visibleLocations.forEach(location => {
+      const mapElement = document.getElementById(`map-${location.id}`);
+      if (mapElement) {
+        const map = new google.maps.Map(mapElement, {
+          center: { lat: Number(location.latitude), lng: Number(location.longitude) },
+          zoom: 12,
+        });
+
+        void new google.maps.Marker({
+          position: { lat: Number(location.latitude), lng: Number(location.longitude) },
+          map,
+          title: location.address ?? '',
+        });
+      }
+    });
+  }
+
+  private initOverviewMap(): void {
+    const mapElement = document.getElementById('overview-map');
+    if (mapElement) {
+      const map = new google.maps.Map(mapElement, {
+        center: this.overviewOptions.center,
+        zoom: this.overviewOptions.zoom,
       });
-  }
 
-  loadMore(): void {
-    this.visibleCount = Math.min(this.visibleCount + 1, this.filteredLocations.length);
-  }
-
-  toggleOverviewMap(): void {
-    this.showOverviewMap = !this.showOverviewMap;
-  }
-
-  toggleCardMap(id: number): void {
-    this.hiddenMaps[id] = !this.hiddenMaps[id];
+      this.markers.forEach(markerData => {
+        void new google.maps.Marker({
+          position: markerData.position,
+          title: markerData.title,
+          map,
+        });
+      });
+    }
   }
 
   private isValidCoordinate(value: number | null | undefined): value is number {
-    return value !== null && value !== undefined;
+    return typeof value === 'number';
   }
 }

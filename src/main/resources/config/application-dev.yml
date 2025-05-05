@@ -114,3 +114,7 @@ jhipster:
 # ===================================================================
 
 # application:
+
+google:
+  maps:
+    api-key: AIzaSyD0OlzWI59c3tpTmxkwebZj5FxT3GD6hOA
