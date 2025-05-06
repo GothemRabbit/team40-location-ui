@@ -155,6 +155,13 @@ export class LocationComponent implements OnInit, AfterViewInit {
         zoom: this.overviewOptions.zoom,
       });
 
+      this.markers = this.locations.map(loc => ({
+        position: {
+          lat: Number(loc.latitude ?? 31.2304),
+          lng: Number(loc.longitude ?? 121.4737),
+        },
+        title: loc.address ?? '',
+      }));
       this.markers.forEach(markerData => {
         void new google.maps.Marker({
           position: markerData.position,
@@ -165,7 +172,7 @@ export class LocationComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private isValidCoordinate(value: number | null | undefined): value is number {
-    return typeof value === 'number';
+  private isValidCoordinate(value: any): value is number {
+    return !isNaN(Number(value));
   }
 }

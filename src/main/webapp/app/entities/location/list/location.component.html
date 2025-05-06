@@ -26,71 +26,62 @@
     </div>
   </div>
 
-  <!--  *ngIf="showOverviewMap" 区块 -->
   <!-- 地图总览 -->
   <div *ngIf="showOverviewMap" class="mb-4">
     <iframe
       src="https://storage.googleapis.com/maps-solutions-r5mog36q1w/address-selection/l7mi/address-selection.html"
-      width="650"
+      width="100%"
       height="500"
       style="border: 0; border-radius: 8px"
-    >
-    </iframe>
+    ></iframe>
   </div>
 
   <!-- 卡片展示 -->
-  <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 g-4 mt-2">
+  <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
     <div class="col" *ngFor="let location of visibleLocations">
-      <div class="card h-100 shadow-sm border-0" style="transition: box-shadow 0.3s ease; font-size: 0.875rem">
-        <div class="card-body card-hover" style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)">
-          <div class="d-flex flex-column flex-md-row">
-            <div class="flex-grow-1 pe-md-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">Location #{{ location.id }}</h5>
-                <button (click)="toggleCardMap(location.id)" class="btn btn-outline-secondary btn-sm">
-                  {{ hiddenMaps[location.id] ? 'Show Map' : 'Hide Map' }}
-                </button>
-              </div>
-              <p><strong>Address:</strong> {{ location.address || 'N/A' }}</p>
-              <p><strong>Latitude:</strong> {{ location.latitude ?? 'N/A' }}</p>
-              <p><strong>Longitude:</strong> {{ location.longitude ?? 'N/A' }}</p>
-              <p><strong>Postcode:</strong> {{ location.postcode || 'N/A' }}</p>
-              <p>
-                <strong>Profile Details:</strong>
-                <ng-container *ngFor="let profile of location.profileDetails; let last = last">
-                  <a [routerLink]="['/profile-details', profile.id, 'view']">{{ profile.id }}</a
-                  >{{ last ? '' : ', ' }}
-                </ng-container>
-              </p>
-              <p>
-                <strong>Users:</strong>
-                <ng-container *ngFor="let user of location.users; let last = last">
-                  <a [routerLink]="['/user-details', user.id, 'view']">{{ user.id }}</a
-                  >{{ last ? '' : ', ' }}
-                </ng-container>
-              </p>
-              <div class="d-flex gap-2 mt-3">
-                <a [routerLink]="['/location', location.id, 'view']" class="btn btn-info btn-sm">View</a>
-                <a [routerLink]="['/location', location.id, 'edit']" class="btn btn-primary btn-sm">Edit</a>
-                <button (click)="delete(location)" class="btn btn-danger btn-sm">Delete</button>
-              </div>
+      <div class="card h-100 shadow-sm border-0 d-flex flex-row" style="height: 1400px; font-size: 0.875rem">
+        <div class="card-body d-flex flex-column justify-content-between" style="flex: 1 1 25%; overflow: auto">
+          <div>
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="card-title">Location #{{ location.id }}</h5>
+              <button (click)="toggleCardMap(location.id)" class="btn btn-outline-secondary btn-sm">
+                {{ hiddenMaps[location.id] ? 'Show Map' : 'Hide Map' }}
+              </button>
             </div>
-            <div
-              class="flex-shrink-0 d-flex align-items-center justify-content-center mt-3 mt-md-0"
-              *ngIf="!hiddenMaps[location.id]"
-              style="width: 550px"
-            >
-              <div class="flex-shrink-0 d-flex align-items-center justify-content-center mt-3 mt-md-0" style="width: 550px">
-                <iframe
-                  src="https://storage.googleapis.com/maps-solutions-r5mog36q1w/address-selection/l7mi/address-selection.html"
-                  width="100%"
-                  height="250"
-                  style="border: 0; border-radius: 8px"
-                  loading="lazy"
-                >
-                </iframe>
-              </div>
-            </div>
+            <p><strong>Address:</strong> {{ location.address || 'N/A' }}</p>
+            <p><strong>Latitude:</strong> {{ location.latitude ?? 'N/A' }}</p>
+            <p><strong>Longitude:</strong> {{ location.longitude ?? 'N/A' }}</p>
+            <p><strong>Postcode:</strong> {{ location.postcode || 'N/A' }}</p>
+            <p>
+              <strong>Profile Details:</strong>
+              <ng-container *ngFor="let profile of location.profileDetails; let last = last">
+                <a [routerLink]="['/profile-details', profile.id, 'view']">{{ profile.id }}</a
+                >{{ last ? '' : ', ' }}
+              </ng-container>
+            </p>
+            <p>
+              <strong>Users:</strong>
+              <ng-container *ngFor="let user of location.users; let last = last">
+                <a [routerLink]="['/user-details', user.id, 'view']">{{ user.id }}</a
+                >{{ last ? '' : ', ' }}
+              </ng-container>
+            </p>
+          </div>
+          <div class="d-flex gap-2 mt-3">
+            <a [routerLink]="['/location', location.id, 'view']" class="btn btn-info btn-sm">View</a>
+            <a [routerLink]="['/location', location.id, 'edit']" class="btn btn-primary btn-sm">Edit</a>
+            <button (click)="delete(location)" class="btn btn-danger btn-sm">Delete</button>
+          </div>
+        </div>
+        <div *ngIf="!hiddenMaps[location.id]" style="flex: 1 1 75%; display: flex; justify-content: flex-end; align-items: stretch">
+          <div style="width: 100%; height: 100%">
+            <iframe
+              src="https://storage.googleapis.com/maps-solutions-r5mog36q1w/address-selection/l7mi/address-selection.html"
+              width="100%"
+              height="100%"
+              style="min-height: 500px; border: 0; border-radius: 0 8px 8px 0"
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
       </div>
