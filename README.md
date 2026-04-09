@@ -1,4 +1,7 @@
-# teamproject24 template application
+# team40-GOTHEM template application
+<img width="2446" height="1191" alt="Screenshot 2025-05-08 144841" src="https://github.com/user-attachments/assets/26f1e08d-4c52-42c1-8a37-1f4f69bf500c" />
+<img width="1381" height="810" alt="Screenshot 2025-05-08 145350" src="https://github.com/user-attachments/assets/bee976c3-493c-4266-9809-f59b00e36272" />
+
 Location Feature Demo
 This repository showcases my individual implementation of a map-based Location feature. https://github.com/GothemRabbit/team40-location-ui/blob/main/README(LOCATION).md
 
